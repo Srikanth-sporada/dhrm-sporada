@@ -1,0 +1,104 @@
+<ng-template #content let-modal>
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <img width="700px" height="500px" [src]="imgUrl" alt="Question">
+    </div>
+</ng-template>
+
+<div>
+    <mat-toolbar style="color: white;  background-color:#007BFF;">
+        <span>Trainee Test Page</span>&nbsp;
+        &nbsp; {{x.fullname}} - {{x.trainee_idno}}({{x.plant_code}})
+        <span class="example-spacer"></span>
+        <button id="logout" style="color: white; background-color:#007BFF;" (click)="logout()"><mat-icon
+                class="example-icon" aria-hidden="false">home</mat-icon></button>
+    </mat-toolbar>
+    <div class="pt-2">
+        <div class="container-fluid pt-4">
+            <div class="round">
+                <div class="pt-5 pl-5">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div style="display: flex; align-content: center; justify-content: flex-start;gap:10px" >
+                                <div >
+                                    <select (change)="Qualified($event)" formControlName="module" class="trainee-input">
+                                        <option value="" disabled>Select your module</option>
+                                        <option *ngFor="let module of modules; let i = index">{{i+1}}.{{module.module_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <input formControlName="test" class="trainee-input" readonly>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                    <br><br>
+                    <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+                    <ng-template #show>
+
+                        <div *ngIf="!loading" class="body form-group">
+
+                            <body>
+                                <b>
+                                    <p style="white-space: pre;">{{qualified}}</p>
+                                </b>
+                                <b>
+                                    <p style="white-space: pre;">{{offline}}</p>
+                                </b>
+                                <form *ngIf="offline == '' " [formGroup]="formtest">
+                                    <table class="table" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <td style="width: 10%;">S.No</td>
+                                                <td style="width: 90%;">Questions</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let a of questions;let i = index; ">
+                                            <tr>
+                                                <td>{{i+1}}</td>
+                                                <td style="white-space: pre;">{{a.question}}<br><br>
+                                                    <div
+                                                        *ngIf="a.image_filename != null && a.image_filename != 'null' &&  a.image_filename != 'NULL' && a.image_filename != 'undefined'  && a.image_filename != '' ">
+                                                        <button (click)="open(content, a.image_filename)" ><img
+                                                                [src]="url+'/qbank/'+a.image_filename" width=300px ngbTooltip="click to view image"
+                                                                height=200px alt="question" ></button><br><br>
+                                                    </div>
+                                                    <select class="form-control-md"
+        formControlName="answers"
+        [ngClass]="{
+          'invalid-select': form.get('answers')?.invalid && form.get('answers')?.touched
+        }"
+        (change)="load_answers($event, i + 1, a.qslno, a.correct_answer)">
+  <option value="">Choose your answer</option>
+  <option *ngFor="let choice of choices">{{choice}}</option>
+</select>
+                                                    <!-- <select class="form-control-md"
+                                                    [(ngModel)]="a.selectedAnswer"
+                                                    [ngClass]="{'invalid-select': a.selectedAnswer === '' || !a.selectedAnswer}"
+                                                    (change)="load_answers($event, i + 1, a.qslno, a.correct_answer)">
+                                                        <option value="">Choose your answer</option>
+                                                        <option *ngFor="let choice of choices">{{choice}}</option>
+                                                    </select> -->
+                                                </td>
+                                            </tr>
+
+
+
+
+
+                                        </tbody>
+                                       
+                                          
+                                    </table>
+                                    <button (click)="submit()" mat-raised-button color="primary" [disabled]='flag'
+                                        type="submit">save</button>
+                                </form>
+                            </body>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

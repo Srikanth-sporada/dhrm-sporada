@@ -1,0 +1,34 @@
+<div style="width: 100%">
+    <div class="div-c" style="color: #2A2550">
+        <h1>Attendance</h1>
+    </div>
+    <mat-divider style="padding-bottom: 10px"></mat-divider>
+    <div style="padding-left: 40px">
+        <div class="font">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h2>Select Date:</h2>
+                <div class="datepicker">
+                    <mat-calendar (selectedChange)="getChangedValue($event)" #calendar [(selected)]="selectedDate"></mat-calendar>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <h2>Present/Absent:</h2>
+                <div class="successbox">
+                <div class="alert" [ngClass]=" this.class == 1 ? ' alert-danger' : 'alert-success' " role="alert">
+                    <div class="fs-text">  <b>{{present_type}}</b>
+                    </div>
+                </div>
+                </div>
+                <br><br>
+                <h3 class="fs-text"><strong>Worked Date: </strong>{{wd}}</h3>
+                <h3 class="fs-text"><strong>In time: </strong>{{in_time}}</h3>
+                <h3 class="fs-text"><strong>Out time: </strong>{{out_time}}</h3>
+                <h3 class="fs-text"><strong>Total Hours: </strong>{{total_hrs}}</h3>
+                <h3 class="fs-text"><strong>Shift: </strong>{{shift}}</h3>
+            </div></div>
+        </div>
+    </div>
+
+</div>
+

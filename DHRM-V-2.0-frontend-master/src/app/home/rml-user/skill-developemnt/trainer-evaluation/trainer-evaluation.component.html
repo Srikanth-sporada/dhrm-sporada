@@ -1,0 +1,110 @@
+
+
+
+<div class = "container">
+  <div  style = "margin-top: 40px;">   
+<h1><b>HR Evaluation</b></h1>
+    
+      <div class="form-container1">
+    <form [formGroup]="form">
+
+    <div class = "row">
+    <div class = "col-sm-4">
+    <label for="Status" id="center"> Evaluation Stage: </label><br>
+      <mat-select name="Status" id="Status" class="input2" formControlName = "status" (selectionChange)="filter()">
+          <mat-option value="1">First Evaluation</mat-option>
+          <mat-option value="2">Second Evaluation</mat-option>
+          <mat-option value="3">Third Evaluation</mat-option>
+          <mat-option value="4">Fourth Evaluation</mat-option>
+        </mat-select> 
+    </div>
+    <div class = "col-sm-4">
+      <label for="Status" id="center">Evaluation Status: </label>
+      <br>
+        <mat-select name="Status" id="Status" class="input2" formControlName = "filter" >
+            <mat-option value="PENDING">PENDING</mat-option>
+            <!-- <mat-option value="PENDING_APPROVAL">PENDING APPROVAL</mat-option> -->
+            <mat-option value="APPROVED">COMPLETED</mat-option>
+        </mat-select>
+
+      </div> 
+      
+    <div class="col-sm-2" >
+      <label for="Status" id="center"> DOJ Year: </label>
+      <br>
+      <select formControlName="year" class="yearfilter">
+        <option *ngFor="let i of year" [ngValue]="i" >{{ i }}</option>
+      </select>
+    </div>
+    <br>
+
+      <div class="col-sm-2" style="display: flex; align-items:center;margin-top:2% ">
+        <button mat-raised-button color="primary" (click)="filter()" >Search</button>
+
+      </div>
+    </div>
+</form>
+
+<br>
+  <div class="row">
+    <div class = "col-sm-4 ">
+      <label for="Status" id="center">Name: </label>
+      <br>
+      <input class="input" placeholder="Enter Name"[(ngModel)]="searchText" class="input2" type="text">
+        
+    </div></div>
+  </div> 
+  <div class="col">
+    <div class = "download">
+        <button mat-fab style=" margin-left: auto; " aria-label="Example icon button with a delete icon" (click)="exportexcel()">
+            <mat-icon>download</mat-icon>
+        </button></div>
+  </div>
+    <br><br><app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+    <ng-template #show>
+      <div class = "table-wrapper">
+      <table class="table table-bordered table-striped table-hover">
+        <table id="table">
+            <thead>
+            <tr>
+                <th div class="aligncommand">Date of Joining</th>
+                <th div class="aligncommand">Gen ID</th>
+                <th div class="aligncommand">Name</th>
+                <th div class="aligncommand">Mobile No</th>
+                <th div class="aligncommand">Line Name</th>
+                <th div class="aligncommand">Dept Name</th>
+                <th div class="aligncommand">Reporting To</th>
+                <th div class="aligncommand">Aging</th>
+                <th div class="aligncommand">Evaluate</th>
+
+                </tr>
+                </thead>
+                <tbody >
+                  <tr *ngFor="let i of filterinfo | filter : searchText">
+                    <td>{{ formatDate(i.doj) }}</td>
+                    <td>{{i.gen_id}}</td>
+                    <td>{{ i.fullname }}</td>
+                    <td>{{ i.mobile_no1 }}</td>
+                    <td>{{ i.line_Name }}</td>
+                    <td>{{ i.dept_name }}</td>
+                    <td>{{ i.Emp_Name }}</td>
+                    <td>{{ i.diff }}</td>
+                    <td>
+                          <div>
+                          <button *ngIf="this.form.get('filter').value == 'PENDING' " mat-mini-fab color = "success" [routerLink]="['/rml/skill-developement/evaluation-form', i.apln_slno,this.form.controls['status'].value, 1]" >
+                              <mat-icon>edit</mat-icon>
+                          </button>
+                          <button *ngIf="this.form.get('filter').value == 'APPROVED' || this.form.get('filter').value == 'PENDING_APPROVAL' " mat-mini-fab color = "success" [routerLink]="['/rml/skill-developement/evaluation-form', i.apln_slno,this.form.controls['status'].value, 3]" >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+
+                      </div>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+            </table>
+      </div></ng-template>
+  </div>
+</div>
+

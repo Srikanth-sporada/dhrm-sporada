@@ -1,0 +1,75 @@
+<div class="container">
+    <div  style = "margin-top: 40px;">   
+
+    <h1><b>Employee Skill Test Question Paper</b></h1>
+
+    <div [formGroup]="form" class="row">
+
+        <div style="display: flex; align-content: center; justify-content: flex-start;gap:10px">
+
+            <div>
+                <select (change)="getquestions($event)" style="font-size:14px" formControlName="module" class="question-bank-input">
+                    <option value="">Select Operation</option>            
+                    <option *ngFor="let module of modules; let i = index" [value]="module.oprn_slno">
+                        {{module.oprn_desc}}
+                    </option>
+                </select>
+            </div>            
+
+            <div>
+                <select (change)="getLevel($event)" style="font-size:14px" formControlName="level" class="question-bank-input">
+                    <option value="">Select Level</option>
+                    <option value="2">Level 2</option>
+                    <option value="3">Level 3</option>
+                    <option value="4">Level 4</option>
+                </select>
+            </div>            
+
+            <div>
+                <button mat-raised-button class="btn-success" (click) = "submit()" >save</button>&nbsp;
+                <button mat-raised-button class="btn-danger" (click)="clearForm()">Clear</button>
+            </div>
+        </div>
+
+    </div>
+    <br><br>
+    <div *ngIf = 'offline_flag'>
+         <table style="width: 100%;" class="table-bordered table-responsive table1">
+            <thead style="background-color: rgb(24, 33, 205);color:white;height: 30px">
+                <tr>
+                    <td>Q.NO</td>
+                    <td>Question</td>
+                    <td>Correct Answer</td>
+                    <td>Image File</td>
+                    <td>File</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let i of questions; let a = index">
+                    <td style="background-color: rgb(255, 255, 255);width:30px; position: relative; text-align: center;">{{a+1}}.</td>
+                    <td class="qb-input"><textarea [readonly] = 'flag' style="resize:none;outline: none;border-color: white;width: 400px;height: 300px;" (change)="question($event, a)"  (click) ="addrow(a)" type = 'text' class="qb-group">{{i.question}}</textarea></td>
+                    <!-- <td class="qb-input"><textarea maxlength="1" [readonly] = 'flag' name ="answer" style="overflow: hidden;resize:none;outline: none;border-color: white;height: 200px;width: 120px;" (change)="answers($event, a)" class="qb-group">{{i.correct_answer}}</textarea></td> -->
+                    <td class="qb-input">
+                        <select name="answer" 
+                          style="outline: none;border-color: white;height: 40px;width: 120px;" 
+                          [(ngModel)]="questions[a].correct_answer"
+                          (change)="answers($event, a)" class="qb-group">
+                          <option value="" disabled selected>Select Answer</option>
+                          <option value="A">A</option>
+                          <option value="B">B</option>
+                          <option value="C">C</option>
+                          <option value="D">D</option>
+                        </select>
+                      </td>
+                                           
+                    <td><div style="width: 270px;"></div>
+                        <img *ngIf="i.image_filename" [src]="url + i.image_filename" alt="Question Image" style="max-width: 100%; max-height: 200px;" /></td>
+                    <td><input [disabled] = 'flag' name ="file" type="file" style="overflow: hidden;resize:none;outline: none;border-color: white;height: 200px;" (change)="file($event,a)" class="qb-group"></td>
+                </tr>
+            </tbody>
+         </table>
+    </div>
+    <div>
+        <p *ngIf = '!offline_flag' ><b>This module is offline module. You can't upload questions for this module.</b> </p>
+    </div>
+</div>

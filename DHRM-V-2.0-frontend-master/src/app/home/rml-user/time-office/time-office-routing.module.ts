@@ -1,0 +1,59 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import {AttendanceComponent} from "./attendance/attendance.component";
+import {CalenderComponent} from "./calender/calender.component";
+import {ForgetPunchComponent} from "./forget-punch/forget-punch.component";
+import {ShiftChangeComponent} from "./shift-change/shift-change.component";
+import {LeaveComponent} from "./leave/leave.component";
+import { DeptTransferComponent } from './dept-transfer/dept-transfer.component';
+import {PermissionComponent} from "./permission/permission.component";
+import { OverTimeComponent } from './over-time/over-time.component';
+import { CompOffComponent } from './comp-off/comp-off.component';
+
+
+
+
+const routes: Routes = [
+  {
+    path:'attendance',
+    component:AttendanceComponent
+  },
+  {
+    path:'calender',
+    component:CalenderComponent
+  },
+  {
+    path:'forget_punch',
+    component:ForgetPunchComponent
+  },
+  {
+    path:'leave',
+    component:LeaveComponent
+  },
+  {
+    path:'per_leave',
+    component:PermissionComponent
+  },
+  {
+    path:'shift_change',
+    component:ShiftChangeComponent
+  },
+  {
+    path:'dept_transfer',
+    component:DeptTransferComponent
+  },
+  {
+    path:'over-time',
+    component:OverTimeComponent
+  },
+  {
+    path:'comp-off',
+    component:CompOffComponent
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class TimeOfficeRoutingModule { }

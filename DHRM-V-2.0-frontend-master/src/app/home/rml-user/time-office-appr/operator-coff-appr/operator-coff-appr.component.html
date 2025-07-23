@@ -1,0 +1,115 @@
+<div  class="container2">
+    <h1 id = "title1" >Operator C-Off Approval</h1>
+    <hr style="border-block-color: orange" />
+    <!-- <div >
+        <mat-form-field appearance="outline">
+            <mat-label>GenID</mat-label>
+            <input matInput  type="text" [(ngModel)]="genId" (click)="genId=''" />
+          </mat-form-field>
+      
+    </div> -->
+
+    <div class="bulk1" >
+        <label *ngIf="isRA && ishrappr==='false'" id="l1">Search :&nbsp; </label>
+        <mat-form-field appearance="outline"  *ngIf="isRA && ishrappr==='false'">
+            <mat-label>GenID</mat-label>
+            <input matInput  [(ngModel)]="genId"  type="text"   />
+          </mat-form-field >
+
+          <label *ngIf="isRA && ishrappr==='false'" id="l1">&nbsp;Supervisor Status :&nbsp; </label> 
+          <mat-form-field appearance="outline" *ngIf="isRA && ishrappr==='false'"  >
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="a1_status">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Waiting for Approval">Waiting for Approval</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="Cancelled">Cancelled</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+              
+            </mat-select>
+          </mat-form-field>
+
+          <label *ngIf="ishrappr === 'true'" id="l1">&nbsp;HR Status :&nbsp; </label> 
+          <mat-form-field appearance="outline" *ngIf="ishrappr === 'true'" >
+            <mat-label>Status</mat-label>
+            <!-- <mat-select [(ngModel)]="a2_status"(ngModelChange)='toggleSelect()'> -->
+            <mat-select [(ngModel)]="a2_status">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Waiting for Approval">Waiting for Approval</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="Cancelled">Cancelled</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+
+    <!-- <div *ngIf="ishrappr === 'true'" id="select_all"   [hidden]="approveBtn">
+        <mat-checkbox class="example-margin"[(ngModel)]="selectAll" (change)="toggleSelectAll()">Select All&nbsp;&nbsp;</mat-checkbox>               
+        <button  mat-raised-button  [disabled]="!atLeastOneSelected()" (click)="submit()" id="green" color="primary" >
+            Approve
+          </button> -->
+    
+
+    <!-- </div> -->
+
+    <div *ngIf="isRA && ishrappr==='false'"  class = "table-wrapper container3">
+        <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th  class="text-center"
+                     
+                        style="background-color: darkblue">Sl_No</th>
+                        <th  class="text-center">Gen-ID</th>
+                        <th  class="text-center">Name</th>
+                        <th  class="text-center">C-Off Date</th>
+                        <th  class="text-center">Hours</th>
+                        <th  class="text-center">Applied On</th>
+                        
+                        <th  class="text-center">Supervisor status</th>
+                        <th *ngIf="isRA === true   "  class="text-center">Action</th>
+                        
+                        <!-- <th *ngIf="ishrappr === 'true'" class="text-center">Action</th> -->
+                       
+                        
+                    </tr>
+                </thead>
+                 <tbody >
+                    <!-- <tr *ngFor="let data of optr_Data ; let i = index;"> -->
+                        <tr *ngFor="let data of optr_Data |leaveFilte1: genId:a1_status; let i = index;">
+                            
+                                       <td>{{ i + 1 }}</td>
+                     <td>{{data.gen_id}}</td>
+                     <td>{{data.fullname}}</td>
+                     <td>{{data.Coff_date  |date :"dd-MM-yyyy"}}</td>
+                     <td>{{data.Hours}}</td>
+                     <td>{{data.Applied_on }}</td>
+                   
+                     <td>{{data.L1_Approval_Status }}</td> 
+                     <td id="green1" >
+                        <button  mat-raised-button id="green" color="primary" 
+                       (click)="approve_Coff(data)"
+                        [disabled]="data.L1_Approval_Status !== l1_status"
+                       >
+                            Approve
+                          </button>
+                        <button  mat-raised-button id="green" color="warn" 
+                       (click)="reject_Coff(data)"
+                        [disabled]="data.L1_Approval_Status !== l1_status"
+                       >
+                            Reject
+                          </button>
+                     </td>
+                     
+                    
+                    </tr>
+                </tbody> 
+                  
+            </table>
+
+            </table>
+
+</div>
+      

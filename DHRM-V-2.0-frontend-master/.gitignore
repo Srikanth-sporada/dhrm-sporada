@@ -1,0 +1,7 @@
+# Project exclude paths
+node_modules/
+.angular/
+.idea/
+dist/
+src/environments/environment.prod.ts
+

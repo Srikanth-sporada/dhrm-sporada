@@ -1,0 +1,31 @@
+<div class="container">
+
+    <div style="margin-top: 40px;">
+
+        <h1><b>Skill Matrix Report</b></h1>
+
+        <div class="filter-container">
+
+            <form [formGroup]="form">
+                <div class="filter-group">
+                    <label for="department">Department Name:</label>
+                    <select formControlName="department" class="yearfilter">
+                        <option [ngValue]="" disabled>Select Department</option> 
+                        <option *ngFor="let i of departments" [ngValue]="i.dept_slno">{{ i.dept_name }}</option>
+                    </select>
+                </div>
+            </form>
+
+            <div class="clear">
+                <button (click)="clear()" [hidden]="button1">Clear</button>
+            </div>
+
+            <div class="download">
+                <button (click)="download()" [hidden]="button1">Download</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

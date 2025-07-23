@@ -1,0 +1,229 @@
+<div class="overlay" [hidden]="!showPayrollForm"></div>
+<div class="shadow-lg ">
+    <div class=" form-popup container1 mat-elevation-z8" [hidden]="!showPayrollForm" >
+    <!-- <div class=" form-popup container1 mat-elevation-z8" > -->
+
+        <h2>Add New Payroll </h2>
+        <hr style="border-block-color: orange" />
+    <form [formGroup]="payroll" >
+        <div class="columns" id="firstBox" style="padding-bottom:10px;">
+            <div class="column">
+                <mat-form-field appearance="outline">
+                    <mat-label>Plant</mat-label>
+                    <mat-select formControlName="plant">
+                      <mat-option *ngFor="let plant of plantArr" [value]="plant.plant_code">{{plant.plant_code}}/{{plant.plant_name}} </mat-option>
+                     
+                    </mat-select>
+                    <mat-error *ngIf="payroll.get('plant')?.hasError('required')">Please Select Plant </mat-error>
+                  </mat-form-field>
+                  <mat-form-field
+                  *ngIf="showAdd"
+                  appearance="outline"
+                  color="primary"
+                  class="example-full-width"
+                  (click)="picker2.open()"
+                >
+                  <mat-label>Effective From</mat-label>
+                  <input
+                    matInput  
+                 formControlName="effectivedate"
+                    [matDatepicker]="picker2"
+                  />
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker2> </mat-datepicker>
+                  <mat-error *ngIf="payroll.get('effectivedate')?.hasError('required')">Please Select Effective From </mat-error>
+                </mat-form-field>
+                  <mat-form-field
+                  *ngIf="!showAdd"
+                  appearance="outline"
+                  color="primary"
+                  class="example-full-width"
+                >
+                  <mat-label>Effective From</mat-label>
+                  <input
+                    matInput  
+                 formControlName="effectivedate"
+                    readonly
+                  />
+                  <mat-error *ngIf="payroll.get('effectivedate')?.hasError('required')">Please Select Effective From </mat-error>
+                </mat-form-field>
+              <div id="radio">
+                <mat-label>Leave with Wages : </mat-label>
+                <mat-radio-group aria-labelledby="example-radio-group-label" formControlName="leaveWagesCheck" class="example-radio-group">
+               <mat-radio-button value="YES">Yes</mat-radio-button>
+                    <mat-radio-button value="NO" >No</mat-radio-button>
+                    <mat-error *ngIf="payroll.get('leaveWagesCheck')?.hasError('required')">Please Select leave Wages </mat-error>
+                </mat-radio-group>
+              
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value=true> Active</mat-option>
+                  <mat-option value=false> InActive</mat-option>
+               
+                </mat-select>
+                <mat-error *ngIf="payroll.get('status')?.hasError('required')">Please Select status </mat-error>
+              </mat-form-field>
+
+            
+
+            </div>
+            <div class="column">
+                <div id="radio">
+                    <mat-label>PF % :</mat-label>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employee</mat-label>
+                      <input matInput type="number" formControlName="EmployPF" />
+                      <mat-error *ngIf="payroll.get('EmployPF')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employer</mat-label>
+                      <input matInput type="number" formControlName="EmployerPF" />
+                      <mat-error *ngIf="payroll.get('EmployerPF')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div id="radio">
+                    <mat-label>ESI % :</mat-label>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employee</mat-label>
+                      <input matInput type="number" formControlName="EmployESI" />
+                      <mat-error *ngIf="payroll.get('EmployESI')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employer</mat-label>
+                      <input matInput type="number" formControlName="EmployerESI" />
+                      <mat-error *ngIf="payroll.get('EmployerESI')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div id="radio">
+                    <mat-label>LWF :</mat-label>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employee</mat-label>
+                      <input matInput type="number" formControlName="EmployLWF" />
+                      <mat-error *ngIf="payroll.get('EmployLWF')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="example-full-width">
+                      <mat-label>Employer</mat-label>
+                      <input matInput type="number" formControlName="EmployerLWF" />
+                      <mat-error *ngIf="payroll.get('EmployerLWF')?.hasError('required')">Please Enter Bonus</mat-error>
+                    </mat-form-field>
+                  </div>
+        </div>
+</div>
+
+        <div class="columns" >
+            <div
+            style="display: flex; justify-content: space-around;padding-top:0.5em"
+            >
+            <button
+              mat-raised-button
+              id="red"
+              type="reset"
+            >
+              Reset
+            </button>
+            <button mat-raised-button color="primary" (click)="hidePayroll()">
+              Cancel
+            </button>
+            <button id="green" mat-raised-button color="primary" *ngIf="showAdd" (click)="submitPayroll()"  >Add</button>
+            <button id="green" mat-raised-button color="primary"  *ngIf="!showAdd" (click)="updatePayroll()"  >Update</button>
+            </div>
+        
+        
+        </div>
+
+
+    </form>
+</div>
+</div>
+
+
+
+
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >Payroll Masters</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+      <div class="button">
+        <button mat-fab color="primary" (click)="showPayroll();clickAddPayroll()"  style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button></div>
+        <div class = "button1">
+        <button mat-fab style="float: right" (click)="exportExcel()" aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button></div>
+        <br><br><br>
+        <br><br>
+        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+
+        <ng-template #show>
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center">Plant</th>
+                            <th div class="text-center">PF Employee %</th>
+                            <th div class="text-center">PF Employer %</th>
+                            <th div class="text-center">ESI Employee %</th>
+                            <th div class="text-center">ESI Employer %</th>
+                            <th div class="text-center">LWF Employee %</th>
+                            <th div class="text-center">LWF Employer %</th>
+                            <th div class="text-center">Leave wages </th>
+                            <th div class="text-center">Effective date </th>
+                            <th div class="text-center">Status</th>
+
+                            <th div class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of activePayroll;let i =index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.Plant_code}}</td>
+                            <td>{{data.PF_Employee}}</td>
+                            <td>{{data.PF_Employer}}</td>
+                            <td>{{data.ESI_Employee}}</td>
+                            <td>{{data.ESI_Employer}}</td>
+                            <td>{{data.LWF_Employee}}</td>
+                            <td>{{data.LWF_Employer}}</td>
+                            <td>{{data.Leave_wages}}</td>
+                            <td>{{data.Effective_from |date:'dd-MM-yyyy'}}</td>
+                            <td *ngIf="data.Status == 1">Active</td>
+                            <!-- <td *ngIf="data.Status == 1; else inactive">Active</td>
+                            <ng-template #inactive>
+                              <td>Inactive</td>
+                            </ng-template>  -->
+                            
+                            <td>
+                                <button mat-mini-fab color = 'accent' (click)="onEdit(data)" >
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="deletePayroll(data)" >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </table>
+
+</div>
+
+        </ng-template> 
+
+</div>
+  

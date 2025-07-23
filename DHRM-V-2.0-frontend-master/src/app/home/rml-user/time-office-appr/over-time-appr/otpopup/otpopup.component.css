@@ -1,0 +1,11 @@
+.details{
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.detail{
+    display: flex;
+    justify-content:flex-start;
+    gap: 5px;
+}

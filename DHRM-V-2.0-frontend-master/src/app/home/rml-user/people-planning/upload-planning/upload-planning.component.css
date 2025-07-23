@@ -1,0 +1,38 @@
+.container{
+    border-radius:12px;
+    margin:10px auto;
+    width:60%;
+    height:200px;
+    background-color:#D3D3D3;
+    display:block;
+    padding-top: 25px;
+}
+
+.db{
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+
+.header{
+    background-color: darkblue;
+    color: azure;
+}
+.table{
+    width:95%;
+    margin:0 auto;
+}
+
+.mat-button.mat-success,
+.mat-raised-button.mat-success:hover{
+    color: white;
+    background-color: green;
+}
+
+.mat-button.mat-success,
+.mat-raised-button.mat-success{
+    color: white;
+    background-color: green;
+}

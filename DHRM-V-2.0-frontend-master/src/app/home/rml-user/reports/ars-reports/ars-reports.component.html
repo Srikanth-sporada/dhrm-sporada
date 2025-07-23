@@ -1,0 +1,76 @@
+<div>
+  <div >
+    <h2 class="heading">ARS Reports</h2>
+    <div class="controls">
+      <mat-form-field appearance="outline">
+        <mat-label>Report Type</mat-label>
+        <mat-select [(ngModel)]="selectedReportType">
+          <mat-option *ngFor="let report of reportType" [value]="report.code">{{
+            report.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="sapType.includes(selectedReportType) ">
+        <mat-label>SAP Type</mat-label>
+        <mat-select [(ngModel)]="employeeType">
+          <mat-option value="S">SAP</mat-option>
+          <mat-option value="N">NON SAP</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf='!yearReport.includes(selectedReportType) '>
+        <mat-label>From Date</mat-label>
+        <input
+          matInput
+          [type]="yearReport.includes(selectedReportType) ? 'year' : ((monthReport.includes(selectedReportType) || monthReport1.includes(selectedReportType))  ? 'month' : 'date')"
+  
+          [(ngModel)]="from"
+          (change)="datechnage()"
+          [max]="fromMax"
+        />
+      </mat-form-field>
+
+      
+
+      <mat-form-field appearance="outline" *ngIf="!monthReport.includes(selectedReportType) && !yearReport.includes(selectedReportType) && !monthReport1.includes(selectedReportType) " >
+        <mat-label>To Date</mat-label>
+        <input
+          matInput
+          type="date"
+          [(ngModel)]="to"
+          [min]="from"
+          [max]="max" 
+          
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" *ngIf="monthReport.includes(selectedReportType) || sapReport.includes(selectedReportType) ">
+        <mat-label>Employee Type</mat-label>
+        <mat-select [(ngModel)]="employeeType">
+          <mat-option value="T">Trainee</mat-option>
+          <mat-option value="O">Operator</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Plant</mat-label>
+        <mat-select
+          [(ngModel)]="plant"
+          [disabled]="!(isadmin === 'true' || (isHrappr === 'true' && selectedReportType === 'HRC'))"
+
+        >
+          <mat-option value="" selected>All</mat-option>
+          <mat-option
+            *ngFor="let plant of plantlist"
+            [value]="plant.plant_code"
+            >{{ plant.plant_code }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="primary" (click)="getData()" [disabled]="loading">Download</button>
+      </div>
+    </div>
+
+  </div>
+</div>

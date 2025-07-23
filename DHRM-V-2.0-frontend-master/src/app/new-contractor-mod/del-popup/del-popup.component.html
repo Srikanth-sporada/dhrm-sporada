@@ -1,0 +1,10 @@
+<mat-dialog-content>
+    <h2>Confirmation</h2>
+    <p>Please enter a reason for deleting:</p>
+    <textarea [(ngModel)]="reason" rows="4" cols="30"></textarea>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div class="button">
+      <button id="black" mat-button (click)="closeDialog()">Close</button>
+      <button id="red" mat-button (click)="deleteRecord()">Delete</button>
+    </div>
+</mat-dialog-content>

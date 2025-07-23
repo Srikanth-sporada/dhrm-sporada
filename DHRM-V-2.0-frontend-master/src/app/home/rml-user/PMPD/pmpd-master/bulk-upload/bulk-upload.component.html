@@ -1,0 +1,24 @@
+<div>
+  <div style="display: flex; align-items: center; justify-content: center">
+    <input type="file" (change)="fileUpload($event)" accept=".xlsx" />
+    <button
+      mat-raised-button
+      color="yellow"
+      style="margin-right: 20px"
+    >
+    <a [href]="url + 'sop/pmpd master upload.xlsx'" style="text-decoration: none;">Download Template</a>
+    </button>
+    <button
+      mat-raised-button
+      color="yellow"
+      style="margin-right: 20px"
+      (click)="verify_data()"
+      [disabled]="!fileloaded"
+    >
+      Verify
+    </button>
+    <button mat-raised-button color="success" [disabled]="!data_verified" (click)="upload_data()">
+      Save
+    </button>
+  </div>
+</div>

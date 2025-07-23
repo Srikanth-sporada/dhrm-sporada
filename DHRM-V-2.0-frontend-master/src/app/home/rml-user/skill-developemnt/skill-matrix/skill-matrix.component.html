@@ -1,0 +1,114 @@
+<div style="margin: 10px;">
+    <div style="margin-top: 40px;">
+      <div class="header-row">
+        <h1><b>Employee Skill Development Status</b></h1>
+      
+        <button mat-fab aria-label="Download Excel" (click)="exportexcel()">
+          <mat-icon>download</mat-icon>
+        </button>
+      </div>    
+  
+      <div class="form-container1">
+        <form [formGroup]="form">
+  
+          <div class="row">
+            <div class="col-sm-2">
+              <label id="center">Dept Name:</label>
+              <br />
+              <select formControlName="department" class="yearfilter" (change)="onDepartmentChange()">
+                <option value="">Select Dept</option>
+                <option *ngFor="let i of departments" [ngValue]="i">{{ i }}</option>
+              </select>
+            </div>
+            
+            <div class="col-sm-2" style="margin-left: 5%;">
+              <label id="center">Line Name:</label>
+              <br />
+              <select formControlName="line" class="yearfilter" (change)="onLineChange()">
+                <option value="">Select Line</option>
+                <option *ngFor="let i of lineOptions" [ngValue]="i">{{ i }}</option>
+              </select>
+            </div>
+                 
+  
+            <div class="col-sm-2" style="margin-left: 5%;">
+              <label id="center">Gen ID:</label>
+              <br />
+              <input class="input2" placeholder="Enter Gen ID" formControlName="gen_id" type="text" />
+            </div>          
+            <br> <br>
+  
+            <div class="col-sm-2" style="display: flex; align-items:center;margin-top:2%; margin-left: 5%; ">
+              <button mat-raised-button color="primary" (click)="filter()">Search</button>
+              <button mat-raised-button color="warn" (click)="clear()" style="margin-left: 10%;">Clear</button>
+            </div>
+  
+          </div>
+        </form>
+  
+        <br>
+        
+      </div>
+      
+      <br><br><app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+      <ng-template #show>
+        <div class="table-wrapper">
+          <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+              <thead>
+                <tr>
+                  <th div class="aligncommand">Sl.No</th>
+                  <th div class="aligncommand">Gen ID</th>
+                  <th div class="aligncommand">Name</th>
+                  <th div class="aligncommand">Dept Name</th>
+                  <th div class="aligncommand">Line Name</th>
+                  <th div class="aligncommand">Reporting To</th>
+                  <th div class="aligncommand">DOJ</th>
+                  <th div class="aligncommand">Aging</th>
+                  <th div class="aligncommand">Last Eval Date</th>
+                  <th div class="aligncommand">Latest Skill</th>
+                  <th div class="aligncommand">Offline</th>
+                  <th div class="aligncommand">Online</th>
+  
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of filterinfo | filter : searchText; let idx = index">
+                  <td>{{ idx + 1 }}</td>
+                  <td>{{i.gen_id}}</td>
+                  <td>{{ i.fullname }}</td>
+                  <td>{{ i.dept_name }}</td>
+                  <td>{{ i.Line_Name }}</td>
+                  <td>{{ i.Emp_Name }}</td>
+                  <td>{{ i.DOJ }}</td>
+                  <td>{{ i.Ageing }}</td>
+                  <td>{{ i.Last_Eval_Date }}</td>
+                  <td style="text-align: center;">{{ i.Latest_Skill }}</td>
+                  <td>
+                    <div>
+  
+                      <button mat-mini-fab color="success"
+                        [routerLink]="['/rml/skill-developement/Old-HR-Evaluation', i.apln_slno]">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+  
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+  
+                      <button mat-mini-fab color="success"
+                        [routerLink]="['/rml/skill-developement/HR-Evaluation', i.apln_slno]">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+  
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </table>
+        </div>
+      </ng-template>
+    </div>
+  </div>

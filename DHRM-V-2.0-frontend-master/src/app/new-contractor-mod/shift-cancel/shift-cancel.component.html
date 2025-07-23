@@ -1,0 +1,110 @@
+<div  class="container2">
+    <h1 id = "title1" >Shift Cancel Re-Process</h1>
+    <hr style="border-block-color: orange" />
+    <div class="filter">
+        <div>
+            <mat-form-field appearance="outline"color="primary" class="example-full-width"(click)="picker2.open()">
+          <mat-label>Date Filter</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="selected_Date" (dateChange)="onDateFilterChange($event)"   [max]="maxDate" />
+          <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
+          <mat-datepicker #picker2> </mat-datepicker>
+          <!-- [min]="minDate" -->
+        </mat-form-field>
+        </div>
+
+        <div >
+        <mat-form-field appearance="outline"  > 
+            <mat-label>Line</mat-label>
+          
+            <mat-select [(ngModel)]="selected_Line"  (click)="selected_Line=''">
+              <mat-option value="All">All</mat-option>
+              <mat-option *ngFor="let line of lineData" [value]="line.Line_Name">{{line.Line_Name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+        </div>
+        <div >
+            <mat-form-field appearance="outline">
+                <mat-label>GenID</mat-label>
+                <input matInput  type="text" [(ngModel)]="genId" (click)="genId=''" />
+              </mat-form-field>
+          <br>
+        </div>
+        <div >
+            <mat-form-field appearance="outline">
+                <mat-label>Shift</mat-label>
+                <mat-select [(ngModel)]="shift"  (click)="shift=''">
+                    <mat-option value="">All</mat-option>
+                    <mat-option   *ngFor="let Shift of NoshiftData" [value]="{ in_tm_min: Shift.in_tm_min, in_tm_max: Shift.in_tm_max }"  >{{Shift.shift_desc}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          <br>
+        </div>
+    </div>
+
+    <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+
+    <ng-template #show>
+        <div class = "table-wrapper container3">
+        <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th  class="text-center"
+                     
+                        style="background-color: darkblue">Sl_No</th>
+                        <th div class="text-center">Gen-ID</th>
+                        <th div class="text-center">Name</th>
+                        <th div class="text-center">Attandance date</th>
+                        <th div class="text-center">Line</th>
+                        <th div class="text-center">In_Time</th>
+                        <th div class="text-center">Out_Time</th>
+                        <th div class="text-center">Present Shift</th>
+                        <th div class="text-center">Alternate Shift</th>
+                        <th div class="text-center">Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let data of punchData| GenFilter:genId | lineFilter:selected_Line |shiftFilter:shift; let i = index">
+                     <td>{{ i + 1 }}</td>
+                     <td>{{data.gen_id}}</td>
+                     <td>{{data.fullname}}</td>
+                     <td>{{data.vardate |date:'dd-MM-yyyy'}}</td>
+                     <td>{{data.Line_Name }}</td>
+                     <td>{{data.in_time |date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                     <td>{{data.out_time |date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                     
+                     <td>
+                        <mat-select id="inp" class="input2" [(ngModel)]="data.shift_id" >
+                            <mat-option *ngFor="let Shift of NoshiftData" [value]="Shift.shift_id"  >{{Shift.shift_desc}}</mat-option>
+                      </mat-select>
+                    </td>
+                     <td >
+                        <mat-select id="inp" class="input2" [(ngModel)]="data.alt_shift_id">
+        
+                            <mat-option *ngFor="let Shift of shiftData" [value]="Shift.shift_id" 
+                            [disabled]="data.shift_id === Shift.shift_id"
+                            >{{Shift.shift_desc}} </mat-option>
+                          </mat-select>
+                     </td>
+                     <td >
+                        <button  mat-raised-button id="green" color="primary"  (click)="CancelShift(data)"
+                        [disabled]="(data.shift_id === null &&  data.alt_shift_id !== null )||( data.alt_shift_id === null && data.shift_id !== null)">
+                            Save
+                          </button>
+                     </td>
+                    </tr>
+                </tbody>
+                  
+            </table>
+
+            </table>
+
+</div>
+
+    </ng-template> 
+
+
+</div>

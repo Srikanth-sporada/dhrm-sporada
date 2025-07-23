@@ -1,0 +1,29 @@
+.center{
+    font-size: 18px;
+   }
+
+   /* .form-control{
+    width: 50px;
+   } */
+
+.left{
+    padding: 0 15px;
+}
+
+.chooose-btn{
+    border-radius: 0px;
+    margin-left:50%;
+    width:90px 
+
+}
+.star-color{
+    color: red;
+}
+.form-control{
+    font-size: 16px;
+}
+.form-header{
+    background-color: white;
+    color:black;
+    font-size: 16px;
+}

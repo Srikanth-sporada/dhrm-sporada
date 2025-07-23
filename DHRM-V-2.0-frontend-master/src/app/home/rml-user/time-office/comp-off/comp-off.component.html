@@ -1,0 +1,117 @@
+<div class= "container">
+<div class="md-5">
+<br>
+
+    <mat-label> <div class="fs-text"><b>Compensatory - OFF</b></div></mat-label>
+    
+  </div>
+</div>
+<br><br><br>
+<mat-tab-group>
+  <mat-tab label=" Apply C-Off" >
+    <div class="table-wrapper">
+      <table class="table table-bordered table-striped table-hover">
+        <table id="table">
+          <thead>
+            <tr>
+              <th
+                class="text-center"
+                style="width: 500px"
+                style="background-color: darkblue; color: aliceblue"
+              >
+                SL No
+              </th>
+              <!-- <th div class="text-center">Gen Id</th> -->
+              <!-- <th div class="text-center">Name</th> -->
+              <th div class="text-center">Department</th>
+              <th div class="text-center">Line</th>
+              <th div class="text-center">Category</th>
+              <th div class="text-center">Approved Excess Hrs</th>
+              <th div class="text-center">Approved OT Hrs</th>
+              <th div class="text-center">Adjusted for COFF</th>
+              <th div class="text-center">Un-Approved COFF Hrs</th>
+              <th div class="text-center">Balance Hrs</th>
+              <th div class="text-center">Apply</th>
+            </tr>
+          </thead>
+          <tbody>
+             <tr
+              *ngFor="
+                let item of data ;
+                let i = index
+              "
+            >
+              <td>
+                {{i+1}}
+              <!-- <td>{{ item.gen_id }}</td> -->
+              <!-- <td>{{ item.fullname }}</td> -->
+              <td>{{ item.dept_name }}</td>
+              <td>{{ item.Line_Name }}</td>
+              <td>{{ item.apprentice_type }}</td>
+              <td>{{ item.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(item)"><mat-icon>visibility</mat-icon></button></td>
+              <td>{{ item.ot }}</td>
+              <td>{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon>visibility</mat-icon></button></td>
+              <td>{{ item.Un_Appra_hrs }}</td>
+              <td>{{ item.bal }}</td>
+              <td>
+                <button mat-raised-button color="primary" (click)="openDailog(item)">Apply Coff</button>
+              </td> 
+            </tr>
+          </tbody>
+        </table>
+      </table>
+    </div>
+
+    </mat-tab>
+  <mat-tab label=" C-Off status" >
+    <div class="table-wrapper">
+      <table class="table table-bordered table-striped table-hover">
+        <table id="table">
+  <thead>
+    <tr>
+
+    
+      <th class="text-center">C-off Date</th>
+      <th class="text-center">Hours</th>
+      <th class="text-center">Applied On</th>
+      <th class="text-center">Approver </th>
+      <th class="text-center">Approval / Rejected Status</th>
+      <th class="text-center">Approved On</th>
+      <th class="text-center">Cancel</th>
+      <th class="text-center">Cancelled On</th>
+
+   
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr *ngFor="let item of list" >
+
+     
+      <td>{{item.Coff_date|date :"dd-MM-yyyy"}}</td>
+      <td>{{item.Hours}}</td>
+      <td>{{item.Applied_on }}</td>
+      <td>{{item.Emp_Name}}</td> 
+      <td>{{item.L1_Approval_Status}}</td> 
+      <td>{{item.L1_Approved_On}}</td> 
+      <td >
+        <button mat-raised-button color="warn" style="height: 33px"
+      (click)="coff_cancel_Popup(item)"
+      [disabled]="item.L1_Approval_Status === 'Cancelled' || item.L1_Approval_Status === 'Rejected' ||item.L1_Approval_Status === 'Approved'">
+Cancel
+</button>
+   </td>
+   <td>{{item.Cancelled_On}}</td> 
+     
+    </tr>
+  </tbody>
+  </table>
+  </table>
+  </div>
+
+
+    </mat-tab>
+
+</mat-tab-group>   
+
+

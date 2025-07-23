@@ -1,0 +1,320 @@
+<div class="container">
+  <div class="row1">
+    <div class="col">
+      <br />
+      <h1>&nbsp;<b>Evaluation Form</b></h1>
+      <div class="card">
+        <img
+          class="img"
+          [src]="this.image"
+          alt="Avatar"
+          style="display: flex; justify-content: center; align-items: center"
+        />
+        <table class="table-bordered" style="width: 400px">
+          <br /><br />
+
+          <div class="px-5">
+            <tr class="font"></tr>
+            <tr>
+              <td class="stylecommand"><b>Name</b></td>
+              <br />
+              <td class="emp_details">{{ name }}</td>
+              <br /><br />
+            </tr>
+            <tr>
+              <td class="stylecommand"><b>Emp ID</b></td>
+              <br />
+              <td class="emp_details">{{ id }}</td>
+              <br /><br />
+            </tr>
+            <tr>
+              <td class="stylecommand"><b>Category</b></td>
+              <br />
+              <td class="emp_details">{{ cat }}</td>
+              <br /><br />
+            </tr>
+            <tr>
+              <td class="stylecommand"><b>Department</b></td>
+              <br />
+              <td class="emp_details">{{ dept }}</td>
+              <br /><br />
+            </tr>
+            <tr>
+              <td class="stylecommand"><b> Line</b></td>
+              <br />
+              <td class="emp_details">{{ ln }}</td>
+              <br /><br />
+            </tr>
+            <!-- <tr>
+                    <td class = "stylecommand" ><b> Skill Level</b></td><br>
+                    <td >{{skill}}</td><br><br></tr>
+                    <tr>
+                        <td class = "stylecommand" ><b> Operation Trained</b></td><br>
+                        <td ><div *ngFor="let i of pt">{{i}}</div></td></tr> -->
+            <!-- <tr>
+              <td *ngIf="readable" class="stylecommand">
+                <b> Uploaded File&nbsp;</b>
+              </td>
+              <br />
+              <td *ngIf="readable">
+                <a [href]="this.uploaded" target="_blank">&nbsp;View Hr file</a>
+              </td>
+            </tr>
+            <tr>
+              <td *ngIf="appr && sup_file != null" class="stylecommand">
+                <b> Uploaded File&nbsp;</b>
+              </td>
+              <br />
+              <td *ngIf="appr">
+                <a [href]="this.uploaded2" target="_blank"
+                  >&nbsp;{{ sup_file == null ? null : txt }}</a
+                >
+              </td>
+            </tr> -->
+            <br /><br />
+          </div>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row1">
+    <div class="col">
+      <br />
+      <h1 style="color: white">&nbsp;<b>Evaluation Form</b></h1>
+      <div class="card">
+        <form [formGroup]="form">
+          <div class="mx-5">
+            <div class="col">
+              <br />
+              <label>Evaluation Date: </label><br />
+              <input
+                class="form-control"
+                type="date"
+                formControlName="evaluation_date"
+                [readonly]="readable"
+              />
+            </div>
+            <br />
+            <div class="col">
+              <label>Score Obtained </label><br />
+              <input
+                class="form-control"
+                type="number"
+                formControlName="score_obtained"
+                [readonly]="readable"
+              />
+            </div>
+            <br />
+            <div class="col">
+              <label>Score For(Total) </label><br />
+              <input
+                class="form-control"
+                type="number"
+                formControlName="score_for"
+                (ngModelChange)="cal()"
+                [readonly]="readable"
+              />
+            </div>
+            <br />
+
+            <div class="col">
+              <label>Percentage</label><br />
+              <input
+                class="form-control"
+                type="number"
+                formControlName="percentage"
+                readonly
+              />
+              <br />
+            </div>
+
+            <div class="col">
+              <label>Training Document</label><br />
+              <input
+                class="form-control"
+                type="file"
+                id="filetre"
+                (change)="files($event)"
+                [disabled]="appr"
+              />
+            </div>
+            <br />
+            <div class="col">
+              <label>Supervisor Evaluation Document</label><br />
+              <input
+                class="form-control"
+                type="file"
+                id="filesup"
+                (change)="filessup($event)"
+                [disabled]="appr"
+              />
+            </div>
+
+            <div class="col" *ngIf="false">
+              <label>Department </label><br />
+              <select
+                (change)="getLineName($event)"
+                formControlName="department"
+                class="form-control"
+              >
+                <option value="">select</option>
+                <option *ngFor="let i of department" [ngValue]="i">
+                  {{ i }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col" *ngIf="false">
+              <label>Line </label><br />
+              <select formControlName="line" class="form-control">
+                <option value="">select</option>
+                <option *ngFor="let i of line" [ngValue]="i">{{ i }}</option>
+              </select>
+            </div>
+            <br />
+
+            <div class="col">
+              <label>New Skill Level </label><br />
+              <select formControlName="new_skill" class="form-control">
+                <option value="">select</option>
+                <option *ngFor="let i of new_skill_lvl" [ngValue]="i">
+                  {{ i }}
+                </option>
+              </select>
+            </div>
+            <br />
+            <div class="col">
+              <mat-form-field style="width: 500px; height: 50px">
+                <mat-select
+                  style="width: 500px; height: 50px"
+                  class="form-control"
+                  placeholder="process trained"
+                  formControlName="process_trained"
+                  [(value)]="pp"
+                  multiple
+                >
+                  <mat-option
+                    style="width: 500px; height: 50px"
+                    *ngFor="let i of process_trained"
+                    [value]="i"
+                    >{{ i }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <br />
+          </div>
+          <br />
+          <!-- <button
+            *ngIf="!appr"
+            [disabled]="form.invalid"
+            type="submit"
+            [routerLink]="[this.nav]"
+            (click)="submit()"
+            class="btn btn-success btn-lg"
+          >
+            {{ save }}
+          </button> -->
+          <button
+            *ngIf="appr"
+            [routerLink]="[this.nav]"
+            class="btn btn-success btn-lg"
+          >
+            GO BACK
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <br /><br />
+</div>
+<div style="display: flex; justify-content: space-around; align-items: center">
+  <div class="desc_table">
+    <table>
+      <thead class="table_header">
+        <th class="cell1">Level</th>
+        <th class="cell1">Skill Description</th>
+      </thead>
+      <tbody>
+        <tr class="yellow">
+          <td class="cell1">Level-1</td>
+          <td class="cell1">Load/Unload, Inspection, NC Handling</td>
+        </tr>
+        <tr class="blue">
+          <td class="cell1">Level-2</td>
+          <td class="cell1">Tool Change Over & Minor Correction</td>
+        </tr>
+        <tr class="green">
+          <td class="cell1">Level-3</td>
+          <td class="cell1">Setting Change & Basic CNC Programming</td>
+        </tr>
+        <tr class="darkgreen">
+          <td class="cell1">Level-4</td>
+          <td class="cell1">Setting Change & Advance CNC Programming</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-right: 20%">
+    <table *ngIf="fileDetails.length != 0" style="border: 2px solid black">
+      <thead class="table_header">
+        <th class="cell1">Evaluation No</th>
+        <th class="cell1">Trainer File</th>
+        <th class="cell1">Supervisor File</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of fileDetails" style="margin: 20px 30px">
+          <td style="margin: 20px 30px" class="cell1">
+            Evaluation-{{ item.curr_skill_level }}
+          </td>
+          <td class="cell1">
+            <a [href]="getUrl(item.tnr_filename)" target="_blank">Test Doc</a>
+          </td>
+          <td class="cell1">
+            <a [href]="getUrl(item.sup_filename)" target="_blank"
+              >Evaluation Doc</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div style="margin: 0 0 0 30px">
+  <h3>Name: {{ name }}({{ id }})</h3>
+</div>
+<div class="matrix">
+  <table id="table" class="customtable">
+    <thead class="table_header">
+      <th style="text-align: center" class="cell">Sl.no</th>
+      <th class="cell">Operations</th>
+      <th class="cell">Level-1</th>
+      <th class="cell">Level-2</th>
+      <th class="cell">Level-3</th>
+      <th class="cell">Level-4</th>
+    </thead>
+    <tbody style="background-color: whitesmoke">
+      <tr *ngFor="let oprn of curr_oprn; let i = index">
+        <td style="text-align: center" class="cell">{{ i + 1 }}</td>
+        <td class="cell">{{ oprn.oprn_desc }}</td>
+        <td
+          [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
+          class="cell"
+        ></td>
+        <td
+          [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
+          class="cell"
+        ></td>
+        <td
+          [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
+          class="cell"
+        ></td>
+        <td
+          [ngClass]="{ darkgreen: oprn.oprn_trained == 4 ? true : false }"
+          class="cell"
+        ></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,44 @@
+<h2 style="text-align: center;">Exess Hours Details</h2>
+<div class="container">
+  <div class="details">
+    <div><b>Name:</b>{{ data.fullname }}</div>
+    <div><b>Gen Id:</b>{{ data.gen_id }}</div>
+    <div><b>Category:</b>{{ data.apprentice_type }}</div>
+    <div><b>Department:</b>{{ data.dept_name }}</div>
+    <div><b>Line:</b>{{ data.Line_Name }}</div>
+  </div> 
+  <div class="table-wrapper">
+    <table class="table table-bordered table-striped table-hover">
+      <table id="table">
+        <thead>
+          <tr>
+            <th
+              class="text-center"
+              style="width: 100px"
+              style="background-color: darkblue; color: aliceblue"
+            >
+              SL No
+            </th>
+            <th div class="text-center">Date</th>
+            <th div class="text-center">Actual Excess Hours</th>
+            <th div class="text-center">Approved Excess Hours</th>
+            <th div class="text-center">Approved By</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of excessHrData; let i = index">
+            <td>
+             {{i+1}}
+            </td>
+            <td>{{ item.date|date:'dd-MM-yyyy' }}</td>
+            <td>{{ item.act_hrs }}</td>
+            <td>{{ item.appr_hrs }}</td>
+            <td>{{ item.appr }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </table>
+  </div>
+</div>
+<div style="display: flex;justify-content: flex-end;margin-right: 10px;">
+  <button mat-raised-button (click)="close()">Close</button>
+</div>

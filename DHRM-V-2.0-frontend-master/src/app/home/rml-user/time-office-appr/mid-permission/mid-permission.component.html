@@ -1,0 +1,174 @@
+<div class="container">
+    <br />
+    <div>
+      <h1 id="title1">Mid Day Permission</h1>
+      <hr style="border-block-color: orange" />
+    </div>
+  
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+      "
+    >
+    
+
+    </div>
+    <br />
+    <mat-tab-group>
+        <mat-tab label="Apply Middle Permission">
+          <div class="form" style="margin-top: 1rem;margin-left: 1rem;">
+            <mat-form-field appearance="outline">
+              <mat-label>Gen ID</mat-label>
+              <input type="text" matInput [(ngModel)]="genid" (ngModelChange)="genIdChange()" />
+            </mat-form-field>
+     
+            <button
+              mat-raised-button
+              color="primary"
+              style="margin: 10px 20px; height: 40px"
+              (click)="verify()" 
+              [disabled]="!genid"
+            >
+              Details
+            </button>
+          </div>
+
+          <div  *ngIf="userdtls.length > 0"  >
+            <h3 style="display: flex;align-items: flex-start;">User Details</h3>
+            <table
+              id="fpdata"
+              class="table table-bordered table-striped table-hover my-2"
+            >
+              <thead  >
+                <tr style="background-color:rgb(18, 85, 229) ;color: white;"> 
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Gen ID</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Name</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Category </th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Department</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Line</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let item of userdtls">
+                  <td>{{item.gen_Id}}</td>
+                  <td>{{item.fullname}}</td>
+                  <td>{{item.apprentice_type}}</td>
+                  <td>{{item.dept_name }}</td>
+                  <td>{{item.Line_Name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        
+          <div  *ngIf="userdtls.length > 0"  >
+            <h3 style="display: flex;align-items: flex-start;">Apply Middle Permission</h3>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+              <mat-form-field appearance="outline">
+                <mat-label>Date</mat-label>
+                <input type="date" matInput [(ngModel)]="date" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>In Time</mat-label>
+                <input type="time" matInput [(ngModel)]="intime" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>Out Time</mat-label>
+                <input type="time" matInput [(ngModel)]="outtime" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>Duration</mat-label>
+                <input type="text" matInput [(ngModel)]="duration" disabled />
+              </mat-form-field>
+            
+              <button 
+                mat-raised-button 
+                color="primary" 
+                (click)="calculateDuration()" 
+                [disabled]="!isFormValid()" 
+                style="margin-left: 2rem;">
+                Calculate
+              </button>
+            </div>
+            
+            <div >
+            
+            
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Reason</mat-label>
+                <textarea matInput [(ngModel)]="reason" placeholder=" Reason"></textarea>
+              </mat-form-field>
+            
+            
+              <button mat-raised-button color="primary" 
+              [disabled]="!isSubmitFormValid()" 
+              (click)="submitPermission()" style="margin-left: 2rem;">
+                Submit
+              </button>
+            </div>
+            
+          </div>
+        
+
+
+        </mat-tab>
+        <mat-tab label="Status">
+          <div  class = "table-wrapper container3">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                         
+                            style="background-color: darkblue">Sl_No</th>
+                            <th  class="text-center">Gen-ID</th>
+                            <th  class="text-center">Name</th>
+                            <th  class="text-center">Attandance date</th>
+                            <th  class="text-center">Present Before</th>
+                            <th  class="text-center">Applied On</th>
+                            <th  class="text-center">Reason</th>
+                            <th  class="text-center">Duration in min</th>
+                            <th  class="text-center">Approver 1</th>
+                            <th  class="text-center">Approver 1 status</th>
+                            
+                            <th  class="text-center">Approver 2</th>
+                            <th  class="text-center">Approver 2 status</th>
+                            <!-- <th *ngIf="ishrappr === 'true'" class="text-center">Action</th> -->
+                           
+                            
+                        </tr>
+                    </thead>
+                     <tbody >
+                        <tr *ngFor="let data of perm_list ; let i = index">
+                         <td>{{ i + 1 }}</td>
+                         <td>{{data.Gen_id}}</td>
+                         <td>{{data.fullname}}</td>
+                         <td>{{data.att_date |date :"dd-MM-yyyy"}}</td>
+                         <td>{{data.Present_Before }}</td>
+                         <td>{{data.applied_on |date :"dd-MM-yyyy" }}</td>
+                         <td>{{data.reason }}</td>
+                         <td>{{data.Mid_Day_Permission_min }}</td>
+                         <td>{{data.Approver_1_name }}</td>
+                         <td>{{data.L1_Approval_Status }}</td>
+                         <td>{{data.Approver_2_name }}</td>
+                         <td>{{data.L2_Approval_Status }}</td>
+                      
+                        </tr>
+                    </tbody> 
+                      
+                </table>
+    
+                </table>
+    
+    </div>
+
+        </mat-tab>
+        </mat-tab-group>
+    </div>

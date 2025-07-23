@@ -1,0 +1,148 @@
+.test {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 20px;
+  }
+  
+  .form {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 3em;
+    gap: 10px;
+  }
+  .flex-container {
+    display: flex;
+  }
+  
+  .form1 {
+    flex: 1; /* Take up all available space */
+    margin-left: 5em; /* Adjust as needed */
+    margin-top: 10px;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  .table-smaller[_ngcontent-bfd-c488] th[_ngcontent-bfd-c488], .table-smaller[_ngcontent-bfd-c488] td[_ngcontent-bfd-c488] {
+    padding: 7px;
+}
+  
+  .leave-details {
+    flex: 1.5; /* Take up all available space */
+    
+    margin-right: 4em;
+  }
+  
+  .leave-details th{
+    background-color: darkblue;
+    color: azure;
+    font-size: larger;
+
+  }
+
+  .leave-details td{
+    font-size: large;
+  }
+
+
+
+  th{
+    background-color: darkblue;
+    color: azure;
+  }
+  
+.row{
+  overflow: none;
+}
+
+.leave{
+  border:  1px black solid;
+  height: 3em;
+  width: 7em;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+
+}
+.mat-tab-body-content {
+  height: 100%;
+  overflow: none;
+}
+td {
+  font-weight: 500;
+  font-size: smaller;
+}
+th {
+  font-weight: 500;
+  font-size: small;
+}
+
+  .mat-button.mat-yellow,
+  .mat-raised-button.mat-yellow:hover {
+    color: white;
+    background-color: #ffc107;
+  }
+  
+  .mat-button.mat-yellow,
+  .mat-raised-button.mat-yellow {
+    color: white;
+    background-color: #ffc107;
+  }
+  
+  .mat-button.mat-yellow,
+  .mat-raised-button.mat-yellow:disabled {
+    color: white;
+    background-color: rgb(160, 168, 162);
+  }
+  
+  .mat-button.mat-success,
+  .mat-raised-button.mat-success:hover {
+    color: white;
+    background-color: rgb(9 159 41);
+  }
+  
+  .mat-button.mat-success,
+  .mat-raised-button.mat-success {
+    color: white;
+    background-color: rgb(9 159 41);
+  }
+  
+  .mat-button.mat-success,
+  .mat-raised-button.mat-success:disabled {
+    color: white;
+    background-color: rgb(160, 168, 162);
+  }
+  
+  thead {
+    background-color: darkblue;
+    color: azure;
+    text-align: center;
+  }
+  tbody {
+    text-align: center;
+  }
+  
+  .table-smaller {
+    font-size: 13px; /* Adjust the font size as needed */
+  }
+  
+  .table-smaller th,
+  .table-smaller td {
+    padding: 3px; /* Adjust the padding as needed */
+  }
+  
+  .table-smaller td {
+    background-color: #f2f2f2;
+  }
+  
+ 
+  
+  .fptext{
+    margin:10px 10px 0 0;
+  }
+  
+  .box{
+    margin: 15px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+  }

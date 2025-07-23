@@ -1,0 +1,156 @@
+.card {
+  box-shadow: 0 4px 4px 3px rgba(0, 0, 0, 0.4);
+  width: 400px;
+  height: 600px;
+  float: left;
+  font-size:2px;
+  border-color: black;
+  margin-right: 20px;
+}
+.card2 {
+
+  box-shadow: 0 14px 14px 0 rgba(0,0,0,0.4);
+  width: 400px;
+  height: 640px;
+  float: left;
+  font-size:15px;
+}
+
+.left{
+  text-align: right;
+  float: right;
+  padding-left: 0px;
+}
+
+.container {
+  font-size:15px;
+  padding-top: 50px;
+  padding-left: 10%;
+
+}
+.container2 {
+  font-size:15px;
+  padding-top: 20px;
+  padding-right: -100px;
+  align-items: center;
+
+
+}
+.shift{
+  margin-left:100px;
+}
+
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.spacing{
+  float: right;
+  padding: 100px;
+}
+
+.left1{
+  text-align:right;
+  padding-right:0%
+}
+
+.font
+{
+  font-size: 15px;
+}
+.name-container {
+  max-width: 2000px;
+  height: 80px;
+  }
+
+
+textarea{
+  resize: none;
+  border-color: transparent;
+  text-align: center;
+  background-color: transparent;
+}
+
+.font2{
+  font-size: 15px;
+  width: 50%;
+}
+.header{
+  text-align: center;
+  font-size: 25px;
+}
+.img{
+  /* margin-left: 35%; */
+  /* height: 100px; */
+  /* width: 25%; */
+  position: relative;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+
+}
+.sign{
+  /* margin-left: 65%; */
+  float: right;
+  padding-right: 25px;
+
+}
+.sign1{
+  float: right;
+  padding-right: 25px;
+  font-size: large;
+}
+.company_addr{
+  text-align:center;
+  border-radius: 2px;
+  border-color: white;
+}
+.home_addr{
+  align-self: left;
+  text-align:left;
+  border-radius: 2px;
+  border-color: white;
+}
+.space{
+  word-spacing: 20px;
+}
+.name{
+  text-align: center;
+  font-size: 20px;
+}
+.aligncommand1{
+  /* line-height: 20px; */
+   width: 200px; 
+   border: 1px ;
+}
+.fs-text{
+  font-size: 25px;
+}
+
+.bg-image {
+  background-image: url('../../../../../assets/bg_id.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-image2 {
+  background-image: url('../../../../../assets/img.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media print {
+  .card {
+     -webkit-print-color-adjust: exact !important;
+     print-color-adjust: exact !important;
+     background-image: url('../../../../../assets/img.jpeg');
+     background-size: cover;
+  }
+}

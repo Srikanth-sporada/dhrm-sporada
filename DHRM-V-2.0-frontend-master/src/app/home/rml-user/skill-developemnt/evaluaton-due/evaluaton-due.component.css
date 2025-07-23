@@ -1,0 +1,88 @@
+.btn {
+    float: right;
+
+}
+.boxx{
+    box-sizing: 100%;
+}
+
+th{
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  td{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    font-size: medium;
+  }
+  th { background: #c5c5c5;}
+table 
+{
+
+  width: 100%;
+}
+td, th { border: 1px solid #cdcdcd; padding: 8px; text-align: left;}
+.form-group
+{
+  background-color: lightgrey;
+}
+
+tbody
+{
+  text-align: center;
+
+}
+
+.table-wrapper
+{
+    display: block;
+}
+.mat-success{
+  color:green;
+}
+.mat-error{
+  color:red;
+}
+
+.form-control
+{
+    font-size: medium;
+}
+.aligncommand{
+  background-color: darkblue;
+  line-height: 20px; width: 400px; border: 1px ;
+}
+
+.form-container1 {
+  margin: 5% auto;
+  -webkit-box-shadow: 9px 10px 30px 0px rgba(0,0,0,0);
+  -moz-box-shadow: 9px 10px 30px 0px rgba(0,0,0,0);
+  box-shadow: 9px 10px 30px 0px rgba(0,0,0,0);
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 100px;
+  min-width: 800px;
+  background-color: rgba(211, 204, 204, 0.618); /* Update opacity here */
+  align-items: center;
+  ;
+}
+
+
+.input2 {
+  min-width: 200px;
+  background-color: #f5f5f5;
+  color: #242424;
+  padding: .15rem .5rem;
+  min-height: 40px;
+  border-radius: 6px;
+  outline: 10px;
+  border: 15px;
+  font-size: 16px;
+  line-height: 1.15;
+  box-shadow: 0px 10px 20px -18px;
+}
+
+.skillsummary{
+  width: 50%;
+  margin: 0 auto;
+}

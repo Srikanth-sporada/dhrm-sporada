@@ -1,0 +1,27 @@
+.error-message {
+    color: red;
+    margin-top: 5px;
+  }
+
+  #red{
+    margin-left: 2em;
+    color: rgb(243 241 241 / 87%);
+     background-color: red;
+  }
+  #black{
+    margin-left: 2em;
+    color: rgb(243 241 241 / 87%);
+     background-color: rgb(66, 64, 64);
+  }
+  .button{
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+::ng-deep .mat-dialog-content{
+    border-radius: 13px;
+}

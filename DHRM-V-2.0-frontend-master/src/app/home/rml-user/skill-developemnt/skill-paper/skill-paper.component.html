@@ -1,0 +1,44 @@
+<div class="body form-group">
+    <div style="text-align: right; margin-top: 2%; margin-right: 10%;">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+    </div>  
+
+    <form #quizForm="ngForm">
+        <table class="table" style="width: 95%; margin-top: 2%; margin-left: 2%; margin-right: 2%;">
+            <thead>
+                <tr>
+                    <td style="width: 3%; border: 1px solid #000;">S.No</td>
+                    <td style="width: 60%; border: 1px solid #000;">Questions</td>
+                    <td style="width: 25%; border: 1px solid #000;">Image</td>
+                    <td style="width: 10%; border: 1px solid #000;">Answer</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let q of question; let i = index">
+                    <td style="border: 1px solid #000;">{{ i + 1 }}</td>
+                    <td style="border: 1px solid #000;">
+                        <textarea style="resize: none; outline: none; border-color: white; width: 100%; height: 250px; background-color: white;" disabled="true">{{ q.question }}</textarea>
+                    </td>
+                    <td style="border: 1px solid #000;">
+                        <img *ngIf="q.img_name" [src]="q.img_name" alt="Question Image" style="width: 100%; height: 200px;">
+                    </td>
+                    <td style="white-space: pre; border: 1px solid #000;">
+                        <div *ngFor="let option of ['A', 'B', 'C', 'D']">
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    name="answer-{{ i }}" 
+                                    [(ngModel)]="q.selectedAnswer" 
+                                    [value]="option" 
+                                    required>
+                                {{ option }}
+                            </label>
+                        </div>
+                        <!-- Show the validation message only after submit -->
+                        <div *ngIf="isSubmitted && q.selectedAnswer === undefined" style="color: red;">This question requires an answer</div>
+                    </td>                    
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

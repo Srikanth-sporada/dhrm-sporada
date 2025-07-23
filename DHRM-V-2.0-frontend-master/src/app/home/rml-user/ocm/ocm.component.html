@@ -1,0 +1,24 @@
+<div class="d_container">
+  <div class="options">
+    <mat-form-field appearance="outline" >
+      <mat-label>Select date</mat-label>
+     <mat-select placeholder="Placeholder" [(ngModel)]="date" name="item">
+      <mat-option *ngFor="let year of years" [value]="year">
+        {{year}}
+      </mat-option>
+     </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Plant</mat-label>
+      <mat-select [(ngModel)]="selectedPlant" [disabled]="isadmin == 'false'">
+        <mat-option *ngFor="let item of plants" [value]="item.plant_code">{{
+          item.plant_code
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <app-excess-hours-chart [date]="date" [plant]="selectedPlant"></app-excess-hours-chart>
+    <app-miss-picnh-trend [date]="date" [plant]="selectedPlant"></app-miss-picnh-trend>
+    <app-contworking [plant]="selectedPlant"></app-contworking>
+  </div>

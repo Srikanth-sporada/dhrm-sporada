@@ -1,0 +1,131 @@
+label {
+    font-weight: 600;
+  }
+  .container {
+    padding-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #333;
+  }
+  
+  #title {
+    border: 1px solid #333;
+  }
+  #ndLine,
+  #rdLine {
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    border-top: 1px solid #333;
+    padding-left: 10px;
+  }
+  .rightborder{
+    border-bottom:1px solid #333 ;
+  }
+  .colborder {
+  
+    border-right: 1px solid #333;
+  
+  }
+  
+  .button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 20px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+  }
+  
+  .Earnings {
+    margin: 10px 20px 1px 10px;
+  }
+  
+  .center {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  h4,
+  h3 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .divider {
+    margin: 10px 0 10px 0;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+  
+  mat-option {
+    white-space: normal !important;
+  }
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  mat-select {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  mat-option {
+    white-space: normal !important;
+  }
+  
+  p {
+    font-size: 18px;
+    margin: 9px 0;
+  }
+  
+  #payinput{
+    border:none !important;
+    border-radius: 0!important;
+    margin-top: 0.15em;
+    width: 6em
+    
+  }
+  #payinput1{
+    border:none !important;
+    border-radius: 0!important;
+    margin-top: 0.15em;
+    width: 13em
+    
+  }
+/* 
+  @media (min-width: 601px) and (max-width: 700px) {
+    #payinput{
+      border:none !important;
+      border-radius: 0!important;
+      margin-top: 0.15em;
+      width: 5em
+      
+    }
+  }
+  @media (min-width: 701px) and (max-width: 900px) {
+    #payinput{
+      border:none !important;
+      border-radius: 0!important;
+      margin-top: 0.15em;
+      width: 7em
+      
+    }
+  }
+  @media (min-width: 901px) and (max-width: 1200px) {
+    #payinput{
+      border:none !important;
+      border-radius: 0!important;
+      margin-top: 0.15em;
+      width: 9em
+      
+    }
+  } */

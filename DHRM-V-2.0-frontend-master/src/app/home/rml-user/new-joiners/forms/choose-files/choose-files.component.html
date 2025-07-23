@@ -1,0 +1,175 @@
+<div style='overflow-x:auto'>
+<form>
+<div class = "mx-5" >
+<h1>Employee related</h1>
+<h3>Upload the files in any one of the following formats:(pdf/jpeg/png/docx) (file size : 1MB)</h3>
+<div *ngIf="this.ishr == 'true' " ><b><h3>(<span class = "star-color">*</span> fields are required)</h3></b></div>
+
+<table [width]="1000">
+    <tr>
+      <td>Resume</td>
+      <td >
+        <div class="text-center"> 
+    	<input class="form-control" formcontrolname="resume" id = "resume" type="file" (change)="valid()"  (change)="onResumeChange($event)">
+	</div> 
+  </td>
+	<td>
+		<a  [href]= 'urlforResume' target = "_blank" download = "resume.png"> {{resume_file_name}} </a>
+	</td>
+
+    </tr>
+    <tr>
+      <td>Marksheet:<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+      <td><div class="text-center"> 
+        <input class="form-control" id="marksheet" type="file" (change)="valid()"  (change)="onMarksheetChange($event)"> 
+	</div> 
+
+	<td>
+		<a [href]= 'urlforMark' target = "_blank">{{marksheet_file_name  == 'photo' ? null : marksheet_file_name}}  </a>
+        </td>
+    </tr> 
+	<tr>
+        <td>Transfer Certificate:</td>
+        <td><div class="text-center"> 
+          <input class="form-control" type="file" id="transfer" (change)="valid()" (change)="onTransfercertificateChange($event)"> 
+		</div> 
+
+		<td  >
+			<a [href]= 'urlforTc' target = "_blank"> {{transfercertificate_file_name}} </a>
+		</td>
+      </tr>
+      <tr>
+        <td>Aadhar Card:<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+        <td><div class="text-center"> 
+          <input class="form-control" id="aadhar" type="file" (change)="valid()"  (change)="onAadharcardChange($event)"> 
+		</div> 
+
+		<td>
+			<a [href]= 'urlforaadhar' target = "_blank">{{aadharcard_file_name == 'photo' ? null : aadharcard_file_name}}</a>
+          </td>
+      </tr>
+      <tr>
+        <td>Bank Passbook:</td>
+        <td><div class="text-center"> 
+          <input class="form-control" id="passbook" type="file" (change)="valid()"  (change)="onBankpassbookChange($event)"> 
+		</div> 
+
+		<td> 
+			<a [href]= 'urlforbankpass' target = "_blank"> {{bankpassbook_file_name}} </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Photo:<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+        <td><div class="text-center"> 
+          <input class="form-control" type="file" id="photo" accept="image/*"  (change)="onPhotoChange($event)" (change)="valid()"> 
+		</div> 
+
+		<td>
+			<a [href]= 'urlforphoto' target = "_blank" (change)="valid()"> {{photo_file_name == 'photo' ? null : photo_file_name}} </a>
+    	</td>
+      </tr>
+      <tr>
+        <td>Signature:</td>
+        <td><div class="text-center"> 
+          <input class="form-control" id="sign" type="file" (change)="valid()"   (change)="onSignatureChange($event)"> 
+		</div> 
+
+		<td>
+			<a [href]= 'urlforSign' target = "_blank" > {{signature_file_name}} </a>
+        </td>
+      </tr> <tr>
+       
+  </table>
+  <button mat-raised-button type="submit" value = "save" class="choose-btn btn-primary btn-sm" style = "margin-top: 20px; text-align:center;" [disabled]='flagged' (click)= "func()" (click)="generate_link()"><span style="font-size: 14px;">Save</span></button>
+  <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state_" >&nbsp; Details are saved</span>
+
+  <br><br>
+</div>
+</form>
+
+<!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+<form>
+<div *ngIf= "ishr == 'true' " class="mx-5" >
+<h1>RML related</h1>
+<table [width]="1000">
+  <tr>
+    <td>Appointment Order:</td>
+    <td >
+      <div class="text-center"> 
+    <input class="form-control" formcontrolname="appointment" id = "appoinment" type="file"   (change)="onAppointmentorderChange($event)">
+</div> 
+</td>
+<td>
+  <a  [href]= 'url_appointmentorder_file' target = "_blank"> {{appointmentorder_file_name}} </a>
+</td>
+
+  </tr>
+  <tr>
+    <td>Declaration File:</td>
+    <td><div class="text-center"> 
+      <input class="form-control" type="file"  (change)="onDeclarationChange($event)"> 
+</div> 
+
+<td>
+  <a [href]= 'url_declaration_file' target = "_blank">{{declaration_file_name}}  </a>
+      </td>
+  </tr> 
+<tr>
+      <td>Medical-Fitness File:</td>
+      <td><div class="text-center"> 
+        <input class="form-control" type="file"  (change)="onMedicalfitnessChange($event)"> 
+  </div> 
+
+  <td  >
+    <a [href]= 'url_medicalfitness_file' target = "_blank"> {{medicalfitness_file_name}} </a>
+  </td>
+    </tr>
+    <tr>
+      <td>FormA4 File:</td>
+      <td><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onForma4Change($event)"> 
+  </div> 
+
+  <td>
+    <a [href]= 'url_formA4_file' target = "_blank">{{formA4_file_name}}</a>
+        </td>
+    </tr>
+    <tr>
+      <td>Form11 File:</td>
+      <td><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onForm11Change($event)"> 
+  </div> 
+
+  <td> 
+    <a [href]= 'url_form11_file' target = "_blank"> {{form11_file_name}} </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Formh2 File:</td>
+      <td><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onFormh2Change($event)"> 
+  </div> 
+
+  <td>
+    <a [href]= 'url_formh2_file' target = "_blank"> {{formh2_file_name}} </a>
+    </td>
+    </tr>
+    <tr>
+      <td>NATS File:</td>
+      <td><div class="text-center"> 
+        <input class="form-control" type="file"    (change)="onNatxChange($event)"> 
+  </div> 
+
+  <td>
+    <a [href]= 'url_natx_file' target = "_blank" > {{natx_file_name}} </a>
+      </td>
+    </tr> <tr>
+     
+</table>
+  <button mat-raised-button type="submit" value = "save" class="choose-btn btn-primary btn-sm" style = "margin-top: 20px; text-align:center;" (click)="generate_link_rml()"><span style="font-size: 14px;">Save</span></button>
+  <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state_1" >&nbsp; Details are saved</span>
+
+</div>
+</form>
+</div>

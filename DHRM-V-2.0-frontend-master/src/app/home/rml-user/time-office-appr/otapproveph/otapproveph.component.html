@@ -1,0 +1,95 @@
+<h1 class="title">OT Request HR Head Approval</h1>
+<div class="filter">
+  <div>
+    <b><p>Date Filter:</p></b>
+    <input type="date" class="input2" [(ngModel)]="date" (click)="date=''"/>
+    <br>
+  </div>
+  <div class="col-sm-3">
+    <b><p>Filter Category:</p></b>
+    <mat-select class="" [(ngModel)]="cat" class="input2">
+      <mat-option value="">ALL</mat-option>
+      <mat-option *ngFor="let cat of categories" [value]="cat.categorynm">{{cat.categorynm}}</mat-option>
+    </mat-select>
+    <br>
+  </div>
+  <div class="col-sm-3">
+    <b><p>Filter Department:</p></b>
+    <mat-select class="" [(ngModel)]="selectedDept" class="input2">
+      <mat-option value="">ALL</mat-option>
+      <mat-option *ngFor="let dept of departmentList" [value]="dept.dept_name">{{dept.dept_name}}</mat-option>
+    </mat-select>
+    <br>
+  </div>
+  <button mat-raised-button color="primary" style="height: 35px; margin-top: 32px;" (click)="date='';cat='';selectedDept=''">Clear filter</button>
+</div>
+<hr style="border-block-color: orange" />
+<div class="select_menu">
+<mat-checkbox [(ngModel)]="selectAll" style="margin-left: 20px;" color="primary"  (ngModelChange)="handelSelectAll()">Select All</mat-checkbox>
+<div style="margin:0 20px 10px 0;">
+  <button mat-raised-button (click)="submit(1)" style="margin: 5px;" color="success">Approve</button>
+  <button mat-raised-button (click)="submit(0)" style="margin: 5px;" color="danger">Reject</button>
+</div>
+</div>
+<div class="table-wrapper">
+  <table class="table table-bordered table-striped table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+            style="width: 500px"
+            style="background-color: darkblue; color: aliceblue"
+          >
+            SL No
+          </th>
+          <th div class="text-center">Gen Id</th>
+          <th div class="text-center">Name</th>
+          <th div class="text-center">Department</th>
+          <th div class="text-center">Line</th>
+          <th div class="text-center">Category</th>
+          <th div class="text-center">Date</th>
+          <th div class="text-center">Excess Work Hrs</th>
+          <th div class="text-center">OT Requested Hr</th>
+          <th div class="text-center">Machine</th>
+          <th div class="text-center">Reason</th>
+          <th div class="text-center">Apply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let item of data | datefilter : date | categoryfilter : cat:selectedDept;
+            let i = index
+          "
+        >
+          <td>
+            <mat-checkbox [(ngModel)]="item.selected" color="primary" (ngModelChange)="checkItems()">{{i+1}}</mat-checkbox>
+          </td>
+          <td>{{ item.gen_id }}</td>
+          <td>{{ item.fullname }}</td>
+          <td>{{ item.dept_name }}</td>
+          <td>{{ item.Line_Name }}</td>
+          <td>{{ item.apprentice_type }}</td>
+          <td>{{ item.att_date }}</td>
+          <td>{{ item.expect_othr }}</td>
+          <td>{{ item.othr }}</td>
+          <td>{{ item.Machine_Name }}</td>
+          <td>{{ item.reason }}</td>
+          <td>
+            <button
+              mat-mini-fab
+              color="success"
+              (click)="approve(item.slno, 1)"
+            >
+              <mat-icon>check</mat-icon>
+            </button>
+            <button mat-mini-fab color="danger" (click)="approve(item.slno, 0)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>

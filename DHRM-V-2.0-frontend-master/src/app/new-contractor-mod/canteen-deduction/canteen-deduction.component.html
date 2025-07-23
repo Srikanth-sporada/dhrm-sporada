@@ -1,0 +1,236 @@
+<div class="overlay" [hidden]="!showCanteen"></div>
+<div class="shadow-lg ">
+    <!-- <div class=" form-popup container mat-elevation-z8" > -->
+    <div class=" form-popup container1 mat-elevation-z8" [hidden]="!showCanteen">
+        <div>
+            <h2>Add Canteen Deduction </h2>
+            <hr style="border-block-color: orange" />
+    <form  [formGroup]="canteenForm"> 
+        <div class="columns" id="firstBox" style="padding-bottom:10px;">
+            <div class="column">
+           
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Plant</mat-label>
+                    <mat-select formControlName="plant"  >
+                      <mat-option *ngFor="let plant of plantArr"  [value]="plant.plant_code">{{plant.plant_code }}/{{plant.plant_name}}</mat-option>
+                      
+                    </mat-select>
+                    <mat-error *ngIf="canteenForm.get('plant')?.hasError('required')">Please Select Plant </mat-error>
+                  </mat-form-field>
+     -->
+             
+     <mat-form-field appearance="outline">
+      <mat-label>Plant</mat-label>
+      <mat-select formControlName="plant">
+        <mat-option *ngFor="let plant of plantArr" [value]="plant.plant_code" >
+          {{ plant.plant_code }}/{{ plant.plant_name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="canteenForm.get('plant')?.hasError('required')">Please Select Plant</mat-error>
+    </mat-form-field>
+    
+    
+<mat-form-field appearance="outline">
+  <mat-label>Shift</mat-label>
+  <mat-select formControlName="shift">
+    <mat-option value="A" >A</mat-option>
+    <mat-option value="B">B</mat-option>
+    <mat-option value="C">C</mat-option>
+    <mat-option value="G">G</mat-option>
+    <!-- <mat-option *ngFor="let shift of shiftMst" [value]="shift.shift_id">
+      {{ shift.shift_desc }}
+    </mat-option> -->
+  </mat-select>
+  <mat-error *ngIf="canteenForm.get('shift')?.hasError('required')">Please Select Shift</mat-error>
+</mat-form-field>
+
+
+                  <!-- <mat-form-field appearance="outline">
+                    <mat-label>Shift</mat-label>
+                    <mat-select formControlName="shift" >
+                      <mat-option *ngFor="let shift of getFiltered_Shift()" [value]="shift.shift_desc">
+                        {{ shift.shift_desc }}
+                      </mat-option>
+                
+                    </mat-select>
+                    <mat-error *ngIf="canteenForm.get('shift')?.hasError('required')">Please Select Shift </mat-error>
+                  </mat-form-field> -->
+    
+                  <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                      <mat-option value="true"> Active</mat-option>
+                      <mat-option value="false"> InActive</mat-option>
+                  
+                    </mat-select>
+                    <mat-error *ngIf="canteenForm.get('status')?.hasError('required')">Please Select Status </mat-error>
+                  </mat-form-field>
+                
+    
+            </div>
+            <div class="column">
+              
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Amount</mat-label>
+                    <input matInput type="number" formControlName="amount"  />
+                    <mat-error *ngIf="canteenForm.get('amount')?.hasError('required')">Please Enter Amount </mat-error>
+                  </mat-form-field>
+                  <mat-form-field
+                  *ngIf="showAdd"
+                  appearance="outline"
+                  color="primary"
+                  class="example-full-width"
+                  (click)="picker2.open()"
+                >
+                  <mat-label>Effective From</mat-label>
+                  <input
+                    matInput  formControlName="effectiveFrom" 
+                 
+                    [matDatepicker]="picker2"
+                  />
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker2> </mat-datepicker>
+                  <mat-error *ngIf="canteenForm.get('effectiveFrom')?.hasError('required')">Please Select Effective From </mat-error>
+                </mat-form-field>
+                
+                  <mat-form-field
+                  *ngIf="!showAdd"
+                  appearance="outline"
+                  color="primary"
+                  class="example-full-width"
+  
+                >
+                  <mat-label>Effective From</mat-label>
+                  <input
+                    matInput  formControlName="effectiveFrom" 
+                    readonly
+                  />
+                  <mat-error *ngIf="canteenForm.get('effectiveFrom')?.hasError('required')">Please Select Effective From </mat-error>
+                </mat-form-field>
+                
+               
+            </div>
+    
+        </div>
+    
+    <div class="columns" >
+        <div
+        style="display: flex; justify-content: space-around;padding-top:0.5em"
+        >
+        <button
+          mat-raised-button
+          id="red"
+          type="reset"
+         (click)="reset()"
+        >
+          Reset
+        </button>
+        <button mat-raised-button color="primary" (click)="hideCanteenForm()">
+          Cancel
+        </button>
+        <button id="green" *ngIf="showAdd" mat-raised-button color="primary" (click)="SubmitForm()"  >Add</button>
+        <button id="green" *ngIf="!showAdd" mat-raised-button color="primary" (click)="editForm()"  >Update</button>
+        </div>
+    
+    
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >Canteen Deduction Master</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+      <div class="button">
+        <button mat-fab color="primary" (click)="showCanteenForm()" (click)="clickAddCanteen()" style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button></div>
+        <div class = "button1">
+        <button mat-fab style="float: right" (click)="exportExcel()" aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button></div>
+        <br><br><br>
+        <br><br>
+        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+
+        <ng-template #show>
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center">Plant</th>
+                            <th div class="text-center">Shift </th>
+                            <th div class="text-center">Amount </th>
+                            <th div class="text-center">Effective date </th>
+                            <th div class="text-center">Status</th>
+                            <th div class="text-center">Created On</th>
+                  
+                            <th div class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of activeCntMst ;let i = index ">
+                            <td>{{i+1}}</td>
+                            <td>{{data.Plant_code}}</td>
+                            <td>{{data.Shift}}</td>
+                            <!-- <td  *ngIf="data.Shift == shiftMst.shift_id ">{{shiftMst.shift_desc}}</td> -->
+                            <td>{{data.Amount}}</td>
+                            <td>{{data.Effective_from |date:'dd-MM-yyyy'}}</td>
+                            <!-- <td *ngIf="data.Status == 1; else inactive">Active</td>
+                            <ng-template #inactive>
+                              <td>Inactive</td>
+                            </ng-template> -->
+
+                            <td *ngIf="data.Status ==1 ">Active</td>
+                            <td>{{data.Created_On | date: 'dd-MM-yyyy hh:MM a'}}</td>
+                    
+                            <td>
+                                <button mat-mini-fab color = 'accent' (click)="showCanteenForm()" (click)="Onedit(data)" >
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="del_Mst(data)"  >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </table>
+
+</div>
+
+        </ng-template> 
+
+</div>
+  

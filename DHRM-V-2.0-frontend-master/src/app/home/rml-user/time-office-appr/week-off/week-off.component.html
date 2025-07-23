@@ -1,0 +1,138 @@
+<h1 class="title">Weekly Off Approval</h1>
+<div class="filter">
+  <div class="col-sm-3">
+    <b><p>Filter Department:</p></b>
+    <mat-select
+      class=""
+      [(ngModel)]="cat"
+      class="input2"
+      (ngModelChange)="getLockDate(); data = []; selectedDept='';slectedLine = '';date=''"
+    >
+    <mat-option value="T">Trainee/CL</mat-option>
+    <mat-option value="O">Operator</mat-option>
+    </mat-select>
+    </div>
+  <div>
+    <b><p>Date Filter:</p></b>
+    <input
+      type="date"
+      class="input2"
+      [(ngModel)]="date"
+      (click)="date = ''"
+      (ngModelChange)="getDates()"
+      [min]="lockDate"
+      [max]="today"
+      (ngModelChange)="data=[];weekDates=[];selectedDept='';slectedLine=''"
+    />
+    <br />
+  </div>
+  <div class="col-sm-3">
+    <b><p>Filter Department:</p></b>
+    <mat-select
+      class=""
+      [(ngModel)]="selectedDept"
+      class="input2"
+      (ngModelChange)="getLine(); data = []; slectedLine = ''"
+    >
+      <mat-option value="">Select Department</mat-option>
+      <mat-option
+        *ngFor="let dept of departmentList"
+        [value]="dept.dept_slno"
+        >{{ dept.dept_name }}</mat-option
+      >
+    </mat-select>
+    <br />
+  </div>
+  <div class="col-sm-3">
+    <b><p>Filter Line:</p></b>
+    <mat-select class="" [(ngModel)]="slectedLine" class="input2" (ngModelChange)="data=[]">
+      <mat-option value="">Select Line</mat-option>
+      <mat-option *ngFor="let cat of lineList" [value]="cat.line_code">{{
+        cat.line_name
+      }}</mat-option>
+    </mat-select>
+    <br />
+  </div>
+  <button
+    mat-raised-button
+    color="primary"
+    style="height: 35px; margin-top: 32px"
+    [disabled]="slectedLine == '' || selectedDept == '' || date == ''"
+    (click)="getData()"
+  >
+    Search
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    style="height: 35px; margin-top: 32px"
+    (click)="date = ''; slectedLine = ''; selectedDept = ''; lineList = []"
+  >
+    Clear filter
+  </button>
+</div>
+
+<hr style="border-block-color: orange" />
+<div class="table-wrapper" *ngIf="date!=''" style="width: 70%;margin: 0 auto;">
+  <table class="table table-bordered table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th div class="text-center" *ngFor="let date of weekDates; let i = index">{{date.days}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr >
+          <td *ngFor="let date of weekDates; let i = index">{{ date.date |date:'dd-MM-yyyy'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>
+
+<div class="table-wrapper" *ngIf="data.length!=0" style="width: 90%;margin: 0 auto;">
+  <table class="table table-bordered table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+            style="background-color: darkblue; color: aliceblue; width: 100px"
+          >
+            SL No
+          </th>
+          <th div class="text-center">Name</th>
+          <th div class="text-center">Gen ID</th>
+          <th div class="text-center"> Week Days</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td style="width: max-content">{{ item.fullname }}</td>
+          <td>{{ item.gen_id }}</td>
+          <td>
+            <mat-button-toggle-group
+              [(ngModel)]="item.week_off_day"
+              aria-label="Font Style"
+              [disabled]="item.already_applied==7"
+              (ngModelChange)="checkIfAbsent(item.apln_slno,item.week_off_day)"
+            >
+        
+              <mat-button-toggle value="1">Monday</mat-button-toggle>
+              <mat-button-toggle value="2">Tuesday</mat-button-toggle>
+              <mat-button-toggle value="3">Wednesday</mat-button-toggle>
+              <mat-button-toggle value="4">Thursday</mat-button-toggle>
+              <mat-button-toggle value="5">Friday</mat-button-toggle>
+              <mat-button-toggle value="6">Saturday</mat-button-toggle>
+              <mat-button-toggle value="7">Sunday</mat-button-toggle>
+            </mat-button-toggle-group>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+  <div style="display:flex;justify-content: flex-end;margin-right: 20px;">
+    <button mat-raised-button color="primary" (click)="updateData()" [disabled]="loading">update</button>
+  </div>
+</div>

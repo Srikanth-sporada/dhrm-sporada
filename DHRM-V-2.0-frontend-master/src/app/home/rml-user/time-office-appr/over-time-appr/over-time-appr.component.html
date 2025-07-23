@@ -1,0 +1,54 @@
+<h1 class="title">Excess Worked Hours-OT Request</h1>
+
+<div class="filter">
+  <div>
+    <b><p>Date Filter:</p></b>
+    <input type="date" class="input2" [(ngModel)]="date" (click)="date=''"/>
+  </div>
+  <button mat-raised-button color="primary" style="height: 35px; margin-top: 32px;" (click)="date=''">Clear filter</button>
+</div>
+<hr style="border-block-color: orange" />
+<div class="table-wrapper">
+  <table class="table table-bordered table-striped table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+            style="width: 500px"
+            style="background-color: darkblue"
+          >
+            SNo
+          </th>
+          <th div class="text-center">Gen Id</th>
+          <th div class="text-center">Name</th>
+          <th div class="text-center">Department</th>
+          <th div class="text-center">Line</th>
+          <th div class="text-center">Date</th>
+          <th div class="text-center">In Time</th>
+          <th div class="text-center">Out Time</th>
+          <th div class="text-center">Excess Hours</th>
+          <th div class="text-center">Apply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of data | datefilter : date; let a = index">
+          <td>{{ a + 1 }}</td>
+          <td>{{ i.gen_id }}</td>
+          <td>{{ i.fullname }}</td>
+          <td>{{ i.dept_name }}</td>
+          <td>{{ i.Line_Name }}</td>
+          <td>{{ i.att_date }}</td>
+          <td>{{ i.in_time }}</td>
+          <td>{{ i.out_time }}</td>
+          <td>{{ i.expect_othr }}</td>
+          <td>
+            <button mat-raised-button color="primary" (click)="openModel(i)">
+              Apply
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>

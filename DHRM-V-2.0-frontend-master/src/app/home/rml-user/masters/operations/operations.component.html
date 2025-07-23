@@ -1,0 +1,184 @@
+<ng-template #content let-modal>
+    <div class="modal-content-container">
+        <div class="modal-header">
+            <h4 class="modal-title">Add Operations Details</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="reset()"
+                (click)="modal.dismiss('Cross click')">X</button>
+        </div><br>
+
+        <form [formGroup]="form">
+            <div class="row">
+                <!-- <div class="col">
+                    <label>Plant Name: </label><br>
+                    <select class="input2" formControlName="plant_name" [disabled]="true">
+                        <option [value]="selectedPlantCode">{{ selectedPlantName }}</option>
+                    </select>
+                </div> -->
+
+                <div class="col">
+                    <label>Plant Name: </label><br>
+
+                    <!-- If admin, show all plant options -->
+                    <select *ngIf="is_admin === 'true'" class="input2" formControlName="plant_name" (change)="onPlantChange($event)">
+                        <option *ngFor="let plant of plantname" [value]="plant.plant_code">
+                            {{ plant.plant_name }}
+                        </option>
+                    </select>
+
+                    <!-- If NOT admin, show default selected (disabled) -->
+                    <select *ngIf="is_admin === 'false'" class="input2" formControlName="plant_name" [disabled]="true">
+                        <option [value]="selectedPlantCode">{{ selectedPlantName }}</option>
+                    </select>
+                </div>
+
+
+                <div class="col">
+                    <label>Operation Description: </label><br>
+                    <input class="input2" type="text" formControlName="oprn_desc">
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col">
+                    <label>Department Name: </label><br>
+                    <select (change)="get_dep_no($event)" class="input2" formControlName="Department">
+                        <option value="">select an option</option>
+                        <option *ngFor="let d of departments" [ngValue]="d.Department">{{ d.dept_name }}</option>
+                    </select>
+
+                </div>
+                <div class="col">
+                    <label>Minimum Skills Level: </label><br>
+                    <input class="input2" type="number" formControlName="skill_level">
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col">
+                    <label>Line Name: </label><br>
+                    <select class="input2" formControlName="Line">
+                        <option value="">select an option</option>
+                        <option *ngFor="let i of Lines" [ngValue]="i.Line_code">{{ i.Line_Name }}</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>Critical process: </label><br>
+                    <select class="input2" formControlName="critical_oprn">
+                        <option *ngFor="let i of type" [ngValue]="i">{{i}}</option>
+                    </select>
+                </div>
+            </div><br>
+
+
+            <div class="row">
+                <div class="col">
+                    <label>Active Status: </label><br />
+                    <select class="input2" formControlName="Active_Sts">
+                        <option *ngFor="let i of type" [ngValue]="i">{{i}}</option>
+                    </select>
+                </div>
+
+                <div *ngIf="is_admin == 'true'">
+                    <label>Choose Training File:</label><br />
+
+                    <input type="file" #fileInput (change)="onFileSelected($event)" style="width: 230px;" />
+
+                    <div *ngIf="selectedFileName" style="width: 230px;">
+                        <p>
+                            File:
+                            <a [href]="selectedFileName" target="_blank" rel="noopener noreferrer">
+                                {{ selectedFileName | slice: selectedFileName.lastIndexOf('/') + 1 }}
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <!-- Save Button for New Operations -->
+        <button *ngIf="!editing_flag" type="button" class="btn btn-success btn-lg" (click)="save(modal)">Save</button>
+
+        <!-- Save Button for Editing Existing Operations -->
+        <button *ngIf="editing_flag" type="button" class="btn btn-success btn-lg"
+            (click)="editSave(modal)">Save</button>
+
+        <!-- Close Button -->
+        <button type="button" class="btn btn-danger btn-lg" (click)="reset(); modal.close('Close click')">Close</button>
+    </div>
+
+</ng-template>
+<div class="container">
+    <br>
+    <div>
+        <h1 id="title1">Operations Master</h1>
+        <hr style="border-block-color: orange" />
+    </div>
+    <div class="button">
+        <button mat-fab color="primary" (click)="open(content)" style="float: right"
+            aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button>
+    </div>
+    <div class="button1">
+        <button mat-fab style="float: right" aria-label="Example icon button with a delete icon"
+            (click)="exportexcel()">
+            <mat-icon>download</mat-icon>
+        </button>
+    </div>
+    <br><br><br>
+    <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+    <ng-template #show>
+        <div class="table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th div class="text-center">
+                                Slno</th>
+                            <th div class="text-center">
+                                Plant Name</th>
+
+                            <th div class="text-center">
+                                Operations Description
+                            </th>
+                            <th div class="text-center">
+                                Skill level
+                            </th>
+                            <th div class="text-center">
+                                Critical
+                            </th>
+
+
+                            <th div class="text-center">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of dummy; let a = index">
+                            <td>{{a+1}}</td>
+                            <td>{{i.plant_name}}</td>
+                            <td>{{i.oprn_desc}}</td>
+                            <td>{{i.skill_level}}</td>
+                            <td>{{i.critical_oprn == true ? 'YES' : 'NO'}}</td>
+
+
+                            <td>
+                                <button mat-mini-fab color='accent' (click)="edit(a, i.oprn_slno)"
+                                    (click)="opentoedit(content)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="delete(a, i.oprn_slno)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </table>
+        </div>
+
+    </ng-template>
+</div>

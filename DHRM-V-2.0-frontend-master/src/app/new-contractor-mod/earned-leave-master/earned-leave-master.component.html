@@ -1,0 +1,192 @@
+<div class="overlay" [hidden]="!showEarnedLeaveMaster"></div>
+<div class="shadow-lg ">
+    <div class=" form-popup container mat-elevation-z8" [hidden]="!showEarnedLeaveMaster" >
+        <div>
+            <h2>Add Earned Leave</h2>
+            <hr style="border-block-color: orange" />
+            <form  [formGroup]="earnedLeaveMaster"   >
+                <div class="columns" id="firstBox" style="padding-bottom:10px;">
+                    <div class="column">
+                     
+                        <mat-form-field *ngIf="showAdd" appearance="outline">
+                            <mat-label>Plant</mat-label>
+                            <mat-select formControlName="plant">
+                              <mat-option *ngFor=" let plant of plantArr " [value]="plant.plant_code">{{plant.plant_code}}/{{plant.plant_name}}</mat-option>
+                           
+                            </mat-select>
+                            <mat-error *ngIf="earnedLeaveMaster.get('plant')?.hasError('required')">Please Select Plant </mat-error>
+                          </mat-form-field>
+                        <mat-form-field *ngIf="!showAdd" appearance="outline">
+                            <mat-label>Plant</mat-label>
+                            <mat-select formControlName="plant" readonly>
+                        
+                              <mat-option  *ngFor=" let plant of plantArr " [value]="plant.plant_code">{{plant.plant_code}}/{{plant.plant_name}}</mat-option>
+                              <!-- <input matInput  [value]="plant.plant_code"> -->
+                            </mat-select>
+                            <!-- <mat-error *ngIf="earnedLeaveMaster.get('plant')?.hasError('required')">Please Select Plant </mat-error> -->
+                          </mat-form-field>
+
+                          
+             <mat-form-field appearance="outline" color="primary" class="example-full-width">
+              <mat-label>Salary Month</mat-label>
+              <mat-select formControlName="Sl_month">
+                <mat-option *ngFor="let month of months" [value]="month">
+                  {{ month }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="earnedLeaveMaster.get('Sl_month')?.hasError('required')">Please Select Month</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value=true> Active</mat-option>
+                <mat-option value=false> InActive</mat-option>
+             
+              </mat-select>
+              <mat-error *ngIf="earnedLeaveMaster.get('status')?.hasError('required')">Please Select Status </mat-error>
+            </mat-form-field>
+                    </div>
+                    <div class="column">
+                        <mat-form-field appearance="outline" class="example-full-width" >
+                            <mat-label>Minimum working days</mat-label>
+                            <input matInput type="number" formControlName="minWorkingDays"  />
+                            <mat-error *ngIf="earnedLeaveMaster.get('minWorkingDays')?.hasError('required')">Please Enter Min. Working days </mat-error>
+                            <mat-error *ngIf="earnedLeaveMaster.get('minWorkingDays')?.hasError('max')">Please Enter less than 31 days </mat-error>
+                          </mat-form-field>
+
+                          <mat-form-field  *ngIf="showAdd"appearance="outline" color="primary" class="example-full-width" (click)="picker1.open()">
+                            <mat-label>Effective From</mat-label>
+                            <input matInput [matDatepicker]="picker1" formControlName="effectiveFrom">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="earnedLeaveMaster.get('effectiveFrom')?.hasError('required')">Please Select Effective From</mat-error>
+                          </mat-form-field>
+                          
+                          <mat-form-field *ngIf="showAdd" appearance="outline" color="primary" class="example-full-width" (click)="picker2.open()">
+                            <mat-label>Effective To</mat-label>
+                            <input matInput [matDatepicker]="picker2" formControlName="effectiveTo">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                            <mat-error *ngIf="earnedLeaveMaster.get('effectiveTo')?.hasError('required')">Please Select Effective To</mat-error>
+                          </mat-form-field>
+
+                          <mat-form-field *ngIf="!showAdd" appearance="outline" color="primary" class="example-full-width" >
+                            <mat-label>Effective From</mat-label>
+                            <input matInput  formControlName="effectiveFrom" readonly>
+                            <mat-hint>Not able to edit</mat-hint>
+                           
+                          </mat-form-field>
+                          
+                          <mat-form-field  *ngIf="!showAdd" appearance="outline" color="primary" class="example-full-width" >
+                            <mat-label>Effective To</mat-label>
+                            <input matInput  formControlName="effectiveTo" readonly>
+                            <mat-hint>Not able to edit</mat-hint>
+                          
+                          </mat-form-field>
+                          
+ 
+                    </div>
+                    </div>
+                    <div
+                    style="display: flex; justify-content: space-around;padding-top:0.5em"
+                    >
+                    <button
+                      mat-raised-button
+                     id="red"
+                      type="reset"
+                     (click)="reset()"
+                    >
+                      Reset
+                    </button>
+                    <button mat-raised-button color="primary" (click)="hideELForm()">
+                      Back
+                    </button>
+                    <button id="green" *ngIf="showAdd"  mat-raised-button color="primary" (click)="EL_submit()"  >Add</button>
+                    <button id="green" *ngIf="!showAdd" mat-raised-button color="primary" (click)="OnUpdate()" >Update</button>
+                    </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >Earned Leave Master</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+      <div class="button">
+        <button mat-fab color="primary" (click)="showELForm()"  (click)="clickAddEl()" style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button></div>
+        <div class = "button1">
+        <button mat-fab style="float: right" (click)="exportExcel()" aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button></div>
+        <br><br><br>
+        <br><br>
+        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+
+        <ng-template #show>
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center">Plant</th>
+                            <th div class="text-center">Salary month</th> 
+                            <th div class="text-center">Min Working days</th>
+                            <th div class="text-center">Effective From </th>
+                            <th div class="text-center">Effective To </th>
+                            
+                            <th div class="text-center">Created On</th>
+                            <th div class="text-center">Status </th>
+                            <th div class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of activeEL;let i=index">
+                            <td>{{i+1}}</td>
+                            <td>{{data.Plant_code}}</td>
+                            <td>{{data.Salary_Month}}</td>
+                            <td>{{data.Min_Working_Days}}</td>
+                            <td>{{data.Effective_from |date:'dd-MM-yyyy'}}</td>
+                            <td>{{data.Effective_to |date:'dd-MM-yyyy'}}</td>
+                            <td>{{data.Created_On |date:'dd-MM-yyyy hh:MM a'}}</td>
+                            <td *ngIf="data.Status == 1">Active</td>
+                           
+                            <!-- <td *ngIf="data.Status == 1; else inactive">Active</td>
+                            <ng-template #inactive>
+                              <td>Inactive</td>
+                            </ng-template>   -->
+                            <td>
+                                <button mat-mini-fab color = 'accent' (click)="showELForm()"  (click)="onEdit(data)">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="del_El(data)" >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </table>
+
+</div>
+
+        </ng-template> 
+
+</div>
+  

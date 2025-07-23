@@ -1,0 +1,160 @@
+<div class="container2" 
+style="z-index: 1250;">
+ 
+
+
+  <div>
+
+    <div class="header-container">
+      <h1 id = "title1" class="header-title" >Bulk Payscale Revise Upload</h1>
+      <!-- <button id="back_button" *ngIf="showSingleSection || showBulkSection " >
+        Back
+        </button> -->
+    </div>
+      
+
+      <hr style="border-block-color: orange" />
+     
+
+    </div>
+
+
+    <div >
+
+        <div class="bulk-outer" >
+      
+         
+          <!-- <p >Bulk Payscale Revise Upload</p> -->
+      
+          <div class="bulk" >
+            <button class="yellow" id="Dbutton"  (click)="downloadList()"><a
+              
+              style="text-decoration: none"
+              > <mat-icon>download</mat-icon>Download List</a
+             
+            ></button>
+            <input #fileInput type="file" accept=".xlsx, .xls .csv" (change)="handleFileInput($event)" [(ngModel)]="selectedFile" />
+      
+<button style="background-color: rgb(18, 64, 156);color: white;" (click)="verifyData()" [disabled]="!selectedFile" id="Dbutton">Verify</button>
+
+          </div>
+        </div>
+      
+      
+      
+      </div>
+
+      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+      <ng-template #show>
+      <div class="note" *ngIf="!(parsedData && parsedData.length >= 1 && viewtable)">
+        <!-- <h4>Note: </h4> -->
+        <p>Note:</p>
+        <p>1. update the New Effective Date Column </p>
+        <p>2. New Effective Date must be greater than previous month Payroll Lock date</p>
+        <p>3. And New Salary must be revised</p>
+      </div>
+
+
+
+
+      <div  *ngIf="(parsedData && parsedData.length >= 1 && viewtable)">
+
+
+
+<!-- verifired data -->
+<div *ngIf="(verifiedData.length  !== 0 )">
+  <h2>Verified Data</h2>
+  <table class="table table-bordered table-striped table-hover">
+    <!-- Table header -->
+    <thead>
+      <tr>
+      <th   style="background-color: darkblue"> Sal_Id</th>
+      <th   style="background-color: darkblue"> Gen_Id</th>
+      <th   style="background-color: darkblue"> Name</th>
+      <th   style="background-color: darkblue"> Contractor Company</th>
+      <th   style="background-color: darkblue"> Total_Earning</th>
+      <th   style="background-color: darkblue"> Total_deduction</th>
+      <th   style="background-color: darkblue"> CTC_Value</th>
+      <th   style="background-color: darkblue"> NTH_Value</th>
+      <th   style="background-color: darkblue"> Current_Effective_From</th>
+      <th   style="background-color: darkblue"> New_Effective_Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of verifiedData">
+        <td>{{row.Sal_Id}}</td>
+        <td>{{row.Gen_Id}}</td>
+        <td>{{row.Employee_Name}}</td>
+        <td>{{row.Contractor_Company}}</td>
+        <td>{{row.Total_Earning}}</td>
+        <td>{{row.Total_deduction}}</td>
+        <td>{{row.CTC_Value}}</td>
+        <td>{{row.NTH_Value}}</td>
+        <td>{{row.Current_Effective_From}}</td>
+        <td>{{row.New_Effective_Date}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div *ngIf="(verifiedData.length !== 0 )"
+     style="display: flex; justify-content: space-around;">
+    <button
+    style="display: flex; justify-content: space-around; padding: 5px 10px;font-size: medium;cursor: pointer;background-color: green;color: aliceblue;border-radius: 5px; border: none;"
+    *ngIf="verifiedData != null"  (click)="SubmitVerifiedData(verifiedData)">Submit</button>
+
+  </div>     
+  
+</div>
+
+<!-- not verified data -->
+<div *ngIf="(nonVerifiedData.length !== 0 )">
+  <h2 > Non Verified Data</h2>
+  <table class="table table-bordered table-striped table-hover">
+    <!-- Table header -->
+    <thead>
+      <tr>
+      <th   style="background-color: darkblue">Sal_Id</th>
+      <th  style="background-color: darkblue" >Gen_Id</th>
+      <th  style="background-color: darkblue" >Name</th>
+      <th  style="background-color: darkblue" >Contractor Company</th>
+      <th  style="background-color: darkblue" >Total_Earning</th>
+      <th  style="background-color: darkblue" >Total_deduction</th>
+      <th  style="background-color: darkblue" >CTC_Value</th>
+      <th  style="background-color: darkblue" >NTH_Value</th>
+      <th  style="background-color: darkblue" >Current_Effective_From</th>
+      <th  style="background-color: darkblue" >New_Effective_Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of nonVerifiedData">
+        <td>{{row.Sal_Id}}</td>
+        <td>{{row.Gen_Id}}</td>
+        <td>{{row.Employee_Name}}</td>
+        <td>{{row.Contractor_Company}}</td>
+        <td>{{row.Total_Earning}}</td>
+        <td>{{row.Total_deduction}}</td>
+        <td>{{row.CTC_Value}}</td>
+        <td>{{row.NTH_Value}}</td>
+        <td>{{row.Current_Effective_From}}</td>
+        <td>{{row.New_Effective_Date}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="parsedData && parsedData.length < 1">
+  <p class="nodata">No data in Uploaded Excel</p>
+</div>
+
+</div>
+
+
+     
+
+
+</ng-template>
+
+
+
+    </div>

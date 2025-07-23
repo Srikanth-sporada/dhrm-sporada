@@ -1,0 +1,22 @@
+.table-wrapper
+{
+    display: block;
+}
+table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+mat-divider
+{
+    margin: 10px;
+}
+.size
+{
+    font-size: 20px;
+}
+
+.header{
+    background-color: darkblue;
+    color: azure;
+}

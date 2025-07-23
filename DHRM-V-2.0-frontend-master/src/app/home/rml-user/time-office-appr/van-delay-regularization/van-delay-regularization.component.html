@@ -1,0 +1,190 @@
+
+<div class="container">
+    <br />
+    <div>
+      <h1 id="title1">Van Delay Regularization</h1>
+      <hr style="border-block-color: orange" />
+    </div>
+  
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+      "
+    >
+    
+
+    </div>
+    <br />
+    <mat-tab-group>
+        <mat-tab label="Van Delay Regularization">
+            <div style="margin-top: 1rem;">
+              <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 1rem;">
+                <mat-label>Category</mat-label>
+                <mat-select [(ngModel)]="Category" (selectionChange)="onCategoryChange()">
+                  <mat-option value="T">Trainee/CL</mat-option>
+                  <mat-option value="O">Operator</mat-option>
+                </mat-select>
+              </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Date</mat-label>
+                    <input type="date" matInput [(ngModel)]="date"  [disabled]="!Category"
+                    [min]="minDate" 
+                     [max]="maxDate" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 2rem;" >
+                    <mat-label>Route</mat-label>
+                    <mat-select [(ngModel)]="route"  [disabled]="!Category">
+                      <mat-option value="">SELECT</mat-option>
+                      <mat-option *ngFor="let plant of routelist" [value]="plant.Route_Id">{{plant.Route_Name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+              
+
+
+                <button
+                mat-raised-button
+                color="primary"
+                style="margin: 10px 20px; height: 40px"
+                (click)="verify()" 
+                [disabled]="!isverifyValid()"
+              >
+                Details
+              </button>
+
+            </div>
+            <div  *ngIf="userList.length > 0"  style="margin-top: 1rem;">
+            <!-- <div  style="margin-top: 1rem;"> -->
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Transporter Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="transporter" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Driver Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="driver" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Late coming minutes</mat-label>
+                    <input type="text" matInput [(ngModel)]="lc_min" />
+                
+                </mat-form-field>
+          
+
+                <button
+                mat-raised-button
+                color="primary"
+                style="margin: 10px 20px; height: 40px"
+                (click)="submit()" 
+                [disabled]="!issubmitValid()"
+              >
+                Submit
+              </button>
+
+            </div>
+
+            <div *ngIf="userList.length > 0"  style="margin-top: 1rem;" class = "table-wrapper container3">
+            <!-- <div   style="margin-top: 1rem;" class = "table-wrapper container3"> -->
+                <table class="table table-bordered table-striped table-hover">
+                    <table id="table">
+                        <thead>
+                            <tr>
+                                <th  class="text-center"
+                             
+                                style="background-color: darkblue">Sl_No</th>
+                                <th  class="text-center">Route Name</th>
+                                <th  class="text-center">Gen-ID</th>
+                                <th  class="text-center">Name</th>
+                                <th  class="text-center">Shift</th>
+                                <th  class="text-center">Date</th>
+                                <th  class="text-center">In-Time</th>
+                                <th  class="text-center">Out-Time</th>
+                                <th  class="text-center">Present</th>
+                                <th  class="text-center">Late Coming</th>
+                                <th  class="text-center">Worked Min</th>
+                            </tr>
+                        </thead>
+                         <tbody >
+                            <tr *ngFor="let data of userList ; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{data.Route_Name}}</td>
+                                <td>{{data.gen_id}}</td>
+                                <td>{{data.fullname}}</td>
+                                <td>{{data.shift_desc }}</td>
+                                <td>{{data.in_time |date :'dd-MM-yyyy' }}</td>
+                                <td>{{data.in_time |date :'HH:mm:ss' }}</td>
+                                <td>{{data.out_time |date :'HH:mm:ss' }}</td>
+                                <td>{{data.present_type }}</td>
+                                <td>{{data.late_comeing }}</td>
+                                <td>{{data.Worked_Hrs }} / {{data.Shift_Duration}}</td>
+                             
+                    
+                             
+                               </tr>
+                        </tbody> 
+                          
+                    </table>
+        
+                    </table>
+
+                </div>
+
+
+        </mat-tab>
+        <mat-tab label="Regularization Details">
+          <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th  
+                     
+                        style="background-color: darkblue">Sl_No</th>
+                        <th  class="text-center">Attendance Date</th>
+                        <th  class="text-center">Gen-ID</th>
+                        <th  class="text-center">Name</th>
+                        <th  class="text-center">Category</th>
+                        <th  class="text-center">Transport</th>
+                        <th  class="text-center">Driver</th>
+                        <th  class="text-center">Route Name</th>
+                        <th  class="text-center">Present Type Before</th>
+                        <th  class="text-center">Late coming Before(min)</th>
+                        <th  class="text-center">Worked Hrs Before(min)</th>
+                        <th  class="text-center">Applied Late coming(min)</th>
+                        <th  class="text-center">Present Type After</th>
+                        <th  class="text-center">Late coming After(min)</th>
+                        <th  class="text-center">Worked Hrs After(min)</th>
+                    </tr>
+                </thead>
+                 <tbody >
+                    <tr *ngFor="let data of AppliedList ; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{data.attn_date |date :'dd-MM-yyyy'}}</td>
+                        <td>{{data.gen_id}}</td>
+                        <td>{{data.fullname}}</td>
+                        <td>{{data.apprentice_type }}</td>
+                        <td>{{data.Transport }}</td>
+                        <td>{{data.Driver }}</td>
+                        <td>{{data.Route_Name }}</td>
+                        <td class="text-center"  style="background-color: lightsalmon">{{data.Present_type_before }}</td>
+                        <td class="text-center"  style="background-color: lightsalmon"> {{data.Lc_min_before }}</td>
+                        <td class="text-center"  style="background-color: lightsalmon">{{data.Worked_hrs_before }} / {{data.Shift_Duration}}</td>
+                        <td class="text-center"  style="background-color: lightblue ;border: 1px solid white;">{{data.Applied_LC_min }}</td>
+                        <td class="text-center"  style="background-color: lightgreen">{{data.Present_type_after }}</td>
+                        <td class="text-center"  style="background-color: lightgreen">{{data.Lc_min_after }}</td>
+                        <td class="text-center"  style="background-color: lightgreen">{{data.Worked_hrs_after }} / {{data.Shift_Duration}}</td>
+                     
+            
+                     
+                       </tr>
+                </tbody> 
+                  
+            </table>
+
+            </table>
+
+        </mat-tab>
+    </mat-tab-group>

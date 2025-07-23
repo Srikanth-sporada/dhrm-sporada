@@ -1,0 +1,26 @@
+.other-btn{
+    border-radius: 0px;
+    margin-left:50%;
+    width:90px 
+
+}
+h3{
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.row{
+    white-space: nowrap;
+}
+.form-control{
+    font-size: 14px;
+}
+.form-control{
+    font-size: 16px;
+
+}
+.form-header{
+    background-color: white;
+    color:black;
+    font-size: 16px;
+}

@@ -1,0 +1,175 @@
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >Weekly Off</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+<div class="headBox1">
+    <mat-form-field
+    appearance="outline"
+    color="primary"
+    class="example-full-width" 
+    (click)="picker2.open()"
+  >
+    <mat-label>Week</mat-label>
+    <input
+      matInput  formControlName="effectiveDate" 
+   
+      [matDatepicker]="picker2"
+    />
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="picker2"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #picker2> </mat-datepicker>
+    <!-- <mat-error *ngIf="otLimitForm.get('effectiveDate')?.hasError('required')">Please Select Effective Date  </mat-error> -->
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="plant">
+          <mat-option *ngFor="let plant of plantname" [value]="plant">{{ plant.plant_name }}</mat-option>
+
+        </mat-select>
+        <!-- <mat-error *ngIf="D_OffForm.get('plant')?.hasError('required')">Please Select Plant </mat-error> -->
+      </mat-form-field>
+      <span id="radio">
+        <mat-label>Employee Type :  </mat-label>
+        <mat-radio-group aria-labelledby="example-radio-group-label" formControlName="employeeType"    class="example-radio-group">
+            <mat-radio-button value="Contractor">Contrator</mat-radio-button>
+            <mat-radio-button value="Trainee" >Trainee</mat-radio-button>
+        </mat-radio-group> 
+</span>
+
+        <button mat-fab color="primary"   style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>search</mat-icon>
+        </button>
+        
+        <button mat-fab style="float: right"  aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button>
+
+</div>
+    
+
+
+
+
+   
+        <!-- <app-loader *ngIf="loader.isLoding | async;else show"></app-loader> -->
+
+
+        <!-- <ng-template #show> -->
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center" id="t1"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center" id="t2">Emp Code</th>
+                            <th div class="text-center"id="t3">Name</th>
+                            <th div class="text-center" id="t4">CL Type </th>
+                            <th div class="text-center" id="t5">Week Off </th>
+                           
+                         
+                            <th div class="text-center" id="t6">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="t1">1</td>
+                           <td>52647</td> 
+                            <td>KARUNAKARAN M</td>
+                            <td>SECURITY ASSIST</td>
+                            <td >
+                            <mat-radio-group class="wOff">
+                            <span>
+                                <button mat-raised-button checked>Non</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Su [17]</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Mo</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Tu</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >We</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Th</button>
+                            </span>
+                            <span> 
+                                <button mat-raised-button >Fr</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Sa</button>
+                            </span>
+                        
+                        </mat-radio-group>
+                            
+                            <td>
+                                <button mat-mini-fab color = 'accent'>
+                                    <mat-icon>save</mat-icon>
+                                </button>
+                               
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="t1">1</td>
+                           <td>4586</td> 
+                            <td>IRUDAYA ANNADASAN</td>
+                            <td>UNIT INCHARGE</td>
+                            <td>
+                                <mat-radio-group class="wOff"> 
+                            <span>
+                                <button mat-raised-button >Non</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Su [17]</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Mo</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Tu</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >We</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Th</button>
+                            </span>
+                            <span> 
+                                <button mat-raised-button >Fr</button>
+                            </span>
+                            <span>
+                                <button mat-raised-button >Sa</button>
+                            </span>
+                        
+                        
+                        </mat-radio-group>
+                            
+                            <td>
+                                <button mat-mini-fab color = 'accent'>
+                                    <mat-icon>save</mat-icon>
+                                </button>
+                               
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </table>
+
+</div>
+
+        <!-- </ng-template>  -->
+
+</div>

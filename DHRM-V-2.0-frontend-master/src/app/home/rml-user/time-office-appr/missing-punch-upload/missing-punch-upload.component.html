@@ -1,0 +1,321 @@
+<div class="container">
+  <h2>Punch Data Upload (Manual)</h2>
+  <mat-tab-group>
+    <mat-tab label="Forgot To Punch">
+      <div>
+        <div class="form">
+          <mat-form-field appearance="outline">
+            <mat-label>Gen ID</mat-label>
+            <input type="text" matInput [(ngModel)]="genid" (ngModelChange)="checkVerify()"/>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input type="date" matInput [(ngModel)]="date" (ngModelChange)="checkVerify_1()"/>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="yellow"
+            style="margin: 10px 20px; height: 40px"
+            (click)="verify()"
+          >
+            Verify
+          </button>
+        </div>
+        <div class="form" *ngIf="show_fp_temp">
+          <h3 class="w" *ngIf="fpin!=null" class="fptext">Actual In Time : {{fpin}}</h3>
+          <h3 class="w" *ngIf="fpout!=null" class="fptext">Actual Out Time : {{fpout}}</h3>
+        </div>
+
+        <div class="form" *ngIf="show_fp_temp">
+        <label class="w">In Punch : </label>
+        <mat-form-field appearance="outline">
+          <mat-label>IN Date </mat-label>
+          <input matInput type="date" [max]="MinOut" [min]="MinIn"  #dateTimeInput [(ngModel)]="inDate" (ngModelChange)="checkSubmit()" step="1" >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>IN Time-HH:MM:SS </mat-label>
+          <input matInput type="time"  #dateTimeInput [(ngModel)]="intime" (ngModelChange)="checkSubmit()" step="1" >
+        </mat-form-field>
+        
+        </div>
+        <div class="form" *ngIf="show_fp_temp">
+        <label class="w">Out Punch : </label>
+        <mat-form-field appearance="outline">
+          <mat-label>OUT Date </mat-label>
+          <input matInput type="date" [max]="MaxOut" [min]="MinOut" #dateTimeInput [(ngModel)]="outDate" (ngModelChange)="checkSubmit()" step="1" >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>OUT Time -HH:MM:SS</mat-label>
+          <input matInput type="time"   [(ngModel)]="outTime" (ngModelChange)="checkSubmit()"  step="1" >
+        </mat-form-field>
+        
+        </div>
+
+        <div class="form" *ngIf="show_fp_temp">
+
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>In Time</mat-label>
+            <input matInput [ngxMatDatetimePicker]="picker"[max]="MinOut" [min]="MinIn" placeholder="Choose a date"  [(ngModel)]="in" (ngModelChange)="checkSubmit()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker >
+            </ngx-mat-datetime-picker>
+         </mat-form-field> -->
+
+
+<!-- 
+         <mat-form-field appearance="outline">
+          <mat-label>In Date & Time</mat-label>
+          <input matInput type="datetime-local" [max]="MinOut" [min]="MinIn"  #dateTimeInput placeholder="Choose In punch" [(ngModel)]="in" (ngModelChange)="checkSubmit()" step="1" >
+          
+        </mat-form-field>
+
+      
+
+        <mat-form-field appearance="outline">
+          <mat-label>Out Date & Time</mat-label>
+          <input matInput type="datetime-local" [max]="MaxOut" [min]="MinOut" placeholder="Choose Out punch" [(ngModel)]="out" (ngModelChange)="checkSubmit()"  step="1">
+          
+        </mat-form-field> -->
+
+        
+
+<!-- 
+        <mat-form-field appearance="outline">
+          <mat-label>In Date & Time</mat-label>
+          <owl-date-time [(ngModel)]="in" (ngModelChange)="checkSubmit()" [pickerType]="'both'" [startAt]="in" [min]="MinIn" [max]="MinOut"></owl-date-time>
+         </mat-form-field>
+         
+         <mat-form-field appearance="outline">
+          <mat-label>Out Date & Time</mat-label>
+          <owl-date-time [(ngModel)]="out" (ngModelChange)="checkSubmit()" [pickerType]="'both'" [startAt]="out" [min]="MinOut" [max]="MaxOut"></owl-date-time>
+         </mat-form-field> -->
+
+       
+
+
+
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>In Time</mat-label>
+            <input  matInput [(ngModel)]="in" (ngModelChange)="checkSubmit()"[max]="MaxOut" [min]="MinOut" [ngxMatTimepicker]="pickerA"/>
+            <mat-icon matSuffix (click)="pickerA.open()">
+              watch_later
+          </mat-icon>
+          </mat-form-field>
+          <ngx-mat-timepicker #pickerA></ngx-mat-timepicker>
+         
+          <mat-form-field appearance="outline">
+            <mat-label>Out Time</mat-label>
+            <input matInput [(ngModel)]="out" (ngModelChange)="checkSubmit()" [ngxMatTimepicker]="pickerB"/>
+            <mat-icon matSuffix (click)="pickerB.open()">
+              watch_later
+          </mat-icon>
+          </mat-form-field>
+          <ngx-mat-timepicker #pickerB></ngx-mat-timepicker> -->
+        </div>
+        
+        <div *ngIf="show_fp_temp">
+          <mat-form-field appearance="outline">
+            <mat-label>Reason</mat-label>
+            <mat-select [(ngModel)]="reason" (ngModelChange)="checkSubmit()">
+              <mat-option value="">Select Reason</mat-option>
+              <mat-option *ngFor="let item of reasonList" [value]="item.reason">{{item.reason}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="success" [disabled]="submit"  style="margin: 10px 20px; height: 40px" (click)="onSubmit()">
+            Submit
+          </button>
+        </div>
+        <div class="view">
+          <table
+            id="fpdata"
+            class="table table-bordered table-striped table-hover my-5"
+          >
+            <thead>
+              <tr>
+                <th>Swipe Id</th>
+                <th>Date</th>
+                <th>Manual In Punch</th>
+                <th>Manual Out Punch</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of fpdata">
+                <td>{{item.emp_id}}</td>
+                <td>{{item.date.split('T')[0]}}</td>
+                <td>{{item.in_time}}</td>
+                <td>{{item.out_time}}</td>
+                <td>{{item.reason}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Manual Punch" *ngIf="isadmin">
+      <div>
+        <div class="box">
+          <button
+      mat-raised-button
+      color="yellow"
+      style="margin-right: 20px"
+    >
+    <a [href]="url + 'sop/Bulk Punch Upload.xlsx'" style="text-decoration: none;">Download Template</a>
+    </button>
+          <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file" (ngModelChange)="filechange()">
+          <button mat-raised-button color="yellow" (click)="verify_bulkData()"  [disabled]="verifybtn">Verify</button>
+         <button mat-raised-button color="success" (click)="upload_bulkdData()" [disabled]="uploadBtn">Upload</button>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="On-Duty" *ngIf="isadmin || ishr==='true'">
+      <div class="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Gen ID</mat-label>
+          <input type="text" matInput [(ngModel)]="odGgenid" (ngModelChange)="checkODVerify()"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input type="date" matInput [(ngModel)]="odDate" (ngModelChange)="checkODVerify()"/>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline" class="example-full-width"> -->
+          <!-- <mat-label>Reason</mat-label>
+          <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkVerify()" placeholder="OD Reason"></textarea>
+        </mat-form-field> -->
+
+        <button
+          mat-raised-button
+          color="yellow"
+          style="margin: 10px 20px; height: 40px"
+          (click)="Od_Verify()"
+        >
+          Verify
+        </button>
+      </div>
+
+      <div *ngIf="show_od_temp">
+      <!-- <div > -->
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>Reason</mat-label>
+          <mat-select [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()">
+            <mat-option value="">Select Reason</mat-option>
+            <mat-option *ngFor="let item of reasonList" [value]="item.reason">{{item.reason}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+   <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Reason</mat-label>
+          <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()" placeholder="OD Reason"></textarea>
+        </mat-form-field>
+        <span class="rd">
+          <mat-radio-group [(ngModel)]="dayType" (ngModelChange)="checkODSubmit()">
+            <mat-radio-button value="0.5" checked>Half Day</mat-radio-button>
+            <mat-radio-button value="1">Full Day</mat-radio-button>
+          </mat-radio-group>
+        </span>
+        
+        <button mat-raised-button color="success" [disabled]="odSubmit"  style="margin: 10px 20px; height: 40px" (click)="oDSubmit()">
+          Submit
+        </button>
+      </div>
+
+      <!-- <div class="view" *ngIf="trn_list && trn_list.length > 0"> -->
+        <div class="view" *ngIf="ODList && ODList.length > 0">
+          <h3>On Duty</h3>
+          <table
+            id="fpdata"
+            class="table table-bordered table-striped table-hover my-5"
+          >
+            <thead>
+              <tr>
+                <th>Attn Date</th>
+                <th>Swipe Id</th>
+                <!-- <th>In Punch</th>
+                <th>Out Punch</th> -->
+                <th>Reason</th>
+                <th>status </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              <tr *ngFor="let item of ODList" >
+               
+                <td>{{item.att_date.split('T')[0]}}</td>
+                <td>{{item.Gen_id}}</td>
+                <!-- <td>{{item.in_time}}</td>
+                <td>{{item.out_time}}</td> -->
+                <td>{{item.reason}}</td>
+                <td>{{item.approved_status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="view" *ngIf="FP_list && FP_list.length > 0">
+          <h3>Forget to punch</h3>
+          <table
+            id="fpdata"
+            class="table table-bordered table-striped table-hover my-5"
+          >
+            <thead>
+              <tr>
+                <th>Attn Date</th>
+                <th>Swipe Id</th>
+                <th>In Punch</th>
+                <th>Out Punch</th>
+                <th>Reason</th>
+                <th>status </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              <tr *ngFor="let item of FP_list">
+                <td>{{item.att_date.split('T')[0]}}</td>
+                <td>{{item.biometric_no}}</td>
+                <td>{{item.in_time}}</td>
+                <td>{{item.out_time}}</td>
+                <td>{{item.reason}}</td>
+                <td>{{item.approved_status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       
+
+      <div class="view">
+        <h3>Attendace table</h3>
+        <table
+          id="fpdata"
+          class="table table-bordered table-striped table-hover my-5"
+        >
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Swipe Id</th>
+              <th>In Punch</th>
+              <th>Out Punch</th>
+              <th>Present </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <tr *ngFor="let item of trn_list">
+              <td>{{item.att_date.split('T')[0]}}</td>
+              <td>{{item.biometric_no}}</td>
+              <td>{{item.in_time}}</td>
+              <td>{{item.out_time }}</td>
+              <td>{{item.present_type}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+
+
+
+    </mat-tab>
+
+    
+  </mat-tab-group>
+</div>

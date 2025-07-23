@@ -1,0 +1,24 @@
+.education-btn{
+    border-radius: 0px;
+    margin-left:50%;
+    width:90px 
+
+}
+.star-color{
+    color: red;
+}
+.table{
+    width:fit-content;
+    outline:none;
+    border-color: white;
+
+}
+.form-control{
+    font-size: 16px;
+
+}
+.form-header{
+    background-color: white;
+    color:black;
+    font-size: 16px;
+}

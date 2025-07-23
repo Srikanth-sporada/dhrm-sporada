@@ -1,0 +1,78 @@
+<div>
+  <h3>Forgot To Punch</h3>
+  <h4>Date : {{date}}</h4>
+  <div class="times">
+
+    <div class="form" *ngIf="!in_time">
+    <!-- <div class="form" > -->
+      <label class="w">In Punch :&nbsp; </label>
+      <mat-form-field appearance="outline">
+        <mat-label>IN Date </mat-label>
+        <input matInput type="date" [max]="MinOut" [min]="MinIn"  #dateTimeInput [(ngModel)]="inDate" (ngModelChange)="checkVerify_1()" step="1" >
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>IN Time (HH:MM:SS) </mat-label>
+        <input matInput type="time"  #dateTimeInput [(ngModel)]="intime" (ngModelChange)="checkVerify_1()" step="1" >
+      </mat-form-field>
+      
+      </div>
+
+
+      <div class="form"  *ngIf="!out_time">
+        <label class="w">Out Punch :&nbsp; </label>
+        <mat-form-field appearance="outline">
+          <mat-label>OUT Date </mat-label>
+          <input matInput type="date" [max]="MaxOut" [min]="MinOut" #dateTimeInput [(ngModel)]="outDate" (ngModelChange)="checkVerify_1()" step="1" >
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>OUT Time( HH:MM:SS) </mat-label>
+          <input matInput type="time"   [(ngModel)]="outTime" (ngModelChange)="checkVerify_1()"  step="1" >
+        </mat-form-field>
+        
+        </div>
+
+<!-- 
+    <mat-form-field  appearance="outline" *ngIf="!in_time">
+      <mat-label>In Time</mat-label>
+      
+      <input matInput type="datetime-local" [max]="MaxOut" [min]="MinIn"  [(ngModel)]="entered_in_time" [disabled]="in_time" (ngModelChange)="onchange()"  step="1"  >
+   
+     
+    </mat-form-field>
+    <mat-form-field  appearance="outline" *ngIf="in_time">
+      <mat-label>In Time</mat-label>
+      <input matInput type="datetime-local" [max]="MaxOut" [min]="MinIn"  [(ngModel)]="entered_in_time"  step="1"  [disabled]="in_time">
+      
+    </mat-form-field>
+    <ngx-mat-timepicker  #pickerA></ngx-mat-timepicker>
+     -->
+
+
+    <!-- jjjjjjjjjjjjjjjjj -->
+
+    <!-- <mat-form-field  appearance="outline" *ngIf="!out_time">
+      <mat-label>out Time</mat-label>
+      <input matInput type="datetime-local" [max]="MaxOut" [min]="MinOut" [(ngModel)]="entered_out_time" [disabled]="out_time" (ngModelChange)="onchange()"    step="1">
+         
+    
+    </mat-form-field>
+   
+    <mat-form-field  appearance="outline" *ngIf="out_time">
+      <mat-label>out Time</mat-label>
+      <input matInput type="datetime-local" [max]="MaxOut" [min]="MinOut"  [(ngModel)]="entered_out_time" [disabled]="out_time"  step="1"> 
+     
+    </mat-form-field> -->
+
+  </div>
+
+
+
+
+  <mat-form-field  appearance="outline" >
+    <mat-label>Reason</mat-label>
+    <mat-select matInput type="text" [(ngModel)]="reason" (ngModelChange)="onchange()">
+      <mat-option *ngFor="let item of reasonList" [value]="item.reason">{{item.reason}}</mat-option>
+      </mat-select>
+  </mat-form-field>
+    <button mat-raised-button color="primary" style="float:right;margin-top: 20px;" [disabled]="submitBtn" (click)="submit()">Submit</button>
+</div>

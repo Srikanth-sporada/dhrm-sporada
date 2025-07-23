@@ -1,0 +1,233 @@
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Add Pincode</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="reset()" (click)="modal.dismiss('Cross click')">X</button>
+        </div>
+        <div class="modal-content container">
+            <br>
+            <form [formGroup] = "form">
+                <div class="row">
+                    <div class="col">
+                        <label>Pincode: </label><br>
+                        <input class="form-control"  type = "number" formControlName = "plant_code">
+                    </div>
+                    <div class="col">
+                        <label>Division name: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>Region name: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>Circle name: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>Taluk: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>District name: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>State name: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>RBL ZONE: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>RML ZONE: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>RAP ZONE: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>REVL ZONE: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    <div class="col">
+                        <label>RTSSL ZONE: </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                    
+                    <div class="col">
+                        <label>State Code </label><br>
+                        <input class="form-control"  type = "text" formControlName = "department_name">
+                    </div>
+                </div><br>
+               
+  
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button *ngIf="editing_flag==false"  type="button" class="btn btn-light btn-lg" (click)="save()" (click)="modal.close('Close click')" >Save</button>
+            <button *ngIf="editing_flag==true" type="button" class="btn btn-light btn-lg" (click)="editSave()" (click)="modal.close('Close click')" >Save</button>
+            <button type="button" class="btn btn-light btn-lg" (click)="reset()" (click)="modal.close('Close click')">Close</button>
+        </div>
+    </ng-template>
+    <div class="container">
+  <br>
+  <div>
+    <h1 class="title" >Pincode Master</h1>
+    <hr style="border-block-color: orange" />
+  </div>
+  <div class="button">
+    <button mat-fab color="primary" (click)="open(content)"  style="float: right" aria-label="Example icon button with a delete icon">
+        <mat-icon>person_add</mat-icon>
+    </button></div>
+    <div class = "button1">
+    <button mat-fab style="float: right" aria-label="Example icon button with a delete icon" (click)="exportexcel()">
+        <mat-icon>download</mat-icon>
+    </button></div>
+  <br><br><br>
+  <div class = "table-wrapper">
+    <table class="table table-bordered table-striped table-hover">
+      <table id="table">
+          <thead>
+          <tr>
+            <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 SNo
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 Pincode
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 Division Name
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                Region Name
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                Circle Name
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 Taluk
+              </th>
+              <th
+              class="text-center"
+              style="width: 500px"
+              style="background-color: darkblue"
+      >
+         District Name 
+      </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 State Name 
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                  RBL ZONE
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                  RML ZONE
+              </th>
+              <th
+              class="text-center"
+              style="width: 500px"
+              style="background-color: darkblue"
+      >
+        RAP ZONE
+      </th>
+      <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                 REVL ZONE
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                  RTSSL ZONE
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+              >
+                  State Code 
+              </th>
+              <th
+                      class="text-center"
+                      style="width: 500px"
+                      style="background-color: darkblue"
+                      >
+                  Action
+              </th>
+            </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor = "let i of dummy; let a = index">
+                   <td>{{a+1}}</td>
+                    <td>{{i.pincode}}</td>
+                    <td>{{i.division_name}}</td>
+                    <td>{{i.region_name}}</td>
+                    <td>{{i.circle_name}}</td>
+                    <td>{{i.taluk}}</td>
+                    <td>{{i.district_name}}</td>
+                    <td>{{i.state_name}}</td>
+                    <td>{{i.rbl_zone}}</td>
+                    <td>{{i.rml_zone}}</td>
+                    <td>{{i.rap_zone}}</td>
+                    <td>{{i.revl_zone}}</td>
+                    <td>{{i.rtssl_zone}}</td>
+                    <td>{{i.state_code}}</td>
+  
+                    <td>
+                        <button mat-mini-fab color = 'accent' (click)= "edit(a)" (click)="opentoedit(content)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn" type="button" (click)="delete(a)" >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </table>
+  </div>
+  
+  
+    </div>

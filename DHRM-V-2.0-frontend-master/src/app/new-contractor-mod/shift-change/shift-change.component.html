@@ -1,0 +1,153 @@
+<div class="container2">
+    <h1 id="title1">Attendance Re-Process</h1>
+    <hr style="border-block-color: orange" />
+  
+    <div class="filter">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>GenID</mat-label>
+          <input matInput type="text" [(ngModel)]="gen_id" required />
+        </mat-form-field>
+        <br />
+      </div>
+  
+      <div>
+        <mat-form-field appearance="outline" color="primary" class="example-full-width" (click)="picker2.open()">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="Attn_Date"
+         
+        
+          required />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="is_admin=='true'">
+        <mat-form-field appearance="outline">
+           <mat-label>Plant</mat-label>
+           <mat-select [(ngModel)]="Plant_id" required>
+             <mat-option *ngFor="let p of Plant" [value]="p.plant_code">
+               {{p.plant_code}} / {{ p.plant_name }}
+             </mat-option>
+           </mat-select>
+        </mat-form-field>
+        <br />
+       </div>
+  
+      <!-- <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Shift</mat-label>
+          <mat-select [(ngModel)]="shift_Id" required>
+            <mat-option *ngFor="let Shift of shiftData" [value]="Shift.shift_id">
+              {{ Shift.shift_desc }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />
+      </div> -->
+  
+      <div id="green1">
+        <button  class="yellow-button"mat-raised-button id="green" color="primary" (click)="onSubmit()" [disabled]="button || loading">
+          Verify
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="verifyBtn==true"> <label>Please select IN Time , OUT Time and shift for Attendance Reprocess</label> </div>
+  <div  *ngIf="verifyBtn==true" class="filter">
+   
+    <div >
+      <mat-form-field appearance="outline">
+         <mat-label>IN Time</mat-label>
+         <mat-select [(ngModel)]="min_time" required>
+           <mat-option *ngFor="let p of in_data" [value]="p.MinVartime">
+             {{p.MinVartime |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}
+           </mat-option>
+         </mat-select>
+      </mat-form-field>
+      <br />
+     </div>
+    <div >
+      <mat-form-field appearance="outline">
+         <mat-label>OUT Time</mat-label>
+         <mat-select [(ngModel)]="max_time" required>
+           <mat-option *ngFor="let p of out_data" [value]="p.MaxOuttime">
+             {{p.MaxOuttime |date:'dd-MM-yyyy HH:mm:ss':'UTC' }} 
+           </mat-option>
+         </mat-select>
+      </mat-form-field>
+      <br />
+     </div>
+
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Shift</mat-label>
+        <mat-select [(ngModel)]="shift_Id" required>
+          <mat-option *ngFor="let Shift of shift_data" [value]="Shift.shift_id">
+            {{ Shift.shift_desc }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br />
+    </div>
+
+    <div id="green1">
+      <button class="green-button" mat-raised-button id="green" color="primary" (click)="process_attn()" [disabled]="button || loading">
+        Process
+      </button>
+    </div>
+  </div>
+
+
+<!-- Current Attendance Table -->
+<div *ngIf="verifyBtn==true" > <label>Attendance Data</label> </div>
+    <table *ngIf="verifyBtn==true" class="table table-bordered table-striped table-hover my- data">
+      <thead>
+      <tr>
+        <th>Gen Id</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>IN Time</th>
+        <th>OUT Time </th>
+        <th>Shift Name</th>
+        <th>Worked Hrs</th>
+        <th>Present</th>
+        <th>Late Coming</th>
+        <th>Early Going</th>
+        <th>Extra Worked</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of attn_data">
+         <td>{{item.Gen_id}}</td>
+         <td>{{item.full_Name}}</td>
+         <td>{{item.Attn_Date | date:'dd-MM-yyyy'}}</td>
+         <td>{{item.In_time |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</td>
+         <td>{{item.outime |date:'dd-MM-yyyy HH:mm:ss' :'UTC'}}</td>
+         <td>{{item.shift_Name}}</td>
+         <td>{{item.worked_hrs}}</td>
+         <td>{{item.Present_type}}</td>
+         <td>{{item.LC}}</td>
+         <td>{{item.EG}}</td>
+         <td>{{item.EH}}</td>
+         
+      </tr>
+    </tbody>
+    </table>
+
+
+   
+ 
+
+
+  <!-- <ng-template *ngIf="loading"> -->
+
+    <div class="load"  *ngIf="loading" >
+      <div class="loader"></div>
+    </div>
+  <!-- </ng-template> -->
+
+  

@@ -1,0 +1,86 @@
+<div class= "container">
+  <div class="md-5">
+  <br>
+  
+      <mat-label> <div class="fs-text"><b>Comp Off</b></div></mat-label>
+      <mat-form-field>
+        <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp
+                        startView="multi-year"
+                        (yearSelected)="chosenYearHandler($event)"
+                        (monthSelected)="chosenMonthHandler($event, dp)"
+                        panelClass="example-month-picker">
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  
+  
+  <br><br><br>
+  <h1 class="title" >Comp Off Status</h1>
+  <hr style="border-block-color: orange" />
+  <div class = "table-wrapper px-5">
+    <table class="table table-bordered table-striped table-hover">
+      <table id="table">
+          <thead>
+          <tr>
+            <th
+            class="text-center"
+            style="width: 500px"
+            style="background-color: darkblue"
+    >
+       SNo
+              <th
+                       div class="text-center"
+              >
+                 Worked Date
+              </th>
+              <th
+                       div class="text-center"
+              >
+               Actual In
+              </th>
+              <th
+                       div class="text-center"
+              >
+                Actual Out
+              </th>
+              <th
+                       div class="text-center"
+              >
+                Coff Date
+              </th>
+
+              <th
+              div class="text-center"
+             >
+              Reason
+              </th>
+              <th
+                       div class="text-center"
+                      >
+           Status
+              </th>
+            </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor = "let i of table_data; let a = index">
+                  <td>{{ a + 1 }}</td>
+                  <td>{{ i.worked_dt.split('T')[0] }}</td>
+                  <td>{{ getTime(i.in_time) }}</td>
+                  <td>{{ getTime(i.out_time) }}</td>
+                  <td>{{ i.c_off_dt.split('T')[0] }}</td>
+                  <td>{{ i.Reason }}</td>
+                  <td>{{ i.approved_status }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </table>
+  </div>
+  
+  
+  
+  
+  
+  

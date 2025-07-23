@@ -1,0 +1,155 @@
+/* .container {
+  max-width: 600px;
+  margin: 25px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.db {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.db1 {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+}
+
+.upload-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+button {
+  font-weight: 500;
+  padding: 10px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+input[type="file"] {
+  flex: 1;
+  padding: 5px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #3f51b5;
+}
+
+div > button:not(.download-btn) {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+}
+
+div > button:not(.download-btn):hover {
+  background-color: #303f9f;
+}
+
+.download-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.download-btn:hover {
+  background-color: #388E3C;
+} */
+
+
+
+
+.container {
+  max-width: 600px;
+  margin: 25px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.db {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.db1 {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+}
+
+.upload-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+button {
+  font-weight: 500;
+  padding: 10px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+input[type="file"] {
+  flex: 1;
+  padding: 5px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #3f51b5;
+}
+
+/* Download Template button (Blue) */
+.download-btn {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #303f9f;
+}
+
+/* Upload button (Green) */
+.upload-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.upload-btn:hover {
+  background-color: #388E3C;
+}

@@ -1,0 +1,35 @@
+<div class="container">
+  <div style="margin-top: 40px">
+    <div>
+      <h1><b>Attendance Muster Report</b></h1>
+    </div>
+
+    <br /><br />
+    <h2><b>Select Date Range: </b></h2>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>From Date</mat-label>
+
+        <input
+          matInput
+          type="date"
+          placeholder="Select From Date"
+          [(ngModel)]="from"
+          (ngModelChange)="onchange()"
+          [max]="frommax"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>To Date</mat-label>
+
+        <input matInput placeholder="Select TO Date" type="date" [(ngModel)]="to" [min]="toMin" [max]="toMax">
+      </mat-form-field>
+      <div style="margin-left: 15px">
+        <button mat-raised-button color="primary" style="margin-top: 10px" (click)="onClick()">
+          Download
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

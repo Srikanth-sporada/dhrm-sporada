@@ -1,0 +1,278 @@
+<div class="container mat-elevation-z8"  >
+    <!-- 1st Line -->
+    <form [formGroup]="Cl_Salary_Form">
+    <div id="title">
+      <h3>Contract Employee Payscale</h3>
+    </div>
+    <!-- 2nd Line -->
+    <div id="ndLine">
+      <div class="row" style="display: flex; justify-content: space-around;    ">
+        <p class="col ">
+          <label style="color:rgb(13, 65, 238)">Pay Scale Description:</label>
+          <input id="payinput1"  formControlName="payDescp"  readonly/> 
+        </p>
+        <!-- <p class="col"><label style="color:rgb(13, 65, 238)">Wage Type:<input id="payinput" [value]="selectedPayscale?.Wage_type" disabled/> </label></p> -->
+        <p class="col">
+          <label style="color:rgb(13, 65, 238)">Effective From: <input id="payinput1" formControlName="effective_from"  readonly/> </label> 
+        </p>
+      </div>
+    </div>
+  
+    <!-- 3rd Line -->
+    <div id="rdLine">
+      <div class="row">
+     
+        <div class="col-6 colborder">
+          <div class="col">
+            <h4>Earnings</h4>
+          </div>
+  
+          <div class="row">
+            <div class="col-6">
+              <p class="col" id="basic"><label style="color:rgb(13, 65, 238)">Basic </label></p>
+              <p class="col" id="DA"><label  style="color:rgb(13, 65, 238)">DA </label></p>
+              <p class="col" id="HRA"><label  style="color:rgb(13, 65, 238)">HRA </label></p>
+              <p class="col" id="conveyance"><label  style="color:rgb(13, 65, 238)">Conveyance </label></p>
+              <p class="col" id="medicalAllowance" *ngIf="selectedPayscale?.Medi_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)">Medical Allowance </label>
+              </p>
+              <p class="col" id="specialAllowance" *ngIf="selectedPayscale?.Spcl_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)"> Special Allowance </label>
+              </p>
+              <p class="col" id="incentiveUnskilled" *ngIf="selectedPayscale?.Unskilled_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)">Incentvie Unskilled </label>
+              </p>
+              <p class="col" id="IncentiveSkilled" *ngIf="selectedPayscale?.Skilled_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)"> Incentvie Skilled</label>
+              </p>
+              <p class="col" id="attendanceAllowance" *ngIf="selectedPayscale?.Attendance_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)">Attendance Incentive </label>
+              </p>
+              <p class="col" id="nightshiftAllowance" *ngIf="selectedPayscale?.Night_shift_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)"> Nightshift Allowance</label>
+              </p>
+  
+              <p class="col" id="transportAllowance" *ngIf="selectedPayscale?.Transport_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)"> Transport Allowance</label>
+              </p>
+  
+              <p class="col" id="washingAllowance" *ngIf="selectedPayscale?.Washing_allow === 'Y' ">
+                <label  style="color:rgb(32, 173, 32)"> Washing Allowance</label>
+              </p>
+  
+              <p class="col" id="Other_allow_1" *ngIf="selectedPayscale?.Other_allow_1 != null ">
+                <label  style="color:rgb(32, 173, 32)"> </label>
+              </p>
+  
+              <p class="col" id="Other_allow_2" *ngIf="selectedPayscale?.Other_allow_2 != null ">
+                <label  style="color:rgb(32, 173, 32)"> </label>
+              </p>
+  
+              <p class="col" id="Other_allow_3" *ngIf="selectedPayscale?.Other_allow_3 != null ">
+                <label  style="color:rgb(32, 173, 32)"> </label>
+              </p>
+  
+              <p class="col" id="Other_allow_4" *ngIf="selectedPayscale?.Other_allow_4 != null ">
+                <label  style="color:rgb(32, 173, 32)"> </label>
+              </p>
+  
+              <ng-container>
+              <!-- <ng-container
+           *ngFor="let other of formDeatils.others.controls; let i = index"
+              > -->
+                <p class="col">
+                  <label> </label>
+                </p>
+              </ng-container>
+  
+              <p class="col">
+                <label> </label>
+              </p>
+              <p class="col" id="totalEarnings">
+                <label>Total Earning  </label>
+              </p>
+            </div>
+            <div class="col-6">
+              <!-- [value]="selectedPayscale?." -->
+              <p class="col" for="basic">
+                :<input id="payinput"  formControlName="basic_amt"  readonly />   </p>
+              <p class="col" for="DA">
+                :<input id="payinput" formControlName="da_amt"  readonly/>  </p>
+              <p class="col" for="HRA">
+                :<input id="payinput"   formControlName="hra_amt"  readonly/>  </p>
+              <p class="col" for="conveyance">
+                :<input id="payinput"  formControlName="conveyance_amt"  readonly/>  </p>
+              <p class="col" for="medicalAllowance" >
+                :<input id="payinput"  formControlName="medi_amt">  
+              </p>
+              <p class="col" for="specialAllowance"  >
+                :<input id="payinput"  formControlName="spcl_amt" />  
+              </p>
+              <p class="col" for="incentiveUnskilled"  >
+                :<input id="payinput"  formControlName="unskilled_amt" />  
+              </p>
+              <p class="col" for="IncentiveSkilled" >
+                :<input id="payinput"   formControlName="skilled_amt" />  
+              </p>
+              <p class="col" for="attendanceAllowance"  >
+                :<input id="payinput"   formControlName="attend_amt" />  
+              </p>
+              <p class="col" for="nightshiftAllowance"  >
+                :<input id="payinput"  formControlName="night_amt"  />  
+              </p>
+              <p class="col" for="transportAllowance" >
+                :<input id="payinput"  formControlName="transport_amt"  />  
+              </p>
+              <p class="col" for="washingAllowance"  >
+                :<input id="payinput" formControlName="washing_amt"  />  
+              </p>
+              <p class="col" for="Other_allow_1"  >
+                :<input id="payinput" formControlName="other_allow_amt1" />  
+              </p>
+              <p class="col" for="Other_allow_2" >
+                :<input id="payinput"  formControlName="other_allow_amt2" />  
+              </p>
+              <p class="col" for="Other_allow_3"  >
+                :<input id="payinput"  formControlName="other_allow_amt3"/>  
+              </p>
+              <p class="col" for="Other_allow_4" >
+                <span >:</span>
+                <input id="payinput"  formControlName="other_allow_amt4"  />
+              </p>
+              <ng-container>
+         
+              </ng-container>
+              <p class="col">
+                <label> </label>
+              </p>
+              <p class="col" for="totalEarnings">
+                : <input  formControlName="Total_earnings_amt" id="payinput" value="00" readonly/> 
+              </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-6">
+          <div class="col">
+            <h4>Deductions</h4>
+          </div>
+  
+          <div class="row">
+            <div class="col-6">
+              <p class="col" id="DPF"><label style="color:rgb(13, 65, 238)">PF% &nbsp; &nbsp;&nbsp; </label> </p>
+              <p class="col" id="DESI"><label style="color:rgb(13, 65, 238)">ESI% &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label> </p>
+             
+              <p class="col" id="canteenDeduction">
+                <label style="color:rgb(13, 65, 238)">Canteen Deduction</label>
+              </p>
+              <p class="col" id="labourWelfareFund">
+                <label style="color:rgb(13, 65, 238)">Labour Welfare Fund</label>
+              </p>
+              <p class="col" id="Other_deduct_1" >
+                <label style="color:rgb(32, 173, 32)"> </label>
+              </p>
+              <p class="col" id="Other_deduct_2" >
+                <label style="color:rgb(32, 173, 32)"> </label>
+              </p>
+              <p class="col" id="Other_deduct_3" >
+                <label style="color:rgb(32, 173, 32)"> </label>
+              </p>
+              <p class="col" id="Other_allow_4" >
+                <label style="color:rgb(32, 173, 32)"> </label>
+              </p>
+
+
+              
+              <p class="col" id="totalDeduction">
+                <label></label>
+              </p>
+              <p class="col" id="totalDeduction">
+                <label>Total Deduction</label>
+              </p>
+            </div> 
+  
+            <div class="col-6">
+              <p class="col" for="DPF ">: <input id="payinput"  formControlName="DPF_amt"   readonly/> </p>
+              <p class="col" for="DESI ">: <input id="payinput"  formControlName="DESI_amt"    readonly/>  </p>
+              <p class="col" for="canteenDeduction">
+                : <input id="payinput" formControlName="canteen"   readonly /> 
+              </p>
+              <p class="col" for="labourWelfareFund">
+                : <input id="payinput"  formControlName="DLWF_amt"  readonly  /> 
+              </p>
+              <p class="col" for="Other_deduct_1"  >
+                :<input id="payinput" formControlName="other_ded_amt1"   />  
+              </p>
+              <p class="col" for="Other_deduct_2"  >
+                :<input id="payinput" formControlName="other_ded_amt2"  />  
+              </p>
+              <p class="col" for="Other_deduct_3"  >
+                :<input id="payinput" formControlName="other_ded_amt3"   />  
+              </p>
+              <p class="col" for="Other_deduct_4" >
+                :<input id="payinput" formControlName="other_ded_amt4"  />  
+              </p>
+
+              <p class="col" id="totalDeduction">
+                <label></label>
+              </p>
+              <p class="col" for="totalDeduction">
+                : <input formControlName="total_deduction" id="payinput" value="00" readonly/> 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- /////// -->
+  
+    <div id="ndLine">
+      <div class="col">
+        <h4>To Be Paid to Contractor</h4>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <p class="col" id="EPF"><label style="color:rgb(13, 65, 238)">PF % &nbsp;&nbsp;<input id="payinput"   readonly/> &nbsp;&nbsp;</label> </p>
+          <p class="col" id="EESI"><label style="color:rgb(13, 65, 238)">ESI % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></p>
+          <p class="col" id="LWF"><label style="color:rgb(13, 65, 238)">Labour Welfare Fund</label></p>
+          <p class="col" id="serviceCharge">
+            <label>Service Charge % </label>
+          </p>
+          <p class="col" id="ServiceTax">
+            <label>Service Tax % </label>
+          </p>
+        </div>
+  
+        <div class="col-3">
+          <p class="col" for="EPF ">: <input id="payinput"   formControlName="EPF_amt" readonly/> </p>
+          <p class="col" for="EESI ">: <input id="payinput"   formControlName="EESI_amt"  readonly/>  </p>
+          <p class="col" for="LWF ">: <input id="payinput"   formControlName="ELWF_amt"  readonly/>  </p> 
+          <p class="col" for="serviceCharge">: <input id="payinput" formControlName="service_charge_amt"  readonly />  </p>
+          <p class="col" for="ServiceTax">: <input id="payinput" formControlName="Service_tax_amt"  readonly/> </p>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      id="ndLine"
+      style="display: flex; justify-content: space-around;padding-top:0.5em"
+    >
+      <p><label>CTC </label> :Rs <input id="payinput" value="" readonly/> </p>
+  
+      <p>
+        <label>Net Take Home Paid to CL </label> : Rs <input id="payinput" value="" readonly/> 
+      </p>
+    </div>
+  
+ 
+
+  
+  <div style="display: flex; justify-content: space-around ;padding-top:1em">
+    <button mat-raised-button color="primary" id="Orange" (click)="submit()">
+  Calculate
+      </button></div>
+  <!--  -->
+</form>
+
+</div>

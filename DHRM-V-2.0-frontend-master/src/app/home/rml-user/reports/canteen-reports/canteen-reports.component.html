@@ -1,0 +1,61 @@
+<div class="container">
+
+    <div  style = "margin-top: 40px;">
+      <div>
+          <h1><b>Canteen Report</b></h1>
+      </div> 
+      
+
+ 
+        <div class="filter-container">
+
+          <div class="filter-row1">
+            <from [formGroup]="cntForm">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>From Date</mat-label>
+                    <input
+                    type="date"
+                      matInput
+                      formControlName="FromDate"
+                    />
+                  </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>To Date</mat-label>
+                    <input
+                    type="date"
+                      matInput
+                      formControlName="ToDate"
+                    />
+                  </mat-form-field>
+            
+            
+            <mat-form-field appearance="outline"  > 
+              <mat-label>Report Type </mat-label>
+              <mat-select formControlName="rpt_type">
+                <!-- <mat-option value="">ALL</mat-option> -->
+                <mat-option value="Summary">Summary Report</mat-option>
+             
+                <mat-option value="Detailed">Detailed Report</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="isadmin === 'true'" appearance="outline"  > 
+              <mat-label>Plant </mat-label>
+              <mat-select formControlName="plant">
+                <mat-option value="">ALL</mat-option>
+                <mat-option value="1000">1000</mat-option>
+                <mat-option value="1200">1200</mat-option>
+                <mat-option value="1300">1300</mat-option>
+                <mat-option value="1150">1150</mat-option>
+                <mat-option value="1250">1250</mat-option>
+              </mat-select>
+            </mat-form-field>
+            </from>
+          </div>
+
+          <div class="download">
+            <button (click)="download()" [hidden]="button1">Download</button>
+          </div>
+          
+        
+</div>

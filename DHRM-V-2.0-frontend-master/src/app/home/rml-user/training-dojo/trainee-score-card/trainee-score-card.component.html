@@ -1,0 +1,85 @@
+<div class="container">
+    <div class="titlebox">
+        <p><b> Test Results for Trainee</b></p>
+    </div>
+    <div class="container-fluid px-2 pt-2" style="font-size: 14px;">
+        <div class="header">
+            <p><b>Trainee Name: {{fullname}}</b></p>
+        </div>
+        <div class="header">
+            <p><b>Trainee ID: {{idno}}</b></p>
+        </div>
+        <div class="col">
+            <div class = "download">
+                <button mat-fab style=" margin-left: auto; " aria-label="Example icon button with a delete icon" (click)="exportexcel()">
+                    <mat-icon>download</mat-icon>
+                </button></div>
+        </div>
+        <div style='overflow-x:auto'>
+            <br><br>
+            <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+            <ng-template #show>
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-striped table-hover">
+                        <table id="table">
+                            <div style="overflow-x:auto;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Slno
+                                        </th>
+                                        <th class="text-center" style="width: 1000px"
+                                            style="background-color: darkblue">
+                                            Module Name
+                                        </th>
+                                        <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Test Date
+                                        </th>
+                                        <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Minimum Pass(%)
+                                        </th>
+                                        <!-- <th class="text-center" style="width: 800px" style="background-color: darkblue">
+                                            Pre-Training Score
+                                        </th> -->
+                                        <!-- <th class="text-center" style="width: 800px" style="background-color: darkblue">
+                                            Test Result Marks
+                                        </th> -->
+                                        <!-- <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Pre-training percent
+                                        </th> -->
+                                        <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Test Scored(%)
+                                        </th>
+                                        <!-- <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Pre-Training P/F
+                                        </th> -->
+                                        <th class="text-center" style="width: 500px" style="background-color: darkblue">
+                                            Results
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let i of data; let a = index">
+                                    <tr>
+        <td [width]="100" style="text-align: center;">{{a+1}}</td>
+        <td [width]="600" style="text-align: center;">
+            <a [routerLink]="['/rml/training_dojo/trainee-answer', idno, fullname, i.module_name]">
+                {{i.module_name}}
+            </a>
+        </td>
+        <td [width]="100" style="text-align: center;">{{i.date | date:'dd-MM-yyyy'}}</td>
+        <td [width]="100" style="text-align: center;">{{i.pass_percent}}</td>
+        <td [width]="100" style="text-align: center;">{{i.posttraining_percent}}</td>
+        <td [width]="100" style="text-align: center;">{{i.posttraining_pf}}</td>
+    </tr>
+                                </tbody>
+                            </div>
+                        </table>
+                    </table>
+
+
+
+
+                </div>
+            </ng-template>
+        </div>
+    </div>

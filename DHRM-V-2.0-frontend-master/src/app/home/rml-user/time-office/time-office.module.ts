@@ -1,0 +1,73 @@
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { TimeOfficeRoutingModule } from "./time-office-routing.module";
+import { CalenderComponent } from "./calender/calender.component";
+import { ShiftChangeComponent } from "./shift-change/shift-change.component";
+import { ForgetPunchComponent } from "./forget-punch/forget-punch.component";
+import { AttendanceComponent } from "./attendance/attendance.component";
+import { CalendarModule, DateAdapter } from "angular-calendar";
+import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
+import { PermissionComponent } from "./permission/permission.component";
+import { LeaveComponent } from "./leave/leave.component";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatTableModule } from "@angular/material/table";
+import { MatRadioModule } from "@angular/material/radio";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatIconModule } from "@angular/material/icon";
+import { NgxMatTimepickerModule } from "ngx-mat-timepicker";
+import { DeptTransferComponent } from "./dept-transfer/dept-transfer.component";
+import { OverTimeComponent } from "./over-time/over-time.component";
+import { CompOffComponent } from "./comp-off/comp-off.component";
+import { NgbToast } from "@ng-bootstrap/ng-bootstrap";
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+import { ForgottopunchpopupComponent } from "./calender/forgottopunchpopup/forgottopunchpopup.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatTabsModule } from '@angular/material/tabs';
+@NgModule({
+  declarations: [
+    CalenderComponent,
+    ShiftChangeComponent,
+    ForgetPunchComponent,
+    AttendanceComponent,
+    PermissionComponent,
+    LeaveComponent,
+    DeptTransferComponent,
+    OverTimeComponent,
+    CompOffComponent,
+    ForgottopunchpopupComponent,
+  ],
+  imports: [
+    MatNativeDateModule,
+    CommonModule,
+    MatTabsModule,
+    TimeOfficeRoutingModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    MatDividerModule,
+    MatTableModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatSelectModule,
+    MatStepperModule,
+    MatIconModule,
+    NgxMatTimepickerModule,
+    FormsModule,
+    MatTooltipModule,
+    MatCheckboxModule
+  ],
+})
+export class TimeOfficeModule {}

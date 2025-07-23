@@ -1,0 +1,24 @@
+<div class="bd">
+    <div class="container">
+        <button   id="logout" routerLink="/first">
+            <span class="glyphicon glyphicon-home"></span> 
+          </button>
+          <div class="form-container">
+                <h1  style="color:black;">Time Office Login ( For Employee)</h1>
+                <form [formGroup]="exform" (ngSubmit)="submit()">
+             
+                        <label id="labelid" style="color: black;">User name - Gen ID</label>
+                        <input id="inputid" formControlName="User_Name" type="text" class="input8">
+                       <small *ngIf="name.User_Name.invalid && name.User_Name.touched" class="alert">User name is required</small>
+                  <br>
+                        <label id="labelid"  style="color: black;">Password -  Date of Birth (DDMMYYYY)</label>
+                        <input id="inputid" formControlName="Password" type="password" class="input8">
+                        <small *ngIf="name.Password.invalid && name.Password.touched" class="alert">Password is required</small>
+
+                    
+                        <button type="submit"  id="button" (click)="setLocal()">Sign In</button>
+                    
+                </form>
+            </div>
+        </div>
+  

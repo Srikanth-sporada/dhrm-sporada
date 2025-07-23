@@ -1,0 +1,145 @@
+<div class="container2" style="z-index: 1250;">
+    <div style="margin-top: 1%;">
+        <h1 id="title1" style="text-align: center;">Temporary Workmen - Rejoin Request</h1>
+
+        <div style="display: flex; flex-direction: column; margin-left: 0; gap: 20px; width: 100%;">
+            <div style="flex: 0 0 auto; width: 100%;">
+
+                <form [formGroup]="form"
+                    style="display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;">
+
+                    <div style="display: flex; align-items: center; gap: 15px; margin-left: 2%;">
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" [(ngModel)]="selectAll" [ngModelOptions]="{standalone: true}"
+                                (change)="toggleAllSelection()" />
+                            <label style="margin-left: 5px; margin-top: 7px;">Select All</label>
+                        </div>
+
+                        <button type="button" (click)="clear()" style="
+                            padding: 8px 16px;
+                            background-color: #DC3545; 
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            font-weight: bold;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#a71d2a'"
+                            onmouseout="this.style.backgroundColor='#DC3545'">
+                            Clear
+                        </button>
+
+
+                    </div>
+
+                    <!-- Right Side: Submit -->
+                    <button *ngIf="tableData.length > 0 && ishr" type="button" (click)="submit()" style="
+                        padding: 8px 16px;
+                        background-color: #28A745;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        margin-right: 4%;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#1e7e34'"
+                        onmouseout="this.style.backgroundColor='#28A745'">
+                        Submit
+                    </button>
+
+                    <!-- Right Side: Submit -->
+                    <button *ngIf="tableData.length > 0 && is_Chr" type="button" (click)="submit()" style="
+                        padding: 8px 16px;
+                        background-color: #28A745;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        margin-right: 4%;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#1e7e34'"
+                        onmouseout="this.style.backgroundColor='#28A745'">
+                        Submit
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div style="margin-top: 1%; width: 100%; align-items: center;">
+            <table border="1" style="border-collapse: collapse; width: 98%; margin: 0 auto;">
+                <thead>
+                    <tr>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Select</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Sl No</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Gen Id</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Name</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">DOJ</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">DOL</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Service Years</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Old Category</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">New Category</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Reason For Rejoin</th>
+                        <th style="background-color: darkblue; color: white; text-align: center;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let b of tableData; let i = index">
+                        <td style="text-align: center;">
+                            <input type="checkbox" [(ngModel)]="b.selected" [ngModelOptions]="{standalone: true}"
+                                (change)="onRowCheckboxChange()" />
+                        </td>
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ b.Gen_Id }}</td>
+                        <td>{{ b.fullname }}</td>
+                        <td>{{ b.DOJ }}</td>
+                        <td>{{ b.DOL }}</td>
+                        <td>{{ b.Service_Years }}</td>
+                        <td>{{ b.Old_Category }}</td>
+                        <td>{{ b.categorynm }}</td>
+                        <td>{{ b.Reason_For_Rejoin }}</td>
+                        <td>{{ b.Approval_Status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div *ngIf="showModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>CL / Trainee Rejoin Approval</h2>
+
+            <!-- Comment Box -->
+            <input type="text" [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" placeholder="Enter comment"
+                required
+                style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; margin-bottom: 15px;" />
+
+            <!-- Radio Buttons -->
+            <div style="margin-bottom: 20px;">
+                <label class="custom-radio approve">
+                    <input type="radio" name="decision" [(ngModel)]="decision" value="Approve"
+                        [ngModelOptions]="{standalone: true}" />
+                    <span class="radio-label">Approve</span>
+                </label>
+
+                <label class="custom-radio reject" style="margin-left: 20px;">
+                    <input type="radio" name="decision" [(ngModel)]="decision" value="Reject"
+                        [ngModelOptions]="{standalone: true}" />
+                    <span class="radio-label">Reject</span>
+                </label>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button *ngIf="ishr" (click)="approve()"
+                    style="padding: 8px 16px; background-color: #007BFF; color: white; border: none; border-radius: 4px; font-weight: bold;">Submit</button>
+                <button *ngIf="is_Chr" (click)="Chrapprove()"
+                    style="padding: 8px 16px; background-color: #007BFF; color: white; border: none; border-radius: 4px; font-weight: bold;">Submit</button>
+                <button (click)="closeModal()"
+                    style="padding: 8px 16px; background-color: #DC3545; color: white; border: none; border-radius: 4px; font-weight: bold;">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

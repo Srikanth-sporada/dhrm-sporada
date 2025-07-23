@@ -1,0 +1,31 @@
+<div>
+  <div class="heading">
+    <p>Back Date Contorl Plant:{{data.plant}}</p>
+  </div>
+  <div class="data">
+    <mat-form-field appearance="outline">
+      <mat-label>Doj Limit</mat-label>
+      <input matInput placeholder="label" [(ngModel)]="data.doj_limit" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Excess Hour Approval Limit</mat-label>
+      <input matInput placeholder="label" [(ngModel)]="data.eh_approval_sup" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Forgot To Punch Hr Limit</mat-label>
+      <input matInput placeholder="label" [(ngModel)]="data.fp_hr" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Forgot To Punch WorkmenLimit</mat-label>
+      <input matInput placeholder="label" [(ngModel)]="data.fp_workmen" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>OT Approval FH Limit</mat-label>
+      <input matInput placeholder="label" [(ngModel)]="data.ot_appr_fh" type="number">
+    </mat-form-field>
+  </div>
+  <div class="buttons">
+    <button mat-raised-button color="accent" (click)="update()">Update</button>
+    <button mat-raised-button color="primary" (click)="close()">Cancel</button>
+  </div>
+</div>

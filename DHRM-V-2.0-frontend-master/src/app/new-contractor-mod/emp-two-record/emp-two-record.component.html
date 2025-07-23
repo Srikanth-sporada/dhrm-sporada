@@ -1,0 +1,73 @@
+<div class="container">
+
+  <div style="margin-top: 40px;">
+    <div>
+      <h1><b>DHRM All Employee Record</b></h1>
+    </div>
+
+
+
+    <div class="filter-container">
+
+      <div class="filter-row1">
+        <from [formGroup]="empForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Application Status</mat-label>
+            <mat-select formControlName="AplnStatus">
+              <mat-option value="">ALL</mat-option>
+              <mat-option value="PENDING">PENDING</mat-option>
+              <mat-option value="SUBMITTED">SUBMITTED</mat-option>
+              <mat-option value="APPOINTED">APPOINTED</mat-option>
+              <mat-option value="Deleted">DELETED</mat-option>
+              <mat-option value="REJECTED">REJECTED</mat-option>
+              <mat-option value="RELIEVED">RELIEVED</mat-option>
+              <mat-option value="APPROVED">APPROVED</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Active status</mat-label>
+            <mat-select formControlName="activeState">
+              <mat-option value="">ALL</mat-option>
+              <mat-option value="Active">ACTIVE</mat-option>
+              <mat-option value="InActive">INACTIVE</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Category </mat-label>
+            <mat-select formControlName="category">
+              <mat-option value="">ALL</mat-option>
+              <mat-option value="OPERATOR">OPERATOR</mat-option>
+              <mat-option value="CL">CL</mat-option>
+              <mat-option value="TRAINEE">TRAINEE</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="isadmin === 'true'" appearance="outline">
+            <mat-label>Plant </mat-label>
+            <!-- <mat-select formControlName="plant">
+                <mat-option value="">ALL</mat-option>
+                <mat-option value="1000">1000</mat-option>
+                <mat-option value="1200">1200</mat-option>
+                <mat-option value="1300">1300</mat-option>
+                <mat-option value="1150">1150</mat-option>
+                <mat-option value="1250">1250</mat-option>
+                <mat-option value="8010">8010</mat-option>
+                <mat-option value="8005">8005</mat-option>
+              </mat-select> -->
+            <mat-select formControlName="plant" placeholder="Select Plant">
+              <mat-option value="">ALL</mat-option>
+              <mat-option *ngFor="let plant of plantlist" [value]="plant.plant_code">
+                {{ plant.plant_code }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </from>
+      </div>
+
+      <div class="download">
+        <button (click)="download()">Download</button>
+      </div>
+
+
+    </div>

@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="db1">
+        <button class="download-btn" (click)="download()">
+            Download Template
+        </button>
+    </div>
+
+    <div class="upload-row">
+        <input type="file" (change)="onFileChange($event)" #fileInput>
+        <button class="upload-btn" (click)="upload()">
+            Upload
+        </button>
+    </div>
+</div>

@@ -1,0 +1,268 @@
+.container{
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display:flex;
+  flex-direction: row;
+  
+}
+.card{
+height: max-content;
+min-width: 400px;
+background-color: rgb(250, 250, 250);
+border: 5px black ;
+border-radius: 20px;
+box-shadow: 12px 10px 45px -8px rgba(0,0,0,0.67);
+-webkit-box-shadow: 12px 10px 45px -8px rgba(0,0,0,0.67);
+-moz-box-shadow: 12px 10px 45px -8px rgba(0,0,0,0.67);
+z-index: 1;
+
+text-align: left;
+margin-left: 2%;
+}
+.card2 {
+
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+  box-sizing: border-box;
+  width: 600px;
+  height: 750px;
+  
+  font-size:15px;
+ 
+}
+
+.left{
+  text-align: right;
+  float: right;
+  padding-left: 0px;
+}
+
+
+.shift{
+  margin-left:100px;
+}
+
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.left1{
+  text-align:right;
+  padding-right:0%
+}
+
+.font
+{
+  font-size: 15px;
+}
+
+.font2{
+  font-size: 15px;
+  width: 50%;
+}
+.header{
+  text-align: center;
+  font-size: 25px;
+}
+.img{
+  margin-top:20%;
+  margin:20% auto 35px auto;
+  height: 150px;
+  width: 135px;
+}
+.sign{
+  margin-left: 60%;
+  width: 70%;
+
+}
+.sign1{
+  margin-left:65%;
+  font-size: large;
+}
+.space{
+  word-spacing: 20px;
+}
+.name{
+  text-align:left;
+  font-size: 100px;
+}
+
+
+.aligncommand1{
+  line-height: 15px;
+   width: 400px;
+    border: 1px ;
+}
+.name{
+  font-size: large;
+  font-weight: 900;
+  text-align:center;
+}
+.btn{
+  border-radius: 0px;
+  margin-left:45%;
+  width:90px 
+}
+h3{
+  margin-top:20px;
+  font-weight:bold;
+}
+input{
+  border-radius:0px;
+  border-color: black;
+}
+input:hover{
+  border:2px solid grey;
+
+}
+select{
+  border-radius:0px;
+  border-color: black;
+  height: 34px;
+}
+select:hover{
+  border:2px solid grey;
+
+}
+
+.row{
+  white-space: nowrap;
+}
+
+.form-control{
+  font-size: 14px;
+}
+.row1{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+.aligncommand2{
+  margin-left: auto;
+  text-align: left;
+  align-items: flex-start;
+  
+}
+.sub-card{
+  margin-left: 0;
+  text-align: left;
+  font-size:15px;
+  flex-wrap: nowrap;
+}
+.stylecommand{
+  line-height: 15px;
+  text-align: left;
+  align-items: flex-start;
+  background-color: white;
+  padding-right: 10px;
+  padding-top: 16px;
+}
+.btn{
+  width: 100px;
+  margin-left: 45%;
+  background-color: rgb(54, 154, 54);
+  color: white;
+}
+
+
+.matrix{
+  width: 95%;
+  margin: 20px auto;
+}
+
+.level{
+  width: 30%;
+  margin:30px 20px;
+}
+
+.yellow{
+  background-color: #FFD95A;
+}
+
+.blue{
+  background-color: #B4E4FF;
+}
+
+.green{
+  background-color:#00FFCA;
+}
+
+.darkgreen{
+  background-color: #11ff0d;
+}
+
+.table_header{
+  background-color: #2F58CD !important;
+  color:white !important;
+}
+
+.customtable{
+  width: 95%;
+}
+.customtable th{
+  background-color:  #2F58CD !important;
+  height: 30px;
+}
+
+.border > *{
+  border: 2px black;
+}
+
+.cell{
+ border: 2px solid white;
+ height: 40px;
+ text-align: center;
+}
+
+.cell1{
+  border: 2px solid rgb(165, 159, 159);
+  height: 40px;
+  text-align: left;
+  padding: 8px;
+ }
+
+.desc_table{
+  margin: 30px 30px;
+  min-width: 30%;
+
+}
+
+.emp_details{
+  width: min-content;
+  padding-right: 10px;
+}
+
+/* ::ng-deep .employee-tab .mat-tab-label {
+  background-color: black;
+  color: white;
+}
+
+::ng-deep .company-tab .mat-tab-label {
+  background-color: blue;  
+  color: white;
+} */
+
+::ng-deep .mat-tab-label:nth-child(1) {
+  background-color: purple;
+  color: white;
+}
+
+::ng-deep .mat-tab-label:nth-child(2) {
+  background-color: green;  
+  color: white;
+}
+
+.underline-blue {
+  text-decoration: underline;
+  text-decoration-color: blue;
+}
+
+.underline-red {
+  text-decoration: underline;
+  text-decoration-color: red; 
+}

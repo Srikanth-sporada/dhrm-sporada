@@ -1,0 +1,187 @@
+<div  class="container2">
+    <h1 id = "title1" >Operator permission Approval</h1>
+    <hr style="border-block-color: orange" />
+    <div class="bulk1" >
+        <label *ngIf="isRA && ishrappr==='false'" id="l1">Search :&nbsp; </label>
+        <mat-form-field appearance="outline"  *ngIf="isRA && ishrappr==='false'">
+            <mat-label>GenID</mat-label>
+            <input matInput  [(ngModel)]="genId"  type="text"   />
+          </mat-form-field >
+
+          <label *ngIf="isRA && ishrappr==='false'" id="l1">&nbsp;Supervisor Status :&nbsp; </label> 
+          <mat-form-field appearance="outline" *ngIf="isRA && ishrappr==='false'"  >
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="a1_status">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Waiting for Approval">Waiting for Approval</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="Cancelled">Cancelled</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+              
+            </mat-select>
+          </mat-form-field>
+
+          <label *ngIf="ishrappr === 'true'" id="l1">&nbsp;HR Status :&nbsp; </label> 
+          <mat-form-field appearance="outline" *ngIf="ishrappr === 'true'" >
+            <mat-label>Status</mat-label>
+            <mat-select [(ngModel)]="a2_status">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Waiting for Approval">Waiting for Approval</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="Cancelled">Cancelled</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="legend">
+            <span class="legend-item">
+              <i class="fas fa-check-circle" style="margin-left: 0rem;"></i>
+              Mid Day Permission
+            </span>
+            <span class="legend-item">
+              <i class="fas fa-times-circle" style="margin-left: 0rem;"></i>
+             Regular Permission
+            </span>
+          </div>
+    </div>
+
+      
+
+    <!-- <ng-template #show> -->
+        <div *ngIf="isRA && ishrappr==='false'"  class = "table-wrapper container3">
+        <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th  class="text-center"
+                     
+                        style="background-color: darkblue">Sl_No</th>
+                        <th  class="text-center">Gen-ID</th>
+                        <th  class="text-center">Name</th>
+                        <th  class="text-center">Attandance date</th>
+                        <th  class="text-center">Present Before</th>
+                        <th  class="text-center">Applied On</th>
+                        <th  class="text-center">Reason</th>
+                        <th  class="text-center">Present After</th>
+                        <th  class="text-center">Approver 1</th>
+                        <th  class="text-center">Approver 1 status</th>
+                        <th *ngIf="isRA === true   "  class="text-center">Action</th>
+                        <th  class="text-center">Approver 2</th>
+                        <th  class="text-center">Approver 2 status</th>
+                        <!-- <th *ngIf="ishrappr === 'true'" class="text-center">Action</th> -->
+                       
+                        
+                    </tr>
+                </thead>
+                 <tbody >
+                    <tr *ngFor="let data of optr_Data | leaveFilte1: genId:a1_status; let i = index">
+                     <td>{{ i + 1 }}</td>
+                     <td>{{data.Gen_id}}</td>
+                     <td>{{data.fullname}}</td>
+                     <td>{{data.att_date |date :"dd-MM-yyyy"}}</td>
+                     <td>{{data.Present_Before }}</td>
+                     <td>{{data.applied_on |date :"dd-MM-yyyy" }}</td>
+                     <td>{{data.reason }}</td>
+                     <td>{{data.Present_After }}</td>
+                     <td>{{data.Approver_1_name }}</td>
+                     <td>{{data.L1_Approval_Status }}</td>
+                     <td  >
+                        <button  mat-raised-button id="green" color="primary" 
+                        (click)="l1_Approver(data)"
+                        [disabled]="data.L1_Approval_Status !== l1_status"
+                       >
+                            Approve
+                          </button>
+                     </td>
+                     <td>{{data.Approver_2_name }}</td>
+                     <td>{{data.L2_Approval_Status }}</td>
+                     <!-- <td     (click)="l2_Approver(data)">
+                        <button  mat-raised-button id="green" color="primary" 
+                        >
+                            Approve
+                          </button>
+                     </td> -->
+                    </tr>
+                </tbody> 
+                  
+            </table>
+
+            </table>
+
+</div>
+        <div *ngIf="ishrappr === 'true'" class = "table-wrapper container3">
+        <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th  class="text-center"
+                     
+                        style="background-color: darkblue">Sl_No</th>
+                        <th  class="text-center">Gen-ID</th>
+                        <th  class="text-center">Name</th>
+                        <th  class="text-center">Attandance date</th>
+                        <th  class="text-center">Present </th>
+                        <th  class="text-center"> Permission Min</th>
+                        <th  class="text-center">Applied On</th>
+                        <th  class="text-center">Reason</th>
+                        <!-- <th  class="text-center">Present After</th> -->
+                        
+                        <th  class="text-center">Approver 1</th>
+                        <th  class="text-center">Approver 1 status</th>
+                        <!-- <th *ngIf="isRA === true   "  class="text-center">Action</th> -->
+                        <th  class="text-center">Approver 2</th>
+                        <th  class="text-center">Approver 2 status</th>
+                        <th *ngIf="ishrappr === 'true'" class="text-center">Action</th>
+                       
+                        
+                    </tr>
+                </thead>
+                 <tbody >
+                    <tr *ngFor="let data of optr_Data | leaveFilte2: genId:a2_status ; let i = index"
+                    [ngStyle]="{'background-color': data.Mid_Permission === 'TRUE' ? '#d6ffd6' : 'rgb(155, 212, 225)'}"
+                    >
+                     <td>{{ i + 1 }}</td>
+                     <td>{{data.Gen_id}}</td>
+                     <td>{{data.fullname}}</td>
+                     <td>{{data.att_date |date :"dd-MM-yyyy"}}</td>
+                     <td>{{data.Present_Before }}</td>
+                     <td>{{data.Mid_Day_Permission_min || 120 }} Min</td>
+                     <td>{{data.applied_on |date :"dd-MM-yyyy" }}</td>
+                     <td>{{data.reason }}</td>
+                     <!-- <td>{{data.Present_After }}</td> -->
+                  
+                     <td>{{data.Approver_1_name }}</td>
+                     <td>{{data.L1_Approval_Status }}</td>
+                     <!-- <td  *ngIf="isRA === true  " >
+                        <button  mat-raised-button id="green" color="primary" 
+                        (click)="l1_Approver(data)"
+                       >
+                            Approve
+                          </button>
+                     </td> -->
+                     <td>{{data.Approver_2_name }}</td>
+                     <td>{{data.L2_Approval_Status }}</td>
+                     <td  *ngIf="ishrappr === 'true'" 
+                     >
+                        <button  mat-raised-button id="green" color="primary" 
+                        [disabled]="data.L2_Approval_Status !== l2_status"
+                     (click)="l2_Approver(data)"
+
+                        >
+                            Approve
+                          </button>
+                     </td>
+                    </tr>
+                </tbody> 
+                  
+            </table>
+
+            </table>
+
+</div>
+
+    <!-- </ng-template>  -->
+
+
+</div>

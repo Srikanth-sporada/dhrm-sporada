@@ -1,0 +1,81 @@
+
+
+.mat-button-toggle-checked {
+    background-color: #614BC3;
+    color: #fafbfa !important;
+}
+
+.mat-button-toggle-checked:disabled {
+    background-color: #afa4e0;
+    color: #26e426 !important;
+}
+
+.filter{
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    gap: 10px;
+    margin-left: 10px;
+  }
+  
+  
+  .input2 {
+    min-width: 200px;
+    background-color: #f5f5f5;
+    color: #242424;
+    padding: .15rem .5rem;
+    min-height: 40px;
+    border-radius: 6px;
+    outline: 10px;
+    border: 15px;
+    font-size: 16px;
+    line-height: 1.15;
+    box-shadow: 0px 10px 20px -18px;
+  }
+  
+  .text-center {
+    width: max-content;
+    background-color: darkblue;
+  }
+  
+  .title {
+    font-size: 40px;
+    color: rgb(0, 0, 139);
+    font-weight: bolder;
+    text-align: center;
+    text-decoration: solid;
+    font-size: larger;
+    font-weight: 900;
+  }
+
+  th{
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  td{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    font-size: medium;
+  }
+  th { background: #c5c5c5;}
+  table 
+  {
+  border-collapse: collapse;
+  width: 100%;
+  }
+  td, th { border: 1px solid #cdcdcd; padding: 8px;}
+  .form-group
+  {
+  background-color: lightgrey;
+  }
+  
+  tbody
+  {
+  text-align: center;
+  
+  }
+  
+  .table-wrapper
+  {
+    display: block;
+  }

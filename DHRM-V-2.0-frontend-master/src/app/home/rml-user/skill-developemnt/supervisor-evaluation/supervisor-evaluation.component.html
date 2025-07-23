@@ -1,0 +1,65 @@
+<div class = "container">
+    <div  style = "margin-top: 40px;">   
+        <h1><b>Supervisor Evaluation Pending List</b></h1>
+        
+      <form [formGroup]="form" (ngSubmit)="filter()">
+        <div class="form-container1">
+      <div class = "row">
+      <div class = "col-sm-3 boxx">
+      <label for="Status" id="center"> Status: </label>
+        <br>
+        <mat-select name="status" id="status" class="input2" formControlName = "status" (ngModelChange)=filter() >
+            <mat-option value="1" selected>First Evaluation</mat-option>
+            <mat-option value="2" >Second Evaluation</mat-option>
+            <mat-option value="3">Third Evaluation</mat-option>
+            <mat-option value="4">Fourth Evaluation</mat-option>
+          </mat-select> 
+      </div>
+      </div>
+
+    </div>
+      <br><br>
+      <br><br><app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+      <ng-template #show>
+        <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                    <tr>
+                        <th div class="aligncommand">Date of Joining</th>
+                        <th div class="aligncommand">Gen ID</th>
+                        <th div class="aligncommand">Name</th>
+                        <th div class="aligncommand">Mobile No</th>
+                        <th div class="aligncommand">Line Name</th>
+                        <th div class="aligncommand">Dept Name</th>
+                        <th div class="aligncommand">Reporting To</th>
+                        <th div class="aligncommand">Eval days</th>
+                        <th div class="aligncommand">Evaluate</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let i of filterinfo">
+                              <td>{{ i.doj.split('T')[0] | date: 'dd-MM-yyyy' }}</td>
+                              <td>{{i.gen_id}}</td>
+                              <td>{{ i.fullname }}</td>
+                              <td>{{ i.mobile_no1 }}</td>
+                              <td>{{ i.line_Name }}</td>
+                              <td>{{ i.dept_name }}</td>
+                              <td>{{ i.Emp_Name }}</td>
+                              <td>{{ i.diff }}</td>
+                              <td>
+                                  <div>
+                                  <button mat-mini-fab color = "success" [routerLink]="['/rml/skill-developement/evaluation-form', i.apln_slno,this.form.controls['status'].value, 2]" >
+                                      <mat-icon>edit</mat-icon>
+                                  </button>
+                              </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                      </table>
+                    </table>
+              </div></ng-template>
+              </form>
+          </div>
+      </div>

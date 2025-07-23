@@ -1,0 +1,57 @@
+<div class="mx-5">
+    <h3><b>Emergency Details</b></h3>  
+    <h3>(<span class = "star-color">*</span> fields are required)</h3>
+
+      <form [formGroup]="form">
+        <div class="row">
+        <div class="col-sm-3">
+        <div class="emergency-form">  
+            <label class="form-header"for="name">Contact Name:<span class = "star-color">*</span></label>  
+            <input   
+                formControlName="contactName"
+                (ngModelChange)= "emitData()" (ngModelChange)="sendData()"  
+                id="name"  
+                type="text"   
+                class="form-control"
+                placeholder="Contact Name">  
+            <div *ngIf="name['contactName'].touched && name['contactName'].invalid" class="alert ">  
+                <div *ngIf= "name['contactName'].errors.required">Contact Name is required</div>   
+            </div>  
+        </div>
+    </div>
+      <div class="col-sm-3">
+        <div class="emergency-form">  
+            <label class="form-header" for="mobileNumber">Contact Number:<span class = "star-color">*</span></label>  
+            <input   
+                formControlName="contactNumber"  
+                (ngModelChange)= "emitData()" (ngModelChange)="sendData()"
+                id="contactNumber"   
+                type="text"   
+                class="form-control"
+                maxlength="10" 
+                pattern="\d{10}"
+                placeholder="Contact Number">  
+            <div *ngIf="f.contactNumber.touched && f.contactNumber.invalid" class="alert ">  
+                <div *ngIf="f.contactNumber.errors.required">Contact Number is required.</div>  
+                <div *ngIf="f.contactNumber.errors.pattern">Please, Enter 10 digit Contact Number.</div>  
+            </div>  
+        </div>  
+    </div>
+    <div class="col-sm-3">
+   
+        <label class="form-header">Relation:<span class = "star-color">*</span></label>
+        <select formControlName="relations" class="form-control" (ngModelChange)= "emitData()" (ngModelChange)="sendData()">
+            <option [ngValue]="">--Select a Relation--</option>
+            <option *ngFor="let nat of relations" [ngValue]="nat">{{nat}}</option>
+          </select>
+          <div *ngIf="r.relations.touched && r.relations.invalid"class="alert ">  
+            <div *ngIf="r.relations.errors.required">Relation is required</div>   
+        </div>  
+    </div>
+</div>
+<button  mat-raised-button type="submit" class="emergency-btn btn-primary emergency-btn-sm" (click)="submit()" [disabled]="form.invalid" style = "margin-top: 20px; text-align:center; margin-left:50%;"  ><span style="font-size: 14px;">Save</span></button>
+<span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>
+
+    </form>  
+</div>
+

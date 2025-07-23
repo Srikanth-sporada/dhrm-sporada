@@ -1,0 +1,39 @@
+/* dialog-box.css */
+
+:host ::ng-deep .toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 9999;
+}
+
+:host ::ng-deep .toast-content {
+  text-align: center;
+}
+
+:host ::ng-deep .toast-content h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+:host ::ng-deep .toast-content button {
+  background-color: #007bff !important;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+:host ::ng-deep .toast-content button:hover {
+  background-color: #0056b3 !important;
+}
+
+:host ::ng-deep .toast-content button:focus {
+  outline: none;
+}

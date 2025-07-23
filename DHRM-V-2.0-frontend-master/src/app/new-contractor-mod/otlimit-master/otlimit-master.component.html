@@ -1,0 +1,187 @@
+<div class="overlay" [hidden]="!showOTForm"></div>
+<div class="shadow-lg ">
+    <!-- <div class=" form-popup container1 mat-elevation-z8" > -->
+<div class=" form-popup container1 mat-elevation-z8" [hidden]="!showOTForm">
+    <div>
+        <h2>Add new OT Limit</h2>
+        <hr style="border-block-color: orange" />
+
+        <form [formGroup]="otLimitForm" (ngSubmit)="onSubmit($event)">
+
+            <div class="columns" id="firstBox" style="padding-bottom:10px;">
+                <div class="column">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Plant</mat-label>
+                        <mat-select formControlName="plant">
+                          <mat-option *ngFor="let plant of plantname" [value]="plant">{{ plant.plant_name }}</mat-option>
+                
+                        </mat-select>
+                        <mat-error *ngIf="otLimitForm.get('plant')?.hasError('required')">Please Select Plant </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                      appearance="outline"
+                      color="primary"
+                      class="example-full-width" 
+                      (click)="picker2.open()"
+                    >
+                      <mat-label>Effective Date</mat-label>
+                      <input
+                        matInput  formControlName="effectiveDate" 
+                     
+                        [matDatepicker]="picker2"
+                      />
+                      <mat-hint>DD/MM/YYYY</mat-hint>
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker2"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker2> </mat-datepicker>
+                      <mat-error *ngIf="otLimitForm.get('effectiveDate')?.hasError('required')">Please Select Effective Date  </mat-error>
+                    </mat-form-field>
+
+                </div>
+                <div class="column">
+                    <p>OT Limit Hours</p>
+                    <div class="item" id="item">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Per Day</mat-label>
+                          <input matInput type="number" formControlName="perDay" />
+                          <!-- <mat-error *ngIf="otLimitForm.get('perDay')?.hasError('required')">Please Enter Perday Limit  </mat-error> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Per Week</mat-label>
+                          <input matInput type="number" formControlName="perWeek"  />
+                          <!-- <mat-error *ngIf="otLimitForm.get('perWeek ')?.hasError('required')">Please Enter PerWeek Limit  </mat-error> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Per Month</mat-label>
+                          <input matInput type="number" formControlName="perMonth" />
+                          <!-- <mat-error *ngIf="otLimitForm.get('perMonth ')?.hasError('required')">Please Enter PerMonth limit  </mat-error> -->
+                        </mat-form-field>
+                      </div>
+
+
+
+
+                </div>
+            
+            
+            </div>
+            <div class="columns" >
+                <div
+                style="display: flex; justify-content: space-around;padding-top:0.5em"
+                >
+                <button
+                  mat-raised-button
+                  id="red"
+                  type="reset"
+                 (click)="reset()"
+                >
+                  Reset
+                </button>
+                <button mat-raised-button color="primary" (click)="hideForm()">
+                  Cancel
+                </button>
+                <button id="green" mat-raised-button color="primary" >
+                    Save</button>
+                </div>
+            
+            
+            </div>
+
+        </form>
+
+    </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >OT Limit</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+<div>
+  <mat-form-field appearance="outline">
+        <mat-label>Plant</mat-label>
+        <mat-select formControlName="plant">
+          <mat-option *ngFor="let plant of plantname" [value]="plant">{{ plant.plant_name }}</mat-option>
+
+        </mat-select>
+        <!-- <mat-error *ngIf="D_OffForm.get('plant')?.hasError('required')">Please Select Plant </mat-error> -->
+      </mat-form-field>
+
+        <button mat-fab color="primary" (click)="showForm()"   style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button>
+        
+        <button mat-fab style="float: right"  aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button>
+
+</div>
+    
+
+
+
+
+   
+        <!-- <app-loader *ngIf="loader.isLoding | async;else show"></app-loader> -->
+
+
+        <!-- <ng-template #show> -->
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center">Plant</th>
+                            <th div class="text-center">Effect Date</th>
+                            <th div class="text-center">Per Day </th>
+                            <th div class="text-center">Per Week </th>
+                            <th div class="text-center">Per Month </th>
+                         
+                            <th div class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                           <td>P2-Mysore</td> 
+                            <td>24-04-2023</td>
+                            <td>8 hr</td>
+                            <td>25 hr</td>
+                            <td>25 hr</td>
+                            
+                            
+                            <td>
+                                <button mat-mini-fab color = 'accent'>
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button"  >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </table>
+
+</div>
+
+        <!-- </ng-template>  -->
+
+</div>

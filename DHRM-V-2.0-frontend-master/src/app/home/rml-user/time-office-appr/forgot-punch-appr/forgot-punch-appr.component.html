@@ -1,0 +1,153 @@
+<ng-template #content1 let-modal>
+  <div class="modal-content1 container">
+    <br />
+    <div class="row">
+      <div class="col">
+        Are you sure you want to approve the request?
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-success btn-sm"
+              (click)="approve(1)"
+              style="margin-top: 20px; text-align: center"
+              type="submit"
+            >
+              <span style="font-size: 14px" (click)="modal.close('Close click')"
+                >YES</span
+              >
+            </button>
+          </div>
+          <div class="col">
+            <div class="button">
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin-top: 20px; text-align: center"
+                type="submit"
+              >
+                <span
+                  style="font-size: 14px"
+                  (click)="modal.close('Close click')"
+                  >NO</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
+    <br />
+  </div>
+</ng-template>
+<ng-template #content2 let-modal>
+  <div class="modal-content1 container">
+    <br />
+    <div class="row">
+      <div class="col">
+        Are you sure you want to Reject the request?
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-success btn-sm"
+              (click)="approve(0)"
+              style="margin-top: 20px; text-align: center"
+              type="submit"
+              (click)="modal.close('Close click')"
+            >
+              <span style="font-size: 14px">YES</span>
+            </button>
+          </div>
+          <div class="col">
+            <div class="button">
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin-top: 20px; text-align: center"
+                type="submit"
+                (click)="modal.close('Close click')"
+              >
+                <span style="font-size: 14px">NO</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
+    <br />
+  </div>
+</ng-template>
+<!-- <div class= "container">
+    <div class="md-5">
+    <br>
+    
+        <mat-label> <div class="fs-text"><b>Comp Off</b></div></mat-label>
+        <mat-form-field>
+          <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp
+                          startView="multi-year"
+                          (yearSelected)="chosenYearHandler($event)"
+                          (monthSelected)="chosenMonthHandler($event, dp)"
+                          panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
+</div> -->
+
+<br /><br /><br />
+<h1 class="title">Forgot Punch Approval Pending</h1>
+<hr style="border-block-color: orange" />
+<div class="table-wrapper">
+  <table class="table table-bordered table-striped table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+            style="width: 500px"
+            style="background-color: darkblue"
+          >
+            SNo
+          </th>
+          <th div class="text-center">Gen ID</th>
+          <th div class="text-center">Emp Name</th>
+          <th div class="text-center">Attendance Date</th>
+          <th div class="text-center">Actual In</th>
+          <th div class="text-center">Actual Out</th>
+          <th div class="text-center">Requested In</th>
+          <th div class="text-center">Requested Out</th>
+          <th div class="text-center">Reason</th>
+          <th div class="text-center">Approve/Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of table_data; let a = index">
+          <td>{{ a + 1 }}</td>
+          <td>{{ i.gen_id }}</td>
+          <td>{{ i.EmpName }}</td>
+          <td>{{ i.attDate }}</td>
+          <td>{{ i.actualIn==null?'-':i.actualIn }}</td>
+          <td>{{ i.actualOut==null?'-':i.actualOut }}</td>
+          <td>{{ i.requestedIn==null?'-':i.requestedIn }}</td>
+          <td>{{ i.requestedOut==null?'-':i.requestedOut }}</td>
+          <td>{{ i.reason }}</td>
+          <td>
+            <button mat-mini-fab color="success" (click)="open(content1, a)">
+              <mat-icon>done</mat-icon>
+            </button>
+            <button
+              mat-mini-fab
+              color="danger"
+              type="button"
+              (click)="open1(content2, a)"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>

@@ -1,0 +1,193 @@
+.button{
+
+    padding-right:50px;
+  }
+  .button1{
+  
+  padding-right:50px;
+  }
+  #title1{
+    font-size: 20px;
+  
+    color:rgb(0, 0, 139);
+    font-weight:bolder;
+    text-align:center;
+    text-decoration: solid;
+    font-weight:900;
+  }
+  .btn {
+    float: right;
+  
+  }
+  .boxx{
+    box-sizing: 100%;
+  }
+  
+  th{
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    
+  }
+  td{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    font-size: small;
+  }
+  th { background: #c5c5c5;}
+  table 
+  {
+  border-collapse: collapse;
+  width: 100%;
+  }
+  td, th { border: 1px solid #cdcdcd; padding: 8px;text-align: left;}
+  .form-group
+  {
+  background-color: lightgrey;
+  }
+  
+  tbody
+  {
+  text-align: center;
+  
+  }
+  
+  .table-wrapper
+  {
+    display: block;
+  }
+  .search{
+  margin-left: 0px;
+  }
+  .button{
+  
+    padding-right:50px;
+  }
+  .button1{
+  
+  padding-right:50px;
+  }
+  
+  
+.dark-modal .modal-content {
+    background-color: #292b2c;
+    color: white;
+    }
+    .dark-modal .close {
+    color: white;
+    }
+    .light-blue-backdrop {
+    background-color: #5cb3fd;
+    }
+    
+    
+    .modal-backdrop {
+    z-index: 1040 !important;
+    }
+    .modal-content {
+    margin: 2px auto;
+    z-index: 1100 !important;
+    }
+
+    .text-center{
+        width: 500px;
+        background-color: darkblue;
+      
+      }
+      .modal-content{
+        margin-top: 5%;
+        -webkit-box-shadow: 9px 10px 30px 0px;
+        -moz-box-shadow: 9px 10px 30px 0px ;
+        box-shadow: 9px 10px 30px 0px;
+        padding: 20px; /* Add padding as needed */
+        border-radius: 10px; /* Add border-radius as needed */
+        height:100%;
+        background-color: rgb(255, 253, 253);
+       
+      }
+      .input2 {
+        min-width: 200px;
+        background-color: #f5f5f5;
+        color: #242424;
+        padding: .15rem .5rem;
+        min-height: 40px;
+        border-radius: 6px;
+        outline: 10px;
+        border: 15px;  font-size: 16px;
+        line-height: 1.15;
+        box-shadow: 0px 10px 20px -18px;
+      }
+      
+      .input2:focus {
+        border-bottom: 2px solid #5b5fc7;
+        border-radius: 4px 4px 2px 2px;
+      }
+      
+      .input2:hover {
+        outline: 3px solid lightgrey;
+      }
+      ::ng-deep .mat-select-value {
+        text-align: left;
+        /* margin-top: 8%; */
+      }
+      .modal-title{
+        color:rgb(0, 0, 139);
+        text-decoration: solid;
+        font-size: larger;
+        font-weight:900;
+      }
+      :host ::ng-deep #radio mat-radio-button{
+        margin-left: 0.5em;
+       
+      }
+      .headBox1{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+      }
+      :host ::ng-deep #item mat-form-field {
+        width: 11rem;
+        margin-right: 1.2em;
+      }
+    
+      .wOff{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        
+      }
+
+      .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+        opacity: 0 !important; /*click effect color change*/
+        background-color: #422873 !important;  }
+        
+        .mat-radio-button.mat-accent .mat-radio-inner-circle {
+        background-color: #422873 !important; /*inner circle color change*/  }
+        
+        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+        border-color: #422873 !important; /*outer ring color change*/  }
+
+
+        .mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+            background-color: #422873;
+        }
+        #t1{
+            width:2em
+        }
+        #t2{
+            width:4em
+        }
+        #t3{
+            width:14em
+        }
+        #t4{
+            width:7em
+        }
+        #t5{}
+        #t6{
+            width:3em
+        }
+        .mat-button-focus-overlay {
+            background-color:transparent;
+        }

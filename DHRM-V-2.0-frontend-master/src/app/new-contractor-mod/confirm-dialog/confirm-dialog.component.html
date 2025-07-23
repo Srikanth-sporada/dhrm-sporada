@@ -1,0 +1,10 @@
+<mat-dialog-content>
+    <mat-icon *ngIf="icon" style="margin-right:0.25em;">{{icon | lowercase}}</mat-icon>
+
+    <h1>{{ data.message }}</h1>
+    <button color="warn" mat-button (click)="onConfirmClick(true)">{{ data.confirmText }}</button>
+    <button mat-button (click)="onConfirmClick(false)">{{ data.cancelText }}</button>
+
+</mat-dialog-content>
+
+

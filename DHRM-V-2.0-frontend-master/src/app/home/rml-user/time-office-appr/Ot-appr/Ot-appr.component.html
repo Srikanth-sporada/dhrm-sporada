@@ -1,0 +1,47 @@
+<div style="margin: 10px auto;">
+  <h2 style="text-align: center;font-size:xx-large;">OT Approver Mapping</h2>
+</div>
+<div class="button">
+  <button mat-fab color="primary"  aria-label="Example icon button with a delete icon" (click)="openAdd()">
+      <mat-icon>person_add</mat-icon>
+  </button></div>
+<div style="width: 90%;margin: 10px auto;;">
+  <table class="table table-bordered table-striped table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th
+            class="text-center"
+            style="width: 500px"
+            style="background-color: darkblue"
+          >
+            SNo
+          </th>
+          <th div class="text-center">plant</th>
+          <th div class="text-center">Executive Name</th>
+          <th div class="text-center">Functional Head</th>
+          <th div class="text-center">HR Head</th>
+          <th div class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list;let i=index">
+            <td style="text-align: center;">{{i+1}}</td>
+            <td style="text-align: center;">{{item.plant}}</td>
+            <td style="text-align: left;">{{item.exec}}</td>
+            <td style="text-align: left;">{{item.func_head}}</td>
+            <td style="text-align: left;">{{item.hr}}</td>
+            <td style="text-align: center;">
+              <button mat-mini-fab color = 'accent' (click)="openEdit(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" type="button" (click)="delete(item.id)" >
+                <mat-icon>delete</mat-icon>
+            </button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>
+

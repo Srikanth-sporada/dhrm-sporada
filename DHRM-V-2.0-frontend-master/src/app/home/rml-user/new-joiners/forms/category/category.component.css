@@ -1,0 +1,25 @@
+.form-header{
+    background-color: white;
+    color:black;
+    font-size: 20px;
+    font-style: bold;
+}
+
+.form-control{
+    font-size: 16px;
+}
+
+.cat-select{
+    width: 500px;
+}
+
+hr {
+    position: relative;
+    top: 20px;
+    border: none;
+    height: 3px;
+    background: #000000;
+    margin-bottom: 50px;
+    margin-left: 5px;
+    margin-right: 5px
+}

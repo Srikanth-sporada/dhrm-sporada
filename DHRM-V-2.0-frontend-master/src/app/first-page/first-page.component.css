@@ -1,0 +1,125 @@
+.layout-container {
+  height: 100vh; /* Use full viewport height */
+  overflow: hidden; /* Prevent scrollbars */
+  display: flex;
+  flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(to bottom, #fdfbfb, #d4ebf6);
+}
+
+
+.header {
+  background-color:  #0f2081;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.logo-img {
+  height: 75px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  width: "30px";
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  font-size: 50px;
+  font-weight: bold;
+  
+}
+
+.spacer {
+  width: 90px; /* match the width of the logo */
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card-wrapper {
+  width: 340px;
+  height: 220px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(149, 24, 24, 0.1);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border: 2px solid #fff;
+}
+
+.card-wrapper:hover {
+  transform: scale(1.03);
+   box-shadow: 0 6px 12px rgba(133, 3, 3, 0.1);
+
+
+}
+
+
+.image-container {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.label {
+  flex: 1;
+  color: #0d0c0c;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer {
+  background-color: #414040;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  height: 120px;
+  flex-shrink: 0; 
+}
+
+.footer-img {
+  width: 140px;
+  height: 150px;
+  object-fit: cover;
+  align-items: center;
+}
+
+.footer-text {
+  text-align: left;
+  color: #fff;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Calibri', sans-serif;
+  
+}
+
+.footer-copytext {
+  
+  text-align: center;
+  color:#fff;
+  font-size: 10px;
+ font-family:Arial, Helvetica, sans-serif;
+
+}

@@ -1,0 +1,1296 @@
+<div *ngIf="showplant != 'undefined'">
+  <mat-sidenav-container class="sidenav-container bg-primary">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false"
+    >
+      <mat-toolbar
+        style="background-color: #023075; color: white; padding-left: 90px"
+        >MENU</mat-toolbar
+      >
+      <mat-nav-list style="background-color: #023075">
+
+        <div >
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white" *ngIf="isRA">
+              <mat-icon class="icon-pad"> dashboard </mat-icon>
+              Dashboard Menu
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a 
+             
+              mat-list-item routerLink="/rml/hrs" style="color: white"
+               *ngIf="isFin==true || isPlantHead=='true' || ishrappr=='true' || isadmin == 'true' ||  ishr == 'true'">
+                <mat-icon class="icon-pad">dashboard</mat-icon>HR Summary Dashboard</a
+              >
+              <a 
+             
+              mat-list-item routerLink="/rml/corp_hrs" style="color: white"
+               *ngIf="isFin==true || isPlantHead=='true' || ishrappr=='true' || isadmin == 'true' ||  ishr == 'true'">
+                <mat-icon class="icon-pad">dashboard</mat-icon>Corp. HR Dashboard</a
+              >
+              <a mat-list-item routerLink="/rml/dashboard" style="color: white" *ngIf="isFin==true || ishr=='true' || ishrappr=='true' || isadmin == 'true' || isRA  || isPlantHead || isFh" >
+                <mat-icon class="icon-pad">dashboard</mat-icon> Present Vs Absent</a
+              >
+              <a mat-list-item routerLink="/rml/planvsactual" style="color: white" *ngIf="isFin==true || ishr=='true' || ishrappr=='true' || isadmin == 'true'  || isPlantHead || isFh">
+                <mat-icon class="icon-pad">dashboard</mat-icon> Plan Vs Actual</a
+              >
+              <a mat-list-item routerLink="/rml/ocm" style="color: white" *ngIf="isFin==true || ishr=='true' || ishrappr=='true' || isadmin == 'true' || isPlantHead || isFh || isOtAppr ==='true'">
+                <mat-icon class="icon-pad">dashboard</mat-icon>OCM MIS</a
+              >
+              <a 
+             
+              mat-list-item routerLink="/rml/Cnt" style="color: white"
+               *ngIf="isFin==true || isPlantHead=='true' || ishrappr=='true' || isadmin == 'true'  ">
+                <mat-icon class="icon-pad">dashboard</mat-icon>Canteen Dashboard</a
+              >
+             
+                   </mat-nav-list>
+              </mat-expansion-panel>
+              </div>
+          
+
+      
+        <div *ngIf="isadmin == 'true'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> ballot </mat-icon>
+              Masters
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+                mat-list-item
+                routerLink="/rml/masters/company"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">device_hub</mat-icon> Company</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/plant"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">domain</mat-icon>Plant</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/dept"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">person_pin_circle</mat-icon
+                >Department</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/line"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">linear_scale</mat-icon>Line</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/designation"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">event_seat</mat-icon>Designation</a
+              >
+              <!-- <a mat-list-item routerLink="/rml/masters/trainee-category" style="color: white">
+                        <mat-icon class="icon-pad">toc</mat-icon>Trainee Category</a> -->
+              <a
+                mat-list-item
+                routerLink="/rml/masters/employees"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">perm_identity</mat-icon>Employee</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/bank"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">account_balance</mat-icon>Bank
+                Details</a
+              >
+              
+              <!-- <a mat-list-item routerLink="/rml/masters/pincode" style="color: white">
+                        <mat-icon class="icon-pad">pin</mat-icon>Pin code</a> -->
+              <!-- <a mat-list-item routerLink="#" style="color: white">
+                        <mat-icon class="icon-pad">person_add</mat-icon>Role Access</a> -->
+              <!-- <a mat-list-item routerLink="#" style="color: white">
+                <mat-icon class="icon-pad">visibility</mat-icon>FTP path</a
+              >
+              <a mat-list-item routerLink="#" style="color: white">
+                <mat-icon class="icon-pad">email</mat-icon>E-Mail
+                Notification</a
+              > -->
+
+              <a
+                mat-list-item
+                routerLink="/rml/masters/shift"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">watch_later</mat-icon>Shift</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/masters/backdate"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">lock</mat-icon>Back Date Limit</a
+              >
+
+              <a 
+              *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/fhday_mst" style="color: white">
+                <mat-icon class="icon-pad">today</mat-icon>Factory Holiday </a>
+            <!-- <a 
+            *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/dh_day_mst" style="color: white">
+                <mat-icon class="icon-pad">today</mat-icon>Declared Holiday</a>
+                 -->
+            <!-- <a mat-list-item routerLink="/rml/contra/ot_mst" style="color: white">
+                <mat-icon class="icon-pad">toc</mat-icon>OT Limit </a>
+            <a mat-list-item routerLink="/rml/contra/w-off_mst" style="color: white">
+                <mat-icon class="icon-pad">toc</mat-icon>Week-Off</a> -->
+            <a
+            *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/dcoff_Mst" style="color: white">
+                <mat-icon class="icon-pad">toc</mat-icon>Alternate Holiday</a>
+
+                <a
+                *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/bill_pros_dt" style="color: white">
+                    <mat-icon class="icon-pad">update</mat-icon>Bill Processed Date</a>
+               
+                <a
+                *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/Indirect_HC" style="color: white">
+                    <mat-icon class="icon-pad">layers</mat-icon>Indirect Head Count Master</a>
+               
+                <!-- <a
+                *ngIf = "isadmin == 'true' " mat-list-item routerLink="/rml/contra/mst_leave" style="color: white">
+                    <mat-icon class="icon-pad">calendar_today</mat-icon>Operator Leave master</a>
+                -->
+
+
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+
+
+        <div *ngIf="ishr == 'true' || ishrappr == 'true'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> fiber_new </mat-icon>
+              Trainee Onboard
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <div *ngIf="ishr == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/new_joiners/trainee-application-status"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">assignment_ind</mat-icon>Trainee
+                  Application status</a
+                >
+              </div>
+              <div *ngIf="ishrappr == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/new_joiners/hr-approval"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon>HR Approval</a
+                >
+              </div>
+              <div *ngIf="ishr == 'true' || ishrappr == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/new_joiners/onboard"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon
+                  >Onboard/Seperation</a
+                >
+              </div>
+              <div *ngIf="ishr == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/new_joiners/dept_transfer"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon>Department
+                  Transfer</a
+                >
+              </div>
+
+              <div *ngIf="ishr == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/new_joiners/Rejoin-process"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">assignment_ind</mat-icon>Rejoin Request</a
+                >
+              </div>
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+
+        <!-- Contractor Onboard -->
+
+        <div *ngIf = "ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || issupervisor =='true' || isFin== 'true' ">
+          <mat-expansion-panel [class.mat-elevation-z0]="true" dense style="background-color: #023075;">
+              <mat-expansion-panel-header style="color: white">
+                  <mat-icon class="icon-pad">
+                      supervisor_account
+                  </mat-icon>
+                 Contractor Onboard
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+      
+                  <a mat-list-item *ngIf="issupervisor =='true'||ishr == 'true' || ishrappr == 'true' || isadmin == 'true' " routerLink="/rml/contra/conemp" style="color: white"  >
+                          <mat-icon class="icon-pad">recent_actors</mat-icon>Contract Employee </a>
+                  <a mat-list-item *ngIf=" isadmin == 'true'  " routerLink="/rml/contra/newCon" style="color: white">
+                      <mat-icon class="icon-pad">device_hub</mat-icon>Contractor Registration </a>
+        
+              </mat-nav-list>
+          </mat-expansion-panel>
+
+      </div>
+
+
+      <div *ngIf = "ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin ">
+        <mat-expansion-panel [class.mat-elevation-z0]="true" dense style="background-color: #023075;">
+            <mat-expansion-panel-header style="color: white">
+                <mat-icon class="icon-pad">
+                  redeem
+                </mat-icon>
+               Salary Master
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a mat-list-item *ngIf=" isadmin == 'true' " routerLink="/rml/contra/payroll"  style="color: white">
+                <mat-icon class="icon-pad">layers</mat-icon>Pay Role Master </a>
+
+              <a mat-list-item *ngIf=" isadmin == 'true' || isFin == 'true' || isFin " routerLink="/rml/contra/sal_header"   style="color: white">
+                <mat-icon class="icon-pad">view_list</mat-icon>Payscale Header </a>
+
+              <a mat-list-item *ngIf=" isadmin == 'true'  || isFin == 'true' || isFin || ishr == 'true' || ishrappr == 'true' " routerLink="/rml/contra/payscale"   style="color: white">
+                <mat-icon class="icon-pad">layers</mat-icon>Pay Scale Master </a>
+
+                <a mat-list-item *ngIf=" (ishr == 'true' && ishrappr == 'false' )|| isadmin == 'true' " 
+                routerLink="/rml/contra/upt_payscale" style="color: white"  >
+                        <mat-icon class="icon-pad">recent_actors</mat-icon>Update Salary</a>
+              
+                 <a mat-list-item  *ngIf=" ishrappr == 'true' || isadmin == 'true' "
+                routerLink="/rml/contra/apprl_salary" style="color: white">
+                    <mat-icon class="icon-pad">device_hub</mat-icon>Approve Salary </a>
+
+                  
+                <a mat-list-item  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true'"
+                routerLink="/rml/contra/ont_salary" style="color: white">
+                    <mat-icon class="icon-pad">visibility</mat-icon>One Time Ear & Ded </a>
+                
+
+                    <a mat-list-item  *ngIf ="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin " routerLink="/rml/contra/Emp_Sal_Master" style="color: white">
+                      <mat-icon class="icon-pad">assessment</mat-icon>Emp Salary Master
+                    </a>
+                    <a mat-list-item  *ngIf ="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin "  routerLink="/rml/contra/CL_Sal_Master"  style="color: white">
+                      <mat-icon class="icon-pad">list_alt</mat-icon>CL Salary Report
+                    </a>
+                    <!-- <a mat-list-item  *ngIf=" (ishr == 'true' && ishrappr == 'false' )|| isadmin == 'true' "  routerLink="/rml/contra/bulk_rev_payscale" style="color: white">
+                      <mat-icon class="icon-pad">visibility</mat-icon>One Time Ear & Ded
+                    </a>
+                     -->
+                    <!-- <mat-expansion-panel  [class.mat-elevation-z0]="true" dense style="background-color: #023075;" *ngIf="ishr == 'true' || isadmin == 'true'" dense>
+                      <mat-expansion-panel-header style="color: white">
+                        <mat-icon class="icon-pad">visibility</mat-icon>Revise Salary
+                      </mat-expansion-panel-header>
+                      <mat-nav-list dense>
+                        <a mat-list-item routerLink="/rml/contra/rev_payscale" style="color: white">
+                          <mat-icon class="icon-pad">visibility</mat-icon>Single salary Revise
+                        </a>
+                        <a mat-list-item routerLink="/rml/contra/bulk_rev_payscale" style="color: white">
+                          <mat-icon class="icon-pad">visibility</mat-icon>Bulk Salary Revise
+                        </a>
+                      </mat-nav-list>
+                    </mat-expansion-panel>
+
+                <a mat-list-item  *ngIf="ishr == 'true' || isadmin == 'true' "
+                routerLink="/rml/contra/ont_salary" style="color: white">
+                    <mat-icon class="icon-pad">visibility</mat-icon>One Time Salary </a>
+                 -->
+
+              </mat-nav-list>
+              </mat-expansion-panel>
+              </div>
+
+
+        <div *ngIf="istrainer == 'true'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> local_library </mat-icon>
+              Training (BODHI)
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+                *ngIf="isadmin=='true'"
+                mat-list-item
+                routerLink="/rml/training_dojo/training-modules"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">file_copy</mat-icon>Training
+                Modules</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/training_dojo/question-bank"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">question_mark</mat-icon>Question
+                Bank</a
+              >
+
+              <a
+                mat-list-item
+                routerLink="/rml/training_dojo/skill-question"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">question_mark</mat-icon> Skill Question
+                Bank</a
+              >
+
+              <a
+                mat-list-item
+                routerLink="/rml/training_dojo/test-evaluation"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">how_to_vote</mat-icon>Test
+                Evaluation</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/training_dojo/test-result-summary"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">cloud_done</mat-icon>Test Result
+                Summary</a
+              >
+              <div *ngIf="isadmin=='true' || istrainer == 'true'">
+                <a
+                mat-list-item
+                routerLink="/rml/training_dojo/Supervisor_Question"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">supervised_user_circle</mat-icon>Q.Supervisor Abservent
+                </a
+              >
+              </div>
+              <div *ngIf="istrainee == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rml/training_dojo/trainee-score-card"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">score</mat-icon>Trainee Score
+                  Card</a
+                >
+              </div>
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+        <div *ngIf="istrainee == 'true'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> watch </mat-icon>
+              Time Office
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+                mat-list-item
+                routerLink="/rml/time_office/calender"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">calendar_today</mat-icon
+                >Attendance</a
+              >
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office/attendance"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">event_note</mat-icon>Attendance</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time_office/forget_punch"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
+                Punch</a
+              > -->
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office/shift_change"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">track_changes</mat-icon>Shift
+                Change</a
+              > -->
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office/over-time"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">more_time</mat-icon>Over Time</a
+              > -->
+              <a
+              *ngIf="this.isOperator"
+                mat-list-item
+                routerLink="/rml/time_office/comp-off"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
+              >
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office/leave"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">villa</mat-icon>Leave</a
+              > -->
+              <a
+              *ngIf="this.isOperator"
+                mat-list-item
+                routerLink="/rml/time_office/per_leave"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">work_history</mat-icon>Permission/Leave</a>
+              
+
+              
+        
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+        <div *ngIf="(isCL == false && istrainee == 'true') || (this.isOperator)">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> border_color </mat-icon>
+            Skill Status
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+                mat-list-item
+                routerLink="/rml/skill-developement/skill-test"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">widgets</mat-icon
+                >Skill test</a
+              >
+            
+        
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+
+        <div *ngIf="istrainee == 'true'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> task </mat-icon>
+              Time Office Status
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office-status/forgot-punch-status"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
+                Punch</a
+              > -->
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office-status/shift-change-status"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">track_changes</mat-icon>Shift
+                Change</a
+              > -->
+              <a
+                mat-list-item
+                routerLink="/rml/time_office-status/excess-hrs"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">more_time</mat-icon>Excess Hours</a
+              >
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time_office-status/comp-off-status"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time_office-status/leave-status"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">villa</mat-icon>Leave</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time_office-status/od-status"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
+              > -->
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+        <div *ngIf="isRA">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> task </mat-icon>
+              Time Office
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+          
+              
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/shift-change-appr"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">track_changes</mat-icon>Shift
+                Change</a
+              > -->
+          
+              <a
+                *ngIf="isRA"
+                mat-list-item
+                routerLink="/rml/time-office-appr/ot-compoff"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">more_time</mat-icon>Comp-Off</a
+              >
+              <!-- <a
+                *ngIf="isRA"
+                mat-list-item
+                routerLink="/rml/time-office-appr/night-coff"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">more_time</mat-icon>Night Shift Comp-Off</a
+              > -->
+              <a
+                  *ngIf="isRA"
+                  mat-list-item
+                  routerLink="/rml/reports/atndReport"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon>Presernt/Absent Report</a
+                >
+                <a
+                  *ngIf="isRA"
+                  mat-list-item
+                  routerLink="/rml/time-office-appr/calender"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">calendar_today</mat-icon> 
+                  View Attendance</a
+                >
+              <!-- <a
+                *ngIf="ishrappr == 'true'"
+                mat-list-item
+                routerLink="/rml/time-office-appr/otapproveph"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">more_time</mat-icon>PHR OT
+                Approval</a
+              > -->
+          
+              <!-- <a
+                *ngIf="ishr == 'true'"
+                mat-list-item
+                routerLink="/rml/time-office-appr/compoffhr"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">av_timer</mat-icon>Comp-Off - HR</a
+              > -->
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/comp-off-appr"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/leave-appr"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">villa</mat-icon>Leave</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/od-appr"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
+              > -->
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/missing-punch"
+                style="color: white"
+                *ngIf="ishr == 'true' || ishrappr == 'true'"
+                ><mat-icon>cloud_upload</mat-icon>Missing Punch - HR</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/mid-day-permission"
+                style="color: white"
+                *ngIf=" isadmin=='true'||( ishr == 'true'&& ishrappr == 'false') "
+                ><mat-icon> local_parking</mat-icon>Middle Permission</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/otapprmapping"
+                style="color: white"
+                *ngIf="ishr == 'true' || ishrappr == 'true'"
+                ><mat-icon>supervisor_account</mat-icon>OT Approver Mapping</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/deptReport"
+                style="color: white"
+                ><mat-icon>supervisor_account</mat-icon>Dept Muster Report</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/time-office-appr/weekoff"
+                style="color: white"
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin=='true'"
+                ><mat-icon>supervisor_account</mat-icon>Week Off</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/trn/shft_cancel"
+                style="color: white"
+               
+                ><mat-icon> cancel_presentation</mat-icon>Shift Cancel Re-Process</a
+              >
+              <a
+                mat-list-item
+                routerLink="/rml/trn/shft_change"
+                style="color: white"
+                *ngIf=" isadmin=='true' || ishr == 'true' "
+                ><mat-icon> change_history</mat-icon>Attendance Re-Process</a
+              >
+              <a
+              *ngIf = "isadmin == 'true' "
+                mat-list-item
+                routerLink="/rml/trn/trnsf_post"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon>Transfer Post</a
+              >
+              <a
+              *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin=='true'"
+                mat-list-item routerLink="/rml/contra/mst_leave" style="color: white">
+                   <mat-icon class="icon-pad">calendar_today</mat-icon>Operator Leave master</a>
+              
+              <a
+              *ngIf="(ishr == 'true' || ishrappr == 'true' || isadmin=='true') && plant === '1000'"
+                mat-list-item routerLink="/rml/time-office-appr/five-days-mapping" style="color: white">
+                   <mat-icon class="icon-pad">filter_5</mat-icon>Five days Trainee Mapping</a>
+              
+                   <a
+                   mat-list-item
+                   routerLink="/rml/time-office-appr/route"
+                   style="color: white"
+                   *ngIf="isadmin=='true' || ( ishr == 'true' && ishrappr == 'false')"
+                   ><mat-icon>place</mat-icon>Route Master</a
+                 >
+                   <a
+                   mat-list-item
+                   routerLink="/rml/time-office-appr/van-mapping"
+                   style="color: white"
+                   *ngIf="isadmin=='true' || ( ishr == 'true' && ishrappr == 'false')"
+                   ><mat-icon>directions_bus</mat-icon>Van Facility mapping</a
+                 >
+     
+                   <a
+                   mat-list-item
+                   routerLink="/rml/time-office-appr/van-delay-regularization"
+                   style="color: white"
+                   *ngIf=" isadmin=='true' ||( ishr == 'true' && ishrappr == 'false')"
+                   ><mat-icon>watch_later</mat-icon>Van Delay Regularization</a
+                 >
+     
+            
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+
+        <div *ngIf="isadmin == 'true' || ishrappr == 'true' || isRA || Is_CHR === 'true' ">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> done </mat-icon>
+             Approvals
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+              *ngIf="isRA"
+              mat-list-item
+              routerLink="/rml/time-office-appr/forgot-punch-appr"
+              style="color: white"
+            >
+              <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
+              Punch Approval</a>
+
+              <a
+              *ngIf="isRA"
+              mat-list-item
+              routerLink="/rml/time-office-appr/excesshrAppr"
+              style="color: white"
+            >
+              <mat-icon class="icon-pad">more_time</mat-icon>Excess Hour Approval</a
+            >
+
+            <a
+            *ngIf="isOtAppr == true"
+            mat-list-item
+            routerLink="/rml/time-office-appr/otapprove"
+            style="color: white"
+          >
+            <mat-icon class="icon-pad">more_time</mat-icon>FH OT Approval</a
+          >
+
+              <a
+              *ngIf="isRA && ishrappr==='false'"
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/optr-appr-exec"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon>Operator Permission Approval</a
+              >
+              <a
+              *ngIf="ishrappr === 'true' "
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/optr-appr-hrmng"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon> Permission Approval</a
+              >
+              <a
+              *ngIf="isRA && ishrappr==='false'"
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/optr-leave-exec"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
+              >
+              <a
+              *ngIf="ishrappr === 'true' "
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/optr-leave-hrmng"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
+              >
+              <a
+              *ngIf="isRA && ishrappr==='false'"
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/optr-Coff-exec"
+                style="color: white"
+               
+                ><mat-icon> polymer</mat-icon>Operator Coff Approval</a
+              >
+              <a
+              *ngIf="ishrappr === 'true' || isadmin === 'true' || Is_CHR === 'true' "
+             
+                mat-list-item
+                routerLink="/rml/time-office-appr/Rejoin_Approval"
+                style="color: white"
+               
+                ><mat-icon> assignment_ind</mat-icon> Rejoin Approval</a
+              >
+           
+              </mat-nav-list
+            >
+          </mat-expansion-panel>
+        </div>
+
+        <div *ngIf="istrainee == 'false'">
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+          >
+            <mat-expansion-panel-header style="color: white">
+              <mat-icon class="icon-pad"> fitness_center </mat-icon>
+              Skill Development
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <div
+                *ngIf="
+                  istrainer == 'true' || ishr == 'true' || ishrappr == 'true'
+                "
+              >
+                <a
+                  mat-list-item
+                  [routerLink]="['/rml/skill-developement/trainer-evaluation']"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">people</mat-icon>Skill Evaluation</a
+                >
+              </div>
+
+              <div
+                *ngIf="
+                  istrainer == 'true' || ishr == 'true' || ishrappr == 'true' || isadmin === 'true'
+                "
+              >
+                <a
+                mat-list-item
+                routerLink="/rml/skill-developement/Operations"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">business_center</mat-icon
+                >Operations</a
+              >
+              </div>
+
+              <div
+                *ngIf="
+                  istrainer == 'true' || ishr == 'true' || ishrappr == 'true' || issupervisor =='true'
+                "
+              >
+                <a
+                  mat-list-item
+                  [routerLink]="['/rml/skill-developement/Skill-Matrix']"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">people</mat-icon>Skill Matrix</a
+                >
+              </div>
+
+              <div *ngIf="isRA || istrainer == 'true' || ishr == 'true' || ishrappr == 'true' || issupervisor =='true'">
+                <a
+                  mat-list-item
+                  [routerLink]="[
+                    '/rml/skill-developement/skill-view'
+                  ]"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">people_outline</mat-icon>View Skill Status</a
+                >
+              </div>
+              <div *ngIf="istrainer == 'true' || ishr == 'true' || isadmin=='true'">
+                <a
+                mat-list-item
+                [routerLink]="['/rml/skill-developement/evaluation-due']"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">plus_one</mat-icon>Skill Evaluation Summary</a
+              >
+              </div>
+              <div *ngIf="isadmin=='true' || issupervisor =='true'">
+                <a
+                mat-list-item
+                [routerLink]="['/rml/skill-developement/Supervisor_Evaluation']"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">supervisor_account</mat-icon>Supervisor Abservent</a
+              >
+              </div>
+
+              <a
+                *ngIf="isadmin == 'true' || ishrappr == 'true' || ishr == 'true' || istrainer == 'true'  "
+                  mat-list-item
+                  routerLink="/rml/reports/Skill-Matrix-Report"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad"> fastfood</mat-icon>Skill Matrix Report</a
+                >
+            </mat-nav-list>
+          </mat-expansion-panel>
+        </div>
+        <div>
+          <mat-expansion-panel
+            [class.mat-elevation-z0]="true"
+            dense
+            style="background-color: #023075"
+            *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin=='true'"
+          >
+            <mat-expansion-panel-header style="color: white" >
+              <mat-icon class="icon-pad"> wc </mat-icon>
+              People Planning
+            </mat-expansion-panel-header>
+            <mat-nav-list dense>
+              <a
+                mat-list-item
+                routerLink="/rml/people-planning/monthly"
+                style="color: white"
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
+              >
+                <mat-icon class="icon-pad">today</mat-icon>Monthly Planning</a
+              >
+
+              <a
+                mat-list-item
+                routerLink="/rml/people-planning/shift"
+                style="color: white"
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
+              >
+                <mat-icon class="icon-pad">today</mat-icon>Shift Upload</a
+              >
+              <!-- <a
+                mat-list-item
+                routerLink="/rml/people-planning/actualxplanned"
+                style="color: white"
+              >
+                <mat-icon class="icon-pad">event</mat-icon>Actual VS planned</a
+              >  -->
+              </mat-nav-list
+            >
+          </mat-expansion-panel>
+          <div
+            *ngIf="isadmin == 'true' || ishrappr == 'true' || isCmed == true "
+          >
+            <mat-expansion-panel
+              dense
+              style="background-color: #023075"
+              [class.mat-elevation-z0]="true"
+            >
+              <mat-expansion-panel-header style="color: white">
+                <mat-icon class="icon-pad"> assessment </mat-icon>
+                PMPD
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+                <a routerLink="pmpd/master" mat-list-item style="color: white">
+                  <mat-icon class="icon-pad">date_range</mat-icon>PMPD Master</a
+                >
+              </mat-nav-list>
+              <mat-nav-list dense>
+                <a routerLink="pmpd/actual" mat-list-item style="color: white">
+                  <mat-icon class="icon-pad">date_range</mat-icon>Production
+                  Actual</a
+                >
+              </mat-nav-list>
+            </mat-expansion-panel>
+          </div>
+          <div
+            *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true || isCmed"
+          >
+            <mat-expansion-panel
+              [class.mat-elevation-z0]="true"
+              dense
+              style="background-color: #023075"
+            >
+              <mat-expansion-panel-header style="color: white">
+                <mat-icon class="icon-pad"> assignment </mat-icon>
+                Reports
+              </mat-expansion-panel-header>
+
+              <mat-nav-list
+                dense
+                *ngIf="
+                  ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true 
+                "
+              >
+                <a
+                  mat-list-item
+                  routerLink="/rml/reports/rawpunch"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">access_time</mat-icon>Machine Punch
+                  Report</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/reports/arsreports"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">assessment</mat-icon>ARS
+                  Report</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/reports/atndReport"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon>Attendance 
+                  Report</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/reports/trainee-apln-report"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">person_search</mat-icon>Employee
+                  DataBase</a
+                >
+                
+                <a
+                  mat-list-item
+                  routerLink="/rml/contra/emp_rec2"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">person_search</mat-icon>Employee 
+                  Record</a
+                >
+                <a
+                *ngIf="isadmin == 'true' || ishrappr == 'true' || ishr == 'true' || isFin  "
+                  mat-list-item
+                  routerLink="/rml/reports/cntRpt"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad"> fastfood</mat-icon>Canteen Report</a
+                >
+
+
+                <!-- <a
+                  mat-list-item
+                  routerLink="/rml/reports/evaluation-due-report"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">date_range</mat-icon>Evaluation
+                  Due</a
+                > -->
+              </mat-nav-list>
+            </mat-expansion-panel>
+          </div>
+          <!-- <div *ngIf="istou == 'true'">
+            <mat-expansion-panel
+              [class.mat-elevation-z0]="true"
+              dense
+              style="background-color: #023075"
+            >
+              <mat-expansion-panel-header style="color: white">
+                <mat-icon class="icon-pad"> access_time </mat-icon>
+                Time Office Report
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/forgot-punch-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
+                  Punch</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/shift-change-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">track_changes</mat-icon>Shift
+                  Change</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/over-time-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">more_time</mat-icon>Over Time</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/comp-off-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/leave-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">villa</mat-icon>Leave</a
+                >
+                <a
+                  mat-list-item
+                  routerLink="/rml/time-office-down/od-down"
+                  style="color: white"
+                >
+                  <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
+                >
+              </mat-nav-list>
+            </mat-expansion-panel>
+          </div> -->
+          <div *ngIf="istrainee == 'false'">
+            <mat-expansion-panel
+              [class.mat-elevation-z0]="true"
+              dense
+              style="background-color: #023075"
+            >
+              <mat-expansion-panel-header style="color: white">
+                <mat-icon class="icon-pad"> help </mat-icon>
+                User Manual
+              </mat-expansion-panel-header>
+              <mat-nav-list dense>
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/New Joiners.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">supervisor_account</mat-icon>New
+                  Recruitment</a
+                >
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/Bodhi Training.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">import_contacts</mat-icon>Bodhi
+                  Training</a
+                >
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/Skill Development & People Planning.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">how_to_reg</mat-icon>Skill
+                  Development</a
+                >
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/Reports & Dashboards_R2.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">equalizer</mat-icon>Reports & Dashboard</a
+                >
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/Time Office.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">access_time</mat-icon>Time Office</a
+                >
+                <!-- <a
+                  mat-list-item
+                  [href]="url + 'sop/15722_AADHAR.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">supervisor_account</mat-icon
+                  >Training modules</a
+                > -->
+                <!-- <a
+                  mat-list-item
+                  [href]="url + 'sop/15722_AADHAR.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">supervisor_account</mat-icon
+                  >Reports
+                </a> -->
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/DHRM-Masters.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">insert_drive_file</mat-icon>Master
+                  Data</a
+                >
+                <a
+                  mat-list-item
+                  [href]="url + 'sop/cl_onboard.pdf'"
+                  style="color: white"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">supervisor_account</mat-icon>Contract Employee</a
+                >
+              </mat-nav-list>
+            </mat-expansion-panel>
+          </div>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar id="bt" class="bg-primary border border-primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+          *ngIf="isHandset$ | async"
+        >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <button
+          class="btn btn-primary border border-primary"
+          (click)="drawer.toggle()"
+        >
+          <mat-icon>list</mat-icon>
+        </button>
+
+        &nbsp;
+        <div *ngIf="showid" class="username">
+          &nbsp;{{ showname }}({{ istrainee=='true'?genid:showid }}) - {{ showdept }} - {{ showplant }}
+        </div>
+        <button
+          class="btn btn-primary border border-primary"
+          (click)="delCookie()"
+          id="logout"
+          routerLink="/first"
+        >
+          <span class="glyphicon glyphicon-home"></span>
+        </button>
+      </mat-toolbar>
+      <div *ngIf="router.url === '/rml'" class="img">
+        <img src="assets/HR2.jpg" alt="" />
+      </div>
+      <!-- Add Content Here -->
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

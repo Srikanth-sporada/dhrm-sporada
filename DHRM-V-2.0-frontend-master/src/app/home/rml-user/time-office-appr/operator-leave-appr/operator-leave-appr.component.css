@@ -1,0 +1,117 @@
+#title1{
+    font-size: 20px;
+  margin-top: 1em;
+    color:rgb(0, 0, 139);
+    font-weight:bolder;
+    text-align:center;
+    text-decoration: solid;
+    font-weight:900;
+  }
+
+  
+  .navbar{
+    padding-left: 2em;
+  }
+
+  .filter {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    gap: 10px;
+    margin-left: 10px;
+  }
+  
+th{
+    color: white;
+    /* font-family: 'Montserrat', sans-serif; */
+    padding: 14px;
+  }
+  td{
+    /* font-family: 'Times New Roman', Times, serif; */
+    font-weight: 500;
+    font-size: 13px;
+  }
+  th { background: #c5c5c5;
+    padding: 14px;}
+  table 
+  {
+  border-collapse: collapse;
+  width: 100%;
+  }
+  tbody
+{
+text-align: center;
+
+}
+  td { 
+    border: 1px solid #cdcdcd; 
+    padding:6px 6px 6px 6px;
+    text-align: center;
+}
+  
+.text-center{
+    width: 500px;
+    background-color: darkblue;
+  
+  }
+  
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgb(26, 73, 228)!important;
+    /* // opacity: 1!important; */
+  }
+
+  ::ng-deep #inp .mat-select {
+    display: inline-block;
+    width: 43%;
+    outline: none;
+}
+
+
+mat-select#mat-select-2 {
+    width: 50%;
+}
+    
+mat-select#inp {
+    width: 50%;
+}
+  .input2 {
+  
+    background-color: #f5f5f5;
+    color: #3469c6;
+    padding: 0.5rem 0.5rem;
+    min-height: 29px;
+    border-radius: 4px;
+    outline: 3px;
+    border: 2px solid;
+    font-size: 14px;
+    line-height: 1.15;
+    box-shadow: 0px 10px 20px -18px;
+  }
+
+  #green1{
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    border: 1px solid #cdcdcd; 
+    padding:6px 6px 11px 6px;
+    text-align: center;
+  }
+
+  #green{
+    
+    font-size: small;
+    
+  }
+  #green2{
+    
+    font-size: small;
+    
+      color: white;
+      background-color: rgb(9 159 41);
+    
+    
+  }
+
+  #select_all{
+    margin-left: 1em;
+  }

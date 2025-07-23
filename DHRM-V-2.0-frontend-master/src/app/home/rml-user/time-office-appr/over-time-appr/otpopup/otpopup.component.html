@@ -1,0 +1,89 @@
+<div>
+  <h3>OT Application</h3>
+  <div class="details">
+    <div class="detail">
+      <div><b>Gen ID:</b></div>
+      <p>{{ data.gen_id }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Name:</b></div>
+      <p>{{ data.fullname }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Date:</b></div>
+      <p>{{ data.att_date }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Excess Worked Hours:</b></div>
+      <p>{{ data.expect_othr }}</p>
+    </div>
+  </div>
+  <div class="details">
+    <div class="detail">
+      <div><b>Max Hours/day:</b></div>
+      <p>{{allowedOTHours.day!=undefined?allowedOTHours.day:0}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Consumed:</b></div>
+      <p>{{consoumedOtDetails.day!=undefined?consoumedOtDetails.day:0}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Pending:</b></div>
+      <p>{{allowedOTHours.day-consoumedOtDetails.day}}</p>
+    </div>
+  </div>
+  <div class="details">
+    <div class="detail">
+      <div><b>Max Hours/Week:</b></div>
+      <p>{{allowedOTHours.week}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Consumed:</b></div>
+      <p>{{consoumedOtDetails.week}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Pending:</b></div>
+      <p>{{allowedOTHours.week-consoumedOtDetails.week}}</p>
+    </div>
+  </div>
+  <div class="details">
+    <div class="detail">
+      <div><b>Max Hours/Month:</b></div>
+      <p>{{allowedOTHours.month}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Consumed:</b></div>
+      <p>{{consoumedOtDetails.month}}</p>
+    </div>
+    <div class="detail">
+      <div><b>Pending:</b></div>
+      <p>{{allowedOTHours.month-consoumedOtDetails.month}}</p>
+    </div>
+  </div>
+  <div>
+    <mat-form-field appearance="outline" style="margin: 0 8px;">
+      <mat-label>OT Hours</mat-label>
+      <input
+        matInput
+        placeholder="Enter the Approved OT Hours"
+        type="number"
+        [(ngModel)]="enteredHours"
+        (ngModelChange)="onOtHourChange()"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin: 0 8px;">
+      <mat-label>Machine</mat-label>
+      <mat-select placeholder="Please Select Worked Machine" [(ngModel)]="machine" (ngModelChange)="applyBtn()" name="item">
+        <mat-option *ngFor="let item of masterMachine" [value]="item.Mac_Id">
+          {{ item.Machine_Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="margin: 0 8px;">
+      <mat-label>OT Reason</mat-label>
+      <input matInput placeholder="OT Reason" [(ngModel)]="reason"  (ngModelChange)="applyBtn()"/>
+    </mat-form-field>
+  </div>
+  <p *ngIf="invalidMessage!=''" style="color: red;">{{invalidMessage}}</p>
+  <button mat-raised-button color="primary" style="float: right;" [disabled]="apply" (click)="applyOT()">Apply</button>
+</div>

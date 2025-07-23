@@ -1,0 +1,30 @@
+<div class="body form-group">
+    <div style="text-align: right; margin-top: 2%; margin-right: 10%;">
+        <button *ngIf="istrainee === 'true'" mat-raised-button color="primary" (click)="navigateBack()">Back</button>
+
+        <button *ngIf="ishr === 'true'"  mat-raised-button color="primary" onclick="history.back()">Back</button>
+    </div>
+
+    <form #quizForm=""ngForm>
+        <table class="table" style="width: 95%; margin-top: 2%; margin-left: 2%; margin-right: 2%;">
+            <thead style="background-color: #D3D3D3; color: black; font-size: 14px;">
+                <tr>
+                    <td style="width: 3%; border: 1px solid #000; text-align: center;">S.No</td>
+                    <td style="width: 50%; border: 1px solid #000; text-align: center;">Abservent Point</td>
+                    <td style="width: 10%; border: 1px solid #000; text-align: center;">Rating</td>
+                    <td style="width: 25%; border: 1px solid #000; text-align: center;">Remarks</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let q of answers; let i = index">
+                    <td style="border: 1px solid #000;">{{ i + 1 }}</td>
+                    <td style="border: 1px solid #000;">
+                        <textarea style="resize: none; outline: none; border-color: white; width: 100%; height: 100px; background-color: white;" disabled="true">{{ q.Abservent_Point }}</textarea>
+                    </td>
+                    <td style="border: 1px solid #000; text-align: center;">{{ q.Rating }}</td>
+                    <td style="border: 1px solid #000;">{{ q.Remarks }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>

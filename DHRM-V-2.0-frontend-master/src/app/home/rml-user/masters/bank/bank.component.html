@@ -1,0 +1,140 @@
+<ng-template #content let-modal>
+  <div class="modal-content-container">
+    <div class="modal-header">
+      <h4 class="modal-title">Add Bank Details</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="reset()"
+        (click)="modal.dismiss('Cross click')"
+      >
+        X
+      </button>
+    </div>
+
+    <br />
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col">
+          <label>Bank Name: </label><br />
+          <input class="input2" type="text" formControlName="bank_name" />
+        </div>
+        <div class="col">
+          <label>IFSC Code: </label><br />
+          <input class="input2" type="text" formControlName="bank_code" />
+        </div>
+        <br />
+        <br />
+      </div>
+      <br />
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      *ngIf="editing_flag == false"
+      type="button"
+      class="btn btn-success btn-lg"
+      (click)="save()"
+      (click)="modal.close('Close click')"
+    >
+      Save
+    </button>
+    <button
+      *ngIf="editing_flag == true"
+      type="button"
+      class="btn btn-success btn-lg"
+      (click)="editSave()"
+      (click)="modal.close('Close click')"
+    >
+      Save
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger btn-lg"
+      (click)="reset()"
+      (click)="modal.close('Close click')"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>
+<div class="container">
+  <br />
+  <div>
+    <h1 id="title1">Bank Details Master</h1>
+    <hr style="border-block-color: orange" />
+  </div>
+  <div class="button">
+    <button
+      mat-fab
+      color="primary"
+      (click)="open(content)"
+      style="float: right"
+      aria-label="Example icon button with a delete icon"
+    >
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </div>
+  <div class="button1">
+    <button
+      mat-fab
+      style="float: right"
+      aria-label="Example icon button with a delete icon"
+      (click)="exportexcel()"
+    >
+      <mat-icon>download</mat-icon>
+    </button>
+  </div>
+  <br /><br /><br />
+  <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+  <ng-template #show>
+    <div class="table-wrapper">
+      <table class="table table-bordered table-striped table-hover">
+        <table id="table">
+          <thead>
+            <tr>
+              <th
+                class="text-center"
+                style="width: 500px"
+                style="background-color: darkblue"
+              >
+                SNo
+              </th>
+              <th div class="text-center">Bank Name</th>
+              <th div class="text-center">IFSC Code</th>
+
+              <th div class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of dummy; let a = index">
+              <td>{{ a + 1 }}</td>
+              <td>{{ i.bank_name }}</td>
+              <td>{{ i.bank_code }}</td>
+
+              <td>
+                <button
+                  mat-mini-fab
+                  color="accent"
+                  (click)="edit(i.Slno, a)"
+                  (click)="opentoedit(content)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-mini-fab
+                  color="warn"
+                  type="button"
+                  (click)="delete(i.Slno, a)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </table>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,82 @@
+<div class="container">
+  <p style="text-align: center;font-size:xx-large;">Production Data Upload</p>
+  <div  class="sub-container">
+    <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file"/>
+    <button mat-raised-button color="yellow" style="margin-right: 20px">
+      <a
+        [href]="url + 'sop/Production Actual.xlsx'"
+        style="text-decoration: none"
+        >Download Template</a
+      >
+    </button>
+    <button mat-raised-button color="yellow" style="margin-right: 20px" (click)="verify()" [disabled]="file==''">
+      Verify
+    </button>
+    <button mat-raised-button color="success" [disabled]="save" (click)="upload()">Save</button>
+  </div>
+</div>
+<div>
+  <div style="margin:0 5%;" class="filters">
+    <div class="dates">
+      <mat-form-field appearance="outline" >
+        <mat-label>from</mat-label>
+        <input matInput type="date" [(ngModel)]="from" >
+      </mat-form-field>
+      <mat-form-field appearance="outline" >
+        <mat-label>to</mat-label>
+        <input matInput type="date" [(ngModel)]="to" >
+      </mat-form-field>
+      <button mat-raised-button color="primary" style="height: 40px;margin-top: 10px;" (click)="getData()">Search</button>
+    </div>
+    <div>
+    <mat-form-field appearance="outline" style="margin-right: 15px;">
+      <mat-label>Search By  Plant</mat-label>
+      <mat-select [(ngModel)]="plant" >
+        <mat-option value="" selected>All</mat-option>
+        <mat-option *ngFor="let plant of plantlist" [value]="plant.plant_code">{{
+          plant.plant_code
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" >
+      <mat-label>Search By Material Code</mat-label>
+      <input matInput type="text" [(ngModel)]="code" >
+    </mat-form-field>
+    <button mat-fab  style="margin-left: 15px;" (click)="exportexcel()"><mat-icon>download</mat-icon></button>
+  </div>
+  </div>
+ 
+  <div class="table_container">
+    <table class="table table-bordered table-striped table-hover" id="table">
+      <thead class="header" >
+        <tr>
+          <td>slno</td>
+          <td>Plant Code</td>
+          <td>Storage Location</td>
+          <td>Division</td>
+          <td>Segment</td>
+          <td>Material Code</td>
+          <td>Material Description</td>
+          <td>Quantity</td>
+          <td>Manual Time[Min]</td>
+          <td>Output Hrs</td>
+        </tr>
+       
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of productin_data|prodDataFlter:plant:code;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.plant}}</td>
+          <td>{{item.storage_location}}</td>
+          <td>{{item.division}}</td>
+          <td>{{item.dist_channel}}</td>
+          <td>{{item.mat_code}}</td>
+          <td>{{item.mat_desc}}</td>
+          <td>{{item.qty}}</td>
+          <td>{{item.pmpd}}</td>
+          <td>{{item.output_hrs}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

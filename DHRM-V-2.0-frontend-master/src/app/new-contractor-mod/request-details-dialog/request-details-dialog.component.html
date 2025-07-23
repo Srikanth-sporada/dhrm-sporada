@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Request Details for ID: {{data.requestId}}</h2>
+<mat-dialog-content>
+  <div class="request-summary">
+    <p>Total Earnings: {{getRequestTotalEarnings() | number}}</p>
+    <p>Total Deductions: {{getRequestTotalDeductions() | number}}</p>
+  </div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="gen_id">
+      <th mat-header-cell *matHeaderCellDef> Gen ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.gen_id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fullname">
+      <th mat-header-cell *matHeaderCellDef> Full Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element">
+          <span [ngClass]="{'earning': element.Type === 'Earning', 'deduction': element.Type === 'Deduction'}">
+            {{element.Type}}
+          </span>
+        </td>
+      </ng-container>
+    <ng-container matColumnDef="Description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.Amount}} </td>
+    </ng-container>
+    <!-- <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.Status}} </td>
+    </ng-container>
+ -->
+ <ng-container matColumnDef="Status">
+    <th mat-header-cell *matHeaderCellDef> Status </th>
+    <td mat-cell *matCellDef="let element">
+      <span [ngClass]="{'pending': element.Status === 'PENDING', 'approved': element.Status === 'APPROVED', 'rejected': element.Status === 'REJECTED'}">
+        {{element.Status}}
+      </span>
+    </td>
+  </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="['Id', 'Date', 'gen_id', 'fullname', 'Type', 'Description', 'Amount','Status']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['Id', 'Date', 'gen_id', 'fullname', 'Type', 'Description', 'Amount','Status']"></tr>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button style="background-color: rgb(233, 19, 19);color: white;" mat-dialog-close>Close</button>
+</mat-dialog-actions>

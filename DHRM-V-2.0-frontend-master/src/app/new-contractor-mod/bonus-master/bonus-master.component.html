@@ -1,0 +1,212 @@
+<div class="overlay" [hidden]="!showBonusForm"></div>
+<div class="shadow-lg ">
+  <!-- <div class=" form-popup container mat-elevation-z8" > -->
+  <div class=" form-popup container1 mat-elevation-z8" [hidden]="!showBonusForm">
+      <div>
+          <h2>Add Bonus </h2>
+          <hr style="border-block-color: orange" />
+  <form  [formGroup]="bonusForm"   > 
+      <div class="columns" id="firstBox" style="padding-bottom:10px;">
+          <div class="column">
+            <mat-form-field appearance="outline">
+              <mat-label>Plant</mat-label>
+              <mat-select formControlName="plant">
+                <mat-option *ngFor="let plant of plantData"  [value]="plant.plant_code">{{plant.plant_code}}/{{plant.plant_name}}</mat-option>
+          
+              </mat-select>
+              <mat-error *ngIf="bonusForm.get('plant')?.hasError('required')">Please Select Plant </mat-error>
+            </mat-form-field>
+           
+           <div id="item-2">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Plan Bonus %</mat-label>
+              <input matInput type="number"  formControlName="Pbonus"  required/>
+              <mat-error *ngIf="bonusForm.get('Pbonus')?.hasError('required')">Please Enter Plan Bonus </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Actual Bonus %</mat-label>
+              <input matInput  type="number" formControlName="Abonus" required />
+              <mat-error *ngIf="bonusForm.get('Abonus')?.hasError('required')">Please Enter Actual Bonus </mat-error>
+            </mat-form-field>
+           </div>
+           <mat-form-field  appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option  value=true >Active</mat-option>
+              <mat-option   value=fasle >InActive</mat-option>
+        
+            </mat-select>
+            <mat-error *ngIf="bonusForm.get('status')?.hasError('required')">Please Select Status </mat-error>
+          </mat-form-field>
+
+
+            </div>
+          <div class="column">
+            <mat-form-field
+            *ngIf="showAdd"
+            appearance="outline"
+            color="primary"
+            class="example-full-width" 
+            (click)="picker2.open()"
+          >
+            <mat-label>Effective From</mat-label>
+            <input
+              matInput  formControlName="effectiveFrom" 
+           
+              [matDatepicker]="picker2"
+            />
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2> </mat-datepicker>
+            <mat-error *ngIf="bonusForm.get('effectiveFrom')?.hasError('required')">Please Select Effective From </mat-error>
+          </mat-form-field>
+          <mat-form-field
+          *ngIf="showAdd"
+          appearance="outline"
+          color="primary"
+          class="example-full-width"
+          (click)="picker3.open()"
+        >
+          <mat-label>Effective To</mat-label>
+          <input
+            matInput  formControlName="effectiveTo" 
+           
+            [matDatepicker]="picker3"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker3"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker3> </mat-datepicker>
+          <mat-error *ngIf="bonusForm.get('effectiveTo')?.hasError('required')">Please Select Effective To </mat-error>
+        </mat-form-field>
+            <mat-form-field  *ngIf="!showAdd" appearance="outline" color="primary" class="example-full-width"  >
+            <mat-label>Effective From</mat-label>
+            <input matInput  formControlName="effectiveFrom" readonly  />
+            <mat-hint>Not able to edit</mat-hint>
+            <mat-error *ngIf="bonusForm.get('effectiveFrom')?.hasError('required')">Please Select Effective From </mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="!showAdd"  appearance="outline" color="primary" class="example-full-width" >
+          <mat-label>Effective To</mat-label>
+          <input matInput  formControlName="effectiveTo"  readonly />
+          <mat-hint>Not able to Edit</mat-hint>
+          <mat-error *ngIf="bonusForm.get('effectiveTo')?.hasError('required')">Please Select Effective To </mat-error>
+        </mat-form-field>
+          
+            </div>
+
+            </div>
+            <div class="columns" >
+              <div
+              style="display: flex; justify-content: space-around;padding-top:0.5em"
+              >
+              <button
+                mat-raised-button
+                id="red"
+                type="reset"
+               (click)="reset()"
+              >
+                Reset
+              </button>
+              <button mat-raised-button color="primary" (click)="hideBonus()" >
+                Cancel
+              </button>
+              <button id="green" *ngIf="showAdd"  mat-raised-button color="primary" type="submit" (click)="onSubmit()" >Add</button>
+              <button id="green" *ngIf="!showAdd"  mat-raised-button color="primary" type="submit" (click)="update()" >Update</button>
+              </div>
+            </div>
+            </form>
+
+            </div>
+            </div>
+            </div>
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <br>
+    <div>
+        <h1 id = "title1" >Bonus Masters</h1>
+        <hr style="border-block-color: orange" />
+      </div>
+      <div class="button">
+        <button mat-fab color="primary"  type="button" (click)="showBonus()" (click)="clickAddBonus()" class="btn btn-primary" data-bs-toggle="modal"   style="float: right" aria-label="Example icon button with a delete icon">
+            <mat-icon>person_add</mat-icon>
+        </button></div>
+        <div class = "button1">
+        <button mat-fab style="float: right" (click)="exportExcel()" aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon>
+        </button></div>
+        <br><br><br>
+        <br><br>
+        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+
+        <ng-template #show>
+            <div class = "table-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table"   >
+                    <thead>
+                        <tr>
+                            <th  class="text-center"
+                            style="width: 500px"
+                            style="background-color: darkblue">SNo</th>
+
+                            <th div class="text-center">Plant</th>
+                            <th div class="text-center">Planned Bonus %</th>
+                
+                            <th div class="text-center">Actual Bonus %</th>
+                            <th div class="text-center">Effective From</th>
+                            <th div class="text-center">Effective To</th>
+    
+                            <th div class="text-center">Status</th>
+                        
+                            <th div class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                        <tr *ngFor="let data of activeBonusData ;let i =index ">
+                    
+                            <td>{{i+1}}</td>
+                         
+                            <td>{{data.Plant_code}} </td>
+                            <td>{{data.Planned_Bonus}} </td>
+                            <td>{{data.Actual_Bonus}} </td>
+                            <td>{{data.Effective_from |date:'dd-MM-yyyy'}} </td>
+                            <td>{{data.Effective_To |date:'dd-MM-yyyy'}}</td>
+                            <td *ngIf="data.Status == 1">Active</td>
+                            <!-- <ng-template #inactive>
+                              <td>InActive</td>
+                            </ng-template> -->
+                            <td>
+                                <button mat-mini-fab color = 'accent' (click)="onEdit(data)"  >
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button mat-mini-fab color="warn" type="button" (click)="delete_bonus(data)" >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <p *ngIf="bonus.length === 0 ">No bonus items are added</p> -->
+                </table>
+
+</div>
+
+        </ng-template> 
+
+</div>
+

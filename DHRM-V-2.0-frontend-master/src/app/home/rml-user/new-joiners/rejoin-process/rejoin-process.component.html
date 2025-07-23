@@ -1,0 +1,313 @@
+<div>
+    <mat-tab-group>
+        <mat-tab label="Request">
+
+            <div class="container2" style="z-index: 1250;">
+                <!-- <br> -->
+                <div style="margin-top: 1%;">
+                    <h1 id="title1">Temporary Workmen - Rejoin Request</h1>
+
+                    <div style="display: flex; flex-direction: column; margin-left: 0; gap: 20px; width: 100%;">
+
+                        <div style="flex: 0 0 auto; width: 100%;">
+                            <form [formGroup]="form"
+                                style="display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-left: 1%;">
+                                    <mat-label>Gen ID:</mat-label>
+                                    <input type="text" style="padding: 5px;" formControlName="genid" />
+
+                                    <!-- Styled Search Button -->
+                                    <button type="button" (click)="search()" style="
+                                        padding: 8px 16px;
+                                        background-color: #007BFF;
+                                        color: white;
+                                        border: none;
+                                        border-radius: 4px;
+                                        font-weight: bold;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s ease;
+                                        " onmouseover="this.style.backgroundColor='#0056b3'"
+                                        onmouseout="this.style.backgroundColor='#007BFF'">
+                                        Search
+                                    </button>
+
+                                    <button type="button" (click)="clear()" style="
+                                        padding: 8px 16px;
+                                        background-color: #DC3545; /* Bootstrap red */
+                                        color: white;
+                                        border: none;
+                                        border-radius: 4px;
+                                        font-weight: bold;
+                                        cursor: pointer;
+                                        transition: background-color 0.3s ease;
+                                        " onmouseover="this.style.backgroundColor='#a71d2a'"
+                                        onmouseout="this.style.backgroundColor='#DC3545'">
+                                        Clear
+                                    </button>
+
+                                </div>
+
+                                <!-- Styled Submit Button -->
+                                <button *ngIf="tableData.length > 0" type="button" (click)="submit()" style="
+                                    padding: 8px 16px;
+                                    background-color: #28A745;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 4px;
+                                    margin-right: 4%;
+                                    font-weight: bold;
+                                    cursor: pointer;
+                                    transition: background-color 0.3s ease;
+                                    " onmouseover="this.style.backgroundColor='#1e7e34'"
+                                    onmouseout="this.style.backgroundColor='#28A745'">
+                                    Submit
+                                </button>
+                            </form>
+                        </div>
+
+
+                        <div *ngIf="data.length > 0" style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+
+                            <div style="flex: 1;">
+                                <table border="1" style="border-collapse: collapse; width: 98%; margin: 0 auto;">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                Emp Id</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                Name</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                Category</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                DOJ</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                DOL</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                Service Years</th>
+                                            <th style="background-color: darkblue; color: white; text-align: center;">
+                                                Aadhar Number</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr *ngFor="let item of data; let i = index">
+                                            <td>{{ item.gen_id }}</td>
+                                            <td>{{ item.fullname }}</td>
+                                            <td>{{ item.apprentice_type }}</td>
+                                            <td>{{ item.doj | date:'dd-MM-yyyy' }}</td>
+                                            <td>{{ item.dol | date:'dd-MM-yyyy' }}</td>
+                                            <td>{{ item.ServiceYears }}</td>
+                                            <td>{{ item.aadhar_no }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="data.length > 0"
+                        style="display: flex; gap: 10px; align-self: flex-start; margin-left: 2%; margin-top: 1%;">
+
+                        <select style="padding: 5px; width: 20%;" [(ngModel)]="selectedCategory" name="newCategory">
+                            <option value="">Select New Category</option>
+                            <option *ngFor="let cat of CatList" [value]="cat.slno">
+                                {{ cat.categorynm }}
+                            </option>
+                        </select>
+
+                        <input type="text" placeholder="Reason For Rejoin" style="padding: 5px; width: 50%;"
+                            [(ngModel)]="rejoinReason" name="reason" />
+
+                        <div>
+                            <button type="button" (click)="add()" style="
+                                padding: 8px 16px;
+                                font-size: 16px;
+                                font-weight: bold;
+                                background-color: #FD7E14; 
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                transition: background-color 0.3s ease;
+                                " onmouseover="this.style.backgroundColor='#e8590c'"
+                                onmouseout="this.style.backgroundColor='#FD7E14'">
+                                Add
+                            </button>
+                        </div>
+
+
+                    </div>
+
+                    <div style="margin-top: 1%; width: 100%; align-items: center;">
+                        <table border="1" style="border-collapse: collapse; width: 98%; margin: 0 auto;">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Sl No</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Gen Id
+                                    </th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Name</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">DOJ</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">DOL</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Service
+                                        Years</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Old
+                                        Category</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">New
+                                        Category</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Aadhar
+                                        No</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Reason For
+                                        Rejoin</th>
+                                    <th style="background-color: darkblue; color: white; text-align: center;">Status
+                                    </th>
+                                    <th *ngIf="showActionColumn"
+                                        style="background-color: darkblue; color: white; text-align: center;">Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let b of tableData; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ b.Gen_Id }}</td>
+                                    <td>{{ b.fullname }}</td>
+                                    <td>{{ b.DOJ }}</td>
+                                    <td>{{ b.DOL }}</td>
+                                    <td>{{ b.Service_Years }}</td>
+                                    <td>{{ b.Old_Category }}</td>
+                                    <td>{{ b.categorynm }}</td>
+                                    <td>{{ b.Aadhar_Number }}</td>
+                                    <td>{{ b.Reason_For_Rejoin }}</td>
+                                    <td>{{ b.Approval_Status }}</td>
+                                    <td *ngIf="showActionColumn">
+                                        <mat-icon *ngIf="b.Approval_Status === 'REJECTED'" (click)="onEdit(b)"
+                                            style="cursor: pointer;">edit</mat-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div *ngIf="showEditModal" class="modal-overlay">
+                    <div class="modal-content">
+                        <h2>Edit Rejoin Data</h2>
+
+                        <div style="display: flex; gap: 20px; margin-top: 10px;">
+                            <div style="flex: 1;">
+                                <label><strong>Name:</strong></label>
+                                <div>{{ selectedItem?.fullname }}</div>
+                            </div>
+
+                            <div style="flex: 1;">
+                                <label><strong>Rejected By:</strong></label>
+                                <div>
+                                    {{ selectedItem?.Chr_Comment ? selectedItem?.Chr_Name : selectedItem?.Phr_Name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="flex: 1;">
+                            <label><strong>Approver Comment:</strong></label>
+                            <div>
+                                {{ selectedItem?.Chr_Comment ? selectedItem?.Chr_Comment : selectedItem?.Phr_Comment }}
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            <label><strong>Category:</strong></label>
+                            <select [(ngModel)]="editCategory" style="width: 100%; padding: 6px;">
+                                <option *ngFor="let cat of CatList" [value]="cat.slno">{{ cat.categorynm }}</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            <label><strong>Reason for Rejoin:</strong></label>
+                            <textarea [(ngModel)]="editReason" rows="3" style="width: 100%; padding: 6px;"></textarea>
+                        </div>
+
+                        <!-- Radio buttons for Resubmit and Cancel -->
+                        <div style="margin-top: 10px;">
+                            <label><strong>Action:</strong></label>
+                            <div>
+                                <label style="margin-right: 15px;">
+                                    <input type="radio" name="action" [(ngModel)]="selectedAction" value="PENDING" />
+                                    Resubmit
+                                </label>
+                                <label>
+                                    <input type="radio" name="action" [(ngModel)]="selectedAction" value="CANCELED" />
+                                    Cancel
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px;">
+                            <button (click)="updateRejoin()"
+                                style="background-color: #28A745; color: white; padding: 8px 16px; border: none; border-radius: 4px;">Submit</button>
+                            <button (click)="closeEditModal()"
+                                style="background-color: #DC3545; color: white; padding: 8px 16px; border: none; border-radius: 4px;">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="Report">
+
+            <div style="margin-top: 1%; width: 100%; align-items: center;">
+
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 10px; width: 98%; margin: 0 auto;">
+                    <button mat-fab aria-label="Download Excel" (click)="exportexcel()">
+                        <mat-icon>download</mat-icon>
+                    </button>
+                </div>
+
+                <table border="1" style="border-collapse: collapse; width: 98%; margin: 0 auto; margin-top: 1%;"
+                    id="table">
+                    <thead>
+                        <tr>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Sl No</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Gen Id
+                            </th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Name</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">DOJ</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">DOL</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Service
+                                Years</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Old
+                                Category</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">New
+                                Category</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Aadhar
+                                No</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Reason For
+                                Rejoin</th>
+                            <th style="background-color: darkblue; color: white; text-align: center;">Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let b of ReportData; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ b.Gen_Id }}</td>
+                            <td>{{ b.fullname }}</td>
+                            <td>{{ b.DOJ }}</td>
+                            <td>{{ b.DOL }}</td>
+                            <td>{{ b.Service_Years }}</td>
+                            <td>{{ b.Old_Category }}</td>
+                            <td>{{ b.categorynm }}</td>
+                            <td>{{ b.Aadhar_Number }}</td>
+                            <td>{{ b.Reason_For_Rejoin }}</td>
+                            <td>{{ b.Approval_Status }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </mat-tab>
+    </mat-tab-group>
+</div>

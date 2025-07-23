@@ -1,0 +1,66 @@
+<div class="container pt-2">
+    <div class="row justify-content-md-left pt-5">
+        <div class="table col-sm-20 shadow round pb-4">
+            <div class="mx-5">
+<br><div class = "title"> Shift Change Details</div>
+<form [formGroup] = "form">
+<div class="container pt-2">
+        <div class="row justify-content-md-left pt-5">
+            <div class="table col-sm-20 shadow round pb-4">
+                <div class="mx-5">
+                    <h3>Start/End Date</h3>
+      
+            <div class="row">
+                <div class="col">
+                    <label>Start Date: </label><br>
+                    <input class="form-control"  type = "date" formControlName = "date">
+                </div>
+                <div class="col">
+                    <label>End Date: </label><br>
+                    <input class="form-control"  type = "date" formControlName = "end_date">
+                </div>
+            </div><br>
+                </div></div></div></div>
+                <div class="container pt-2">
+                    <div class="row justify-content-md-left pt-5">
+                        <div class="table col-sm-20 shadow round pb-4">
+                            <div class="mx-5">
+                                <h3>Current/Preferred Shift</h3>
+
+            <div class="row">
+                    <div class="col">                            
+                        <label>Current Shift: </label><br>
+                        <select class="form-control" (change)="shift($event)" formControlName = "current_shift" ><option value="">choose an option</option><option  *ngFor= "let i of current_shift; let a = index" >{{a+1}}. {{i.shift_desc}} ({{i.act_tm_from}} - {{i. act_tm_to}})</option></select>
+                    </div>
+                    <div class="col">                            
+                    <label>Preferred Shift: </label><br>
+                    <select class="form-control" formControlName = "actual_shift" ><option value="">choose an option</option><option  *ngFor= "let i of preferred_shift; let a = index" >{{a+1}}. {{i.shift_desc}} ({{i.act_tm_from}} - {{i. act_tm_to}})</option></select>
+                </div>
+            </div><br>
+           
+     </div></div></div></div>
+        <div class="container pt-2">
+            <div class="row justify-content-md-left pt-5">
+                <div class="table col-sm-20 shadow round pb-4">
+                    <div class="mx-5">
+                        <h3>Reliever Avaliable ?</h3>
+       
+            <div class="row">
+                <div class="col">
+                    <input type="radio" name= 'Reliever' (change)="get($event)"> YES<br>
+                    <input type="radio" name= 'Reliever' (change)="no($event)"> NO
+
+                </div>
+                <div class="col" *ngIf="reliever">                            
+                    <label>Reliever Name: </label><br>
+                    <select class="form-control" formControlName = "reliever_id" ><option value="">choose an option</option><option  *ngFor= "let i of reliever_name; let a = index">{{a+1}}. {{i.fullname}}</option></select>
+                </div>
+            </div><br>
+
+   
+                    </div></div></div></div>
+<br>
+    <button type="submit" class="btn btn-success btn-md"  [disabled]="form.invalid" (click)="submit()">Save</button>
+   
+</form>
+            </div></div></div></div> 

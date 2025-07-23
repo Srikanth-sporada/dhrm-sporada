@@ -1,0 +1,77 @@
+<div >
+  <h2>Add PMPD</h2>
+  <form [formGroup]="pmpdData" >
+    <div class="form-main">
+      <div class="form-column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Plant</mat-label>
+          <mat-select formControlName="plant" >
+            <mat-option *ngFor="let item of plant" [value]="item.plant_code"> {{item.plant_code}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Material Code</mat-label>
+          <input
+            matInput
+            placeholder="Material Code"
+            formControlName="material_code"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Material Description</mat-label>
+          <input
+            matInput
+            placeholder="Material Description"
+            formControlName="material_desc"
+      
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Material Type</mat-label>
+          <mat-select name="food" formControlName="material_type">
+            <mat-option *ngFor="let item of material_type" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>UOM</mat-label>
+          <mat-select formControlName="uom">
+            <mat-option *ngFor="let item of uom" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Division</mat-label>
+          <mat-select formControlName="division">
+            <mat-option *ngFor="let item of division" [value]="item"> {{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>PMPD</mat-label>
+          <input matInput placeholder="PMPD" formControlName="pmpd" type="number"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="effective_date">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix  [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="this.isEdit">
+          <mat-label>Active Status</mat-label>
+          <mat-select name="food" formControlName="active_status">
+            <mat-option value="1"> Active </mat-option>
+            <mat-option value="0"> Inactive </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="buttons">
+        <button mat-raised-button color="danger" (click)="this.dailogRef.close()">Cancel</button>
+        <button mat-raised-button color="yellow" *ngIf='!isEdit' [disabled]="pmpdData.status=='INVALID'" (click)="verifydata()">Verify</button>
+        <button mat-raised-button color='success' *ngIf='!isEdit' type="submit" [disabled]="!data_verified" (click)="upload_data()">Save</button>
+        <button mat-raised-button color='success' *ngIf='isEdit' type="submit" [disabled]="updatebutton" (click)="updateData()">Update</button>
+    </div>
+        
+  </form>
+</div>

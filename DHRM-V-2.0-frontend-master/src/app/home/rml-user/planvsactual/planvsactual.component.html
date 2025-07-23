@@ -1,0 +1,26 @@
+<div class="d_container">
+  <div class="options">
+    <mat-form-field appearance="outline" >
+      <mat-label>Select date</mat-label>
+      <input
+        matInput
+        placeholder="label"
+        type="date"
+        [(ngModel)]="date"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Plant</mat-label>
+      <mat-select [(ngModel)]="selectedPlant" [disabled]="isadmin == 'false'">
+        <mat-option value="" selected>All</mat-option>
+        <mat-option *ngFor="let item of plants" [value]="item.plant_code">{{
+          item.plant_code
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+   <app-directandindirect [plant]="selectedPlant" and [date]="date"></app-directandindirect>
+   <app-planvsactdept [plant]="selectedPlant" and [date]="date"></app-planvsactdept>
+   <app-planvssctline [plant]="selectedPlant" and [date]="date"></app-planvssctline>>
+  </div>

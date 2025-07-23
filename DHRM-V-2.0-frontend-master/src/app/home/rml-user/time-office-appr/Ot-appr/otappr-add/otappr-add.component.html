@@ -1,0 +1,48 @@
+<h1 style="text-align: center;">OT Approver Mapping Addition</h1>
+<div class="container">
+  <mat-form-field appearance="outline">
+    <mat-label>Plant</mat-label>
+  <mat-select placeholder="Select Plant" [(ngModel)]="plant" name="plant" (ngModelChange)="loadData()" [disabled]="!isadmin">
+    
+    <mat-option *ngFor="let item of plantList " [value]="item.plant_code">
+      {{item.plant_code}}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="outline" class="width:400px">
+    <mat-label>Employee Name</mat-label>
+    <input matInput
+           aria-label="Employee Name"
+           [matAutocomplete]="auto"
+           [formControl]="emp"
+           
+           >
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let emp of filteredEmp | async" [value]="emp.Emp_Name">
+        <span>{{emp.Emp_Name}}</span> -
+        {{emp.gen_id}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Functional Head</mat-label>
+    <mat-select placeholder="Placeholder" [(ngModel)]="selectedOtAppr" name="item">
+      <mat-option *ngFor="let item of otApprovers" [value]="item.empl_slno">
+        {{item.Emp_Name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>HR Head</mat-label>
+    <mat-select placeholder="Placeholder" [(ngModel)]="selectedHr" name="item">
+      <mat-option *ngFor="let item of headHr" [value]="item.empl_slno">
+        {{item.Emp_Name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="button">
+  <button mat-raised-button color="accent" (click)="close()">close</button>
+  <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+
+</div>

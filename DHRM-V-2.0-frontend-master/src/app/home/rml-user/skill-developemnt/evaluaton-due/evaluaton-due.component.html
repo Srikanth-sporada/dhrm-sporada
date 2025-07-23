@@ -1,0 +1,110 @@
+<div class = "container">
+    <div  style = "margin-top: 40px;">  
+       
+        <h1><b>Skill Development Summary (Active Employee)</b></h1>
+      <br><br>
+      <div class="skillsummary">
+        <table class="table table-bordered table-striped table-hover">
+          <thead >
+            <tr >
+              <th style="background-color: darkblue;">Sl NO</th>
+              <th style="background-color: darkblue;">Ageing</th>
+              <th style="background-color: darkblue;">Skill Level 1</th>
+              <th style="background-color: darkblue;">Skill Level 2</th>
+              <th style="background-color: darkblue;">Skill Level 3</th>
+              <th style="background-color: darkblue;">Skill Level 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of skillsummary;let i=index">
+              <td >{{item.diff_range.split('_')[1]!='SUM'?i+1:''}}</td>
+              <td>{{item.diff_range.split('_')[1]}}</td>
+              <td>{{item.skill_1}}</td>
+              <td>{{item.skill_2}}</td>
+              <td>{{item.skill_3}}</td>
+              <td>{{item.skill_4}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-container1">
+        <div class="row">
+          <div class="col-sm-3">
+            <b><p>Name :</p></b>
+            <input type="text" class="input2"  [(ngModel)]="name"/>
+          </div>
+          <div class="col-sm-3">
+            <b><p>Department Name</p></b>
+            <mat-select class="input2" [(ngModel)]="dept" (selectionChange)="getLineName($event)">
+              <mat-option value="" selected >--SELECT--</mat-option>
+              <mat-option
+                *ngFor="let i of department"
+                [value]="i.dept_name"
+                >{{ i.dept_name }}</mat-option
+              >
+            </mat-select>
+          </div>
+          <div class="col-sm-3">
+            <b><p>Line Name</p></b>
+            <mat-select class="input2" [(ngModel)]="line" >
+              <mat-option value="" selected >--SELECT--</mat-option>
+              <mat-option
+                *ngFor="let i of changeline"
+                [value]="i.line_name"
+                >{{ i.line_name}}</mat-option
+              >
+            </mat-select>
+          </div>
+        </div>
+      </div>
+      
+      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+      <ng-template #show>
+        <div class = "table-wrapper">
+          <table class="table table-bordered table-striped table-hover">
+            <table id="table">
+                <thead>
+                <tr>
+                    <!-- <th div class="aligncommand">Date</th> -->
+                    <th div class="aligncommand">Sl.No</th>
+                    <th div class="aligncommand">Gen ID</th>
+                    <th div class="aligncommand">Name</th>
+                    <th div class="aligncommand">Skill Level</th>
+                    <th div class="aligncommand">DOJ</th>         
+                    <th div class="aligncommand">Dept Name</th>
+                    <th div class="aligncommand">Line Name</th>
+                    <th div class="aligncommand">Reporting To</th>
+                    <th div class="aligncommand">Aging</th>
+                    <th div class="aligncommand">First Evaluation</th>
+                    <th div class="aligncommand">Second Evaluation</th>
+                    <th div class="aligncommand">Third Evaluation</th>
+                    <th div class="aligncommand">Fourth Evaluation</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let i of filterinfo|filter:name|deptfilter:dept|linefilter:line;let j=index">
+                          <!-- <td>{{ i.doj.split('T')[0] | date: 'dd-MM-yyyy' }}</td> -->
+                          <td>{{j+1}}</td>
+                          <td>{{i.gen_id}}</td>
+                          <td>{{ i.fullname }}</td>
+                          <td>{{ i.levels }}</td>
+                          <td>{{i.doj}}</td>
+                          <td>{{ i.dept_name }}</td>
+                          <td>{{ i.line_name }}</td>
+                          
+                          <td>{{ i.Emp_Name }}</td>
+                          
+                          <td>{{ i.diff }}</td>
+                          <td>{{ (i.skillLevel >= 1 &&i.skillLevel <= 4) ?tick:ex }}</td>
+                          <td>{{ (i.skillLevel >= 2 &&i.skillLevel <= 4) ?tick:ex }}</td>
+                          <td>{{ (i.skillLevel >= 3 &&i.skillLevel <= 4) ?tick:ex }}</td>
+                          <td>{{ (i.skillLevel >= 4 &&i.skillLevel <= 4) ?tick:ex }}</td>
+
+                        </tr>
+                      </tbody>
+                  </table>
+                </table>
+          </div></ng-template>
+      </div>
+  </div>

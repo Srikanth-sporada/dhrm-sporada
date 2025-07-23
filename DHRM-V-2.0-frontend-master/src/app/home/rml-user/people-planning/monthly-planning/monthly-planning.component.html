@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="px-5 py-5">
+    <mat-form-field appearance="fill">
+        <mat-label>Month and Year</mat-label>
+        <input matInput [matDatepicker]="dp" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp
+                        startView="multi-year"
+                        (monthSelected)="setMonthAndYear($event, dp)"
+                        panelClass="example-month-picker">
+        </mat-datepicker>
+      </mat-form-field>
+    <button mat-raised-button color="primary" style="margin: 0 10px" (click)="getData()">
+      View Data
+    </button>
+    <button mat-raised-button color="primary" style="margin: 0 10px" (click)="naviagToUpload()">
+        Upload Data
+    </button>
+  </div>
+  <table class="table table-bordered table-striped table-hover">
+    <table id="table">
+      <thead>
+        <tr>
+          <th class="text-center header">Sl.No</th>
+          <th class="text-center header">Department Name</th>
+          <th class="text-center header">Line Name</th>
+          <th class="text-center header">Driect A</th>
+          <th class="text-center header">Direct B</th>
+          <th class="text-center header">Direct C</th>
+          <th class="text-center header">Direct Gen</th>
+          <th class="text-center header">Total Direct</th>
+          <th class="text-center header">Indirect A</th>
+          <th class="text-center header">Indriect B</th>
+          <th class="text-center header">Indirect C</th>
+          <th class="text-center header">Indirect G</th>  
+          <th class="text-center header">Indriect Total</th>
+          <th class="text-center header">Others A</th>
+          <th class="text-center header">Others B</th>
+          <th class="text-center header">Others C</th>
+          <th class="text-center header">Others G</th>  
+          <th class="text-center header">Others Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{item.dept_name}}</td>
+          <td>{{item.Line_Name}}</td>
+          <td>{{item.da}}</td>
+          <td>{{item.db}}</td>
+          <td>{{item.dc}}</td>
+          <td>{{item.dg}}</td>
+          <td>{{item.da+item.db+item.dc+item.dg}}</td>
+          <td>{{item.ia}}</td>
+          <td>{{item.ib}}</td>
+          <td>{{item.ic}}</td>
+          <td>{{item.ig}}</td>
+          <td>{{item.ia+item.ib+item.ic+item.ig}}</td>
+          <td>{{item.oa}}</td>
+          <td>{{item.ob}}</td>
+          <td>{{item.oc}}</td>
+          <td>{{item.og}}</td>
+          <td>{{item.oa+item.ob+item.oc+item.og}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
+</div>

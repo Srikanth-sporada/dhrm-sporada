@@ -1,0 +1,28 @@
+.mat-button.mat-light,
+.mat-raised-button.mat-success:hover {
+  color: white;
+  background-color: green;
+}
+
+.mat-button.mat-success,
+.mat-raised-button.mat-success {
+  color: white;
+  background-color: green;
+}
+
+.mat-button.mat-yellow,
+.mat-raised-button.mat-yellow {
+  color: white;
+  background-color: #ffc107;
+}
+
+.mat-button.mat-yellow,
+.mat-raised-button.mat-yellow:hover {
+  color: white;
+  background-color: #ffc107;
+}
+
+.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  color: #ffffff;
+  background-color:  rgb(229, 229, 229);
+}

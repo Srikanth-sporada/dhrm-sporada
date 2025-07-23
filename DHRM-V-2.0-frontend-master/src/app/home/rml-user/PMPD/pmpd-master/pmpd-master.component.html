@@ -1,0 +1,65 @@
+<div class="main-container">
+  <div class="upload-btn">
+    <div>
+      <b><p>Search By Material Code :</p></b>
+            <input type="text" class="input2" [(ngModel)]="search"/>
+    </div>
+    <div >
+      <button mat-fab color="primary" class="downloadbtn"  (click)="export()"><mat-icon>arrow_downward</mat-icon></button>
+      <button mat-raised-button color="primary" (click)="openBulkUpload()" style="margin:0 10px ;">
+        Bulk Upload
+      </button>
+      <button mat-mini-fab color="accent" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <table id="pmpdtable" class="table table-bordered table-striped table-hover my-5" >
+    <thead>
+      <tr>
+        <th class="text-center header">Sl.No</th>
+        <th class="text-center header">Plant</th>
+        <th class="text-center header">Material Code</th>
+        <th class="text-center header">Material Description</th>
+        <th class="text-center header">UOM</th>
+        <th class="text-center header">Material Type</th>
+        <th class="text-center header">Division</th>
+        <th class="text-center header">PMPD</th>
+        <th class="text-center header">Effective Date</th>
+        <th class="text-center header">Active Status</th>
+        <th class="text-center header">Created BY</th>
+        <th class="text-center header">Created On</th>
+        <th class="text-center header">Modified By</th>
+        <th class="text-center header">Modified On</th>
+        <th class="text-center header">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of displayData|code:search; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.plant }}</td>
+        <td>{{ item.mat_code }}</td>
+        <td>{{ item.mat_desc }}</td>
+        <td>{{ item.uom.toUpperCase() }}</td>
+        <td>{{ item.mat_type.toUpperCase() }}</td>
+        <td>{{ item.division.toUpperCase() }}</td>
+        <td>{{ item.pmpd }}</td>
+        <td>{{ item.effective_date.split("T")[0] }}</td>
+        <td>{{ item.active_status == "1" ? "Active" : "Inactive" }}</td>
+        <td>{{ item.created_by }}</td>
+        <td>{{ item.created_on?.split("T")[0] }}</td>
+        <td>{{ item.modified_by }}</td>
+        <td>{{ item.modified_on?.split("T")[0] }}</td>
+        <td>
+          <button *ngIf="item.active_status == '1'" mat-mini-fab color="primary" (click)="openEditDialog(item)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="item.active_status == '0'" mat-mini-fab color="danger" (click)="activatePmpd(item)">
+            <mat-icon>autorenew</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,33 @@
+<div style='overflow-x:auto'>
+<div class="mx-5"><p><b>Language Details</b>&nbsp;</p>
+    <table class = "table">
+        <thead>
+        <tr>
+        <th class="form-header"scope="col" style="width: 30%">Language</th>
+        <th class="form-header"scope="col">Speak</th>
+        <th class="form-header"scope="col">Write</th>
+        <th class="form-header"scope="col">Read</th>
+        <th class="form-header"scope="col">MotherTongue</th>
+        <th class="form-header"scope="col">Understand</th>
+        </tr>
+        <tr *ngFor="let data of languageList">
+        <td ><input class="form-control"  type="text" [(ngModel)]="data.language" readonly (click)="sendData()">
+        
+        </td>
+        <td><input type = "checkbox" [checked]="data.speak == 1" (click)="sendData()" (click)="changestatus($event, data, 'speak')"></td>
+        <td><input type = "checkbox" [checked]="data.read == 1" (click)="sendData()" (click)="changestatus($event, data,'read')"></td>
+        <td><input type = "checkbox" [checked]="data.write == 1" (click)="sendData()" (click)="changestatus($event, data,'write')"></td>
+        <td><input type = "checkbox" [checked]="data.mothertongue == 1" (click)="sendData()" (click)="changestatus($event, data,'mothertongue')"></td>
+        <td><input type = "checkbox" [checked]="data.understand == 1" (click)="sendData()" (click)="changestatus($event, data,'understand')"></td>
+    </tr>
+    
+   
+
+
+        <tr>
+    </thead>    
+    </table>
+
+</div> </div>
+<button [disabled]="disabled"  mat-raised-button type="submit" class="language-btn btn-primary btn-sm" style = "margin-top: 20px; text-align:center;" (click)="submit()" (click)="sendData()" ><span style="font-size: 14px;">Save</span></button>
+<span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>

@@ -1,0 +1,49 @@
+<div class="bd">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <button id="logout" routerLink="/first" > 
+    <span class="glyphicon glyphicon-home"></span> 
+</button>
+          <div class="row">
+            <div class="col-sm-5">
+            </div>
+            <div class="loader" *ngIf="loading"></div>
+          </div>
+
+          <div class="form-container">
+          
+            <h1> Trainee Login</h1>
+          
+              <form [formGroup]="form" (ngSubmit)="TraineeLogin()">
+         
+       
+            <label id="labelid" for="username">Temporary.ID.No: </label>  
+            <input   id="inputid"
+                formControlName="username"  
+                type="text"   
+                class="form-control">  
+
+            <div class="alert alert-danger" *ngIf="f.username.touched && f.username.invalid && f.username.errors.required">User Name is required.</div>  
+                <br>
+
+ 
+          <label id="labelid">Password [Mobile Last 4 Digit]:</label>
+          <input id="inputid" formControlName="pass" [type]="inputType" class="form-control">
+
+            <div class="alert alert-danger" *ngIf="f.pass.touched && f.pass.invalid && f.pass.errors.required">Password is required.</div>  
+                <br>
+
+        <div id="show" style="margin-left:5px; gap: 5px;">
+          <div>
+            <input  id="inputid"
+            (change)="updateInput($event)"
+            type="checkbox" 
+            class="form-check-input">
+          </div>&nbsp;&nbsp;&nbsp;&nbsp;
+          <label for="show">Show Password</label> 
+        </div>
+            <button  type="submit">Sign In</button>
+     </form>      
+          
+          </div>
+      </div>
+  

@@ -1,0 +1,28 @@
+.times{
+    display: flex;
+    justify-content: space-between;
+    gap:10px
+}
+
+
+.w{
+    /* font-size: large; */
+    font-weight: 600;
+  }
+  h4{
+    /* font-size: large; */
+    font-weight: 600;
+  }
+  h3{
+    /* font-size: large; */
+    font-weight: 600;
+  }
+
+  .mat-form-field {
+    font-size: inherit;
+    font-weight: 400;
+    line-height: 1.125;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    letter-spacing: normal;
+    padding-right: 7px;
+}

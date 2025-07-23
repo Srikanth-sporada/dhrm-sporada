@@ -1,0 +1,28 @@
+<div>
+  <div class="details">
+    <div class="detail">
+      <div><b>Gen ID:</b></div>
+      <p>{{ data.gen_id }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Name:</b></div>
+      <p>{{ data.fullname }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Date:</b></div>
+      <p>{{ data.att_date }}</p>
+    </div>
+    <div class="detail">
+      <div><b>Excess Worked Hours:</b></div>
+      <p>{{ data.expect_othr }}</p>
+    </div>
+  </div>
+  <div class="detail">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Comp-off Date</mat-label>
+      <input matInput type="date" [(ngModel)]="date" [min]="minDateApply" [max]="maxDateApply" (ngModelChange)="checkDate()">
+    </mat-form-field>
+    <button mat-raised-button [disabled]="applyBtn" color="primary" style="height: 43px;margin-top:10px;" (click)="apply()">Apply</button>
+  </div>
+  <p *ngIf="message!=''" style="color:red">{{message}}</p>
+</div>

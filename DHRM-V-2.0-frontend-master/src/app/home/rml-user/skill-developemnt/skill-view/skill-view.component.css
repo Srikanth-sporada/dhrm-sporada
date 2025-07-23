@@ -1,0 +1,71 @@
+.matrix {
+  width: 95%;
+  margin: 20px auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.level {
+  width: 30%;
+  margin: 30px 20px;
+}
+
+.yellow {
+  background-color: #ffd95a;
+}
+
+.blue {
+  background-color: #b4e4ff;
+}
+
+.green {
+  background-color: #00ffca;
+}
+
+.darkgreen {
+  background-color: #98d8aa;
+}
+
+.table_header {
+  background-color: #2f58cd !important;
+  color: white !important;
+}
+
+.customtable {
+  width: 95%;
+}
+.customtable th {
+  background-color: #2f58cd !important;
+  height: 30px;
+}
+
+.border > * {
+  border: 2px black;
+}
+
+.cell {
+  border: 2px solid white;
+  height: 40px;
+  text-align: center;
+}
+
+.cell1 {
+  border: 2px solid rgb(165, 159, 159);
+  height: 40px;
+  text-align: left;
+  padding: 8px;
+}
+
+.desc_table {
+  margin: 30px 30px;
+  min-width: 30%;
+}
+
+.emp_details {
+  width: min-content;
+  padding-right: 10px;
+}

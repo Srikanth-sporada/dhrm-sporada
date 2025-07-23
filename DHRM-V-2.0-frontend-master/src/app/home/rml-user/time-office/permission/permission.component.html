@@ -1,0 +1,424 @@
+<div class="test">
+    <!-- <h2>Permission / Leave</h2> -->
+    <h2>Permission/Leave</h2>
+
+    <mat-tab-group [selectedIndex]="selectedTabIndex">
+        <mat-tab label=" Apply Permission" [disabled]="plant==='1200'" >
+        <div class="form">
+       
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input type="date" matInput [(ngModel)]="odDate" [max]="maxDate" (ngModelChange)="checkVerify()"/>
+          </mat-form-field>
+  
+          <!-- <mat-form-field appearance="outline" class="example-full-width"> -->
+            <!-- <mat-label>Reason</mat-label>
+            <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkVerify()" placeholder="OD Reason"></textarea>
+          </mat-form-field> -->
+  
+          <button
+            mat-raised-button
+            color="yellow"
+            style="margin: 10px 20px; height: 40px"
+            (click)="permission_verify()"
+          >
+            Verify
+          </button>
+        </div>
+  
+        <div *ngIf="show_od_temp" class="form">
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Reason</mat-label>
+            <mat-select [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()">
+              <mat-option value="">Select Reason</mat-option>
+              <mat-option *ngFor="let item of reasonList" [value]="item.reason">{{item.reason}}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+  
+     <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Reason</mat-label>
+            <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()" placeholder="Reason(Min 10 Characters)"></textarea>
+          </mat-form-field>
+     <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Max Hours Permission</mat-label>
+            <input matInput [(ngModel)]="odPermission" [disabled]="true"(ngModelChange)="checkODSubmit()" >
+          </mat-form-field>
+  
+          <button mat-raised-button color="success" [disabled]="odSubmit"  style="margin: 10px 20px; height: 40px" (click)="oDSubmit()">
+            Submit
+          </button>
+        </div>
+  
+        <!-- <div class="view" *ngIf="trn_list && trn_list.length > 0"> -->
+          <div class="view" *ngIf="ODList && ODList.length > 0">
+            <h3>On Duty</h3>
+            <table
+              id="fpdata"
+              class="table table-bordered table-striped table-hover my-5"
+            >
+              <thead>
+                <tr>
+                  <th>Attn Date</th>
+                  <th>Swipe Id</th>
+                  <!-- <th>In Punch</th>
+                  <th>Out Punch</th> -->
+                  <th>Reason</th>
+                  <th>status </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let item of ODList" >
+                 
+                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
+                  <td>{{item.Gen_id}}</td>
+                  <!-- <td>{{item.in_time}}</td>
+                  <td>{{item.out_time}}</td> -->
+                  <td>{{item.reason}}</td>
+                  <td>{{item.approved_status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="view" *ngIf="trnPermission && trnPermission.length > 0">
+            <h3>Permission Table</h3>
+            <table
+              id="fpdata"
+              class="table table-bordered table-striped table-hover my-5"
+            >
+              <thead>
+                <tr>
+                  <th>Attn Date</th>
+                  <th>Swipe Id</th>
+                  <th>Applied_on</th>
+                  <th>Reason</th>
+                  <th>Approver 1</th>
+                  <th>Approver 1 Status</th>
+                  <th>Approver 2</th>
+                  <th>Approver 2 Status</th>
+                  <!-- <th>status </th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let item of trnPermission" >
+                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
+                  <td>{{item.Gen_id}}</td>
+                  <td>{{item.applied_on | date:'dd-MM-yyyy'}}</td>
+                  <td>{{item.reason}}</td>
+                  <td>{{item.Approver_1_Name}}</td>
+                  <td>{{item.L1_Approval_Status}}</td>
+                  <td>{{item.Approver_2_Name}}</td>
+                  <td>{{item.L2_Approval_Status}}</td>
+                  <!-- <td>{{ item.Process_Status === 'N'? 'Under Process' :'Approved' }}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+    
+          <div class="view" *ngIf="FP_list && FP_list.length > 0">
+            <h3>Forget to punch</h3>
+            <table
+              id="fpdata"
+              class="table table-bordered table-striped table-hover my-5"
+            >
+              <thead>
+                <tr>
+                  <th>Attn Date</th>
+                  <th>Swipe Id</th>
+                  <th>In Punch</th>
+                  <th>Out Punch</th>
+                  <th>Reason</th>
+                  <th>status </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let item of FP_list">
+                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
+                  <td>{{item.biometric_no}}</td>
+                  <td>{{item.in_time}}</td>
+                  <td>{{item.out_time}}</td>
+                  <td>{{item.reason}}</td>
+                  <td>{{item.approved_status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+         
+  
+        <div class="view">
+          <h3>Attendance table</h3>
+          <table
+            id="fpdata"
+            class="table table-bordered table-striped table-hover my-5"
+          >
+            <thead>
+              <tr>
+                <th>Attn Date</th>
+                <th>Swipe Id</th>
+                <th>Shift</th>
+                <th>In Punch</th>
+                <th>Out Punch</th>
+                <th>Present </th>
+                <th>Excees hrs</th>
+                <th>Late Coming </th>
+                <th>Early Going</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              <tr *ngFor="let item of trn_list">
+                <td>{{item.att_date.split('T')[0]  | date :"dd-MM-yyyy"}}</td>
+                <td>{{item.biometric_no}}</td>
+                <td>{{item.shift_desc}}</td>
+                <td>{{item.in_time}}</td>
+                <td>{{item.out_time }}</td>
+                <td>{{item.present_type}}</td>
+                <td>{{item.expect_othr}}</td>
+                <td>{{item.late_comeing}}</td>
+                <td>{{item.early_going}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+  
+  
+  
+      </mat-tab>
+
+
+   
+        <mat-tab label="Permission Status"  [disabled]="plant==='1200'" >
+
+          <table
+          id="fpdata"
+          class="table table-bordered table-striped table-hover my-5"
+        >
+        <thead>
+          <tr>
+            <th>Swipe Id</th>
+            <th>Attn Date</th>
+            <th>Applied_on</th>
+            <th>Reason</th>
+            <th class="text-center">Approver 1</th>
+            <th class="text-center">Approver 1 Status</th>
+            <th class="text-center">Approver 1 Approved On</th>
+            <th class="text-center" >Approver 2</th>
+            <th class="text-center">Approver 2 Status</th>
+            <th class="text-center">Approver 2 Approved On</th>
+            <th>Permission Cancel </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <tr *ngFor="let item of emp_permissionList" >
+            <td>{{item.Gen_id}}</td>
+            <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
+            <td>{{item.applied_on | date:'dd-MM-yyyy'}}</td>
+            <td>{{item.reason}}</td>
+            <td>{{item.Approver_1_name}}</td>
+            <td>{{item.L1_Approval_Status}}</td>
+            <td>{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
+            <td>{{item.Approver_2_name}}</td>
+            <td>{{item.L2_Approval_Status}}</td>
+            <td>{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
+            <td><button mat-raised-button color="warn" style="margin: 10px 20px; height: 40px"
+              (click)="permission_cancel_Popup(item)"
+              [disabled]="item.L2_Approval_Status === 'Cancelled' ">
+        Cancel
+      </button></td>
+
+          </tr>
+        </tbody>
+        </table>
+        </mat-tab>
+
+ <mat-tab label="Apply Leave" >
+  <div class="flex-container">
+    <div class="form1">
+      <mat-form-field appearance="outline">
+        <mat-label>Leave Type</mat-label>
+        <mat-select [(ngModel)]="leave_type" name="selectedOption"  (ngModelChange)="checkleaveVerify()"  >
+          <mat-option *ngFor="let option of optr_leave_eligibilty" [value]="option">
+            {{ option.Leave_Type }}
+          </mat-option>
+       
+        </mat-select>
+      </mat-form-field>
+
+
+      <div class="from" >
+        <mat-form-field appearance="outline"  style="padding-right: 2em;">
+          <mat-label>From Date</mat-label>
+          <input type="date" matInput [(ngModel)]="fromdate" (change)="updateDuration()"  />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="first_half" (change)="updateDuration();toggleCheckbox('first')" [disabled]="first" [hidden]="halfCheck">1st Half</mat-checkbox>
+        
+       
+      </div>
+      <div class="from">
+
+  
+        <mat-form-field style="padding-right: 2em;" appearance="outline">
+          <mat-label>To Date</mat-label>
+          <input type="date" matInput [(ngModel)]="todate"  (change)="updateDuration()"  />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="second_half" (change)="updateDuration();toggleCheckbox('second')"[disabled]="second" [hidden]="halfCheck" >2nd Half</mat-checkbox>
+
+      </div>
+   
+
+      <p>Duration : {{ duration }} DAY(S)</p>
+
+      <div class="form">
+       
+
+        <mat-form-field appearance="outline" class="example-full-width">
+          <mat-label>Reason</mat-label>
+          <textarea matInput [(ngModel)]="leave_Reason" (ngModelChange)="checkleaveSubmit()" placeholder="Reason(Min 10 Characters)"></textarea>
+        </mat-form-field>
+    
+        <button mat-raised-button color="success" [disabled]="leaveSubmit"  style="margin: 10px 20px; height: 40px" (click)="leave_submit()">
+          Submit
+        </button>
+      </div>
+    </div>
+  
+ 
+
+    <div class="leave-details">
+      <table   class="table table-bordered table-striped table-hover my-5 table-smaller">
+     
+        <tr>
+          <th class="text-center">Leave Type</th>
+          <th class="text-center">Eligibility</th>
+          <th class="text-center">Availed</th>
+          <th class="text-center">Balance</th>
+        </tr>
+        <tr>
+          <td class="text-center">CL</td>
+          <td class="text-center">{{ optr_leave_balance?.Elgbl_CL }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Availd_CL }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Balnc_CL }}</td>
+        </tr>
+        <tr>
+          <td class="text-center">PL</td>
+          <td class="text-center">{{ optr_leave_balance?.Elgbl_PL }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Availd_PL }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Balnc_PL }}</td>
+        </tr>
+        <tr>
+          <td class="text-center">ESI Leave</td>
+          <td class="text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Availd_ESI_Leave }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Balnc_ESI_Leave }}</td>
+        </tr>
+        <tr>
+          <td class="text-center">Advance Leave</td>
+          <td class="text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Availd_Adv_Leave }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Balnc_Adv_Leave }}</td>
+        </tr>
+      
+        <tr>
+          <td class="text-center">Sick Leave</td>
+          <td class="text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave }}</td>
+          <td class="text-center">{{ optr_leave_balance?.Availd_Sick_Leave }}</td> 
+          <td class="text-center">{{ optr_leave_balance?.Balnc_Sick_Leave }}</td>
+        </tr>
+     
+      
+      </table>
+      <table   class="table table-bordered table-striped table-hover my-5 table-smaller">
+        
+        <tr>
+          <th class="text-center">Approver  Details</th>
+          <th class="text-center">Gen ID</th>
+          <th class="text-center">Name of Approver</th>
+        </tr>
+        <tr>
+          
+          <td class="text-center">Approver 1</td>
+          <td class="text-center">{{ optr_leave_details?.a1_gen_id }}</td>
+          <td class="text-center">{{ optr_leave_details?.a1_Emp_name }}</td>
+         
+        </tr>
+        <tr>
+          <td class="text-center">Approver 2</td>
+          <td class="text-center">{{ optr_leave_details?.a2_gen_id }}</td>
+          <td class="text-center">{{ optr_leave_details?.a2_Emp_name }}</td>
+        
+        </tr>
+       
+      </table>
+
+
+
+
+
+    </div>
+  </div>
+
+</mat-tab> 
+ <mat-tab label="Leave status" >
+  <table
+          id="fpdata"
+          class="table table-bordered table-striped table-hover my-5  table-smaller"
+        >
+        <thead>
+          <tr>
+            <th class="text-center">Req_Id</th>
+            <th class="text-center">Gen Id</th>
+            <th class="text-center">Leave Type</th>
+            <th class="text-center">From Date</th>
+            <th class="text-center">To Date</th>
+            <th class="text-center">Duration</th>
+            
+            <th class="text-center">Reason</th>
+            <th class="text-center">Approver 1</th>
+            <th class="text-center">Approver 1 Status</th>
+            <th class="text-center">Approver 1 Approved On</th>
+            <th class="text-center" >Approver 2</th>
+            <th class="text-center">Approver 2 Status</th>
+            <th class="text-center">Approver 2 Approved On</th>
+            <th class="text-center">Leave Cancel</th>
+         
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr class="text-center" *ngFor="let item of emp_LeaveList" >
+            <td class="text-center">{{item.slno}}</td>
+            <td class="text-center">{{item.Gen_id}}</td>
+            <td class="text-center">{{item.Leave_Type}}</td>
+            <td class="text-center">{{item.from_date | date:'dd-MM-yyyy'}}</td>
+            <td class="text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
+            <td class="text-center">{{item.duration}}</td>
+           
+            <td class="text-center">{{item.reason}}</td>
+            <td class="text-center">{{item.Approver_1_name}}</td>
+            <td class="text-center">{{item.L1_Approval_Status}}</td>
+            <td class="text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
+            <td class="text-center">{{item.Approver_2_name}}</td>
+            <td class="text-center">{{item.L2_Approval_Status}}</td>
+            <td class="text-center">{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
+            <td class="text-center">
+              <button mat-raised-button color="warn" style="margin: 10px 20px; height: 40px"
+            (click)="leave_cancel_Popup(item)"
+            [disabled]="item.Leave_Cancel_status === 'Cancelled' || item.Leave_Cancel_status === 'Rejected'">
+      Cancel
+    </button>
+          </td>
+           
+          </tr>
+        </tbody>
+        </table>
+        
+</mat-tab>  
+
+    </mat-tab-group>
+</div>

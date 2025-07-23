@@ -1,0 +1,130 @@
+<div class="container2" 
+style="z-index: 1250;">
+  <br>
+  <div>
+      <h1 id = "title1" >Approve Payscale</h1>
+      <hr style="border-block-color: orange" />
+    </div>
+    <div class="filter">
+        <!-- <div>
+            <mat-form-field appearance="outline"color="primary" class="example-full-width"(click)="picker2.open()">
+          <mat-label>Date of join</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="selectedDoj"   />
+          <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
+          <mat-datepicker #picker2> </mat-datepicker>
+        </mat-form-field>
+        </div> -->
+<div>
+  <span>
+    <mat-form-field appearance="outline" style="padding-right: 10px;">
+      <mat-label>GenID</mat-label>
+      <input matInput   [(ngModel)]="selectedGenId" type="text"   />
+    </mat-form-field>
+
+  <mat-form-field appearance="outline" style="padding-right: 10px;">
+      <mat-label>Department</mat-label>
+      <mat-select [(ngModel)]="selectedDept" >
+        <mat-option>ALL </mat-option>
+        <mat-option  *ngFor="let data of deptList " [value]="data.dept_name">{{data.dept_name}}</mat-option>
+     
+      </mat-select>
+    
+    </mat-form-field>
+
+  <mat-form-field appearance="outline" style="padding-right: 10px;">
+    <mat-label>Contractor</mat-label>
+    <mat-select  [(ngModel)]="selectedStatus" (ngModelChange)="onIshrapprChange()">
+      <mat-option  >ALL</mat-option>
+      <mat-option  *ngFor="let data of Con_list " [value]="data.Con_Id">{{data.Cont_company_name}}</mat-option>
+
+    </mat-select>
+    </mat-form-field>
+    <div class="form-group">
+      <button mat-raised-button color="primary"  [disabled]="!anyRowSelected() || button" (click)="approveSelectedItems()">Approve Selected Items</button>
+    </div>
+
+  </span>
+           
+          <br>
+        </div>
+          <br>
+        </div>
+
+
+
+        <div class = "table-wrapper container3">
+            <table class="table table-bordered table-striped table-hover">
+                <table id="table">
+                    <thead>
+                        <tr>
+                          <th class="text-center" style="background-color: darkblue">
+                            <mat-checkbox color="white" [(ngModel)]="allSelected" (change)="toggleSelectAll()">Sl_No</mat-checkbox>
+                          <!-- </th>
+                                         <th  class="text-center"
+                            style="background-color: darkblue">Sl_No</th> -->
+                            <th div class="text-center">Gen ID</th>
+                            <th div class="text-center">Employee Name</th>
+                            <th div class="text-center">Contractor </th>
+                            <th div class="text-center">Category</th>
+                            <th div class="text-center">DOJ</th>
+                            <th div class="text-center">Dept</th>
+                            <th div class="text-center">Line</th>
+                            <th div class="text-center">Payscale Name</th>
+                             <th div class="text-center">Payscale Status</th>
+                            <th div class="text-center" id="action">Action</th>
+                        </tr>
+                    </thead>
+          
+                    <tbody style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;" >
+                        <tr  *ngFor="let data of WageList |DeptFilter:selectedDept|StatusFilter:selectedStatus| SalGenFilter:selectedGenId ; let i=index ">
+                        <!-- <tr  *ngFor="let data of WageList ; let i=index "> -->
+                        
+                
+                        <td>  <mat-checkbox [(ngModel)]="data.selected" (change)="onRowSelectChange()"></mat-checkbox> {{" "}}{{i+1}} </td>
+                        <td>{{data.Gen_Id }}</td>
+                        <td>{{data.fullname }}</td>
+                        <td>{{data.Cont_company_name }}</td>
+                        <td>{{data.apprentice_type }}</td>
+                        <td>{{data.doj | date:'dd-MM-yyyy' }}</td>
+                        <td>{{data.dept_name }}</td>
+                        <td>{{data.Line_Name }}</td>
+                        <td> {{data.PayScale_Name }}</td>
+                        
+                   
+                        <td>{{data.Approval_Status }}</td>
+
+                        <td id="action">
+                          <span>
+                            <button mat-mini-fab *ngIf="data.Approval_Status === 'APPROVED'" color="basic" [routerLink]="['/rml/contra/view_payscale', 'view',data.PayScale_ID,data.apln_slno,data.Con_Id,data.Effective_Date]" class="view-button" >
+                              <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                            <button mat-mini-fab *ngIf="data.Approval_Status === 'PENDING'"  color="primary" [routerLink]="['/rml/contra/appr_payscale', 'approve',data.PayScale_ID,data.apln_slno,data.Con_Id,data.Effective_Date]" class="approve-button">
+                              <mat-icon>check_circle</mat-icon>
+                            </button>
+                            
+                          </span>
+                        </td>
+
+
+                  
+                      
+                        </tr>
+                  
+  
+                    </tbody>
+                      
+                </table>
+  
+                </table>
+  
+  </div>
+
+
+
+
+
+
+
+
+
+ </div>   

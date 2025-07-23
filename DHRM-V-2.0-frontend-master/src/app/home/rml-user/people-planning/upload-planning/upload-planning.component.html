@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="db">
+    <mat-form-field appearance="fill">
+      <mat-label>Month and Year</mat-label>
+      <input matInput [matDatepicker]="dp" [formControl]="date" />
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker
+        #dp
+        startView="multi-year"
+        (monthSelected)="setMonthAndYear($event, dp)"
+        panelClass="example-month-picker"
+      >
+      </mat-datepicker>
+    </mat-form-field>
+    <input type="file" (change)="fileUpload($event)" accept=".xlsx" />
+    <button
+      mat-raised-button
+      style="margin-right: 10px"
+      color="primary"
+      (click)="display()"
+    >
+      Upload
+    </button>
+  </div>
+  <div class="db">
+    <button mat-raised-button color="accent" (click)="download()">
+      Download Template
+    </button>
+    <button
+      mat-raised-button
+      color="success"
+      style="margin: 0 10px"
+      (click)="upload()"
+    >
+      Save & Submit
+    </button>
+  </div>
+</div>
+
+<table id="table" class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th class="text-center header">Sl.No</th>
+      <th class="text-center header">Department Name</th>
+      <th class="text-center header">Line Name</th>
+      <th class="text-center header">Direct A</th>
+      <th class="text-center header">Direct B</th>
+      <th class="text-center header">Driect C</th>
+      <th class="text-center header">Direct G</th>
+      <th class="text-center header">Direct Total</th>
+      <th class="text-center header">Indirect A</th>
+      <th class="text-center header">Indirect B</th>
+      <th class="text-center header">Indirect C</th>
+      <th class="text-center header">Indirect G</th>
+      <th class="text-center header">Indirect Total</th>
+      <th class="text-center header">Others A</th>
+      <th class="text-center header">Others B</th>
+      <th class="text-center header">Others C</th>
+      <th class="text-center header">Others G</th>
+      <th class="text-center header">Others Total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let data of row; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ data.dept_name }}</td>
+      <td>{{ data.Line_Name }}</td>
+      <td>{{ data.da }}</td>
+      <td>{{ data.db }}</td>
+      <td>{{ data.dc }}</td>
+      <td>{{ data.dg }}</td>
+      <td>{{ data.da + data.db + data.dc + data.dg }}</td>
+      <td>{{ data.ia }}</td>
+      <td>{{ data.ib }}</td>
+      <td>{{ data.ic }}</td>
+      <td>{{ data.ig }}</td>
+      <td>{{ data.ia + data.ib + data.ic + data.ig }}</td>
+      <td>{{data.oa}}</td>
+      <td>{{data.ob}}</td>
+      <td>{{data.oc}}</td>
+      <td>{{data.og}}</td>
+      <td>{{data.oa+data.ob+data.oc+data.og}}</td>
+    </tr>
+  </tbody>
+</table>

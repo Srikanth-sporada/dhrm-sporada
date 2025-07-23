@@ -1,0 +1,64 @@
+<div>
+    <div style="margin-top: 4%;">
+        <h1 style=" margin-left: 2%;"><b>Skill Evaluation - Supervisor Abservant</b></h1>
+
+        <div class="col">
+            <div class="download">
+                <button mat-fab style=" margin-left: auto; " aria-label="Example icon button with a delete icon" (click)="exportexcel()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </div>
+        </div>
+        <br><br><app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+        <ng-template #show>
+            <div class="table-wrapper" style="width: 98%; margin: 0 auto;">
+                <!-- <table class="table table-bordered table-striped table-hover"> -->
+                <table id="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th div class="aligncommand" style="width: 3%;">Sl.No</th>
+                            <th div class="aligncommand" style="width: 10%;">Date</th>
+                            <th div class="aligncommand" style="width: 10%;">Dept</th>
+                            <th div class="aligncommand" style="width: 10%;">Name</th>
+                            <th div class="aligncommand" style="width: 15%;">Oprn</th>
+                            <th div class="aligncommand" style="width: 15%;">Current Skill Level</th>
+                            <th div class="aligncommand" style="width: 15%;">Propesed Skill Level</th>
+                            <th div class="aligncommand" style="width: 5%;">Status</th>
+                            <th div class="aligncommand" style="width: 10%;">Test Result</th>
+                            <th div class="aligncommand" style="width: 5%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of filterinfo; let index = index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ i.Date }}</td>
+                            <td>{{ i.dept_name }}</td>
+                            <td>{{ i.fullname }}</td>
+                            <td>{{ i.oprn_desc }}</td>
+                            <td>{{ i.Level_No }}</td>
+                           <td>{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
+                            <td>{{ i.Sup_Eval_Status }}</td>
+                            <td>
+                                <div>
+                                    <a [routerLink]="['/rml/skill-developement/answer-paper', i.Peval_slno]">
+                                        {{ i.Test_Result }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button type="button"
+                                        [routerLink]="['/rml/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]"
+                                        style="background-color: darkblue; color: white;">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- </table> -->
+            </div>
+        </ng-template>
+    </div>
+</div>

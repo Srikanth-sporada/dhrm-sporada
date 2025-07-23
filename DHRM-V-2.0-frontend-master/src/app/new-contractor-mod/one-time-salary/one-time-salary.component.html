@@ -1,0 +1,218 @@
+<div>
+    <div class="header-container">
+        <h1 id="title1" class="header-title">One Time Salary</h1>
+        <h1 id="title1" >{{ getFormattedDate() }}</h1>
+      </div>
+      <hr style="border-block-color: orange" />
+
+      </div>
+
+      <div class="upload"  *ngIf="isadmin =='true' || (ishrappr == 'false' && ishr =='true') ">
+      
+       
+        <button  id="Dbutton1"><a
+            [href]="url + 'sop/One_Time_Earning_Deduction.xlsx'"
+            style="text-decoration: none"
+            >Download Template</a
+          ></button>
+<span>
+  <strong>Upload One Time Earnings and Deduction Excel File : </strong>
+  <input #fileInput type="file" accept=".xlsx, .xls .csv" (change)="handleFileInput($event)" />
+  <button style="margin-left: 3rem;" mat-raised-button color="primary" (click)="clearAll()"
+   aria-label="Example icon button with a home icon" class="header-button">
+    Clear All
+    </button>   
+</span>
+      
+
+      <strong>   Current Payroll Date: {{bill_processed_st}} - {{bill_prossed_enddt}} </strong>
+       
+     
+
+      </div>
+
+<div  *ngIf="viewtable==false">
+<div *ngFor="let item of consolidatedData">
+  <div class="upload">
+    <div>
+      <strong> Request No.</strong>
+      <p>{{item.Request_Id}}</p>
+    </div>
+    <div>
+      <strong> Requested By</strong>
+      <p>{{item.Requested_By}}</p>
+    </div>
+    <div>
+      <strong>Requested On</strong>
+      <p>{{item.Requested_On | date:'dd-MM-yyyy'}}</p>
+    </div>
+    <div>
+      <strong> Total Earnings</strong>
+      <p>Rs. {{item.TotalEarning}}</p>
+    </div>
+    <div>
+      <strong> Total Deductions</strong>
+      <p>Rs. {{item.TotalDeduction}}</p>
+    </div>
+    <div>
+      <strong>Status</strong>
+      <p [ngClass]="{'pending': item.Status === 'PENDING', 'approved': item.Status === 'APPROVED', 'rejected': item.Status === 'REJECTED'}">
+        {{item.Status}}
+      </p>
+    </div>    <div>
+      <button mat-raised-button style="background-color: rgb(235, 228, 35);"  (click)="handleView(item)" >View</button>
+    </div>
+    <div *ngIf="(isadmin =='true' || ishrappr == 'true') && (item.Status =='PENDING') "  > 
+      <button mat-raised-button style="background-color: rgb(42, 173, 42);color: white;"  (click)="handleApprove(item)">Approve</button>
+    </div>
+    <div *ngIf="(isadmin =='true' || ishrappr == 'true') && ( item.Status =='PENDING') " >
+      <button mat-raised-button style="background-color: rgb(233, 19, 19);color: white;"  (click)="handleReject(item)">Reject</button>
+    </div>
+  </div>
+
+</div> 
+     </div>
+
+
+
+      
+
+
+
+<div *ngIf="loading" style="top: 50%; right:50%">
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="viewtable==true">
+
+<div *ngIf="(invalidEntries && invalidEntries.length > 0)">
+<!-- <div> -->
+  <div style="display: flex;margin-left: 4rem;
+  margin-top: 0.5rem;align-items: baseline;
+  font-size: small;"><h2 >Invalid Data</h2>
+        
+          <button mat-raised-button style="float: right ;margin-left: 2rem ;background-color: yellow;"
+           (click)="exportexcel()" 
+            aria-label="Example icon button with a delete icon" >
+            <mat-icon>download</mat-icon> Download Invalid Data
+        </button>
+
+
+
+        </div>
+        
+        <table  class="table table-bordered table-striped table-hover"  style="margin-top: 0rem;">
+          <thead>
+            <tr>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >slno</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Date</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Gen ID</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Name</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Type</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Description</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Amount</th>
+              <th class="text-center" style="background-color: rgb(13, 13, 211);color: white;" >Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of invalidEntries; let i = index">
+              <td>{{i+1}}</td>
+               <td>{{row.Date |date:'dd-MM-yyyy' }}</td>
+               <td>{{row.Gen_id }}</td>
+               <td>{{row.Name }}</td>
+               <td style="font-weight: 650;">{{row.Type }}</td>
+               <td>{{row.Description }}</td>
+               <td>{{row.Amount }}</td>
+               <td style="font-weight: 650; color: red;">{{row.Reason }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+<div *ngIf="((Ear_Valid && Ear_Valid.length >= 1  )|| (Ded_Valid && Ded_Valid.length>=1))">
+      <!-- <div> -->
+        <div style="display: flex;margin-left: 4rem;
+        margin-top: 0.5rem;align-items: baseline;margin-bottom: 0px;
+        font-size: small;">
+        
+        <h2 >Valid Data</h2>
+              <button style="margin-left: 3rem;" (click)="SubmitVerifiedData()" mat-raised-button color="primary"  aria-label="Example icon button with a home icon" class="header-button">
+                 Submit For HR  Approval
+              </button>
+      
+   
+      </div>
+
+<div  *ngIf="(Ear_Valid && Ear_Valid.length >= 1 )">
+  <h2 style="display: flex;margin-left: 4rem;
+  align-items: baseline;margin-bottom: 0px;
+  font-size: large;">Earnings</h2>
+<table  class="table table-bordered table-striped table-hover"  style="margin-top: 0rem;">
+  <thead>
+    <tr>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Slno</th>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Date</th>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Gen ID</th>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Name</th>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Description</th>
+      <th class="text-center" style="background-color: rgb(19, 188, 13);color: black;" >Amount in Rs</th>
+ 
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of Ear_Valid; let i = index">
+      <td>{{i+1}}</td>
+       <td>{{row.Date |date:'dd-MM-yyyy'}}</td>
+       <td>{{row.gen_id }}</td>
+       <td>{{row.fullname }}</td>
+       <td>{{row.Earning_Description }}</td>
+       <td>{{row.Earning_Amount }}</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+
+<div *ngIf="(Ded_Valid && Ded_Valid.length >= 1 )">
+<h2 style="display: flex;margin-left: 4rem;
+align-items: baseline;margin-bottom: 0px;
+font-size: large;">Deductions</h2>
+<table  class="table table-bordered table-striped table-hover"  style="margin-top: 0rem;">
+  <thead style="height:0.01rem">
+    <tr>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >slno</th>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >Date</th>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >Gen ID</th>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >Name</th>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >Description</th>
+      <th class="text-center" style="background-color: rgb(223, 39, 33);color: white;" >Amount in Rs</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of Ded_Valid; let i = index">
+      <td>{{i+1}}</td>
+       <td>{{row.Date |date:'dd-MM-yyyy' }}</td>
+       <td>{{row.gen_id }}</td>
+       <td>{{row.fullname }}</td>
+       <td>{{row.Deduction_Description }}</td>
+       <td>{{row.Deduction_Amount }}</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+
+
+      </div>
+
+
+
+      <div *ngIf="Ded_InValid.length === 0 && Ear_InValid.length === 0 && Ear_Valid.length === 0 && Ded_Valid.length === 0">
+        <p class="nodata">No data in Uploaded Excel</p>
+      </div>
+    
+    </div>
