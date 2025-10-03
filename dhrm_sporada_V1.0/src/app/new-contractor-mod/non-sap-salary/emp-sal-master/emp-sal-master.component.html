@@ -1,0 +1,86 @@
+<div class="mx-2">
+  <!-- employee salary master header -->
+  <div
+    class="!flex gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+  >
+    <div class="flex items-start justify-start flex-col">
+      <h1
+        class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+      >
+        <mat-icon>assessment</mat-icon>Employee Salary Master
+        <hr />
+      </h1>
+      <p class="mt-1 text-gray-400">Download Employee Salary Data</p>
+    </div>
+    <!-- user details -->
+    <h1
+      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+    >
+      {{ userDetails }}
+    </h1>
+  </div>
+  <!-- employee salary master -->
+  <div>
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400">
+    <!-- header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Download Employee Salary Master <mat-icon>assessment</mat-icon>
+        </h1>
+      </div>
+   <div>
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+       <!-- Department-->
+       <div class="font-poppins w-full lg:w-[30%]">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+          <p-dropdown 
+            [options]="plantlist"
+            [(ngModel)]="plant"
+            [disabled]="isadmin == 'false'"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full" 
+            placeholder="Select Plant"></p-dropdown>
+       </div>
+       <!-- download btn-->
+        <p-button 
+         icon="pi pi-download"
+         label="Download" 
+         styleClass="ml-3 rounded-[1.5rem] mt-9"
+         (onClick)="getData()" 
+         >
+       </p-button>
+     </div>
+   </div>
+  </div>
+  </div>
+  
+  <!-- <div class="bulk-outer">
+    <div class="bulk">
+      <span><p>Download Employee Salary Master :</p></span>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Plant </mat-label>
+        <mat-select [(ngModel)]="plant" [disabled]="isadmin == 'false'">
+          <mat-option value="" selected>All</mat-option>
+          <mat-option
+            *ngFor="let plant of plantlist"
+            [value]="plant.plant_code"
+            >{{ plant.plant_code }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button
+        id="Dbutton"
+        mat-raised-button
+        color="primary"
+        (click)="getData()"
+      >
+        Download
+      </button>
+    </div>
+  </div> -->
+
+  <div>
+  </div>
+</div>

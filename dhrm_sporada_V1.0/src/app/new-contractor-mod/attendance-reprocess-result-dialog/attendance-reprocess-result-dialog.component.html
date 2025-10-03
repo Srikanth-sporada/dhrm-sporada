@@ -1,0 +1,35 @@
+<h2 mat-dialog-title class="font-poppins text-center py-4 bg-blue-600 text-white font-semibold text-2xl">Attendance Reprocess Result</h2>
+<mat-dialog-content>
+  <table id="table" class="table-auto !w-full mx-2">
+    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attendence Date</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">IN Time</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">OUT Time</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Present</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Shift</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Late coming</th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Early Going </th>
+      <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Extra Working</th>
+      <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Total Worked Hrs</th>
+      
+    </tr>
+  
+    <tbody>
+      <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.att_date |date :"dd-MM-yyyy" }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.in_time |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.out_time |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.present_type  }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.shift_desc  }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.late_comeing  }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.early_going  }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.expect_othr  }}</td>
+      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.Worked_Hrs  }}</td>
+    </tr>
+    </tbody>
+
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions class="mb-2">
+  <button pButton label="Ok"  mat-dialog-close class="mx-2"></button>
+</mat-dialog-actions>

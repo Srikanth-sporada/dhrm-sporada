@@ -1,0 +1,45 @@
+<!-- user login form -->
+<form [formGroup]="workmenLoginForm" (ngSubmit)="submitForm()">
+  <!--  mobile number -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Username</span>
+    <input pInputText placeholder="Enter Gen ID" class="w-full" formControlName="User_Name"/>
+  </div>
+  <!-- password -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Password</span>
+    <p-password  
+    [toggleMask]="true" 
+    [feedback]="false" 
+    inputStyleClass="w-full" 
+    styleClass="w-full"
+    formControlName="Password"
+    placeholder="Date of Birth DDMMYYYY"> </p-password>
+  </div>
+  <!-- remember me -->
+  <div class="flex items-center my-4 justify-between">
+    <div class="flex items-center justify-center text-center gap-2">
+      <p-checkbox inputId="remember-me" name="pizza" value="yes"></p-checkbox>
+      <label for="remember-me" class="m-0">Remember Me</label>
+    </div>
+
+    <p class="text-blue-500 hover:cursor-pointer">Forgot Password?</p>
+  </div>
+  <!-- login button -->
+  <div
+    class="px-2 font-poppins font-semibold flex items-center justify-center my-6"
+  >
+    <p-button
+      label="LogIn"
+      icon="pi pi-sign-in"
+      [fluid]="true"
+      iconPos="right"
+      [disabled]="!workmenLoginForm.valid"
+      type="submit"
+      (click)="setLocal()"
+      class="font-poppins"
+    ></p-button>
+  </div>
+
+  <!-- prime ng -->
+</form>

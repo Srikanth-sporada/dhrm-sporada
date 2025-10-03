@@ -1,0 +1,240 @@
+<!-- department master add department ng template -->
+<ng-template #content let-modal>
+  <div>
+    <div class="bg-blue-600 flex items-center justify-start py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">{{!editing_flag ? 'add_circle' : 'edit'}}</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">{{!editing_flag ? 'Add Department' : 'Update Department'}}</h4>
+      </div>
+    </div>
+    <!-- add department form division -->
+    <br />
+    <form [formGroup]="form">
+      <!-- plant dropdown -->
+      <div class="mx-2">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
+          Plant
+        </label><br />
+        <p-dropdown 
+          formControlName="plant_name" 
+          [options]="plantname"
+          optionLabel="plant_name"
+          optionValue="plant_code"
+          styleClass="w-full"
+          placeholder="Select Plant" >
+        </p-dropdown>
+      </div>
+      <!-- department group dropdown -->
+      <div class="mx-2 mt-3">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+           <mat-icon class="text-2xl text-blue-600 h-0 w-0">store</mat-icon>
+          Department
+        </label><br />
+        <p-dropdown 
+          formControlName="dh_Id"
+          [options]="Dept_header"
+          optionLabel="Department_Header"
+          optionValue="Dh_Id"
+          styleClass="w-full"
+          placeholder="Select Department" >
+        </p-dropdown>
+      </div>
+      <!-- department name input -->
+        <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+            Department Name
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="text"
+            id="code"
+            formControlName="dept_name"
+          />
+        </div>
+      <!-- sap code input -->
+        <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">code</mat-icon>
+            SAP Code
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="text"
+            id="code"
+            formControlName="sap_code"
+          />
+        </div>
+      <!-- division input -->
+        <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+            Division
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="text"
+            id="code"
+            formControlName="dept_group"
+          />
+        </div>
+        <br>
+        <br>
+    </form>
+  </div>
+  <!-- modal footer -->
+  <div class="modal-footer bg-gray-100">
+    <!-- add btn -->
+    <button
+      *ngIf="editing_flag == false"
+      type="button"
+      class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
+      (click)="save()"
+      (click)="modal.close('Close click')"
+      [disabled]="!form.valid"
+    >
+      Add Department
+    </button>
+    <!-- update btn -->
+    <button
+      *ngIf="editing_flag == true"
+      type="button"
+      class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
+      (click)="editSave()"
+      (click)="modal.close('Close click')"
+      
+    >
+      Update Department
+    </button>
+    <!-- cancel btn -->
+    <button
+      type="button"
+       class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+      (click)="reset()"
+      (click)="modal.close('Close click')"
+    >
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+<div class="mx-2">
+  <!--department master filter -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- filter header -->
+     <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+       <!-- primeNG speedDial -->
+        <p-speedDial 
+          [model]="items" 
+          direction="left"
+          className="absolute right-0 top-0"
+          buttonClassName="!h-[2.5rem] !w-[2.5rem]"
+        >
+        </p-speedDial>
+     </div>
+     <!-- department master filter divison -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+        <!-- plant based filter filter -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+            <p-dropdown 
+            [options]="plantname"
+            optionLabel="plant_name"
+            [(ngModel)]="selectedPlant"
+            optionValue="plant_code"
+            [disabled]="!isAdmin"
+            styleClass="w-full py-1"
+            (onChange)="filterDepartmentByPlant()"  
+            placeholder="Select Plant"></p-dropdown>
+        </div>
+        <!-- department filter -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins font-semibold mt-3 mb-1">Department</label> <br>
+            <p-dropdown 
+            [options]="Dept_header"
+            optionLabel="Department_Header"
+            [(ngModel)]="selectedDepartment"
+            optionValue="Dh_Id"
+            styleClass="w-full py-1"
+            (onChange)="filterByDepartment()"  
+            placeholder="Select Department"></p-dropdown>
+        </div>
+        <!-- divison filter -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins font-semibold mt-3 mb-1">Divison</label> <br>
+            <select 
+              name="status" 
+              id="status" 
+              class="w-full px-2 py-3 bg-transparent rounded-md -mb-2 border border-gray-400"> 
+              <option value="">Choose Status</option>
+              <option value="active">Active</option>
+              <option value="in-active">In-Active</option>
+            </select>
+        </div>
+      </div>
+  </div>
+
+  <app-loader *ngIf="loader.isLoding | async; else departmentTable"></app-loader>
+  
+<!-- department master table division -->
+  <ng-template #departmentTable>
+    <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+        <table id="table" class="table-auto !w-full">
+          <!-- table header -->
+          <thead class="sticky top-0">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
+              <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Code</th>
+              <th  class="!text-white !px-2 !py-2 !border-none !border-0 ">Department Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">SAP Code</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Division</th>
+              <th  class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+            </tr>
+          </thead>
+
+          <!-- table body -->
+          <tbody>
+            <tr 
+             *ngFor="let i of department; let a = index"
+             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+             >
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.dept_slno }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-500 font-semibold">
+                {{ !i.sap_code ? '-' : i.sap_code }}
+              </td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_group }}</td>
+              <!-- action buttons -->
+              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                <!-- edit btn -->
+                <button
+                  (click)="edit(i, i.dept_slno)"
+                  (click)="opentoedit(content)"
+                >
+                  <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                </button>
+                <!-- delete btn -->
+                <button
+                  (click)="deleteDepartment($event,a, i.dept_slno)"
+                >
+                  <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </ng-template>
+</div>

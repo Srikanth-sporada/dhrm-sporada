@@ -1,0 +1,74 @@
+<div class="mx-5">
+   <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+         Emergency Details
+          <mat-icon>health_cross</mat-icon>
+        </h3>
+    <h2 class="">(<span class = "star-color">*</span> fields are required)</h2>
+
+      <form [formGroup]="form" class="mt-3">
+        <div class="row">
+            <!-- contact name -->
+        <div class="col-sm-4">
+        <div class="emergency-form">  
+            <label class="form-header text-blue-600 font-semibold"for="name">Contact Name<span class = "star-color">*</span></label>  
+            <input   
+                formControlName="contactName"
+                (ngModelChange)= "emitData()" (ngModelChange)="sendData()"  
+                id="name"  
+                type="text"   
+                class="form-control"
+                placeholder="Contact Name">  
+            <div *ngIf="name['contactName'].touched && name['contactName'].invalid" class="alert ">  
+                <div *ngIf= "name['contactName'].errors.required">Contact Name is required</div>   
+            </div>  
+        </div>
+        </div>
+        <!-- contact number -->
+      <div class="col-sm-4">
+        <div class="emergency-form">  
+            <label class="form-header text-blue-600 font-semibold" for="mobileNumber">Contact Number<span class = "star-color">*</span></label>  
+            <input   
+                formControlName="contactNumber"  
+                (ngModelChange)= "emitData()" (ngModelChange)="sendData()"
+                id="contactNumber"   
+                type="text"   
+                class="form-control"
+                maxlength="10" 
+                pattern="\d{10}"
+                placeholder="Contact Number">  
+            <div *ngIf="f.contactNumber.touched && f.contactNumber.invalid" class="alert ">  
+                <div *ngIf="f.contactNumber.errors.required">Contact Number is required.</div>  
+                <div *ngIf="f.contactNumber.errors.pattern">Please, Enter 10 digit Contact Number.</div>  
+            </div>  
+        </div>  
+       </div>
+       <!-- relation -->
+    <div class="col-sm-4">
+        <label class="form-header">Relation<span class = "star-color">*</span></label>
+        <select formControlName="relations" class="form-control" (ngModelChange)= "emitData()" (ngModelChange)="sendData()">
+            <option [ngValue]="">--Select a Relation--</option>
+            <option *ngFor="let nat of relations" [ngValue]="nat">{{nat}}</option>
+          </select>
+          <div *ngIf="r.relations.touched && r.relations.invalid"class="alert ">  
+            <div *ngIf="r.relations.errors.required">Relation is required</div>   
+        </div>  
+    </div>
+</div>
+
+<div class="w-full flex items-center justify-center mt-3">
+  <button
+  pButton 
+  (click)="submit()" 
+  [disabled]="form.invalid"
+  label="Save"
+  icon="pi pi-save" >
+
+  </button>
+</div>
+
+<span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>
+
+    </form>  
+</div>
+

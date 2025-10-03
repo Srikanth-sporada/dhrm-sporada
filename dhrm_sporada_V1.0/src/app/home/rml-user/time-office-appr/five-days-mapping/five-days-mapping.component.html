@@ -1,0 +1,154 @@
+<!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>filter_5</mat-icon>Five days Trainee/CL Mapping<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Five Days Mapping</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+  <!-- gen id filter -->
+   <div>
+    <!-- gen id filter -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+   <div>
+     <!-- first row -->
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+     <!-- gen id -->
+       <div class="w-full p-fluid sm:w-1/3">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+      <input 
+        type="text" 
+        pInputText
+        styleClass="w-full !font-poppins"
+        placeholder="Enter Gen ID" 
+        [(ngModel)]="selectedGenId" />
+       </div>
+       <!-- download btn -->
+       <button
+      pButton
+      label="Download"
+      icon="pi pi-download"
+      class="rounded-3xl mt-8"></button>
+     </div>
+      
+     </div>
+    </div>
+  </div>
+  
+<!-- <div class="button" *ngIf="!editDialogOpen && !selectedEmployee">
+  <mat-form-field appearance="outline" style="padding-right: 10px">
+    <mat-label>GenID</mat-label>
+    <input matInput [(ngModel)]="selectedGenId" type="text" />
+  </mat-form-field>
+  <button
+    mat-fab
+    color="primary"
+    aria-label="Example icon button with a delete icon"
+  >
+    <mat-icon>download</mat-icon>
+  </button>
+</div> -->
+<div *ngIf="!editDialogOpen && !selectedEmployee" class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+  <table id="table" class="table-auto !w-full">
+      <thead class="sticky top-0">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Working Days</th>
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+
+          <!-- <th div class="text-center">Action</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list | GenFilter:selectedGenId  let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+          <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ i + 1 }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ item.apprentice_type }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ item.dept_name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ item.doj }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ item.apln_status }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">
+            {{ item.five_Days === "True" ? "5 Days" : "6 Days" }}
+          </td>
+          <td class="flex items-center justify-center">
+            <button (click)="openEditDialog(item)">
+              <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<!-- material dialog edit employee -->
+<mat-dialog-content *ngIf="editDialogOpen && selectedEmployee">
+  <div
+    style="
+      margin: 5rem;
+      padding: 3rem;
+    "
+    class="shadow-md rounded-md border border-gray-400"
+  >
+    <!-- <mat-dialog-content *ngIf="editDialogOpen "> -->
+    <h1 class="text-center text-xl">
+      <strong>Edit Employee</strong>
+    </h1>
+    <div
+      style="display: flex; justify-content: space-around; padding-top: 2rem"
+    >
+      <p class="font-semibold"><strong class="text-blue-600 font-semibold">Name:</strong> {{ selectedEmployee?.fullname }}</p>
+      <p class="font-semibold"><strong class="text-blue-600 font-semibold">Gen ID:</strong> {{ selectedEmployee?.gen_id }}</p>
+      <p class="font-semibold"><strong class="text-blue-600 font-semibold">Category:</strong> {{ selectedEmployee?.apprentice_type }}</p>
+      <p class="font-semibold"><strong class="text-blue-600 font-semibold">Department:</strong> {{ selectedEmployee?.dept_name }}</p>
+      <p class="font-semibold"><strong class="text-blue-600 font-semibold">DOJ:</strong> {{ selectedEmployee?.doj }}</p>
+    </div>
+    <div style="display: flex; justify-content: center; padding-top: 2rem">
+      <mat-label>
+        <p class="mr-4"><strong>Five Days Working Eligible :</strong></p>
+      </mat-label>
+      <mat-radio-group [(ngModel)]="selectedEmployee.five_Days">
+        <mat-radio-button value="True" class="font-semibold">Yes</mat-radio-button>
+        <mat-radio-button value="False" class="ml-4 font-semibold">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <mat-dialog-actions
+      style="display: flex; justify-content: center; padding-top: 2rem"
+    >
+      <button
+        style="margin-top: 10px; margin-right: 2rem"
+        mat-raised-button
+        class="bg-gray-200 font-semibold"
+        (click)="close()"
+      >
+        close
+      </button>
+      <button
+        style="margin-top: 10px; margin-right: 2rem"
+        mat-raised-button
+        class="bg-blue-600 text-white font-semibold"
+        (click)="saveEdit()"
+      >
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
+</mat-dialog-content>

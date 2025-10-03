@@ -1,0 +1,40 @@
+b{
+    font-size: large;
+}
+  
+  th,td{
+    font-family: var(--poppins);
+    font-weight: 500;
+    font-size: large;
+  }
+
+.table1 {
+
+  width: 100%;
+}
+
+th, td{
+    /* border: 1px solid #2563EB;  */
+    padding: 8px;
+  }
+
+.color{
+    color: white;
+}
+
+.table-row
+{
+    text-align: left;
+}
+
+.hrviewdata{
+  font-family: var(--poppins);
+  line-height: 20px; 
+  /* width: 400px;  */
+  border: 1px ;
+}
+/* .text-center{
+  width: 500px;
+  background-color: darkblue;
+
+} */

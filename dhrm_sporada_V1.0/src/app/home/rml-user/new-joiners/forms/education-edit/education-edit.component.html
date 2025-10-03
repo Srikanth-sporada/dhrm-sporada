@@ -1,0 +1,54 @@
+<div style='overflow-x:auto'>
+    <div class="mx-5">
+   <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+          Educational Details
+          <mat-icon>book_5</mat-icon>
+        </h3>
+   <h3 class="my-3">(<span class = "star-color">*</span> fields are required)</h3>
+
+    <table class="table-auto w-full !font-poppins">
+        <thead>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center"  scope="col" >SNo</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col" >School/College Institute</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Exam Passed</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Year of Passing</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Department</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Certificate Number</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Certificate Date</th>
+        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" scope="col">Percentage</th>
+        </tr>
+        <tr *ngFor= "let data of eduData">
+            <td><input  class="form-control"type="text" style="width:25px;"[(ngModel)]="data.sno" disabled ></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control" type="text" placeholder="Schoolname"  [(ngModel)]="data.school" (ngModelChange)="valids($event)" (click)="sendData()" ></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><select  class="form-control"type = "text" [(ngModel)]="data.passed" (ngModelChange)="valids($event)" (click)="sendData()"><option *ngFor= "let i of Exampassed">
+          {{i}}
+  </option> ></select></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control"type = "date" [(ngModel)]="data.year" max="2100-12-12" (ngModelChange)="valids($event)" (click)="sendData()" ></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control"type = "text"[(ngModel)]="data.department" (ngModelChange)="valids($event)" (click)="sendData()"></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control"type = "text"[(ngModel)]="data.certificatenumber" (ngModelChange)="valids($event)" (click)="sendData()"></td>
+        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control"type = "date"[(ngModel)]="data.certificatedate" max="2100-12-12" (ngModelChange)="valids($event)" (click)="sendData()" ></td>
+               <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control"type = "number" [(ngModel)]="data.percentage" (ngModelChange)="valids($event)"  (ngModelChange)="valid()" (click) = "emitData()">
+               
+  </td>
+        <tr>
+    </thead>    
+    </table>
+
+</div>
+
+        </div>
+
+        <div class="w-full flex items-center justify-center mt-3">
+           <button 
+            (click)="submit()"
+            pButton
+            label="Save"
+            icon="pi pi-save" 
+            [disabled]="flag" >
+            </button>
+        </div>
+        
+        <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>
+    

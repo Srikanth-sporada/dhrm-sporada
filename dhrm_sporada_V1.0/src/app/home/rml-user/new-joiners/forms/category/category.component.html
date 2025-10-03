@@ -1,0 +1,80 @@
+<div *ngIf="this.isHR == 'true' " class="container !font-poppins">
+
+   <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+         Trainee Details
+          <mat-icon>assignment_ind</mat-icon>
+        </h3>
+<div>
+  <form  >
+    <div class="row">
+        <div class="col-sm-4">    
+          <label class="form-header" for="category">Category</label>
+          <select class="form-control" name="category" id="category" [formControl]="category" placeholder="Please select Category" (change)="onchange()" style="margin-bottom: 16px;">
+            <option *ngFor="let category of categories" [ngValue]="category.categorynm">
+              {{ category.file_drop ? category.categorynm + " (SAP-Category)" : category.categorynm }}
+            </option>
+          </select>
+        </div>
+      
+        <div class="col-sm-4">
+          <label class="form-header" for="Bodhi_training">Bodhi Training - Mandate</label>
+          <select class="form-control" name="Bodhi_training" id="Bodhi_training" [formControl]="Bodhi_training" placeholder="Please select YES or NO" (change)="onchange()" style="margin-bottom: 16px;">
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+        <div  *ngIf="is_contract" class="col-sm-4">
+          <label class="form-header" for="bankName">Contractor</label>
+        <select class="form-control" name="contractor_id" id="category" [formControl]="contractor_id" placeholder="Please select Category" (change)="onchange()" >
+          <option *ngFor="let cont of contractors" [ngValue]="cont.con_id">{{cont.Cont_company_name}}</option>
+      </select>
+        </div>
+        </div>
+      <div class="row">
+        <div class="col-sm-4">    
+          <label class="form-header" for="dept_Id">Department</label>
+          <select class="form-control" name="dept_Id" id="dept_Id" [formControl]="dept_Id" placeholder="Please select Department" (change)="onchange_Dept($event)" style="margin-bottom: 16px;">
+            <option value="">SELECT</option>
+            <option *ngFor="let dept of dept_data" [value]="dept.dept_slno">{{ dept.dept_name }}</option>
+          
+          </select>
+        </div>
+      <div class="col-sm-4">
+              <label class="form-header" for="Role_id">Line</label>
+              <select class="form-control" name="line_id" id="line_id" [formControl]="line_Id">
+                <option value="">Select</option>
+                <option *ngFor="let line of line_data" [value]="line.line_code">
+                  {{ line.line_name }}
+                </option>
+              </select>
+      </div>
+
+        <div class="col-sm-4">
+          <label class="form-header" for="Role_id">Role/Activity</label>
+          <select class="form-control" name="Role_id" id="Role_id" [formControl]="Role_id" (change)="onchange()">
+            <option value="">Select</option>
+            <option *ngFor="let role of Role_data" [value]="role.Role_Id">
+              {{ role.Role_Name}}
+            </option>
+          </select>
+        </div>
+      </div>
+<br>
+      <div class="w-full flex items-center justify-center">
+         <button 
+         [disabled]="disbale"
+         pButton
+         label="Save"
+         icon="pi pi-save" 
+          (click)="save()">
+        </button>
+      </div>
+      
+      <div *ngIf="category.errors?.['invalidCategory']"><span style="color: red;" >The Required Age for this Category is {{requiredAge}} Years,but the Applicant age is {{currentAge}} Years</span></div>
+
+  </form>
+  
+  </div>
+  <hr>
+</div>

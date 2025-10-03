@@ -1,0 +1,462 @@
+<!-- add,update employee ng template -->
+<ng-template #content let-modal>
+  <div class="modal-content-container">
+    <!-- modal header -->
+    <div>
+      <div class="bg-blue-600 flex items-center justify-start py-4">
+        <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+          <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+            <mat-icon class="h-0 w-0 text-2xl opacity-100">{{!editing_flag ? 'add_circle' : 'edit'}}</mat-icon>
+          </div>
+          <h4 class="text-2xl text-white">{{!editing_flag ? 'Add Employee' : 'Update Employee'}}</h4>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!-- employee form -->
+    <form [formGroup]="form">
+       <!--first row  -->
+      <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid">
+          <!--plant name -->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
+            Plant
+          </label><br />
+          <p-dropdown 
+            formControlName="plant_name" 
+            [options]="plantname"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full"
+            (onChange)="getall($event)"
+            placeholder="Select Plant">
+          </p-dropdown>
+          </div>
+           <!-- deisgnation -->
+       <div class="w-full mx-2">
+        <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">badge</mat-icon>
+           Designation
+        </label> <br>
+         <p-dropdown 
+            formControlName="desig_name" 
+            [options]="desig"
+            optionLabel="desig_name"
+            optionValue="slno"
+            styleClass="w-full"
+            placeholder="Select Plant">
+          </p-dropdown>
+       </div>   
+      </div>
+      <!-- second row  -->
+      <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+          <!--Department name -->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">store</mat-icon>
+            Department
+          </label><br />
+          <p-dropdown 
+            formControlName="dept_name" 
+            [options]="dept"
+            optionLabel="dept_name"
+            optionValue="dept_slno"
+            styleClass="w-full"
+            (onChange)="getLineName($event)"
+            placeholder="Select Department">
+          </p-dropdown>
+          </div>
+           <!-- Line -->
+       <div class="w-full mx-2">
+        <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">linear_scale</mat-icon>
+          Line
+        </label> <br>
+         <p-dropdown 
+            formControlName="Line_Name"
+            [options]="line"
+            optionLabel="line_name"
+            optionValue="line_code"
+            styleClass="w-full"
+            placeholder="Select Line">
+          </p-dropdown>
+       </div>   
+      </div>
+       <!-- third row -->
+       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+          <!-- GEN ID -->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="personal-area">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">assignment_ind</mat-icon>
+           Gen ID
+          </label><br />
+          <p-inputNumber 
+            mode="decimal" 
+            inputId="withoutgrouping"
+            formControlName="gen_id"
+            styleClass="w-full" 
+            [useGrouping]="false" 
+            ></p-inputNumber>
+          </div>
+           <!-- Mobile Number -->
+        <div class="w-full mx-2">
+          <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="payroll-area">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">call</mat-icon>
+            Mobile Number
+          </label> <br>
+        <p-inputNumber 
+              mode="decimal" 
+              inputId="withoutgrouping"
+              formControlName="Mobile_No"
+              styleClass="w-full"
+              [maxlength]="10"
+              [minlength]="10"
+              [useGrouping]="false" 
+              ></p-inputNumber>
+        </div>   
+      </div>
+      <!-- fourth row -->
+       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+          <!-- employee name-->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+           Name
+          </label><br />
+        <input
+            pInputText
+            type="text"
+            styleClass="w-full"
+            id="name"
+            formControlName="Emp_Name"
+          />
+          </div>
+           <!-- email id -->
+       <div class="w-full mx-2">
+        <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="shortname">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">email</mat-icon>
+          Email
+        </label> <br>
+        <input
+            pInputText
+            type="email"
+            styleClass="w-full"
+            id="shortname"
+            formControlName="Mail_Id"
+          />
+       </div>   
+      </div>
+      <!-- row five-->
+       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+          <!-- biometric number-->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">fingerprint</mat-icon>
+           Biometric Number
+          </label><br />
+        <input
+            pInputText
+            type="text"
+            styleClass="w-full"
+            id="name"
+            formControlName="User_Name"
+          />
+          </div>
+           <!-- employee password -->
+       <div class="w-full mx-2">
+        <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="shortname">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">lock</mat-icon>
+          Password
+        </label> <br>
+        <input
+            pInputText
+            styleClass="w-full"
+            id="shortname"
+            formControlName="Password"
+          />
+       </div>   
+      </div>
+       <!-- row six -->
+       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+          <!-- payroll plant-->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">payments</mat-icon>
+           Payroll Plant
+          </label><br />
+        <input
+            pInputText
+            type="text"
+            styleClass="w-full"
+            id="name"
+            formControlName="payroll_plant"
+          />
+          </div>
+      </div>
+      <!-- row seven -->
+      <div class="row mt-3">
+          <!-- checkbox -->
+          <div class="col-6" style="align-self: center">
+            <!-- admin -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="is_admin"
+              [binary]="true" 
+              inputId="admin" ></p-checkbox>
+              <label for="admin" class="mb-0 text-blue-600">Admin</label>
+            </div>
+            <!-- hr user-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_HR"
+              [binary]="true" 
+              inputId="hr" ></p-checkbox>
+              <label for="hr" class="mb-0 text-blue-600">HR User</label>
+            </div>
+            <!--HR approver-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_HRAppr"
+              [binary]="true" 
+              inputId="approver" ></p-checkbox>
+              <label for="approver" class="mb-0 text-blue-600">HR Approver</label>
+            </div>
+            <!--Trainer-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_Trainer"
+              [binary]="true" 
+              inputId="trainer" ></p-checkbox>
+              <label for="trainer" class="mb-0 text-blue-600">Trainer</label>
+            </div>
+            <!--supervisor-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_Supervisor"
+              [binary]="true" 
+              inputId="supervisor" ></p-checkbox>
+              <label for="supervisor" class="mb-0 text-blue-600">Supervisor</label>
+            </div>
+            <!--reporting auth-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_ReportingAuth"
+              [binary]="true" 
+              inputId="reporting-auth" ></p-checkbox>
+              <label for="reporting-auth" class="mb-0 text-blue-600">Reporting Authority</label>
+            </div>
+            <!-- <input type="checkbox" formControlName="is_admin" /> Admin <br />
+            <input type="checkbox" formControlName="Is_HR" /> HR User <br />
+            <input type="checkbox" formControlName="Is_HRAppr" /> HR Approver
+            <br />
+            <input type="checkbox" formControlName="Is_Trainer" /> Trainer
+            <br />
+            <input type="checkbox" formControlName="Is_Supervisor" /> Supervisor
+            <br />
+            <input type="checkbox" formControlName="Is_ReportingAuth" />
+                      Reporting Authority <br /> -->
+          </div>
+          <!-- check box -->
+          <div class="col-6" >
+            <!-- time office user -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="Is_TOU"
+              [binary]="true" 
+              inputId="time-office-user" ></p-checkbox>
+              <label for="time-office-user" class="mb-0 text-blue-600">Time Office User</label>
+            </div>
+            <!-- finance -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="is_fin"
+              [binary]="true" 
+              inputId="finance" ></p-checkbox>
+              <label for="finance" class="mb-0 text-blue-600">Finance</label>
+            </div>
+            <!-- corporate med -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="is_cmed"
+              [binary]="true" 
+              inputId="Corporate Med" ></p-checkbox>
+              <label for="Corporate Med" class="mb-0 text-blue-600">Corporate Med</label>
+            </div>
+            <!-- OT Approver -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="ot_appr"
+              [binary]="true" 
+              inputId="OT Approver" ></p-checkbox>
+              <label for="OT Approver" class="mb-0 text-blue-600">OT Approver</label>
+            </div>
+            <!-- Plant Head -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="is_plant_head"
+              [binary]="true" 
+              inputId="Plant Head" ></p-checkbox>
+              <label for="Plant Head" class="mb-0 text-blue-600">Plant Head</label>
+            </div>
+            <!-- Corp HR -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="is_chr"
+              [binary]="true" 
+              inputId="Corp HR" ></p-checkbox>
+              <label for="Corp HR" class="mb-0 text-blue-600">Corp HR</label>
+            </div>
+            <!-- <input type="checkbox" formControlName="Is_TOU" /> Time Office User
+            <br />
+            <input type="checkbox" formControlName="is_fin" /> Finance
+            <br />
+            <input type="checkbox" formControlName="is_cmed" /> Corporate Med
+            <br />
+            <input type="checkbox" formControlName="ot_appr" /> OT Approver
+            <br />
+            <input type="checkbox" formControlName="is_plant_head" /> Plant Head
+            <br />
+            <input type="checkbox" formControlName="is_chr" /> Corp HR
+            <br /> -->
+          </div>
+      </div>
+    </form>
+</div> 
+ <br>
+  <!-- modal footer -->
+    <div class="modal-footer bg-gray-100">
+        <!-- add btn -->
+        <button
+          *ngIf="editing_flag == false"
+          [disabled]="!form.valid"
+          type="button"
+          class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
+          (click)="save()"
+          (click)="modal.close('Close click')"
+        >
+          Add Employee
+        </button>
+        <!-- update btn -->
+        <button
+          *ngIf="editing_flag == true"
+          type="button"
+          class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
+          (click)="editSave()"
+          (click)="modal.close('Close click')"
+        >
+          Update Employee
+        </button>
+        <!-- cancel btn -->
+        <button
+          type="button"
+          class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+          (click)="reset()"
+          (click)="modal.close('Close click')"
+        >
+          Cancel
+        </button>
+    </div>
+</ng-template>
+
+<div class="mx-2">
+ <!-- employee master filter -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- filter header -->
+     <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+       <!-- primeNG speedDial -->
+        <p-speedDial 
+          [model]="items" 
+          direction="left"
+          className="absolute right-0 top-0"
+          buttonClassName="!h-[2.5rem] !w-[2.5rem]"
+        >
+        </p-speedDial>
+     </div>
+     <!--  employee master filter divison -->
+     <div class="flex items-center justify-around w-full flex-col sm:flex-row sm:gap-8 xl:w-full md:w-full">
+        <!-- plant based filter filter -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+            <p-dropdown 
+            [options]="plantname"
+            [(ngModel)]="selectedPlant"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            (onChange)="filterEmployeeByPlant()"
+            styleClass="w-full py-1"  
+            placeholder="Select Plant"></p-dropdown>
+        </div>
+         <!-- plant based filter filter -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Search</label> <br>
+            <input 
+            type="text" 
+            class="w-full px-2 py-[13.5px] bg-transparent rounded-md -mb-2 border border-gray-400 placeholder:font-poppins placeholder:text-[1.25rem] text-[1.25rem] focus:outline focus:outline-blue-600 focus:outline-[3px]"
+            name="search" 
+            id="search"
+            (input)="searchEmployee($event)"
+            placeholder="🔍︎ Name | Gen ID | Number"
+          >
+        </div>
+     </div>
+  </div>
+
+  <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+
+  <!-- employee table -->
+  <ng-template #show>
+    <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+        <table id="table" class="table-auto !w-full">
+          <!-- table head -->
+          <thead class="sticky top-0">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sl.No</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Employee Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Designation</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Mobile</th>
+              <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+            </tr>
+          </thead>
+          <!-- table body -->
+          <tbody>
+            <tr 
+            *ngFor="let i of employee; let a = index"
+             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+            >
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.gen_id }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.Emp_Name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.desig_name  || '-'}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name || '-'}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.plant_name }}</td>
+
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ i.Payroll_Plant }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Mobile_No }}</td>
+              <!-- action buttons -->
+              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                <button
+                 (click)="opentoedit(content)"
+                  (click)="edit(a)"
+                >
+                  <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                </button>
+                <button
+                  (click)="deleteEmployee($event,a, i.empl_slno)"
+                >
+                  <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </ng-template>
+</div>

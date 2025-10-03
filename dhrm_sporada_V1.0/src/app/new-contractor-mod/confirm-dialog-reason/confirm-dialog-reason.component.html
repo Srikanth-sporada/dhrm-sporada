@@ -1,0 +1,13 @@
+
+<h3 class="!font-poppins mb-3">{{ data.message }}</h3>
+
+<div>
+  <mat-form-field appearance="outline" class="w-full">
+    <textarea matInput placeholder="Reason" [(ngModel)]="reason" class="w-full"></textarea>
+  </mat-form-field>
+</div>
+
+<div class="button-container">
+  <button  mat-raised-button color="primary" [disabled]="!isReasonValid()"   style="margin: 10px 20px; height: 40px"   (click)="onConfirmClick(true)">{{ data.confirmText }}</button>
+  <button mat-raised-button color="warn" style="margin: 10px 20px; height: 40px"  (click)="onConfirmClick(false)">{{ data.cancelText }}</button>
+</div>

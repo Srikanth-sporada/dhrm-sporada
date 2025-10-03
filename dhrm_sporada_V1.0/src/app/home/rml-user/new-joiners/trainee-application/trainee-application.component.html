@@ -1,0 +1,124 @@
+<div class="flex items-center justify-center h-dvh bg-gradient font-poppins">
+  <div class="">
+
+    <!-- home button -->
+    <button id="logout" routerLink="/first" class="bg-blue-200 rounded-md my-4">
+      <mat-icon aria-hidden="false" aria-label="home" class="text-[32px]">home</mat-icon>
+    </button>
+
+    <!-- form container -->
+    <div class="form-container">
+      <div class="container">
+        <b> <h1 class="text-center text-2xl font-poppins my-2">Trainee New Application</h1></b>
+        <form [formGroup]="traineeApplicationForms">
+          <label id="labelid" for="company" class="mt-3">Company Name</label>
+          <select
+            formControlName="company"
+            class="input7 px-2 py-2 mb-2"
+            (change)="getplantcode($event)"
+            id="company"
+          >
+            <option value="">Choose Company</option>
+            <option *ngFor="let c of companycode; let a = index">
+              {{ a + 1 }}. {{ c.company_name }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              traineeApplicationForms.controls['company'].touched &&
+              traineeApplicationForms.controls['company'].invalid
+            "
+            class="text-red-500 ml-1 bg-red-200 rounded-md text-center  py-1 w-[400px]"
+          >
+            <div
+              *ngIf="traineeApplicationForms.controls['company'].errors?.['required']"
+            >
+              Company Name is required
+            </div>
+          </div>
+          <label id="labelid" for="plant">Plant Name</label>
+          <select
+            [(ngModel)]="plantname"
+            formControlName="plant"
+            class="input7 px-2 py-2 mb-2"
+            id="plant"
+          >
+            <option value="">Choose Plant</option>
+            <option *ngFor="let pl of plantcode">{{ pl.plant_name }}</option>
+          </select>
+          <div
+            *ngIf="
+              traineeApplicationForms.controls['plant'].touched &&
+              traineeApplicationForms.controls['plant'].invalid
+            "
+            class="text-red-500 ml-1 bg-red-200 rounded-md text-center  py-1 w-[400px] mx-2"
+          >
+            <div
+              *ngIf="traineeApplicationForms.controls['plant'].errors?.['required']"
+            >
+              Plant Code is required
+            </div>
+          </div>
+          <label id="labelid" for="mobileNumber">Mobile Number</label>
+          <input
+            formControlName="mobileNumber"
+            placeholder="Enter Mobile Number"
+            id="mobileNumber"
+            name="mobilenumber"
+            type="text"
+            class="input7 px-2 py-2 mb-2"
+            maxlength="10"
+            pattern="\d{10}"
+            [(ngModel)]="mobilenum"
+            (ngModelChange)="getPassword($event)"
+          />
+          <div
+            *ngIf="
+              traineeApplicationForms.controls['mobileNumber'].touched &&
+              traineeApplicationForms.controls['mobileNumber'].invalid
+            "
+            class="text-red-500 ml-1 bg-red-200 rounded-md text-center  py-1 w-[400px] mx-2"
+          >
+            <div
+              *ngIf="traineeApplicationForms.controls['mobileNumber'].errors?.['required']"
+            >
+              Mobile Number is required.
+            </div>
+            <div
+              *ngIf="traineeApplicationForms.controls['mobileNumber'].errors?.['pattern']"
+            >
+              Please, Enter 10 digit Mobile Number.
+            </div>
+          </div>
+          <label id="labelid">Password</label>
+          <input
+            formControlName="pass"
+            [type]="inputType"
+            class="input7 px-2 py-2 mb-2"
+            [value]="Tvalue"
+            readonly
+            [disabled]="true"
+          />
+          <div id="labelid" class="ml-4 mt-2">
+            <input
+              (change)="updateInput($event)"
+              type="checkbox"
+              class="form-check-input mt-1"
+            />Show Password
+          </div>
+          
+          <button
+            (click)="sendFormData()"
+            (click)="setCookie()"
+            type="submit"
+            [disabled]="!traineeApplicationForms.valid"
+            class="bg-blue-200 rounded-md my-4 font-poppins font-semibold flex items-center justify-center gap-1"
+          >
+            Submit <mat-icon aria-hidden="false" aria-label="home" class="text-[20px]">send</mat-icon>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,133 @@
+ <!-- header -->
+  <div class="bg-blue-600 flex items-center justify-start py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">add_circle</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">Add OT Approver</h4>
+      </div>
+  </div>
+  <br>
+ <!-- add ot approver form -->
+  <div>
+      <!-- plant dropdown -->
+      <div class="mx-2">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
+          Plant
+        </label><br />
+        <p-dropdown 
+         [(ngModel)]="plant" 
+          [options]="plantList"
+          optionLabel="plant_name"
+          optionValue="plant_code"
+          styleClass="w-full"
+          [disabled]="!isadmin"
+          (ngModelChange)="loadData()"
+          placeholder="Select Plant" >
+        </p-dropdown>
+      </div>
+       <!-- employee -->
+      <div class="mx-2">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">assignment_ind</mat-icon>
+          Employee
+        </label><br />
+        <p-dropdown 
+         [(ngModel)]="selectedEmployee" 
+          [options]="mappingList"
+          optionLabel="Emp_Name"
+          optionValue="empl_slno"
+          styleClass="w-full"
+          [disabled]="!isadmin"
+          placeholder="Select Employee" >
+        </p-dropdown>
+      </div>
+      <!-- funcitonal head -->
+      <div class="mx-2 mt-3">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+           <mat-icon class="text-2xl text-blue-600 h-0 w-0">functions</mat-icon>
+          Functional Head
+        </label><br />
+        <p-dropdown 
+          [(ngModel)]="selectedOtAppr"
+          [options]="otApprovers"
+          optionLabel="Emp_Name"
+          optionValue="empl_slno"
+          styleClass="w-full"
+          placeholder="Select Functional Head" >
+        </p-dropdown>
+      </div>
+     <!-- HR  head -->
+      <div class="mx-2 mt-3">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+           <mat-icon class="text-2xl text-blue-600 h-0 w-0">account_circle</mat-icon>
+         HR Head
+        </label><br />
+        <p-dropdown 
+          [(ngModel)]="selectedHr"
+          [options]="headHr"
+          optionLabel="Emp_Name"
+          optionValue="empl_slno"
+          styleClass="w-full"
+          placeholder="Select HR Head" >
+        </p-dropdown>
+      </div>
+        <br>
+  </div>
+ <!-- modal footer -->
+  <div class="modal-footer bg-gray-100">
+    <button 
+     class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+     (click)="close()">Cancel</button>
+     <button 
+      class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
+      (click)="submit()">Add OT Approver</button>
+  </div>
+<!-- 
+<div class="container">
+  <mat-form-field appearance="outline">
+    <mat-label>Plant</mat-label>
+  <mat-select placeholder="Select Plant" [(ngModel)]="plant" name="plant" (ngModelChange)="loadData()" [disabled]="!isadmin">
+    
+    <mat-option *ngFor="let item of plantList " [value]="item.plant_code">
+      {{item.plant_code}}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="outline" class="width:400px">
+    <mat-label>Employee Name</mat-label>
+    <input matInput
+           aria-label="Employee Name"
+           [matAutocomplete]="auto"
+           [formControl]="emp"
+           >
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let emp of filteredEmp | async" [value]="emp.Emp_Name">
+        <span>{{emp.Emp_Name}}</span> -
+        {{emp.gen_id}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Functional Head</mat-label>
+    <mat-select placeholder="Placeholder" [(ngModel)]="selectedOtAppr" name="item">
+      <mat-option *ngFor="let item of otApprovers" [value]="item.empl_slno">
+        {{item.Emp_Name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>HR Head</mat-label>
+    <mat-select placeholder="Placeholder" [(ngModel)]="selectedHr" name="item">
+      <mat-option *ngFor="let item of headHr" [value]="item.empl_slno">
+        {{item.Emp_Name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="button">
+  <button mat-raised-button color="accent" (click)="close()">close</button>
+  <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+
+</div> -->

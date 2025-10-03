@@ -1,0 +1,156 @@
+<div class="mx-2">
+  <!-- Header -->
+  <div
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+  >
+    <div class="flex items-start justify-start flex-col">
+      <h1
+        class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+      >
+        <mat-icon>cloud_done</mat-icon> Test Result Summary
+        <hr />
+      </h1>
+      <p class="mt-1 text-gray-400">View DOJO Training Test Results</p>
+    </div>
+    <!-- user details -->
+    <h1
+      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+    >
+      {{ userDetails }}
+    </h1>
+  </div>
+
+   <!-- actions  -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- action header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <!-- actions divison -->
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+      <!-- from date -->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+      <p-calendar 
+        [(ngModel)]="date.start"
+        dateFormat="yy-mm-dd"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+     <!-- to date -->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+      <p-calendar 
+         [(ngModel)]="date.end"
+        dateFormat="yy-mm-dd"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+       <!-- search brn -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-search"
+        styleClass="rounded-[1.5rem] mt-2"
+        (onClick)="save()"
+        label="Search"  
+      >
+     </p-button> 
+     </div>
+       <!-- download -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-download"
+        styleClass="rounded-[1.5rem] mt-2 bg-purple-500 !outline-none !border-none"
+        (onClick)="exportexcel()"  
+      >
+     </p-button> 
+     </div>
+     </div>
+  </div>
+
+  <div>
+    <!-- loader -->
+    <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+
+    <!-- test summary table -->
+    <ng-template #show>
+      <div  class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+        <table id="table" class="table-auto !w-full">
+            <!-- tbale head -->
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                  SNo
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Application No
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Trainee Name
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Trainee ID 
+                </th>
+                <!-- <t class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Pre-Training Score
+          </th> -->
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Training Score(%)
+                </th>
+
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Result
+                </th>
+                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <!-- table body -->
+            <tbody >
+              <tr 
+               class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+               *ngFor="let i of data; let a = index">
+                <td class="px-2 py-4 text-center">{{ a + 1 }}</td>
+                <td class="px-2 py-4 text-center text-blue-600 font-semibold">{{ i.apln_slno }}</td>
+                <td class="px-2 py-4 text-center">
+                  <a
+                    [routerLink]="[
+                      '/rml/training_dojo/trainee-score-card',
+                      i.trainee_idno,
+                      i.fullname
+                    ]"
+                    >{{ i.fullname }}</a
+                  >
+                </td>
+                <td class="px-2 py-4 text-center text-purple-600 font-semibold">{{ i.trainee_idno }}</td>
+                <!-- <td class="px-2 py-4 text-center">{{i.mark1 > 100 ? 100 : i.mark1}}%</td> -->
+                <td class="px-2 py-4 text-center">{{ i.mark2 > 100 ? 100 : i.mark2 }}%</td>
+                <td style="text-transform: uppercase" class="px-2 py-4 text-center">
+                  {{ i.posttraining_pf }}
+                </td>
+                <!-- action btn -->
+                  <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                    <div>
+                      <button
+                        [routerLink]="[
+                        '/rml/training_dojo/trainee-score-card',
+                        i.trainee_idno,
+                        i.fullname
+                       ]"
+                      >
+                        <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
+                      </button>
+                    </div>
+                 </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </ng-template>
+  </div>
+</div>

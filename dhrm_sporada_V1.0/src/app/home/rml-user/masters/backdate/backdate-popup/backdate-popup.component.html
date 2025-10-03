@@ -1,0 +1,114 @@
+<div>
+  <!-- back date header -->
+  <div >
+    <div class="bg-blue-600 flex items-center justify-start py-4 mb-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">{{!editing_flag ? 'add_circle' : 'edit'}}</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">{{!editing_flag ? 'Add BackDate' : 'Update BackDate'}}</h4>
+      </div>
+    </div>
+  <div>
+    <!-- DOJ limit input -->
+        <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+          DOJ Limit
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[48px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="number"
+            id="code"
+            [(ngModel)]="data.doj_limit"
+          />
+        </div>
+      <!--Excess Hour Approval Limit input -->
+        <div class="mx-2 mt-4">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+         Excess Hour Approval Limit
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[48px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="number"
+            id="code"
+            [(ngModel)]="data.eh_approval_sup"
+          />
+        </div>
+       <!--Forgot To Punch Hr Limit input -->
+        <div class="mx-2 mt-4">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+         Forgot To Punch HR Limit
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[48px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="number"
+            id="code"
+            [(ngModel)]="data.fp_hr"
+          />
+        </div>
+         <!--Forgot To Punch WorkmenLimit input -->
+        <div class="mx-2 mt-4">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+         Forgot To Punch Workmen Limit
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[48px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="number"
+            id="code"
+             [(ngModel)]="data.fp_workmen"
+          />
+        </div>
+        <!--OT Approval FH Limit input -->
+        <div class="mx-2 mt-4">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+         OT Approval FH Limit
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[48px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="number"
+            id="code"
+            [(ngModel)]="data.ot_appr_fh"
+          />
+        </div>
+  </div>
+  <br>
+  </div>
+<!-- footer -->
+  <div class="bg-gray-100 modal-footer">
+    <!-- add btn -->
+    <button
+      *ngIf="!editing_flag"
+      type="button"
+      (click)="addBackDate()"
+      class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
+    >
+      Add BackDate
+    </button>
+    <!-- update btn -->
+    <button
+      *ngIf="editing_flag"
+      type="button"
+      class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
+      (click)="update()"
+    >
+      Update BackDate
+    </button>
+    <!-- cancel btn -->
+    <button
+      type="button"
+      class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+      (click)="close()"
+    >
+      Cancel
+    </button>
+  </div>

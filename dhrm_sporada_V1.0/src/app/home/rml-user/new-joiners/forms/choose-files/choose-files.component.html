@@ -1,0 +1,205 @@
+<div style='overflow-x:auto'>
+<form>
+<div class = "mx-5" >
+ <!-- basic details -->
+        <h3 class="text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+          Employee Related Documents
+          <mat-icon>assignment</mat-icon>
+        </h3>
+<h3 class="text-blue-500 mb-2">Upload the files in any one of the following formats:(pdf/jpeg/png/docx) (file size : 1MB)</h3>
+<div *ngIf="this.ishr == 'true' " ><b><h3 class="mb-3">(<span class = "star-color">*</span> fields are required)</h3></b></div>
+
+<table [width]="1000">
+    <tr>
+      <td class="text-blue-600 font-semibold">Resume</td>
+      <td >
+        <div class="text-center"> 
+    	<input class="form-control" formcontrolname="resume" id = "resume" type="file" (change)="valid()"  (change)="onResumeChange($event)"
+      class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+	</div> 
+  </td>
+	<td class="text-blue-600 font-semibold">
+		<a  [href]= 'urlforResume' target = "_blank" download = "resume.png"> {{resume_file_name}} </a>
+	</td>
+
+    </tr>
+    <tr>
+      <td class="text-blue-600 font-semibold">Marksheet<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" id="marksheet" type="file" (change)="valid()"  (change)="onMarksheetChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+	</div> 
+
+	<td class="text-blue-600 font-semibold">
+		<a [href]= 'urlforMark' target = "_blank">{{marksheet_file_name  == 'photo' ? null : marksheet_file_name}}  </a>
+        </td>
+    </tr> 
+	<tr>
+        <td class="text-blue-600 font-semibold">Transfer Certificate</td>
+        <td class="text-blue-600 font-semibold"><div class="text-center"> 
+          <input class="form-control" type="file" id="transfer" (change)="valid()" (change)="onTransfercertificateChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+		</div> 
+
+		<td  >
+			<a [href]= 'urlforTc' target = "_blank"> {{transfercertificate_file_name}} </a>
+		</td>
+      </tr>
+      <tr>
+        <td class="text-blue-600 font-semibold">Aadhar Card<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+        <td class="text-blue-600 font-semibold"><div class="text-center"> 
+          <input class="form-control" id="aadhar" type="file" (change)="valid()"  (change)="onAadharcardChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+		</div> 
+
+		<td class="text-blue-600 font-semibold">
+			<a [href]= 'urlforaadhar' target = "_blank">{{aadharcard_file_name == 'photo' ? null : aadharcard_file_name}}</a>
+          </td>
+      </tr>
+      <tr>
+        <td class="text-blue-600 font-semibold">Bank Passbook</td>
+        <td class="text-blue-600 font-semibold"><div class="text-center"> 
+          <input class="form-control" id="passbook" type="file" (change)="valid()"  (change)="onBankpassbookChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+		</div> 
+
+		<td class="text-blue-600 font-semibold"> 
+			<a [href]= 'urlforbankpass' target = "_blank"> {{bankpassbook_file_name}} </a>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-blue-600 font-semibold">Photo<span *ngIf="this.ishr == 'true' " class = "star-color">*</span></td>
+        <td class="text-blue-600 font-semibold"><div class="text-center"> 
+          <input class="form-control" type="file" id="photo" accept="image/*"  (change)="onPhotoChange($event)" (change)="valid()" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+		</div> 
+
+		<td class="text-blue-600 font-semibold">
+			<a [href]= 'urlforphoto' target = "_blank" (change)="valid()"> {{photo_file_name == 'photo' ? null : photo_file_name}} </a>
+    	</td>
+      </tr>
+      <tr>
+        <td class="text-blue-600 font-semibold">Signature</td>
+        <td class="text-blue-600 font-semibold"><div class="text-center"> 
+          <input class="form-control" id="sign" type="file" (change)="valid()"   (change)="onSignatureChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+		</div> 
+
+		<td class="text-blue-600 font-semibold">
+			<a [href]= 'urlforSign' target = "_blank" > {{signature_file_name}} </a>
+        </td>
+      </tr> <tr>
+       
+  </table>
+  <br>
+  <div class="w-full flex items-center justify-center">
+    <button 
+      pButton
+      label="Save"
+      icon="pi pi-save"
+      [disabled]='flagged' 
+      (click)= "func()" 
+      (click)="generate_link()">
+    </button>
+  </div>
+  
+  <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state_" >&nbsp; Details are saved</span>
+
+  <br><br>
+</div>
+</form>
+
+<!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+<form>
+<div *ngIf= "ishr == 'true' " class="mx-5" >
+<h3 class="text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+        Rane Related Documents
+          <mat-icon>assignment</mat-icon>
+        </h3>
+<table [width]="1000">
+  <tr>
+    <td class="text-blue-600 font-semibold">Appointment Order</td>
+    <td >
+      <div class="text-center"> 
+    <input class="form-control" formcontrolname="appointment" id = "appoinment" type="file"   (change)="onAppointmentorderChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+</div> 
+</td>
+<td class="text-blue-600 font-semibold">
+  <a  [href]= 'url_appointmentorder_file' target = "_blank"> {{appointmentorder_file_name}} </a>
+</td>
+
+  </tr>
+  <tr>
+    <td class="text-blue-600 font-semibold">Declaration File</td>
+    <td class="text-blue-600 font-semibold"><div class="text-center"> 
+      <input class="form-control" type="file"  (change)="onDeclarationChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+</div> 
+
+<td class="text-blue-600 font-semibold">
+  <a [href]= 'url_declaration_file' target = "_blank">{{declaration_file_name}}  </a>
+      </td>
+  </tr> 
+<tr>
+      <td class="text-blue-600 font-semibold">Medical Fitness File</td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" type="file"  (change)="onMedicalfitnessChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+  </div> 
+
+  <td  >
+    <a [href]= 'url_medicalfitness_file' target = "_blank"> {{medicalfitness_file_name}} </a>
+  </td>
+    </tr>
+    <tr>
+      <td class="text-blue-600 font-semibold">Form A4 File</td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onForma4Change($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+  </div> 
+
+  <td class="text-blue-600 font-semibold">
+    <a [href]= 'url_formA4_file' target = "_blank">{{formA4_file_name}}</a>
+        </td>
+    </tr>
+    <tr>
+      <td class="text-blue-600 font-semibold">Form 11 File</td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onForm11Change($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+  </div> 
+
+  <td class="text-blue-600 font-semibold"> 
+    <a [href]= 'url_form11_file' target = "_blank"> {{form11_file_name}} </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="text-blue-600 font-semibold">Form H2 File</td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" type="file"   (change)="onFormh2Change($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+  </div> 
+
+  <td class="text-blue-600 font-semibold">
+    <a [href]= 'url_formh2_file' target = "_blank"> {{formh2_file_name}} </a>
+    </td>
+    </tr>
+    <tr>
+      <td class="text-blue-600 font-semibold">NATS File</td>
+      <td class="text-blue-600 font-semibold"><div class="text-center"> 
+        <input class="form-control" type="file"    (change)="onNatxChange($event)" class="block w-full my-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"> 
+  </div> 
+
+  <td class="text-blue-600 font-semibold">
+    <a [href]= 'url_natx_file' target = "_blank" > {{natx_file_name}} </a>
+      </td>
+    </tr> <tr>
+     
+</table>
+
+<br>
+
+<div class="w-full flex items-center justify-center">
+  <button 
+  pButton
+  label="Save"
+  icon="pi pi-save"
+    (click)="generate_link_rml()">
+  </button>
+</div>
+  
+  <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state_1" >&nbsp; Details are saved</span>
+
+</div>
+</form>
+</div>

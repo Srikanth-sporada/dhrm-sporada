@@ -1,0 +1,302 @@
+
+<div>
+    <!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>watch_later</mat-icon>Van Delay Regularization<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Van Delay Regularization</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+  <!-- prime ng table panel -->
+   <p-tabView>
+     <!-- van dalay Regularization -->
+      <p-tabPanel>
+         <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">horizontal_distribute</mat-icon>
+                    <span>Van Delay Regularization</span>
+                  </div>
+        </ng-template>
+        <!-- content -->
+         <ng-template pTemplate="content">
+           <!-- filters -->
+          <div>
+          <!-- filters -->
+          <div class="!shadow-md !my-2 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+            <!-- filter header -->
+              <div class="relative">
+                <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                  Actions <mat-icon>filter_alt</mat-icon>
+                </h1>
+            <div>
+            <!-- row one -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+            <!-- category -->
+            <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Category</label> <br>
+              <p-dropdown
+              [options]="roles"
+             [(ngModel)]="Category"
+             (onChange)="onCategoryChange()"
+              optionValue="value"
+              optionLabel="label">
+              </p-dropdown> 
+            </div>
+            <!-- Date-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
+              <p-calendar 
+                dateFormat="yy-mm-dd"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="date"  
+                [disabled]="!Category"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+             <!-- route -->
+            <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Route</label> <br>
+              <p-dropdown
+              [options]="routelist"
+              [(ngModel)]="route"  
+              [disabled]="!Category"
+              optionValue="Route_Id"
+              optionLabel="Route_Name">
+              </p-dropdown> 
+            </div>
+              <!-- details btn -->
+                <button
+                  pButton
+                  label="Details"
+                  iconPos="right"
+                  icon="pi pi-arrow-circle-right"
+                  class="mt-9 w-1/3"
+                  (click)="verify()" 
+                   [disabled]="!isverifyValid()">
+                </button>
+            </div>
+            <!-- row two -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+            <!-- tranporter name -->
+              <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Transporter Name</label> <br>
+              <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter Transporter Name" 
+                [(ngModel)]="transporter" />
+              </div>
+            <!-- driver name -->
+            <div class="w-full p-fluid  ">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Driver Name</label> <br>
+              <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter Driver Name" 
+                [(ngModel)]="driver" />
+            </div>
+             <!-- route -->
+            <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Late Coming Minutes</label> <br>
+             <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter Minutes" 
+                [(ngModel)]="lc_min" />
+            </div>
+              <!-- submit -->
+                <button
+                  pButton
+                  label="Submit"
+                  iconPos="right"
+                  icon="pi pi-send"
+                  class="mt-9 w-1/3"
+                  (click)="submit()" 
+                  [disabled]="!issubmitValid()">
+                </button>
+            </div>
+            </div>
+             </div>
+           </div>
+          </div>
+             <!-- <div style="margin-top: 1rem;">
+              <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 1rem;">
+                <mat-label>Category</mat-label>
+                <mat-select [(ngModel)]="Category" (selectionChange)="onCategoryChange()">
+                  <mat-option value="T">Trainee/CL</mat-option>
+                  <mat-option value="O">Operator</mat-option>
+                </mat-select>
+              </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Date</mat-label>
+                    <input type="date" matInput [(ngModel)]="date"  [disabled]="!Category"
+                    [min]="minDate" 
+                     [max]="maxDate" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 2rem;" >
+                    <mat-label>Route</mat-label>
+                    <mat-select [(ngModel)]="route"  [disabled]="!Category">
+                      <mat-option value="">SELECT</mat-option>
+                      <mat-option *ngFor="let plant of routelist" [value]="plant.Route_Id">{{plant.Route_Name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+              
+
+
+                <button
+                mat-raised-button
+                color="primary"
+                style="margin: 10px 20px; height: 40px"
+                (click)="verify()" 
+                [disabled]="!isverifyValid()"
+              >
+                Details
+              </button>
+
+            </div> -->
+            <!-- <div style="margin-top: 1rem;" *ngIf="userList.length > 0">
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Transporter Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="transporter" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Driver Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="driver" />
+                
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
+                    <mat-label>Late coming minutes</mat-label>
+                    <input type="text" matInput [(ngModel)]="lc_min" />
+                
+                </mat-form-field>
+          
+
+                <button
+                mat-raised-button
+                color="primary"
+                style="margin: 10px 20px; height: 40px"
+                (click)="submit()" 
+                [disabled]="!issubmitValid()"
+              >
+                Submit
+              </button>
+
+            </div> -->
+            
+            <!-- table -->
+            <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+            <!-- <div   style="margin-top: 1rem;" class = "table-wrapper container3"> -->
+                <table id="table" class="table-auto !w-full">
+                      <!-- table head -->
+                        <thead class="sticky top-0">
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0">Route Name</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen-ID</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Shift</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Time</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Time</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late Coming</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Worked Min</th>
+                            </tr>
+                        </thead>
+                        <!-- table boby -->
+                         <tbody >
+                            <tr *ngFor="let data of userList ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{data.Route_Name}}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.shift_desc }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{data.in_time |date :'dd-MM-yyyy' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md  text-center text-green-600 font-semibold">{{data.in_time |date :'HH:mm:ss' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center  text-red-500 font-semibold">{{data.out_time |date :'HH:mm:ss' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.present_type }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.late_comeing }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Worked_Hrs }} / {{data.Shift_Duration}}</td>         
+                               </tr>
+                        </tbody> 
+                    </table>
+            </div>
+         </ng-template>
+      </p-tabPanel>
+
+      <!-- Regularization Details -->
+       <p-tabPanel>
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">info</mat-icon>
+                    <span>Regularization Details</span>
+                  </div>
+        </ng-template>
+         <!-- content -->
+       <ng-template pTemplate="content">
+        <div class="h-[90svh] lg:h-[90vh] xl:h-[95vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+           <table id="table" class="table-auto !w-full">
+             <!-- table head -->
+                <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center font-semibold">Gen ID</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Transport</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Driver</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Route Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Type Before</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late coming Before(min)</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Worked Hrs Before(min)</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Applied Late coming(min)</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Type After</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late coming After(min)</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Worked Hrs After(min)</th>
+                    </tr>
+                </thead>
+                <!-- table body -->
+                 <tbody >
+                    <tr *ngFor="let data of AppliedList ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.attn_date |date :'dd-MM-yyyy'}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.apprentice_type }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Transport }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Driver }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Route_Name }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon">{{data.Present_type_before }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon"> {{data.Lc_min_before }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon">{{data.Worked_hrs_before }} / {{data.Shift_Duration}}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightblue ;border: 1px solid white;">{{data.Applied_LC_min }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightgreen">{{data.Present_type_after }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightgreen">{{data.Lc_min_after }}</td>
+                        <td class="!px-2 !py-4  text-center font-semibold"  style="background-color: lightgreen">{{data.Worked_hrs_after }} / {{data.Shift_Duration}}</td>
+                       </tr>
+                </tbody> 
+                  
+          </table>
+        </div>
+         
+       </ng-template>
+       </p-tabPanel>
+   </p-tabView>
+
+</div>

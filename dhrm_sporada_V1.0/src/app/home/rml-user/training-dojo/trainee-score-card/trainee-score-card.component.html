@@ -1,0 +1,120 @@
+<div class="mx-2">
+  <!-- Header -->
+  <div
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+  >
+    <div class="flex items-start justify-start flex-col">
+      <h1
+        class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+      >
+        <mat-icon>cloud_done</mat-icon> {{ fullname }} - {{ idno }}
+        <hr />
+      </h1>
+      <p class="mt-1 text-gray-400">Test Results For Trainee</p>
+    </div>
+    <!-- user details -->
+    <h1
+      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+    >
+      {{ userDetails }}
+    </h1>
+  </div>
+  <div>
+    <!-- export to excel -->
+    <p-button
+          icon="pi pi-download"
+          label="Dowload"
+          styleClass="rounded-[1.5rem] mt-2 mb-2"
+          (onClick)="exportexcel()"
+        >
+    </p-button>
+    <!-- back btn -->
+    <p-button
+          icon="pi pi-arrow-left"
+          label="Back"
+          styleClass="rounded-[1.5rem] mt-2 bg-purple-500 !outline-none !border-none ml-4 mb-2"
+          (onClick)="goback()"
+        >
+    </p-button>
+
+    <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+    <!-- test details table -->
+    <ng-template #show>
+      <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[70vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+        <table id="table" class="table-auto !w-full">
+            <!-- table head -->
+              <thead class="sticky top-0">
+                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                  <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                    Sno
+                  </th>
+                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Module Name
+                  </th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Test Date
+                  </th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Minimum Pass(%)
+                  </th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                   Test Scored(%)
+                  </th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Results
+                  </th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                   Anwer
+                  </th>
+                </tr>
+              </thead>
+              <!-- table body -->
+              <tbody >
+                <tr *ngFor="let i of data; let a = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                  <td class="px-2 py-4 text-center">{{ a + 1 }}</td>
+                  <td class="px-2 py-4 text-center text-blue-600 font-semibold">
+                    <a
+                      [routerLink]="[
+                        '/rml/training_dojo/trainee-answer',
+                        idno,
+                        fullname,
+                        i.module_name
+                      ]"
+                    >
+                      {{ i.module_name }}
+                    </a>
+                  </td>
+                  <td class="px-2 py-4 text-center">
+                    {{ i.date | date : "dd-MM-yyyy" }}
+                  </td>
+                  <td class="px-2 py-4 text-center">
+                    {{ i.pass_percent }}
+                  </td>
+                  <td class="px-2 py-4 text-center">
+                    {{ i.posttraining_percent }}
+                  </td>
+                  <td class="px-2 py-4 text-center">
+                    {{ i.posttraining_pf }}
+                  </td>
+                   <!-- action btn -->
+                  <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                    <div>
+                      <button
+                        [routerLink]="[
+                        '/rml/training_dojo/trainee-answer',
+                        idno,
+                        fullname,
+                        i.module_name
+                       ]"
+                      >
+                        <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
+                      </button>
+                    </div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+      </div>
+    </ng-template>
+  </div>
+</div>

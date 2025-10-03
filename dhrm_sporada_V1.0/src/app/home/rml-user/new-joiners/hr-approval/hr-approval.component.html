@@ -1,0 +1,132 @@
+<!-- HR Approval header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>how_to_reg</mat-icon> HR Approval  <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Approve Trainee Application</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+  <!-- hr approval filters -->
+   <div>
+    <!-- hr approval filters -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+   <form [formGroup]="form" (ngSubmit)="filter()">
+     <!-- hr approval filter first row -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+       <!-- application status filter -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Status</label> <br>
+          <p-dropdown 
+            [options]="statusOption"
+            formControlName="status"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full" 
+            placeholder="Select Status" ></p-dropdown>
+       </div>
+      <!-- from date -->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+      <p-calendar 
+        dateFormat="yy-mm-dd"
+        formControlName="fromdate"
+        (onSelect)="call($event)"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+     <!-- to date -->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+      <p-calendar 
+        dateFormat="yy-mm-dd"
+        formControlName="todate"
+        (onSelect)="call2($event)"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+     <!-- search btn -->
+     <div class="mt-8 ml-3">
+        <p-button 
+        icon="pi pi-search"
+        styleClass="rounded-[1.5rem] mt-2"
+        type="submit"  
+      >
+     </p-button>
+     </div>
+     </div>
+   </form>
+  </div>
+   </div>
+
+<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+<!-- hr approval table -->
+<ng-template #show>
+  <div class="mx-2 mt-8">
+    <div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+        <table id="table" class="table-auto !w-full">
+          <!-- table head -->
+          <thead class="sticky top-0">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center" style="width: 10%">Date</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 15%">Full Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 20%">Father Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 10%">DOB</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Contact</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                ID NO
+              </th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Aadhaar</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+              <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let i of filterinfo | dateRangeFilter : from : to : 'created_dt'"
+              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+            >
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.created_dt.split("T")[0] | date : "dd-MM-yyyy" }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.fullname }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.fathername }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.birthdate | date : "dd-MM-yyyy" }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status }}</td>
+              <!-- action btn -->
+              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                <div >
+                  <button
+                    [routerLink]="[
+                      '/rml/new_joiners/hr-view',
+                      i.mobile_no1,
+                      i.apln_status,
+                      i.sno,
+                      'approval'
+                    ]"
+                    *ngIf="i.apln_status == 'SUBMITTED'"
+                  >
+                    <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
+                  </button>
+                  <span *ngIf="i.apln_status !== 'SUBMITTED'">-</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+</ng-template>

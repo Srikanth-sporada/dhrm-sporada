@@ -1,0 +1,570 @@
+<!-- Attedance header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>assignment_ind</mat-icon> Attedance Report  <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Attedance Report</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+  <!-- attedance filter-->
+   <div>
+    <!-- attedance report filters -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+       <!-- download btn-->
+        <p-button 
+         icon="pi pi-download" 
+         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
+         (click)="exportexcel()"></p-button>
+      </div>
+     <div>
+     <!-- attedance filter row one -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+       <!-- plant filter -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+          <p-dropdown 
+            [options]="plantlist"
+           [(ngModel)]="plant" 
+           [disabled]="isadmin == 'false'"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full" 
+            placeholder="Select Plant" ></p-dropdown>
+       </div>
+      <!-- month and year-->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Month & Year</label> <br>
+      <p-calendar 
+        [(ngModel)]="date"
+        view="month" 
+        dateFormat="MM,yy" 
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+     <!-- gen id -->
+       <div class="w-full p-fluid">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+      <input 
+       type="text" 
+       pInputText
+       styleClass="w-full !font-poppins" 
+       [(ngModel)]="genid" />
+      
+       </div>
+     </div>
+     <!-- filters second row -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+       <!-- category -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Category</label> <br>
+          <p-dropdown 
+            [options]="categories"
+            [(ngModel)]="cat"
+            optionLabel="categorynm"
+            optionValue="categorynm"
+            styleClass="w-full" 
+            placeholder="Select Category" ></p-dropdown>
+       </div>
+     <!-- Line filer -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Line</label> <br>
+          <p-dropdown 
+            [options]="lines"
+            [(ngModel)]="selectedLine"
+            optionLabel="Line_Name"
+            optionValue="Line_Name"
+            styleClass="w-full" 
+            placeholder="Select Line" ></p-dropdown>
+       </div>
+     <!-- search btn -->
+     <div class="w-full mt-8 ml-3">
+      <p-button 
+        icon="pi pi-search"
+        styleClass="rounded-[1.5rem] mt-2"
+        (onClick)="submit()"
+        label="Search"  
+      >
+     </p-button> 
+     </div>
+     </div>
+     </div>
+     <!-- legends division -->
+    <div class="!shadow-md !mt-2 !rounded-md  h-full !font-poppins sm:h-min border border-gray-400 flex items-center justify-around flex-col sm:flex-row">
+      <div class="monthdisplay text-center text-blue-600 font-semibold">Month: {{ date |date: 'MMMM' }}</div>
+      <div class="flex items-center justify-evenly gap-4">
+        <div class="bg-green-200 text-green-600 present py-1 px-2 rounded-lg text-center">
+          Present
+        </div>
+        <div class="bg-yellow-200 text-yellow-600 halfday py-1 px-2 rounded-lg text-center">
+          LC/EG
+        </div>
+        <div class="bg-red-200 text-red-600 absent py-1 px-2 rounded-lg text-center">
+          Not Present
+        </div>
+        <div class="bg-gray-200 text-gray-600 sunday py-1 px-2 rounded-lg text-center">
+          Sunday
+        </div>
+        <div class="bg-purple-200 text-purple-600 weekoff py-1 px-2 rounded-lg text-center">
+          WeekOff
+        </div>
+        <div class="bg-blue-200 text-blue-600 holiday py-1 px-2 rounded-lg text-center">
+          Holiday
+        </div>
+      </div>
+    </div>
+  </div>
+   </div>
+
+<!-- attedance table -->
+<div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+  <table id="table" class="table-auto !w-full" id="atnddata">
+  <!-- attedance table head -->
+    <thead class="sticky top-0">
+      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen Id</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Catergory</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">1</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">2</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">3</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">4</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">5</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">6</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">7</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">8</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">9</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">10</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">11</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">12</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">13</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">14</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">15</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">16</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">17</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">18</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">19</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">20</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">21</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">22</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">23</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">24</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">25</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">26</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">27</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="noOfDays >= 28">28</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="noOfDays >= 29">29</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="noOfDays >= 30">30</th>
+        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" *ngIf="noOfDays >= 31">31</th>
+      </tr>
+    </thead>
+    <!-- attedance table body -->
+    <tbody>
+      <tr *ngFor="let item of atndData|categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.fullname }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.apprentice_type}}</td>
+        <td class="!px-2 !py-4 text-center">
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['1'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['1'] =='HD',
+            'bg-red-200 text-red-600 absent': item['1'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['1']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['1']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['1'] == 'WO',
+            white:item['1'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["1"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['2'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['2'] =='HD',
+            'bg-red-200 text-red-600 absent': item['2'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['2']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['2']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['2'] == 'WO',
+            white:item['2'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["2"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['3'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['3'] =='HD',
+            'bg-red-200 text-red-600 absent': item['3'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['3']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['3']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['3'] == 'WO',
+            white:item['3'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["3"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['4'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['4'] =='HD',
+            'bg-red-200 text-red-600 absent': item['4'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['4']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['4']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['4'] == 'WO',
+            white:item['4'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["4"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['5'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['5'] =='HD',
+            'bg-red-200 text-red-600 absent': item['5'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['5']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['5']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['5'] == 'WO',
+            white:item['5'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["5"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['6'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['6'] =='HD',
+            'bg-red-200 text-red-600 absent': item['6'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['6']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['6']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['6'] == 'WO',
+            white:item['6'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["6"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['7'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['7'] =='HD',
+            'bg-red-200 text-red-600 absent': item['7'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['7']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['7']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['7'] == 'WO',
+            white:item['7'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["7"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['8'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['8'] =='HD',
+            'bg-red-200 text-red-600 absent': item['8'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['8']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['8']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['8'] == 'WO',
+            white:item['8'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["8"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['9'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['9'] =='HD',
+            'bg-red-200 text-red-600 absent': item['9'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['9']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['9']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['9'] == 'WO',
+            white:item['9'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["9"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['10'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['10'] =='HD',
+            'bg-red-200 text-red-600 absent': item['10'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['10']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['10']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['10'] == 'WO',
+            white:item['10'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["10"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['11'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['11'] =='HD',
+            'bg-red-200 text-red-600 absent': item['11'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['11']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['11']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['11'] == 'WO',
+            white:item['11'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["11"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+           <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['12'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['12'] =='HD',
+            'bg-red-200 text-red-600 absent': item['12'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['12']=='HL',
+           'bg-gray-200 text-gray-600 sunday':item['12']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['12'] == 'WO',
+            white:item['12'] == null
+            
+          }" class="px-2 py-1 rounded-xl text-center">{{ item["12"] }}</span>
+        </td>
+        <td class="!px-2 !py-4 text-center"
+        >
+          <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['13'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['13'] =='HD',
+            'bg-red-200 text-red-600 absent': item['13'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['13']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['13']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['13'] == 'WO',
+            white:item['13'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["13"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['14'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['14'] =='HD',
+            'bg-red-200 text-red-600 absent': item['14'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['14']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['14']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['14'] == 'WO',
+            white:item['14'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["14"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['15'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['15'] =='HD',
+            'bg-red-200 text-red-600 absent': item['15'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['15']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['15']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['15'] == 'WO',
+            white:item['15'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["15"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['16'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['16'] =='HD',
+            'bg-red-200 text-red-600 absent': item['16'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['16']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['16']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['16'] == 'WO',
+            white:item['16'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["16"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['17'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['17'] =='HD',
+            'bg-red-200 text-red-600 absent': item['17'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['17']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['17']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['17'] == 'WO',
+            white:item['17'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["17"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['18'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['18'] =='HD',
+            'bg-red-200 text-red-600 absent': item['18'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['18']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['18']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['18'] == 'WO',
+            white:item['18'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["18"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['19'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['19'] =='HD',
+            'bg-red-200 text-red-600 absent': item['19'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['19']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['19']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['19'] == 'WO',
+            white:item['19'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["19"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['20'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['20'] =='HD',
+            'bg-red-200 text-red-600 absent': item['20'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['20']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['20']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['20'] == 'WO',
+            white:item['20'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["20"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['21'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['21'] =='HD',
+            'bg-red-200 text-red-600 absent': item['21'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['21']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['21']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['21'] == 'WO',
+            white:item['21'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["21"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['22'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['22'] =='HD',
+            'bg-red-200 text-red-600 absent': item['22'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['22']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['22']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['22'] == 'WO',
+            white:item['22'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["22"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['23'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['23'] =='HD',
+            'bg-red-200 text-red-600 absent': item['23'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['23']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['23']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['23'] == 'WO',
+            white:item['23'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["23"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['24'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['24'] =='HD',
+            'bg-red-200 text-red-600 absent': item['24'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['24']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['24']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['24'] == 'WO',
+            white:item['24'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["24"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['25'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['25'] =='HD',
+            'bg-red-200 text-red-600 absent': item['25'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['25']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['25']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['25'] == 'WO',
+            white:item['25'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["25"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['26'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['26'] =='HD',
+            'bg-red-200 text-red-600 absent': item['26'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['26']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['26']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['26'] == 'WO',
+            white:item['26'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["26"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['27'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['27'] =='HD',
+            'bg-red-200 text-red-600 absent': item['27'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['27']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['27']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['27'] == 'WO',
+            white:item['27'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["27"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+            *ngIf="noOfDays >= 28"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['28'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['28'] =='HD',
+            'bg-red-200 text-red-600 absent': item['28'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['28']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['28']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['28'] == 'WO',
+            white:item['28'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["28"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+            *ngIf="noOfDays >= 29"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['29'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['29'] =='HD',
+            'bg-red-200 text-red-600 absent': item['29'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['29']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['29']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['29'] == 'WO',
+            white:item['29'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["29"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+            *ngIf="noOfDays >= 30"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['30'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['30'] =='HD',
+            'bg-red-200 text-red-600 absent': item['30'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['30']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['30']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['30'] == 'WO',
+            white:item['30'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["30"] }}</span>
+          </td>
+          <td class="!px-2 !py-4 text-center"
+            *ngIf="noOfDays >= 31"
+          >
+            <span [ngClass]="{
+            'bg-green-200 text-green-600 present': item['31'] == 'P',
+            'bg-yellow-200 text-yellow-600 halfday': item['31'] =='HD',
+            'bg-red-200 text-red-600 absent': item['31'] =='A',
+            'bg-blue-200 text-blue-600 holiday':item['31']=='HL',
+            'bg-gray-200 text-gray-600 sunday':item['31']=='S',
+            'bg-purple-200 text-purple-600 weekoff': item['31'] == 'WO',
+            white:item['31'] == null
+            }" class="px-2 py-1 rounded-xl text-center">{{ item["31"] }}</span>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

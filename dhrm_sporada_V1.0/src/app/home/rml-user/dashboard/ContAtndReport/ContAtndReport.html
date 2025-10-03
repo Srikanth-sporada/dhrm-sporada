@@ -1,0 +1,18 @@
+<div class="px-4 rounded-md border border-gray-400 shadow-md my-4">
+
+  <p class="py-2 sm:text-[1.35rem] xl:text-[2rem] text-center text-gray-600 font-semibold flex items-center justify-center gap-4"> 
+    <mat-icon class="text-blue-600 sm:text-[1.35rem] xl:text-[1.8rem]">sensor_occupied</mat-icon>
+    Contractor Wise Present / Absent Report (Appointed)
+  </p>
+
+  <canvas
+   class="chart"
+    baseChart
+    class="chart"
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [type]="barChartType"
+  >
+  </canvas>
+</div>

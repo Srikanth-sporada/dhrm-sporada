@@ -1,0 +1,108 @@
+<div class="mx-2">
+         <!-- header -->
+        <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+            <div class="flex items-start justify-start flex-col">
+            <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+            <mat-icon>supervised_user_circle</mat-icon>Supervisor Abservent Questions<hr/>
+            </h1>
+            <p class="mt-1 text-gray-400">View and Manage Supervisor Abservent Questions</p>
+            </div>
+            <!-- user details -->
+                <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+                {{userDetails}}
+                </h1>
+        </div>
+        
+        <!-- actions  -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <!-- actions divison -->
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2" [formGroup]="form">
+      <!--Departmnet -->
+       <div class="font-poppins w-full sm:w-1/3">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Department</label> <br>
+          <p-dropdown
+           [options]="modules" 
+            optionLabel="dept_name"
+            optionValue="dept_slno"
+            formControlName="module"
+            (onChange)="getquestion($event)"
+            styleClass="w-full py-1" 
+            placeholder="Select Department" >
+        </p-dropdown>
+       </div>
+       <!-- save btn -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-save"
+        styleClass="rounded-[1.5rem] mt-2"
+        (onClick)="submit()"
+        label="Save"  
+      >
+     </p-button> 
+     </div>
+       <!-- clear btn -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-times-circle"
+        styleClass="rounded-[1.5rem] mt-2 bg-red-500 !outline-none !border-none"
+        label="Clear"
+        (onClick)="clearForm()"  
+      >
+     </p-button> 
+     </div>
+     </div>
+  </div>
+
+        <!-- supervisor questions table -->
+        <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+            <table id="table" class="table-auto !w-full">
+                <!-- table head -->
+                <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sl.NO</td>
+                        <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Supervisor Abservent Points</td>
+                        <td class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Active Status</td>
+                    </tr>
+                </thead>
+                <!-- table body -->
+                <tbody>
+                    <tr *ngFor="let q of questions; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="px-2 py-4 text-center">{{ i + 1 }}</td>
+                        <td class="!font-poppins px-2 py-4 text-center">
+                            <!-- question -->
+                        <textarea
+                           [rows]="1"
+                           [cols]="20"
+                            class="w-full"
+                            [readonly]="form.controls['module'].value === ''"
+                            pInputTextarea
+                            (change)="question($event, i)"  
+                            (click) ="addrow(i)">
+                            {{q.question}}
+                        </textarea>
+                            <!-- <textarea [readonly]="form.controls['module'].value === ''"
+                                style="resize:none;outline: none;border-color: white;width: 100%;height: 300px; text-align: left;"
+                                (change)="question($event, i)" (click)="addrow(i)" type='text'
+                                class="qb-group">{{q.question}}</textarea> -->
+                        </td>
+                        <td class="px-2 py-4 text-center">
+                            <label class="switch">
+                              <input 
+                                type="checkbox" 
+                                [checked]="q.ActSts === true" 
+                                (change)="handleToggle(q, $event)"
+                              />
+                              <span class="slider"></span>
+                            </label>
+                          </td>                                                    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>

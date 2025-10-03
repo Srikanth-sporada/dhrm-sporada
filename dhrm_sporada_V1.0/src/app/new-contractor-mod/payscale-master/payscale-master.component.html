@@ -1,0 +1,2775 @@
+<div class="overlay" [hidden]="!showPayscaleForm"></div>
+<!-- add nad update new payscale -->
+<div class="shadow-lg">
+  <div
+    class="form-popup container1 mat-elevation-z8 !h-[90%]"
+    [hidden]="!showPayscaleForm"
+  >
+   <!-- payscale master add or update forem -->
+     <div class="bg-blue-600 flex items-center justify-center py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 lg:text-2xl opacity-100 sm:text-2xl text-xl">{{!edit ? 'add_circle' : 'edit'}}</mat-icon>
+        </div>
+         <h4 class="lg:text-3xl text-white sm:text-2xl text-xl">{{!edit ? 'Add New Payscale' : 'Update Payscale'}}</h4>
+      </div>
+     </div>
+    <!-- add and update payscale master form -->
+    <br />
+    <mat-vertical-stepper #stepper>
+      <!-- payscale details -->
+      <mat-step required label="Payscale Details" active>
+        <form [formGroup]="payScale">
+              <!-- first row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                 <!-- plant -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">domain</mat-icon>
+                    Marital Status
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="plant"  
+                    [disabled]="edit"
+                    [options]="filteredPlantArr"
+                    optionLabel="plant_name"
+                    optionValue="plant_code"
+                    styleClass="w-full"
+                    (onChange)="generatePayscaleCode($event.value)"
+                    placeholder="Select Plant">
+                  </p-dropdown>
+                  </div>
+                 <!-- contractor -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">account_circle</mat-icon>
+                    Contractor
+                  </label><br />
+                  <p-dropdown 
+                    [disabled]="edit"
+                    formControlName="contractor"
+                    [options]="filterconList"
+                    optionLabel="Cont_company_name"
+                    optionValue="Con_Id"
+                    styleClass="w-full"
+                    (onChange)="onContractorChange($event.value)"
+                    placeholder="Select Contractor">
+                  </p-dropdown>
+                  </div>
+                  <!-- payscale -->
+                  <div class="w-full mt-3 mx-2">  
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">payments</mat-icon>
+                    Payscale
+                  </label><br />
+                  <p-dropdown 
+                    [disabled]="edit"
+                    formControlName="payscale"
+                    [options]="filterPayscaleHeader"
+                    optionLabel="PayScale_Name"
+                    optionValue="PayScale_ID"
+                    styleClass="w-full"
+                    placeholder="Select Payscale">
+                  </p-dropdown>
+                  </div>
+                </div>
+                <!-- second row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                  <!-- stipend-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                    Stipend
+                    </label><br />
+                  <input
+                      pInputText
+                      type="number"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="stipend"
+                      placeholder="Enter Stipend Amount"
+                    />
+                  </div>
+                  <!-- basic -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                    Basic
+                    </label><br />
+                  <input
+                      pInputText
+                      type="number"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Basic Amount"
+                      formControlName="basic"
+                    />
+                  </div>
+                  <!-- DA -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                     DA
+                    </label><br />
+                  <input
+                      pInputText
+                      type="number"
+                      styleClass="w-full"
+                      placeholder="Enter DA Amount"
+                      id="name"
+                      formControlName="DA"
+                    />
+                  </div>
+                </div>
+                <!-- second row -->
+                <div class="flex items-center justify-start flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                  <!-- HRA -->
+                  <div class="w-1/3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                    HRA
+                    </label><br />
+                  <input
+                      pInputText
+                      type="number"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="HRA"
+                      placeholder="Enter HRA Amount"
+                    />
+                  </div>
+                  <!-- effective date -->
+                  <div class="w-1/3 mx-2">
+                  <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                      Effective Date
+                    </label> <br>
+                  <p-calendar 
+                      [disabled]="edit"
+                      dateFormat="yy-mm-dd"
+                      formControlName="effectiveDate"
+                      styleClass="w-full !font-poppins"
+                      [showIcon]="true" >
+                  </p-calendar>
+                  </div>
+                </div>
+         <!-- next btn -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              padding-top: 1em;
+            "
+          >
+            <button 
+             matStepperNext
+             class="!bg-[#3B82F6] !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" >
+              Next <mat-icon class="text-[20px]">double_arrow</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <!-- monthly allowance details -->
+      <mat-step required label="Monthly Allowance Details" active>
+        <form [formGroup]="allowance">
+          <div class="mt-3">
+            <!-- col one -->
+            <div class="col1" id="radio">
+              <!-- special allowance -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Special Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="special_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes" class="!font-poppins">Yes</mat-radio-button>
+                    <mat-radio-button value="No" class="!font-poppins">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="special"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('special_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+               <!-- skilled incentivce -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600"> Skilled - Incentive </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="skilled_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes" >Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="skilled"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('skilled_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- attedance bonus -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Attendance Bonus</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Attendance_bonus_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Attendance_bonus"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('unskilled_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- Retention Incentive -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Retention Incentive</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Retention_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Retention"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('unskilled_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- leave salary -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Leave Salary</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="leave_Salary_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="leave_Salary"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('unskilled_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+            <!-- col two -->
+            <div class="col1" id="radio">
+              <!-- night shift allowance -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Night shift Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="nightShift_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="nightShift"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('nightShift_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- washing allowance -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Washing Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="washing_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="washing"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- monthly bonus -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Monthly Bonus</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Monthly_bonus_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Monthly_bonus"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- sat and mon incentive -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Sat & Mon Incentive </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Sat_Mon_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Sat_Mon"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- amenity allowance -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Amenity Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Amenities_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Amenities"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- other deductions -->
+          <div class="secondColumns !font-poppins">
+            <div class="secondColumn1">
+              <p class="I1 text-blue-600 font-poppins" >Other Earnings:</p>
+              <button
+                id="blue"
+                type="button"
+                (click)="addnewItem('otherAllowance', '', 0)"
+                *ngIf="others().length < 4"
+                mat-raised-button
+                color="primary"
+              >
+                Add
+              </button>
+            </div>
+            <div class="secondColumn2">
+              <span
+                *ngFor="let otherEarning of others().controls; let i = index"
+                formArrayName="otherAllowance"
+              >
+                <div class="row1" id="row1" [formGroupName]="i">
+                  <div class="col">
+                    <div class="t">
+                      <mat-form-field appearance="outline">
+                        <mat-label class="text-blue-600">Name</mat-label>
+                        <input type="text" matInput formControlName="name" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="t">
+                      <mat-form-field appearance="outline">
+                        <mat-label class="text-blue-600">Amount</mat-label>
+                        <input
+                          type="number"
+                          class="quantity"
+                          matInput
+                          formControlName="amount"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="t">
+                      <button
+                        type="button"
+                        
+                        id="red"
+                        (click)="deleteAllowance(i)"
+                      >
+                       <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        <!-- action buttons -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              padding-top: 2.5em;
+            "
+          >
+            <button mat-raised-button class="bg-purple-600 !text-white !rounded-[20px]" matStepperPrevious>
+              Back
+            </button>
+            <button id="blue" mat-raised-button color="primary" matStepperNext>
+              Next
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <!-- monthly deductions details -->
+      <mat-step required label="Monthly Deduction Details" active>
+        <form [formGroup]="deduction">
+          <div class="columns3">
+            <!-- col one -->
+            <div class="col1" id="radio">
+             <!-- canteen deductions -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Canteen Deduction</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="canteen_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="canteen_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- Wc poilicy -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">WC Policy</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="WC_Policy_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="WC_Policy_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- professional tax -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Professional Tax</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Professional_Tax_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Professional_Tax_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- <div class="row2">
+                <span class="I1">
+                  <mat-label>Shoes</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Shoes_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Shoes_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                
+              </div>
+              <div class="row2">
+                <span class="I1">
+                  <mat-label>Uniform / T-Shirt </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Uniform_Tshirt_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Uniform_Tshirt_amt"
+                    />
+                  </mat-form-field>
+                </span>
+               
+              </div> -->
+            </div>
+            <!-- col two -->
+            <div class="col1" id="radio">
+              <!-- transport deductions -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Transport Deduction</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Transport_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Transport_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+             <!-- insurance -->
+            <div class="col1" id="radio">
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Insurance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Insurance_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button id="i48" value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Insurance_amt"
+                    />
+                  </mat-form-field>
+                </span>
+              </div>
+              <!-- <div class="row2">
+                <span class="I1">
+                  <mat-label>Goggles</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Goggles_deduction_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Goggles_deduction"
+                    />
+                  </mat-form-field>
+                </span>
+               
+              </div> -->
+              <!-- <div class="row2">
+                <span class="I1">
+                  <mat-label>Coat</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Coat_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Coat"
+                    />
+                  </mat-form-field>
+                </span>
+              
+              </div> -->
+            </div>
+          </div>
+
+          <div class="secondColumns">
+            <div class="secondColumn1">
+              <p class="I1 text-blue-600">Other Deductions:</p>
+              <button
+                id="blue"
+                type="button"
+                (click)="addnewItem('otherDeduction', ' ', 0)"
+                *ngIf="deductions().length < 4"
+                mat-raised-button
+                class="btn-primary"
+              >
+                Add
+              </button>
+            </div>
+            <div class="secondColumn2">
+              <span
+                *ngFor="
+                  let otherEarning of deductions().controls;
+                  let i = index
+                "
+                formArrayName="otherDeduction"
+              >
+                <div class="row1" id="row1" [formGroupName]="i">
+                  <div class="col">
+                    <div class="t">
+                      <mat-form-field appearance="outline">
+                        <mat-label class="text-blue-600 font-poppins">Name</mat-label>
+                        <input type="text" matInput formControlName="name" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="t">
+                      <mat-form-field appearance="outline">
+                        <mat-label class="text-blue-600 font-poppins">Amount</mat-label>
+                        <input
+                          type="number"
+                          class="quantity"
+                          matInput
+                          formControlName="amount"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="t">
+                      <button
+                        type="button"
+                        id="red"
+                        (click)="deleteDeductions(i)"
+                      >
+                        <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+            </div>
+          <!-- action buttons -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              padding-top: 2.5em;
+            "
+          >
+            <button mat-raised-button class="bg-purple-600 !text-white !rounded-[20px]" matStepperPrevious>
+              Back
+            </button>
+            <button id="blue" mat-raised-button color="primary" matStepperNext>
+              Next
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <!-- paid to contractor details -->
+      <mat-step required label="Paid To Contractor" active>
+        <form [formGroup]="paidToContractor">
+          <!-- decutions -->
+          <div class="columns3">
+            <!-- NSDC contribution -->
+            <div class="col1" id="radio">
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">NSDC Contribution </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="NSDC_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="NSDC_amt"
+                    />
+                  </mat-form-field>
+                </span>
+              </div>
+              <!-- uniform charges -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Uniform Charges</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Uniform_Chrg_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Uniform_Chrg_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- learning fees -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Learning Fee</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Learning_Fee_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Learning_Fee_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- emp comp -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Employee Comp & Ins</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="EMP_Comp_Ins_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="EMP_Comp_Ins_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+            <!-- LWF -->
+            <div class="col1" id="radio">
+              <!-- LWF -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Labour Welfare Fund</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="LWF_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="LWF_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+            <!-- insurance premium -->
+            <div class="col1" id="radio">
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Insurance Premium</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Insurance_Premimum_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Insurance_Premimum_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- workmen compensation -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Workmen Compensation</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Workmen_Compensation_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Workmen_Compensation_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- higher eduction fees -->
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%]">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Higher Education Fee</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Higer_EducationFee_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Higer_EducationFee_amt"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="columns3">
+            <div class="col1">
+              <div class="row2 !w-full lg:!w-[75%] xl:!w-[60%] mt-2 gap-4">
+                <span class="">
+                  <mat-label class="text-blue-600">Service Charge </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                  aria-label="Service Charge"
+                  formControlName="Service_chrg"
+                  (change)="onServiceOptionChange($event)"
+                >
+                  <mat-radio-button value="Value"
+                    >Fixed </mat-radio-button
+                  >
+                  <mat-radio-button value="Percent"
+                    >% on gross</mat-radio-button
+                  >
+                </mat-radio-group>
+                </span>
+              </div>
+              <span class="flex h-min -ml-2 !p-0">
+                <mat-form-field
+                  appearance="outline"
+                  id="sc"
+                  class="example-full-width"
+                >
+                  <mat-label>Service Charge Value on gross</mat-label>
+                  <input
+                    type="number"
+                    class="quantity"
+                    matInput
+                    formControlName="Service_Value"
+                  />
+                  <mat-error
+                    *ngIf="
+                      paidToContractor
+                        .get('Service_Value')
+                        ?.hasError('required')
+                    "
+                    >Please Enter Service Charge Value</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Service Charge % on gross</mat-label>
+                  <input
+                    type="number"
+                    class="quantity"
+                    matInput
+                    formControlName="Service_Percent"
+                  />
+                  <mat-error
+                    *ngIf="
+                      paidToContractor
+                        .get('Service_Percent')
+                        ?.hasError('required')
+                    "
+                    >Please Enter Service Percent</mat-error
+                  >
+                </mat-form-field>
+                </span>
+            </div>
+
+            <!-- 2nd column -->
+            <div class="col1">
+              <div class="row2 !w-full lg:!w-[8%] xl:!w-[65%] mt-2 gap-4">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Service Charge </mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                 <mat-radio-group
+                  aria-label="Service Tax on "
+                  formControlName="Service_Base"
+                  (change)="onServiceOptionChange($event)"
+                >
+                  <mat-radio-button value="GROSS"
+                    >GROSS</mat-radio-button
+                  >
+                  <mat-radio-button value="NET"
+                    >NET</mat-radio-button
+                  >
+                  <mat-radio-button value="CTC"
+                    >CTC</mat-radio-button
+                  >
+                </mat-radio-group>
+                <mat-error
+                  *ngIf="
+                    paidToContractor.get('Service_Base')?.hasError('required')
+                  "
+                  >Please Select Service Tax On</mat-error>
+                </span>
+                <span class="I4">
+                  <mat-form-field appearance="outline" class="!h-[50px]">
+                    <mat-label>Active Status</mat-label>
+                    <mat-select  [disabled]="edit" formControlName="status">
+                      <mat-option value="true"> Active</mat-option>
+                      <mat-option value="false"> InActive</mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="paidToContractor.get('status')?.hasError('required')"
+                      >Please Select Status
+                    </mat-error>
+                  </mat-form-field>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- action buttons -->
+          <div class="columns">
+            <div
+              style="
+                display: flex;
+                justify-content: space-around;
+                padding-top: 2em; margin-top: 2rem;
+              "
+            >
+              <button
+                mat-raised-button
+                class="bg-purple-600 !text-white !rounded-[20px]"
+                (click)="closeAllForms()"
+              >
+                close
+              </button>
+              <button
+                id="blue"
+                mat-raised-button
+                color="primary"
+                matStepperPrevious
+              >
+                Back
+              </button>
+              <button
+                *ngIf="showAdd"
+                mat-raised-button
+                class="bg-green-600 !text-white !rounded-[20px]"
+                (click)="submitForm()"
+              >
+                Submit
+              </button>
+              <button
+                *ngIf="!showAdd"
+                mat-raised-button
+                class="bg-yellow-500 !text-white !rounded-[20px]"
+                (click)="updatePayscaleMaster()"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+</div>
+
+<!-- payscale table -->
+<div class="mx-2">
+  <!-- payscale master header -->
+      <div class="!flex  gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+        <div class="flex items-start justify-start flex-col">
+          <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+          <mat-icon>layers</mat-icon>Paycale Master<hr/>
+        </h1>
+        <p class="mt-1 text-gray-400">View and Manage Payscale Master</p>
+        </div>
+        <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+      </div>
+      <!-- payroll master filter -->
+      <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+        <!-- filter header -->
+        <div class="relative">
+            <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+              Filters <mat-icon>filter_alt</mat-icon>
+            </h1>
+          <!-- primeNG speedDial -->
+            <p-speedDial 
+              [model]="items" 
+              direction="left"
+              className="absolute right-0 top-0"
+              buttonClassName="!h-[2.5rem] !w-[2.5rem]"
+            >
+            </p-speedDial>
+        </div>
+        <!-- payroll master filter divison -->
+        <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+            <!-- plant based filter filter -->
+            <div class="font-poppins sm:w-1/3 w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Contractor</label> <br>
+                <p-dropdown 
+                [options]="Con_list"
+                optionLabel="Cont_company_name"
+                [(ngModel)]="selectedContrator"
+                optionValue="Cont_company_name"
+                styleClass="w-full py-1"  
+                placeholder="Select Contractor"></p-dropdown>
+            </div>
+            <!-- payscale type -->
+            <div class="font-poppins sm:w-1/3 w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Type</label> <br> <br>
+                <mat-radio-group
+                  aria-label="Select an option"
+                  [(ngModel)]="PayscaleType"
+                  (change)="filter_Latest(PayscaleType)"
+                >
+                <mat-radio-button value="Latest" class="!font-poppins">Latest Payscale</mat-radio-button>
+                <mat-radio-button value="Old" class="!font-poppins ml-2">Old Payscale</mat-radio-button>
+              </mat-radio-group>
+            </div>
+        </div>
+      </div>
+  <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+
+  <ng-template #show>
+    <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+      <table id="table" class="table-auto !w-full">
+        <!-- table head -->
+          <thead class="sticky top-0">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Contractor</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Payscale Header</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Earnings</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Deduction</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Bill Value</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">GST</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">CTC</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Effective date</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+              <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+            </tr>
+          </thead>
+          <!-- table body -->
+          <tbody>
+            <tr 
+             *ngFor="let data of filteredPayscaleData | ConFilter :selectedContrator; let i = index"
+             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.Plant_Code }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md !text-left">{{ data.Cont_company_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md !text-left">{{ data.PayScale_Name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">&#8377; {{ data.Gross_Earning }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-red-500 font-semibold">&#8377; {{ data.Gross_Deduction }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">&#8377; {{ data.ToTal_Base_Value }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">&#8377; {{ data.Service_Tax_Val }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">&#8377; {{ data.CTC }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Effective_Date2 }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="data.Status == 1; else inactive">
+                <span class="px-2 py-1 bg-green-100 rounded-md">Active</span>
+              </td>
+              <ng-template #inactive>
+                <span class="px-2 py-1 bg-red-200 rounded-md">In-Active</span>
+              </ng-template>
+              <!-- action buttons -->
+              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                <!-- edit btn -->
+                <button
+                *ngIf="data.Status == 1 && isFin "
+                  (click)="onEdit(data)"
+                >
+                  <!-- <button mat-mini-fab  color="basic" [routerLink]="['/rml/contra/mst_payscale', 'master',data.Effective_Date]" class="view-button" > -->
+
+                  <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                </button>
+                <!-- view btn -->
+                <button (click)="onView(data)">
+                  <!-- <button mat-mini-fab  color="basic" [routerLink]="['/rml/contra/mst_payscale', 'master',data.Effective_Date]" class="view-button" > -->
+
+                  <mat-icon class="text-green-600 text-[20px]">visibility</mat-icon>
+                </button>
+                <!-- <button
+                style="margin-left: 1rem;"
+                  mat-mini-fab
+                  color="warn"
+                  type="button"
+                  (click)="deletePayscaleMaster(data)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button> -->
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </ng-template>
+</div>
+
+<!-- view payscale details -->
+<div class="overlay" [hidden]="!viewPayscaleForn">
+  <div
+    class="form-popup container1 mat-elevation-z8 overflow-y-scroll lg:!h-min !h-[90%] sm:!h-[80%]"
+    [hidden]="!viewPayscaleForn"
+  >
+    <!-- view payscale header -->
+     <div class="bg-blue-600 flex items-center justify-center py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 lg:text-2xl opacity-100 sm:text-2xl text-xl">payments</mat-icon>
+        </div>
+         <h4 class="lg:text-3xl text-white sm:text-2xl text-xl">Payscale Details</h4>
+      </div>
+     </div>
+    <!-- add and update payscale master form -->
+    <br />
+    <form [formGroup]="NewPayScaleFormGroup" class="mx-2 !font-poppins overflow-hidden">
+      <!-- payscale details header -->
+      <div id="ndLine"> 
+        <div
+          class="row !font-poppins"
+          style="
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+          "
+        >
+          <div class="row text-center mt-2">
+            <label class="text-blue-600 text-lg">Pay Scale Description:</label>
+            <p class="text-blue-600 text-lg ml-2">{{ NewPayScaleFormGroup.get("PayScale_Name")?.value }}</p>
+          </div>
+          <div class="row text-center mt-2">
+            <label class="text-blue-600 text-lg">Payscale Effective Date :</label>
+            <p class="text-blue-600 text-lg ml-2">{{ NewPayScaleFormGroup.get("Effective_Date1")?.value }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- earnings and deductions -->
+      <div id="rdLine">
+        <div class="row !font-poppins">
+          <!-- deductions -->
+          <div class="col-6 colborder">
+            <div class="col">
+              <h4 class="text-green-600 text-lg">Earnings</h4>
+            </div>
+
+            <div class="row">
+              <!-- earnings name -->
+              <div class="col-6 !text-left">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Stipend')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Stipend')?.value > 0
+                  "
+                >
+                  <p class="col" id="stipend">Stipend</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Basic')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Basic')?.value > 0
+                  "
+                >
+                  <p class="col" id="Basic_amt">Basic</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('DA')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('DA')?.value > 0
+                  "
+                >
+                  <p class="col" id="DA">DA</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('HRA')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('HRA')?.value > 0
+                  "
+                >
+                  <p class="col" id="HRA">HRA</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Leave_Salary')?.value > 0
+                  "
+                >
+                  <p class="col" id="Leave_Salary">Leave Salary Allowance</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Washing_allow')?.value > 0
+                  "
+                >
+                  <p class="col" id="Washing_allow">Washing Allowance</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Monthly_Bonus')?.value > 0
+                  "
+                >
+                  <p class="col" id="Monthly_Bonus">Monthly Bonus</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')
+                      ?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value >
+                      0
+                  "
+                >
+                  <p class="col" id="Monthly_Attn_Incentive">
+                    Attendance Bonus
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Sat_and_Mon_Incentive"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')
+                        ?.value > 0 &&
+                      NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')
+                        ?.value !== 0
+                    "
+                  >
+                    Sat & Mon Incentive
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Retention_Incentive"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Retention_Incentive')
+                        ?.value !== 0 &&
+                      NewPayScaleFormGroup?.get('Retention_Incentive')?.value >
+                        0
+                    "
+                  >
+                    Retention Incentive
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Spl_allow"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Spl_allow')?.value > 0 &&
+                      NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0
+                    "
+                  >
+                    Special Allowance
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Skilled_allow_P3">Skilled Allowance</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Amenities_Allow')?.value > 0
+                  "
+                >
+                  <p class="col" id="Amenities_Allow">Amenities Allowance</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_1')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_1')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_1">Other Allowance 1</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_2')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_2')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_2">Other Allowance 2</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_3">Other Allowance 3</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_4')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_4')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_4">Other Allowance 4</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Night_shift_allowance')
+                      ?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Night_shift_allowance')?.value >
+                      0
+                  "
+                >
+                  <p class="col" style="color: blue" id="Night_shift_allowance">
+                    Nightshift Allowance
+                  </p>
+                </ng-container>
+                <!-- <p class="col" id="totalEarnings">
+                <label>Total Earnings</label>
+              </p> -->
+              </div>
+              <!-- earnings amount -->
+              <div class="col-6 !text-left">
+                <!-- [value]="selectedPayscale?." -->
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Stipend')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Stipend')?.value > 0
+                  "
+                >
+                  <p class="col" for="Stipend">
+                    : &#8377;{{ NewPayScaleFormGroup.get("Stipend")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Basic')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Basic')?.value > 0
+                  "
+                >
+                  <p class="col" for="Basic">
+                    : &#8377;{{ NewPayScaleFormGroup.get("Basic")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('DA')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('DA')?.value > 0
+                  "
+                  for="DA"
+                >
+                  <p class="col">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("DA")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('HRA')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('HRA')?.value > 0
+                  "
+                >
+                  <p class="col" for="HRA">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("HRA")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Leave_Salary')?.value > 0
+                  "
+                >
+                  <p class="col" for="Leave_Salary">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Leave_Salary")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Washing_allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Washing_allow">
+                    : &#8377; {{ NewPayScaleFormGroup.get("Washing_allow")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Monthly_Bonus')?.value > 0
+                  "
+                >
+                  <p class="col" for="Monthly_Bonus">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Monthly_Bonus")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')
+                      ?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value >
+                      0
+                  "
+                >
+                  <p class="col" for="Monthly_Attn_Incentive">
+                    : &#8377;
+                    {{
+                      NewPayScaleFormGroup.get("Monthly_Attn_Incentive")?.value
+                    }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')
+                      ?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value >
+                      0
+                  "
+                >
+                  <p class="col" for="Sat_and_Mon_Incentive">
+                    : &#8377;
+                    {{
+                      NewPayScaleFormGroup.get("Sat_and_Mon_Incentive")?.value
+                    }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Retention_Incentive')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Retention_Incentive')?.value > 0
+                  "
+                >
+                  <p class="col" for="Retention_Incentive">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup.get("Retention_Incentive")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Spl_allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Spl_allow">
+                    : &#8377; {{ NewPayScaleFormGroup.get("Spl_allow")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Skilled_allow_P3">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Skilled_allow_P3")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Amenities_Allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Amenities_Allow">
+                    : &#8377; {{ NewPayScaleFormGroup.get("Amenities_Allow")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_1')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_1')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_1">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Other_allowance_1")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_2')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_2')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_2">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Other_allowance_2")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_3">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Other_allowance_3")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_allowance_4')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_allowance_4')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_4">
+                    :  &#8377;{{ NewPayScaleFormGroup.get("Other_allowance_4")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Night_shift_allowance')
+                      ?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Night_shift_allowance')?.value >
+                      0
+                  "
+                >
+                  <p
+                    class="col"
+                    style="color: blue"
+                    for="Night_shift_allowance"
+                  >
+                    : &#8377;
+                    {{
+                      NewPayScaleFormGroup.get("Night_shift_allowance")?.value
+                    }}
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <!-- deductions -->
+          <div class="col-6 colborder rightborder">
+            <div class="col">
+              <h4 class="text-red-500 text-lg">Deduction</h4>
+            </div>
+
+            <div class="row">
+              <!-- deduction name -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Canteen')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Canteen')?.value > 0
+                  "
+                >
+                  <p class="col" id="Canteen">Canteen</p>
+                </ng-container>
+
+               
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('WC_Policy')?.value > 0
+                  "
+                >
+                  <p class="col" id="WC_Policy">WC Policy</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Professional_Tax')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Professional_Tax')?.value > 0
+                  "
+                >
+                  <p class="col" id="Professional_Tax">Professional Tax</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Insurance')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Insurance')?.value > 0
+                  "
+                >
+                  <p class="col" id="Insurance">Insurance</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Shoe_FirstTime">Shoe FirstTime</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Glass_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Glass_FirstTime">Goggles FirstTime</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Uniform_FirstTime">Uniform FirstTime</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Coat_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Coat_FirstTime">Coat FirstTime</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_1')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_1')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_1">Other Deduction 1</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_2')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_2')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_2">Other Deduction 2</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_3">Other Deduction 3</p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_4')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_4')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_4">Other Deduction 4</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container> -->
+                  <p class="col" id="EM_PF">
+                    PF
+                    {{ NewPayScaleFormGroup?.get("EM_PF_Percent")?.value }}%
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container> -->
+                  <p class="col" id="EM_ESI">
+                    ESI
+                    {{ NewPayScaleFormGroup?.get("EM_ESI_Percent")?.value }}%
+                  </p>
+                </ng-container>
+                <ng-container
+                *ngIf="
+                  NewPayScaleFormGroup?.get('Transport')?.value !== 0 &&
+                  NewPayScaleFormGroup?.get('Transport')?.value > 0
+                "
+              >
+                <p class="col" style="color: blue;" id="Transport">Transport</p>
+              </ng-container>
+              </div>
+              <!-- deduction amount -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Canteen')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Canteen')?.value > 0
+                  "
+                >
+                  <p class="col" for="Canteen">
+                    :  &#8377;{{ NewPayScaleFormGroup?.get("Canteen")?.value }}
+                  </p>
+                </ng-container>
+
+             
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('WC_Policy')?.value > 0
+                  "
+                >
+                  <p class="col" for="WC_Policy">
+                    : &#8377; {{ NewPayScaleFormGroup?.get("WC_Policy")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Professional_Tax')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Professional_Tax')?.value > 0
+                  "
+                >
+                  <p class="col" for="Professional_Tax">
+                    : &#8377; {{ NewPayScaleFormGroup?.get("Professional_Tax")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Insurance')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Insurance')?.value > 0
+                  "
+                >
+                  <p class="col" for="Insurance">
+                    :  &#8377;{{ NewPayScaleFormGroup?.get("Insurance")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Shoe_FirstTime">
+                    : &#8377; {{ NewPayScaleFormGroup?.get("Shoe_FirstTime")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Glass_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Glass_FirstTime">
+                    :  &#8377;{{ NewPayScaleFormGroup?.get("Glass_FirstTime")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Uniform_FirstTime">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup?.get("Uniform_FirstTime")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Coat_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Coat_FirstTime">
+                    : &#8377; {{ NewPayScaleFormGroup?.get("Coat_FirstTime")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_1')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_1')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_1">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup?.get("Other_deduction_1")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_2')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_2')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_2">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup?.get("Other_deduction_2")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_3')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_3">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup?.get("Other_deduction_3")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Other_deduction_4')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Other_deduction_4')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_4">
+                    : &#8377;
+                    {{ NewPayScaleFormGroup?.get("Other_deduction_4")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container > -->
+                  <p class="col" for="EM_PF">
+                    : &#8377; {{ NewPayScaleFormGroup?.get("EM_PF_Cal_Val")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container > -->
+                  <p class="col" for="EM_ESI">
+                    :  &#8377;{{ NewPayScaleFormGroup?.get("EM_ESI_Cal_Val")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                *ngIf="
+                  NewPayScaleFormGroup?.get('Transport')?.value !== 0 &&
+                  NewPayScaleFormGroup?.get('Transport')?.value > 0
+                "
+              >
+                <p class="col" for="Transport">
+                  :  &#8377;{{ NewPayScaleFormGroup?.get("Transport")?.value }}
+                </p>
+              </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- total -->
+      <div id="ndLine">
+        <div class="row mt-2">
+          <div class="col-6 colborder">
+            <div class="row">
+              <div class="col-6">
+                <p class="col" id="Gross_Earnings">
+                  <label>Total Earnings</label>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="col text-green-600" for="Gross_Earnings">
+                  :  &#8377;{{ NewPayScaleFormGroup?.get("Gross_Earning")?.value }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <p class="col" id="Tot_Deduction">
+                  <label>Total Deduction</label>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="col text-red-500" for="Tot_Deduction">
+                  :  &#8377;{{ NewPayScaleFormGroup?.get("Gross_Deduction")?.value }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- paid to contractor -->
+      <div id="ndLine">
+        <div class="col mt-2">
+          <h4>To Be Paid to Contractor</h4>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <!-- name -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0
+                  "
+                >
+                  <p class="col" id="NSDC_Contribution">NSDC Contribution</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0
+                  "
+                >
+                  <p class="col" id="Uniform_Charges">Uniform Charges</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0
+                  "
+                >
+                  <p class="col" id="Labour_Welfare_Fund">
+                    Labour Welfare Fund
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Insurance_Premium')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0
+                  "
+                >
+                  <p class="col" id="Insurance_Premium">Insurance Premium</p>
+                </ng-container>
+              </div>
+              <!-- value -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0
+                  "
+                >
+                  <p class="col" for="NSDC_Contribution">
+                    :&#8377;
+                    {{ NewPayScaleFormGroup?.get("NSDC_Contribution")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0
+                  "
+                >
+                  <p class="col" for="Uniform_Charges">
+                    :&#8377; {{ NewPayScaleFormGroup?.get("Uniform_Charges")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0
+                  "
+                >
+                  <p class="col" for="Labour_Welfare_Fund">
+                    :&#8377;
+                    {{
+                      NewPayScaleFormGroup?.get("Labour_Welfare_Fund")?.value
+                    }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Insurance_Premium')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0
+                  "
+                >
+                  <p class="col" for="Insurance_Premium">
+                    :&#8377;
+                    {{ NewPayScaleFormGroup?.get("Insurance_Premium")?.value }}
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <!-- name -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0
+                  "
+                >
+                  <p class="col" id="Learning_Fees">Learning Fees</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0
+                  "
+                >
+                  <p class="col" id="Workmen_Compensation">
+                    Workmen Compensation
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0
+                  "
+                >
+                  <p class="col" id="Emp_Comp_Ins">Emp_Comp + Ins</p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0
+                  "
+                >
+                  <p class="col" id="Higher_Education_Fee">
+                    Higher Education Fee
+                  </p>
+                </ng-container>
+              </div>
+              <!-- value -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0
+                  "
+                >
+                  <p class="col" for="Learning_Fees">
+                    : &#8377;{{ NewPayScaleFormGroup?.get("Learning_Fees")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0
+                  "
+                >
+                  <p class="col" for="Workmen_Compensation">
+                    :&#8377;
+                    {{
+                      NewPayScaleFormGroup?.get("Workmen_Compensation")?.value
+                    }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0
+                  "
+                >
+                  <p class="col" for="Emp_Comp_Ins">
+                    :&#8377; {{ NewPayScaleFormGroup?.get("Emp_Comp_Ins")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0
+                  "
+                >
+                  <p class="col" for="Higher_Education_Fee">
+                    :&#8377;
+                    {{
+                      NewPayScaleFormGroup?.get("Higher_Education_Fee")?.value
+                    }}
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" sty>
+          <div class="col-3">
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 &&
+                NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container> -->
+              <p class="col" id="EMR_PF">
+                PF {{ NewPayScaleFormGroup?.get("EMP_PF_Percent")?.value }}%
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 &&
+                NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container> -->
+              <p class="col" id="EMR_ESI">
+                ESI {{ NewPayScaleFormGroup?.get("EMP_ESI_Percent")?.value }}%
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !==
+                  0 &&
+                NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value > 0
+              "
+            >
+              <p class="col" id="Service_Charge_Fixed">Service Charge Fixed</p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('Service_charges_Percentage')
+                  ?.value !== 0 &&
+                NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >
+                  0
+              "
+            >
+              <p class="col" id="Service_charges_Percentage">
+                Service Charge Percentage
+                {{
+                  NewPayScaleFormGroup?.get("Service_charges_Percentage")
+                    ?.value
+                }}%
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null"
+            >
+              <p class="col" id="SC_Base">
+                Service Tax 18% On
+                {{ NewPayScaleFormGroup?.get("SC_Base")?.value }}
+              </p>
+            </ng-container>
+          </div>
+          <div class="col-3">
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 &&
+                NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container > -->
+              <p class="col" for="EMR_PF">
+                :&#8377; {{ NewPayScaleFormGroup?.get("EMP_PF_Cal_Val")?.value }}
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 &&
+                NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container > -->
+              <p class="col" for="EMR_ESI">
+                :&#8377; {{ NewPayScaleFormGroup?.get("EMP_ESI_Cal_Val")?.value }}
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !==
+                  0 &&
+                NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value > 0
+              "
+            >
+              <p class="col" for="Service_Charge_Fixed">
+                :&#8377; {{ NewPayScaleFormGroup?.get("Service_Charge_Fixed")?.value }}
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                NewPayScaleFormGroup?.get('Service_charges_Percentage')
+                  ?.value !== 0 &&
+                NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >
+                  0
+              "
+            >
+              <p class="col" for="Service_charges_Percentage">
+                :&#8377;
+                {{ NewPayScaleFormGroup?.get("Servive_Charge_Val")?.value }}
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null"
+            >
+              <p class="col" for="SC_Base">
+                :&#8377; {{ NewPayScaleFormGroup?.get("Service_Tax_Val")?.value }}
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <!-- ctc + Net amount + GSt -->
+      <div
+        id="ndLine"
+        style="display: flex; justify-content: space-around; padding-top: 0.5em"
+      >
+        <p>
+          <strong>CTC :&#8377; </strong>
+          <span class="text-green-600 font-semibold">{{ NewPayScaleFormGroup?.get("ToTal_Base_Value")?.value }}</span>
+        </p>
+        <p>
+          <strong>CTC + GST : &#8377;</strong>
+          <span class="text-purple-600 font-semibold">{{ NewPayScaleFormGroup?.get("CTC")?.value }}</span>
+        </p>
+
+        <p>
+          <strong>Net Take Home : &#8377; </strong>
+          <span class="text-blue-600 font-semibold">{{ NewPayScaleFormGroup?.get("Net_Take_Home")?.value }}</span>
+        </p>
+      </div>
+    </form>
+    <!-- close btn -->
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        margin-top: 1em;
+        margin-bottom: 1rem;
+        align-items: center;
+      "
+    >
+      <button
+        (click)="closeViewForms()"
+        class="bg-blue-600 rounded-[1.25rem] px-2 py-1 !text-white"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<!-- <div class = 'container'> -->
+<div class="mx-2 overflow-hidden">
+    <!-- trainee application header -->
+  <div
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+  >
+    <div class="flex items-start justify-start flex-col">
+      <h1
+        class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+      >
+        <mat-icon>assignment_ind</mat-icon> Trainee Application
+        <hr />
+      </h1>
+      <!-- <p class="mt-1 text-gray-400">Trainee Application</p> -->
+    </div>
+    <!-- user details -->
+    <h1
+      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+    >
+      {{ userDetails }}
+    </h1>
+  </div>
+  <img *ngIf="ishr == 'undefined'" src="assets/rane.png" class="img" />
+  <!-- basic details form -->
+  <ng-container *ngIf="Load">
+    <app-basic
+      [basic]="details"
+      (emit)="eventchanger_basic($event)"
+    ></app-basic>
+  </ng-container>
+  <hr />
+ <!-- bank form -->
+  <ng-container *ngIf="Load">
+    <app-banks [bank]="details"></app-banks>
+  </ng-container>
+  <hr />
+ <!-- family edit -->
+  <app-familyedit (emit)="eventchanger_fam($event)"></app-familyedit>
+  
+  <!-- emergency contact details -->
+  <ng-container *ngIf="Load">
+    <app-emergency
+      [emer]="details"
+      (emit)="eventchanger_emer($event)"
+    ></app-emergency>
+  </ng-container>
+  <hr />
+  
+  <!-- <app-educational></app-educational> -->
+   <!-- educational details -->
+  <app-education-edit (emit)="eventchanger_edu($event)"></app-education-edit>
+  <hr />
+  
+  <!-- <app-prev></app-prev> -->
+   <!-- previous employement -->
+  <app-prev-edit></app-prev-edit>
+  <hr />
+ 
+  <!-- language details -->
+  <ng-container *ngIf="Load">
+    <app-language [details]="details"></app-language>
+  </ng-container>
+  <hr />
+
+  <!-- other details -->
+  <ng-container *ngIf="Load">
+    <app-other [other]="details"></app-other>
+  </ng-container>
+  <hr />
+  
+  <ng-container *ngIf="Load">
+    <app-choose-files
+      [basicDetails]="details"
+      (emit)="eventchanger_choose($event)"
+    ></app-choose-files>
+  </ng-container>
+  <hr />
+  <!-- trainee category -->
+  <app-category (emit)="category_event($event)"></app-category>
+
+  <p *ngIf="apln_status=='REJECTED'" style="margin-left: 15px;color: red;">Application Rejection Reason:<span style="color: black;">{{details[0].remarks_rejd}}</span></p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn1">
+        <button
+          pButton
+          [label]="submit"
+          icon="pi pi-send"
+          type="submit"
+          style="margin-bottom: auto"
+          class="mx-4"
+          [disabled]="message"
+          (click)="allSave()"
+        >
+        </button>
+        <button
+          pButton
+          label="Back"
+          icon="pi pi-angle-double-left"
+          *ngIf="ishr == 'true'"
+          class="bg-purple-600 border-none outline-none"
+          routerLink="/rml/new_joiners/trainee-application-status"
+        >
+        </button>
+      </div>
+    </div>
+    <div class="col">
+      <button
+       pButton
+       label="Print ID"
+       label="pi pi-id-card"
+       class="bg-purple-600 border-none outline-none"
+        *ngIf="this.status.status == 'APPROVED'"
+        [routerLink]="[
+          '/idcard',
+          this.status.status,
+          this.uniqueId.mobile,
+          this.uniqueId.company
+        ]"
+      >
+      </button>
+      <div *ngIf="message" class="col-sm-12">
+        <span style="color: red"
+          >(Mandatory fields are not yet filled. Submit is not Permitted.
+          )</span
+        >
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
+  <!-- </div> -->
+</div>

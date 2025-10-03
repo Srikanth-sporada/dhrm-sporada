@@ -1,0 +1,32 @@
+<div class="px-4 rounded-md border border-gray-400 shadow-md my-4">
+
+  <p class="py-2 sm:text-[1.35rem] xl:text-[2rem] text-center text-gray-600 font-semibold flex items-center justify-center gap-4"> 
+    <mat-icon class="text-blue-600 sm:text-[1.35rem] xl:text-[1.8rem]">handyman</mat-icon>
+    Plan Vs Actual Department Wise Report
+  </p>
+<!-- department report filter -->
+  <div class="w-full sm:w-[50%] xl:[25%] mb-4">
+      <label for="plant" class="text-gray-400 font-semibold">Work Type</label> <br>
+      <p-dropdown 
+        [options]="dropdownMenu" 
+        [(ngModel)]="worktype"
+        (ngModelChange)="getPlanVsActDept()" 
+        placeholder="Select a Work Type"
+        optionLabel="name"
+        [checkmark]="true"
+        optionValue="value"
+        styleClass="w-full !font-poppins"
+         >
+      </p-dropdown>
+    </div>
+  <canvas
+    class="chart"
+    baseChart
+    class="chart"
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [type]="barChartType"
+  >
+  </canvas>
+</div>

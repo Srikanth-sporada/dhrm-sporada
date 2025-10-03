@@ -1,0 +1,140 @@
+<!-- header -->
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon> assignment_ind</mat-icon>Temporary Workmen - Rejoin Request<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">Approve Temporary Workmen - Rejoin Request </p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+</div>
+<div class="container2" style="z-index: 1250;">
+    
+
+        <form [formGroup]="form"
+                    style="display: flex; align-items: center; justify-content: start; gap: 10px; width: 100%;" class="py-3 px-2">
+
+                    <div style="display: flex; align-items: center; gap: 15px; margin-left: 2%;">
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" [(ngModel)]="selectAll" [ngModelOptions]="{standalone: true}"
+                                (change)="toggleAllSelection()" />
+                            <label style="margin-left: 5px; margin-top: 7px;" class="font-poppins">Select All</label>
+                        </div>
+
+                        <button  
+                          (click)="clear()"
+                          pButton
+                          class="rounded-3xl"
+                          icon="pi pi-times">
+                        </button>
+
+
+                    </div>
+
+                    <!-- Right Side: Submit -->
+                    <!-- <button *ngIf="tableData.length > 0 && ishr" type="button" (click)="submit()" style="
+                        padding: 8px 16px;
+                        background-color: #28A745;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        margin-right: 4%;
+                        font-weight: bold;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#1e7e34'"
+                        onmouseout="this.style.backgroundColor='#28A745'">
+                        Submit
+                    </button> -->
+
+                    <!-- Right Side: Submit -->
+                    <button 
+                     *ngIf="tableData.length > 0 && is_Chr" type="button" 
+                      (click)="submit()"
+                      pButton
+                      label="Submit"
+                      icon="pi pi-send">
+                    </button>
+        </form>
+        <!-- Table -->
+        <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[70vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+            <table id="table" class="table-auto !w-full">
+                <!-- table head -->
+                <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Select</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOL</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Service Years</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Old Category</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">New Category</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason For Rejoin</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                    </tr>
+                </thead>
+                <!-- table body -->
+                <tbody>
+                    <tr *ngFor="let b of tableData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">
+                            <input type="checkbox" [(ngModel)]="b.selected" [ngModelOptions]="{standalone: true}"
+                                (change)="onRowCheckboxChange()" />
+                        </td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ b.Gen_Id }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.fullname }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.DOJ }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.DOL }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.Service_Years }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.Old_Category }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.categorynm }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.Reason_For_Rejoin }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ b.Approval_Status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    <!-- Modal -->
+    <div *ngIf="showModal" class="modal-overlay">
+        <div class="modal-content !font-poppins">
+            <h1 class="text-center text-2xl font-semibold">CL | Trainee Rejoin Approval</h1>
+
+            <!-- Comment Box -->
+            <input type="text" [(ngModel)]="comment" [ngModelOptions]="{standalone: true}"            placeholder="Enter comment"
+                required
+                class="my-3"
+                pInputText />
+
+            <!-- Radio Buttons -->
+            <div style="margin-bottom: 20px;">
+                <label class="custom-radio approve">
+                    <input type="radio" name="decision" [(ngModel)]="decision" value="Approve"
+                        [ngModelOptions]="{standalone: true}" />
+                    <span class="radio-label">Approve</span>
+                </label>
+
+                <label class="custom-radio reject" style="margin-left: 20px;">
+                    <input type="radio" name="decision" [(ngModel)]="decision" value="Reject"
+                        [ngModelOptions]="{standalone: true}" />
+                    <span class="radio-label">Reject</span>
+                </label>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button *ngIf="ishr" (click)="approve()"
+                    style="padding: 8px 16px; background-color: #007BFF; color: white; border: none; border-radius: 4px; font-weight: bold;">Submit</button>
+                <button *ngIf="is_Chr" (click)="Chrapprove()"
+                    style="padding: 8px 16px; background-color: #007BFF; color: white; border: none; border-radius: 4px; font-weight: bold;">Submit</button>
+                <button (click)="closeModal()"
+                    style="padding: 8px 16px; color: gray; border: none; border-radius: 4px; font-weight: bold;" class="bg-gray-100">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

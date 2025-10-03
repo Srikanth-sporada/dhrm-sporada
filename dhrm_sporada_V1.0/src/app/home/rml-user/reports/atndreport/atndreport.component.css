@@ -1,0 +1,70 @@
+.heading {
+  font-size: 35px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.filters{
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    margin:10px auto ;
+}
+
+.monthdisplay{
+    font-size: 20px;
+    margin: 10px 5px;
+}
+
+.present{
+    font-weight: bold;
+}
+
+.absent{
+    /* background-color: rgb(224, 162, 162); */
+    font-weight: bold;
+}
+
+.halfday{
+    /* background-color: rgb(229, 235, 145); */
+    font-weight: bold;
+}
+
+.weekoff{
+    /* background-color: gray; */
+    font-weight: bold;
+}
+.sunday{
+    /* background-color: gray; */
+    font-weight: bold;
+}
+
+.white{
+    background-color: white;
+}
+
+.holiday{
+    /* background-color: rgb(115, 115, 211); */
+    font-weight: bold;
+}
+
+.atndView{
+    margin: 5px;
+}
+
+.box{
+    height: 20px;
+    width: 20px;
+}
+
+.legends{
+    display: flex;
+    justify-content: center;
+    gap:10px
+}
+
+.legend{
+    display: flex;
+    justify-content: center;
+    gap:10px
+}

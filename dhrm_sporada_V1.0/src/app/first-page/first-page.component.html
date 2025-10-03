@@ -1,0 +1,107 @@
+<section class="flex h-full w-full">
+  <!-- righ panel -->
+  <div class="w-[45%] lg:flex items-center justify-center rounded-t-sm bg-blue-600 relative hidden">
+    <div
+      class="h-[90dvh] w-[90dvw] bg-no-repeat bg-contain bg-bottom flex items-center justify-center"
+    >
+      <!-- rane news -->
+      <div class="h-full xl:w-5/6 w-[90%] flex items-center justify-evenly flex-col glass-card px-4 shodow-gray-200 shadow-sm text-center py-6">
+        <p class="!font-poppins xl:text-5xl !font-bold text-4xl">Rane's Updates</p>
+        <!-- rane news list -->
+
+        <!-- <img
+          src="/assets/news.jpg"
+          alt="news"
+          class="rounded-2xl object-contain"
+        /> -->
+        <!-- primang carousel -->
+        <p-carousel
+            [value]="news"
+            [numVisible]="1"
+            [numScroll]="1"
+            [circular]="true"
+            [autoplayInterval]=3000
+            styleClass="w-full"
+          >
+            <ng-template let-news pTemplate="item">
+              <div class="m-2 p-3 w-full">
+                <div class="mb-3">
+                  <div class="relative mx-auto">
+                    <img
+                      src="{{ news.image }}"
+                      [alt]="news.alt"
+                      class="w-full object-fill"
+                    />
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+        </p-carousel>
+        <!-- <div class="-mt-30">
+          <h2 class="font-poppins text-3xl font-bold mb-4">News Title</h2>
+          <p class="font-poppins text-xl mb-4 text-justify">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum quia
+            totam ipsa doloribus temporibus illum quam vel, aut praesentium,
+            quaerat ab nihil hic soluta ratione et rerum molestiae eligendi.
+            Impedit.
+          </p>
+        </div> -->
+      </div>
+    </div>
+    <!-- blobs -->
+    <!-- <div>
+      <img src="/assets/blob-01.svg" alt="blob" class="absolute top-10 -z-0 h-[150px] left-0">
+    </div>
+
+    <div>
+      <img src="/assets/blob-02.svg" alt="blob" class="absolute h-[150px] right-0 top-10/13">
+    </div> -->
+  </div>
+
+  <!--  left panel-->
+  <div class="lg:w-[65%] flex items-center lg:justify-center flex-col gradient-two w-full">
+    <!-- logo -->
+    <div class="flex items-center justify-center mb-4 mt-2 w-full">
+      <img
+        src="assets/ranelogo.png"
+        alt="logo"
+        class="xl:h-24 xl:w-28 lg:h-20 lg:w-24 rounded-md object-fill h-16 w-20"
+      />
+      <!-- <p class="font-poppins text-5xl font-bold bg-gradient-to-r from-blue-500 via-slate-300 to-slate-500 bg-clip-text text-transparent">
+        HRMS
+      </p> -->
+    </div>
+
+    <div class="flex item-center justify-center flex-col w-[65%]">
+      <!-- user login type selection -->
+      <div class="w-full">
+        <p-dropdown
+          [options]="users"
+          [(ngModel)]="selectedUser"
+          optionLabel="user"
+          optionValue="value"
+          placeholder="Select User type"
+          styleClass="font-poppins w-full mb-8 font-semibold h-12"
+          focusOnHover="true"
+        ></p-dropdown>
+      </div>
+
+      <!-- user type based login form -->
+      <trainee-application
+        *ngIf="selectedUser === 'trainee-application'"
+      ></trainee-application>
+      <!-- trainee login component -->
+      <trainee-login
+        *ngIf="selectedUser === 'trainee-test-login'"
+      ></trainee-login>
+      <!-- trainer login component -->
+      <trainer-login *ngIf="selectedUser === 'trainer-login'"></trainer-login>
+      <!-- workmen login component -->
+      <workmen-login *ngIf="selectedUser === 'workmen-login'"></workmen-login>
+      <!-- executive login component -->
+      <executive-login
+        *ngIf="selectedUser === 'executive-login'"
+      ></executive-login>
+    </div>
+  </div>
+</section>

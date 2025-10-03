@@ -1,0 +1,334 @@
+.layout-container {
+  height: 100vh; /* Use full viewport height */
+  overflow: hidden; /* Prevent scrollbars */
+  display: flex;
+  flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(to bottom, #fdfbfb, #d4ebf6);
+}
+
+.header {
+  background-color:  #0f2081;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+}
+
+.logo-img {
+  height: 75px;
+  background: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  width: "30px";
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  font-size: 50px;
+  font-weight: bold;
+  
+}
+
+.spacer {
+  width: 90px; /* match the width of the logo */
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card-wrapper {
+  width: 340px;
+  height: 220px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(149, 24, 24, 0.1);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border: 2px solid #fff;
+}
+
+.card-wrapper:hover {
+  transform: scale(1.03);
+   box-shadow: 0 6px 12px rgba(133, 3, 3, 0.1);
+
+
+}
+
+
+.image-container {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.label {
+  flex: 1;
+  color: #0d0c0c;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer {
+  background-color: #414040;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  height: 120px;
+  flex-shrink: 0; 
+}
+
+.footer-img {
+  width: 140px;
+  height: 150px;
+  object-fit: cover;
+  align-items: center;
+}
+
+.footer-text {
+  text-align: left;
+  color: #fff;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Calibri', sans-serif;
+  
+}
+
+.footer-copytext {
+  
+  text-align: center;
+  color:#fff;
+  font-size: 10px;
+ font-family:Arial, Helvetica, sans-serif;
+
+}
+
+/* new version css */
+
+.primary-bg{
+  background-color: var(--bg);
+}
+
+.h-100{
+  height:100dvh;
+}
+
+.w-100{
+  width:100dvw;
+}
+
+.home-container{
+  display: flex;
+  width: 100%;
+}
+
+.logo{
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.right{
+  width: 30%;
+  height: 100dvh;
+}
+
+.left{
+  width:70%;
+  height: 100dvh;
+}
+
+/* login.component.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #5e60ce;
+  box-shadow: 0 0 0 3px rgba(94, 96, 206, 0.2);
+}
+
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #5e60ce;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #4a4fd0;
+}
+
+.bottom-text {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.bottom-text a {
+  color: #5e60ce;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* version 2 css styles */
+/* glassmorphism styles */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 2px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+.glass-card > img {
+  border-radius: 10px;
+}
+
+/* left panel gradient styles */
+.gradient {
+  background:var(--bg-two);
+  /* #3b82f6 grad color 2 */
+}
+
+.gradient-two{
+  background:white;
+}
+
+/* user type select styles */
+.user-select > select,
+::picker(select) {
+  appearance: base-select;
+}
+.user-select > select::picker-icon {
+  color:gray;
+  transition: 0.4s rotate;
+}
+.user-select > select:open::picker-icon {
+  rotate: 180deg;
+}
+.user-select >select::picker(select) {
+  border: none;
+  background-color: var(--accent);
+  margin-top: .5rem;
+  border-radius: 5px;
+}
+.user-select > option{
+   padding-block: 1rem;
+}
+

@@ -1,0 +1,330 @@
+<div class="mx-2">
+    <!-- permission header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon> local_parking</mat-icon> Mid Day Permission<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Middle Permission</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+  <!-- prime ng tab view -->
+   <p-tabView>
+     <!-- apply middle permission -->
+      <p-tabPanel [selected]="true">
+          <!-- header -->
+      <ng-template pTemplate="header">
+                <div class="flex items-center justify-center gap-1">
+                  <mat-icon class="icon-pad text-[1.5rem]">local_parking</mat-icon>
+                   <span>Apply Middle Permission</span>
+                </div>
+      </ng-template>
+      <!-- content -->
+       <ng-template pTemplate="content">
+        <!-- actions -->
+          <div>
+            <!-- actions -->
+          <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+            <!-- action header -->
+              <div class="flex item-center justify-between">
+                <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                  Actions <mat-icon>call_to_action</mat-icon>
+                </h1>
+              </div>
+            <div>
+            <!-- action row one -->
+              <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+               <div class="flex item-center justify-start flex-col sm:flex-row">
+                 <!-- gen id -->
+              <div class="">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+                <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="genid"
+                (ngModelChange)="genIdChange()"
+                placeholder="Enter Gen ID" />
+              </div>
+            <!-- search btn -->
+            <div class="mt-8 ml-3">
+              <p-button 
+                icon="pi pi-search"
+                styleClass="rounded-[1.5rem] mt-2"
+              (onClick)="verify()"
+                label="Search"  
+              >
+            </p-button> 
+            </div>
+               </div>
+               <div class="mt-4 ml-2 flex items-center justify-around w-full" *ngIf="userdtls.length > 0">
+                 <div>
+                  <p class="text-blue-600 font-semibold">Gen ID: <span class="ml-2 text-gray-400">{{userdtls[0]?.gen_Id}}</span></p>
+                  <p class="text-blue-600 font-semibold">Name: <span class="ml-2 text-gray-400">{{userdtls[0]?.fullname}}</span></p>
+                 </div>
+                  <div>
+                  <p class="text-blue-600 font-semibold">Category: <span class="ml-2 text-gray-400">{{userdtls[0]?.apprentice_type}}</span></p>
+                  <p class="text-blue-600 font-semibold">Department: <span class="ml-2 text-gray-400">{{userdtls[0]?.dept_name}}</span></p>
+                  </div>
+                  <div>
+                  <p class="text-blue-600 font-semibold">Line: <span class="ml-2 text-gray-400">{{userdtls[0]?.Line_Name}}</span></p>
+                  <p class="text-blue-600 font-semibold">Plant: <span class="ml-2 text-gray-400">{{userdtls[0]?.plant_code}}</span></p>
+                  </div>
+               </div>
+            </div>
+            </div>
+          </div>
+          </div>
+          <!-- <div class="form" style="margin-top: 1rem;margin-left: 1rem;">
+            <mat-form-field appearance="outline">
+              <mat-label>Gen ID</mat-label>
+              <input type="text" matInput [(ngModel)]="genid" (ngModelChange)="genIdChange()" />
+            </mat-form-field>
+     
+            <button
+              mat-raised-button
+              color="primary"
+              style="margin: 10px 20px; height: 40px"
+              (click)="verify()" 
+              [disabled]="!genid"
+            >
+              Details
+            </button>
+            </div>
+
+          <div  *ngIf="userdtls.length > 0"  >
+            <h3 style="display: flex;align-items: flex-start;">User Details</h3>
+            <table
+              id="fpdata"
+              class="table table-bordered table-striped table-hover my-2"
+            >
+              <thead  >
+                <tr style="background-color:rgb(18, 85, 229) ;color: white;"> 
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Gen ID</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Name</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Category </th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Department</th>
+                  <th style="background-color:rgb(18, 85, 229) ;color: white;" >Line</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let item of userdtls">
+                  <td>{{item.gen_Id}}</td>
+                  <td>{{item.fullname}}</td>
+                  <td>{{item.apprentice_type}}</td>
+                  <td>{{item.dept_name }}</td>
+                  <td>{{item.Line_Name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        
+          <!-- apply middle day permission-->
+          <div>
+              <!-- apply mid day permission -->
+            <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2" *ngIf="userdtls.length > 0">
+              <!-- filter header -->
+                <div class="relative">
+                  <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                    Apply Middle Permission<mat-icon>check_box</mat-icon>
+                  </h1>
+                </div>
+              <div>
+              <!-- apply middle day permission row one -->
+              <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+                <!-- date -->
+                <div class="font-poppins w-full">
+                    <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Date</label> <br>
+                      <p-calendar 
+                      [(ngModel)]="date"
+                      styleClass="w-full !font-poppins"
+                      [showIcon]="true" >
+                    </p-calendar>
+                </div>
+                <!-- in time -->
+                <div class="w-full">
+                  <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">In Time</label> <br>
+                  <p-calendar 
+                  [(ngModel)]="intime"
+                    [timeOnly]="true" 
+                    [hourFormat]="'12'" 
+                    styleClass="w-full !font-poppins"
+                    [showIcon]="true" >
+                </p-calendar>
+                </div>
+                <!-- out time -->
+                <div class="font-poppins w-full">
+                    <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Out Time</label> <br>
+                  <p-calendar 
+                  [(ngModel)]="outtime"
+                  [timeOnly]="true" 
+                  [hourFormat]="'12'"  
+                  styleClass="w-full !font-poppins"
+                  [showIcon]="true" >
+              </p-calendar>
+                </div>
+                  <!-- Calculate -->
+              <div class="mt-8 ml-3">
+                <p-button 
+                  icon="pi pi-calculator"
+                  styleClass="rounded-[1.5rem] mt-2"
+                (onClick)="calculateDuration()" 
+                  [disabled]="!isFormValid()"
+                  label="Calculate"
+                >
+              </p-button> 
+              </div>
+              </div>
+              <!-- row two -->
+                <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+                <!-- duration -->
+                <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Duration</label> <br>
+                <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="duration" 
+                disabled />
+                </div>
+              <!-- reason -->
+                <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
+                <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="reason"
+                placeholder="Enter Reason" />
+                </div>
+              <!-- submit -->
+              <div class="w-full mt-8 ml-3">
+                <p-button 
+                  icon="pi pi-check-circle"
+                  styleClass="rounded-[1.5rem] mt-2"
+                  [disabled]="!isSubmitFormValid()" 
+                  (onClick)="submitPermission()"
+                  label="Submit"  
+                >
+              </p-button> 
+              </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div  *ngIf="userdtls.length > 0"  >
+            <h3 style="display: flex;align-items: flex-start;">Apply Middle Permission</h3>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+              <mat-form-field appearance="outline">
+                <mat-label>Date</mat-label>
+                <input type="date" matInput [(ngModel)]="date" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>In Time</mat-label>
+                <input type="time" matInput [(ngModel)]="intime" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>Out Time</mat-label>
+                <input type="time" matInput [(ngModel)]="outtime" />
+              </mat-form-field>
+            
+              <mat-form-field appearance="outline" style="margin-left: 2rem;">
+                <mat-label>Duration</mat-label>
+                <input type="text" matInput [(ngModel)]="duration" disabled />
+              </mat-form-field>
+            
+              <button 
+                mat-raised-button 
+                color="primary" 
+                (click)="calculateDuration()" 
+                [disabled]="!isFormValid()" 
+                style="margin-left: 2rem;">
+                Calculate
+              </button>
+            </div>
+            
+            <div >
+            
+            
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Reason</mat-label>
+                <textarea matInput [(ngModel)]="reason" placeholder=" Reason"></textarea>
+              </mat-form-field>
+            
+            
+              <button mat-raised-button color="primary" 
+              [disabled]="!isSubmitFormValid()" 
+              (click)="submitPermission()" style="margin-left: 2rem;">
+                Submit
+              </button>
+            </div>
+            
+          </div> -->
+       </ng-template>
+      </p-tabPanel>
+
+      <!-- status -->
+       <p-tabPanel>
+          <!-- header -->
+      <ng-template pTemplate="header">
+                <div class="flex items-center justify-center gap-1">
+                  <mat-icon class="icon-pad text-[1.5rem]">signal_cellular_alt</mat-icon>
+                  <span>Status</span>
+                </div>
+      </ng-template>
+      <!-- content -->
+       <ng-template pTemplate="content">
+         <div  class="h-[90svh] lg:h-[95vh] xl:h-[95vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+            <table id="table" class="table-auto !w-full" id="atnddata">
+                   <!-- table head -->
+                    <thead class="sticky top-0">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 ">Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attandance date</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Before</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Applied On</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Reason</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Duration</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Approver 1</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1 Status</th>
+                            
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Approver 2</th>
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Approver 2 Status</th>
+                            <!-- <th *ngIf="ishrappr === 'true'" class="text-center">Action</th> -->
+                        </tr>
+                    </thead>
+                    <!-- table body -->
+                     <tbody >
+                        <tr *ngFor="let data of perm_list ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Gen_id}}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md ">{{data.fullname}}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_Before }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.applied_on |date :"dd-MM-yyyy" }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md ">{{data.reason }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.Mid_Day_Permission_min }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md ">{{data.Approver_1_name }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.L1_Approval_Status }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md ">{{data.Approver_2_name }}</td>
+                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.L2_Approval_Status }}</td>
+                        </tr>
+                    </tbody>  
+                </table>
+          </div>
+       </ng-template>
+       </p-tabPanel>
+   </p-tabView>
+
+</div>

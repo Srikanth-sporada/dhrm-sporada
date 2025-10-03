@@ -1,0 +1,445 @@
+<div >
+  <!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>cloud_upload</mat-icon>Punch Data Upload Manual<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Punch Data Upload Manual</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+  
+  <!-- primeNg ng tab panel -->
+   <p-tabView>
+
+    <!-- forgot to punch -->
+     <p-tabPanel>
+         <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">remove_done</mat-icon>
+                    <span>Forgot To Punch</span>
+                  </div>
+        </ng-template>
+         <!-- content -->
+         <ng-template pTemplate="content">
+            <!-- filters -->
+          <div>
+          <!-- filters -->
+          <div class="!shadow-md !my-2 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+            <!-- filter header -->
+              <div class="relative">
+                <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                  Actions <mat-icon>filter_alt</mat-icon>
+                </h1>
+               <div>
+            <!-- row one -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+           <!-- gen id -->
+              <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+              <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter Gen ID" 
+                [(ngModel)]="genid"
+                (ngModelChange)="checkVerify()" />
+              </div>
+            <!-- Date-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
+              <p-calendar 
+                dateFormat="yy-mm-dd"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="date" 
+                (ngModelChange)="checkVerify_1()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+              <!-- details btn -->
+              <div class="">
+                  <button
+                  pButton
+                  label="Verify"
+                  iconPos="right"
+                  icon="pi pi-check-circle"
+                  class="mt-9"
+                  (click)="verify()" >
+                </button>
+              </div>
+            </div>
+            <!-- row two *ngIf="show_fp_temp" *ngIf="fpin!=null" *ngIf="fpout!=null"-->
+              <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8">
+                  <span *ngIf="fpin!=null">Actual In Time: {{fpin}}</span>
+                  <span *ngIf="fpout!=null">Actual Out Time : {{fpout}}</span>
+                </h1>
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_fp_temp">
+            <!-- in date-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">In Date</label> <br>
+              <p-calendar 
+                dateFormat="yy-mm-dd"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="inDate"
+                [maxDate]="MinOut" [minDate]="MinIn"
+                (ngModelChange)="checkSubmit()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+            <!-- in time-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">In Time</label> <br>
+              <p-calendar 
+               [timeOnly]="true"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="intime"
+                [showSeconds]="true"
+                (ngModelChange)="checkSubmit()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+            </div>
+            <!-- row three -->
+              <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8" *ngIf="show_fp_temp">
+                Out Punch
+                </h1>
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_fp_temp">
+            <!-- Out Date-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Out Date</label> <br>
+              <p-calendar 
+                dateFormat="yy-mm-dd"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="outDate"
+                [maxDate]="MaxOut" 
+                [minDate]="MinOut"
+                (ngModelChange)="checkSubmit()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+            <!-- in time-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Out Time</label> <br>
+              <p-calendar 
+               [timeOnly]="true"
+                styleClass="w-full !font-poppins"
+                [(ngModel)]="outTime"
+                [showSeconds]="true"
+                (ngModelChange)="checkSubmit()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+             <!-- reason -->
+            <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
+              <p-dropdown
+              [options]="reasonList"
+              [(ngModel)]="reason" 
+              (ngModelChange)="checkSubmit()"  
+              optionValue="reason"
+              optionLabel="reason">
+              </p-dropdown> 
+            </div>
+              <!-- details btn -->
+                <button
+                  pButton
+                  label="Submit"
+                  iconPos="right"
+                  icon="pi pi-send"
+                  class="mt-9 w-1/3"
+                  (click)="onSubmit()" >
+                </button>
+            </div>
+            </div>
+             </div>
+           </div>
+          </div>
+           <div>
+        <div  class="h-[100dvh] lg:h-[100dvh] xl:h-[100dvh] sm:h-[100dvh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+          <table
+            id="fpdata"
+           class="table-auto !w-full"
+          >
+          <!-- table head -->
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Swipe Id</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Manual In Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Manual Out Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+              </tr>
+            </thead>
+            <!-- table body -->
+            <tbody>
+              <tr *ngFor="let item of fpdata" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.emp_id}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.date.split('T')[0]}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+           </div>
+         </ng-template>
+     </p-tabPanel>
+
+     <!-- manual punch -->
+      <p-tabPanel>
+         <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">person</mat-icon>
+                    <span>Manual Punch</span>
+                  </div>
+        </ng-template>
+        <!-- content -->
+         <ng-template pTemplate="content">
+           <div>
+          <!-- action -->
+          <div class="!shadow-md !my-2 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+            <!-- action header -->
+              <div class="relative">
+                <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                  Actions <mat-icon>filter_alt</mat-icon>
+                </h1>
+            <div>
+            <!-- row one -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+            <!--download btn-->
+            <a [href]="url + 'sop/Bulk Punch Upload.xlsx'" style="text-decoration: none;" class="w-full">
+                <button
+                  pButton
+                  label="Download Template"
+                  iconPos="right"
+                  icon="pi pi-download"
+                  class="mt-9 w-1/2">
+                </button>
+            </a>
+            <!-- file upload-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Upload</label> <br>
+              <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file" (ngModelChange)="filechange()" class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+            </div>
+            <!-- verify btn -->
+                <button
+                  pButton
+                  label="Verify"
+                  iconPos="right"
+                  icon="pi pi-check"
+                  class="mt-9 w-1/3"
+                 (click)="verify_bulkData()"  
+                 [disabled]="verifybtn">
+                </button>
+              <!-- details btn -->
+                <button
+                  pButton
+                  label="Upload"
+                  iconPos="right"
+                  icon="pi pi-upload"
+                  class="mt-9 w-1/3"
+                 (click)="upload_bulkdData()" 
+                 [disabled]="uploadBtn">
+                </button>
+            </div>
+            </div>
+             </div>
+           </div>
+           </div>
+         </ng-template>
+      </p-tabPanel>
+
+      <!-- On Duty -->
+       <p-tabPanel>
+          <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">work</mat-icon>
+                    <span>On Duty</span>
+                  </div>
+        </ng-template>
+         <!-- content -->
+         <ng-template pTemplate="content">
+          <div>
+          <!-- filters -->
+          <div class="!shadow-md !my-2 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+            <!-- filter header -->
+              <div class="relative">
+                <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                  Actions <mat-icon>filter_alt</mat-icon>
+                </h1>
+            <div>
+            <!-- row one -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+              <!-- gen id -->
+              <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+              <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter Gen ID" 
+                [(ngModel)]="odGgenid" 
+                (ngModelChange)="checkODVerify()" />
+              </div>
+            <!-- Date-->
+            <div class="w-full">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
+              <p-calendar 
+                dateFormat="yy-mm-dd"
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="odDate" 
+                (ngModelChange)="checkODVerify()"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+           
+              <!-- details btn -->
+                <button
+                  pButton
+                  label="Verify"
+                  iconPos="right"
+                  icon="pi pi-check-circle"
+                  class="mt-9 w-1/3"
+                  (click)="Od_Verify()">
+                </button>
+            </div>
+            <!-- row two -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_od_temp">
+            <!-- reason -->
+              <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
+              <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins"
+                placeholder="Enter OD Reason" 
+               [(ngModel)]="odReason" 
+               (ngModelChange)="checkODSubmit()" />
+              </div>
+            <!-- type -->
+            <div class="w-full p-fluid  ">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Type</label> <br>
+              <mat-radio-group [(ngModel)]="dayType" (ngModelChange)="checkODSubmit()" class="!font-poppins">
+                <mat-radio-button value="0.5" checked>Half Day</mat-radio-button>
+                <mat-radio-button value="1" class="ml-3">Full Day</mat-radio-button>
+            </mat-radio-group>
+            </div>
+              <!-- submit -->
+                <button
+                  pButton
+                  label="Submit"
+                  iconPos="right"
+                  icon="pi pi-send"
+                  class="mt-9 w-1/3"
+                  (click)="oDSubmit()" 
+                  [disabled]="odSubmit">
+                </button>
+            </div>
+            </div>
+             </div>
+           </div>
+          </div>
+
+
+          <!-- *ngIf="show_od_temp" -->
+      <!-- <div class="view" *ngIf="trn_list && trn_list.length > 0">  *ngIf="ODList && ODList.length > 0"-->
+        <!-- on duty table -->
+        <div class="font-poppins mx-2 mb-4" *ngIf="ODList && ODList.length > 0">
+          <h1 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">On Duty</h1>
+          <table
+            id="fpdata"
+            id="table" class="table-auto !w-full"
+          >
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attendace Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                <!-- <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th> -->
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              <tr *ngFor="let item of ODList" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+               
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0]}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.Gen_id}}</td>
+                <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time}}</td> -->
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.approved_status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       <!-- *ngIf="FP_list && FP_list.length > 0" -->
+        <div class="font-poppins mx-2 mb-4" *ngIf="FP_list && FP_list.length > 0">
+          <h1 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">Forget to Punch</h1>
+          <table
+            id="fpdata"
+            id="table" class="table-auto !w-full"
+          >
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of FP_list" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0]}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.biometric_no}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.approved_status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+       <!-- attedance table -->
+        <div class="font-poppins mx-2 mb-4">
+          <h3 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">Attendace Table</h3>
+          <table
+            id="fpdata"
+            id="table" class="table-auto !w-full"
+          >
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of trn_list" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0]}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.biometric_no}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time }}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.present_type}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+         </ng-template>
+       </p-tabPanel>
+   </p-tabView>
+  
+</div>

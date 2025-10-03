@@ -1,0 +1,42 @@
+<div style='overflow-x:auto'>
+<div class="mx-5">
+     <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+         Previous Employeement Details (Optional)
+          <mat-icon>work</mat-icon>
+        </h3>
+    <table class="table-auto w-full !font-poppins">
+        <thead>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center" scope="col" >SNo:</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col" >Place</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Designation</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Period From</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Period To</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Salary Last Drawn</th>
+        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" scope="col">Reason for Leaving</th>
+        </tr>
+        <tr *ngFor="let data of prevData">
+        <td><input type="text" style="width:25px" [(ngModel)]="data.sno" disabled></td>
+        <td><input class="form-control" type="text" [(ngModel)]="data.name" (change)="valids($event)" ></td>
+        <td><input class="form-control" type="text" [(ngModel)]="data.desig" (change)="valids($event)" ></td>
+        <td><input class="form-control" type = "date" [(ngModel)]="data.periodf" max="2100-12-12" (change)="valids($event)"></td>
+        <td><input class="form-control"  type = "date" [(ngModel)]="data.periodt" max="2100-12-12" (change)="valids($event)" ></td>
+        <td><input class="form-control" type = "number" [(ngModel)]="data.sal" (change)="valids($event)"></td>
+        <td><input class="form-control" type = "text"[(ngModel)]="data.reason" (change)="valids($event)" (change)="valid()" ></td>
+        <tr>
+    </thead>    
+    </table>
+
+ </div> </div>
+
+ <div class="w-full flex items-center justify-center mt-3">
+    <button 
+     pButton
+     label="Save"
+     icon="pi pi-save"
+     (click)="submit()">
+    </button>
+ </div>
+ 
+ <span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>

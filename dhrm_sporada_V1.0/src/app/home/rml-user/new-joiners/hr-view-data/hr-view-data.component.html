@@ -1,0 +1,534 @@
+<div class="mx-4 !font-poppins">
+    <!-- basic details -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Basic Details
+    <mat-icon>person</mat-icon>
+</h3>
+<hr>
+<div class="container mt-2">
+    <div *ngFor="let i of basic" class="!font-poppins">
+        <table class="!font-poppins">
+            <tr>
+                <td div class="hrviewdata"><b>Category</b></td>
+                <td div class="hrviewdata text-blue-600 !font-semibold">:{{' ' + i.apprentice_type}}</td>
+            <tr>
+                <td div class="hrviewdata"><b>Full Name</b></td>
+                <td div class="hrviewdata">: {{i.fullname}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Father Name</b></td>
+                <td div class="hrviewdata">: {{i.fathername}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Mobile Number</b></td>
+                <td div class="hrviewdata">: {{i.mobile_no1}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Aadhar Number</b></td>
+                <td div class="hrviewdata">: {{i.aadhar_no}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Birth Date</b></td>
+                <td div class="hrviewdata">: {{i.birthdate}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Nationality</b></td>
+                <td div class="hrviewdata">: {{i.nationality}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Permanent Address</b></td>
+                <td div class="hrviewdata">: {{i.permanent_address}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Present Address</b></td>
+                <td div class="hrviewdata">: {{i.present_address}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Pincode</b></td>
+                <td div class="hrviewdata">: {{i.pincode}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>State</b></td>
+                <td div class="hrviewdata">: {{i.state_name}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Religion</b></td>
+                <td div class="hrviewdata">: {{i.religion}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Martial Status</b></td>
+                <td div class="hrviewdata">: {{i.marital_status}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Blood Group</b></td>
+                <td div class="hrviewdata">: {{i.blood_group}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Gender</b></td>
+                <td div class="hrviewdata">: {{i.gender}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Vaccinated</b></td>
+                <td div class="hrviewdata">: {{is_vaccinated}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Dose1 Date</b></td>
+                <td div class="hrviewdata">: {{i.dose1_dt}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Dose2 Date</b></td>
+                <td div class="hrviewdata">: {{i.dose2_dt}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Height</b></td>
+                <td div class="hrviewdata">: {{i.height}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Weight</b></td>
+                <td div class="hrviewdata">: {{i.weight}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Birth Place</b></td>
+                <td div class="hrviewdata">: {{i.birth_place}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>BODHI Training</b></td>
+                <td div class="hrviewdata">: {{i.skip_training}}</td>
+            </tr>
+            <tr *ngIf="i.apln_status == 'APPOINTED' || i.apln_status == 'RELIEVED' ">
+                <td div class="hrviewdata"><b>Date Of Joining</b></td>
+                <td div class="hrviewdata">: {{i.doj}}</td>
+            </tr>
+            <tr *ngIf="i.apln_status == 'RELIEVED' ">
+                <td div class="hrviewdata"><b>Date Of Leaving</b></td>
+                <td div class="hrviewdata">: {{i.dol}}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<br>
+
+<!-- bank details -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Bank Details
+    <mat-icon class="">account_balance</mat-icon>
+</h3>
+<hr>
+<div class="container mt-2">
+    <div *ngFor="let i of basic">
+        <table>
+            <tr>
+                <td div class="hrviewdata"><b>Account Number</b></td>
+                <td div class="hrviewdata">: {{i.bank_account_number}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>IFSC Code</b></td>
+                <td div class="hrviewdata">: {{i.ifsc_code}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Bank Name</b></td>
+                <td div class="hrviewdata">: {{i.bank_name}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br>
+
+<!-- emergency details -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Emergency Details <mat-icon>contacts_product</mat-icon>
+</h3><hr>
+<div class="container mt-2">
+    <div *ngFor="let i of basic">
+        <table>
+            <tr>
+                <td div class="hrviewdata"><b>Contact Name</b></td>
+                <td div class="hrviewdata">: {{i.emergency_name}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Contact Number</b></td>
+                <td div class="hrviewdata">: {{i.mobile_no2}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Relation</b></td>
+                <td div class="hrviewdata">: {{i.emergency_rel}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br>
+
+
+<!-- other details -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Other Details <mat-icon>info</mat-icon>
+</h3> <hr>
+<div class="container mt-2">
+    <div *ngFor="let i of basic">
+        <table>
+            <tr>
+                <td div class="hrviewdata"><b>Any Relations Or Friends Employed In RANE Group</b></td>
+                <td div class="hrviewdata">: {{i.any_empl_rane}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Acquaintance Name</b></td>
+                <td div class="hrviewdata">: {{i.existing_empl_name}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Place</b></td>
+                <td div class="hrviewdata">: {{i.existing_empl_company}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Ever Worked In Any Company/Plant/Office In RANE Group</b></td>
+                <td div class="hrviewdata">: {{i.prev_rane_empl}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Company/Agency Name Previously Worked</b></td>
+                <td div class="hrviewdata">: {{i.prev_rane_exp}}</td>
+            </tr>
+            <tr>
+                <td div class="hrviewdata"><b>Extra Curricular Activities (Sports/Hobbies)</b></td>
+                <td div class="hrviewdata">: {{i.extra_curricular}}</td>
+            </tr>
+
+
+        </table>
+    </div>
+</div>
+<br>
+
+
+<!-- language table -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Language Details <mat-icon>language</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+    <table class="table-auto w-full !font-poppins">
+        <thead>
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                    Language Name
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Speak
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Read
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Write
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                    Mother Tongue
+                </th>
+                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                    Understand
+                </th>
+            </tr>
+        </thead>
+        <tbody  *ngFor="let i of basic">
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_speak == 1 ? tick: ex }}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_mothertounge == 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_understand == 1 ? tick: ex}}</td>
+            </tr>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_name }}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_speak == 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_mothertounge== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_understand== 1 ? tick: ex}}</td>
+            </tr>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_speak== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_mothertounge== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_understand== 1 ? tick: ex}}</td>
+            </tr>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_speak== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_mothertounge== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_understand== 1 ? tick: ex}}</td>
+            </tr>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_speak== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_mothertounge== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_understand== 1 ? tick: ex}}</td>
+            </tr>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_speak== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_read== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_write== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_mothertounge== 1 ? tick: ex}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_understand== 1 ? tick: ex}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+
+<!-- employeement details table -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Previous Employment Details <mat-icon>assignment_ind</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+    <table class="table-auto w-full !font-poppins">
+    <thead>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                Name of company
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Designation
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Period from
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Period to
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Salary Last Drawn
+            </th>
+            <th class="!text-white rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                Reason for leaving
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr 
+        *ngFor="let i of career"
+        class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
+         >
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.company_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.designation}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.period_from}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.period_to}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.last_salary}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.leaving_reason}}</td>
+        </tr>
+
+    </tbody>
+    </table>
+</div>
+<br>
+
+<!-- education table -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Education Details <mat-icon>book_4</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+    <table class="table-auto w-full !font-poppins">
+    <thead>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                Name of School/Institution
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Exam passed
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Year of Passing
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Department
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Certificate Number
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Certificate Date
+            </th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                Percentage(%)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr 
+         *ngFor="let i of education"
+         class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
+         >
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.school_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.exam_passed}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.passing_yr}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.subjects}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.cert_number}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.cert_date}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.percentage}}</td>
+        </tr>
+
+    </tbody>
+</table>
+</div>
+<br>
+
+<!-- family table -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Family Details <mat-icon>family_restroom</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+    <table class="table-auto w-full !font-poppins">
+    <thead >
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                Relation name
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Relation type
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                age
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                occupation
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                Dependent?
+            </th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                contact Number
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr 
+         *ngFor="let i of family"
+          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
+         >
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.relation_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.relation_type}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.age}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.occupation}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.dependent}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.contact_number}}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br>
+
+<!-- employee files table -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Employee Related Files <mat-icon>folder_open</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+ <table class="table-auto w-full !font-poppins">
+    <thead>
+        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">File name</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center"> Open File</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let i of basic">
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Resume</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforResume' target="_blank"> {{i.other_files1}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Marksheet</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforMark' target="_blank"> {{i.other_files2}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Transfer Certificate</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforTc' target="_blank"> {{i.other_files3}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Aadhar Card</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforaadhar' target="_blank"> {{i.other_files4}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Bank Pass Book</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforbankpass' target="_blank"> {{i.other_files5}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Photo File</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforphoto' target="_blank"> {{i.other_files6}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Signature</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='urlforSign' target="_blank"> {{i.other_files7}}</a></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<br>
+
+<!-- rml related files -->
+<h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+    Company Related Files <mat-icon>folder_open</mat-icon>
+</h3> <hr>
+<div class="mt-4 mx-4">
+    <table class="table-auto w-full !font-poppins">
+    <thead >
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">File Name</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center"> Open File</th>
+        </tr>
+    </thead>
+    <tbody  *ngFor="let i of basic">
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Appointment Order</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_appointmentorder_file' target="_blank"> {{i.other_files8}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Declaration</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_declaration_file' target="_blank"> {{i.other_files9}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Medical Fitness</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_medicalfitness_file' target="_blank"> {{i.other_files10}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Form A4</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_formA4_file' target="_blank"> {{i.other_files11}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Form 11E</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_form11_file' target="_blank"> {{i.other_files12}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">Form H2</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_formh2_file' target="_blank"> {{i.other_files13}}</a></td>
+        </tr>
+        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
+            <td class="!px-2 !py-2 !rounded-s-md ml-2">NATX</td>
+            <td class="!px-2 !py-2 !rounded-s-md ml-2"><a [href]='url_natx_file' target="_blank"> {{i.other_files14}}</a></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br>
+
+<!-- action btn -->
+<div style="float: right; margin-right: 10px;">
+    <button mat-raised-button *ngIf="apln_status != 'SUBMITTED' " class="btn-secondary btn-xlg mr-3"
+        style="margin-bottom:auto;" (click)="goback()"> Go back</button>
+    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED'  " class="btn-secondary btn-xlg mr-3 "
+        style="margin-bottom:auto;"(click)="goback()"> Go back</button>
+    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
+        (click)="approved()" style="margin-bottom:auto;" class="btn-primary btn-xlg mr-3">Approve</button>
+    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
+        (click)="openDailog()" style="margin-bottom:auto;" class="btn-danger btn-xlg mr-3">Reject</button>
+    <button mat-raised-button class="btn-info" *ngIf="this.apln_status == 'APPROVED' " (click)="printid()"><span
+            style="font-size: 14px;">PRINT ID CARD</span></button>
+    <br><br>
+</div>
+<br>
+<br>
+</div>

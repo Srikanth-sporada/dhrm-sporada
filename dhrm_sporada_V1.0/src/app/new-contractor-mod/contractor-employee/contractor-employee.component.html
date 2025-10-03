@@ -1,0 +1,1189 @@
+
+  <div class="overlay" [hidden]="!contractorForm"></div>
+  <!-- add contract employee -->
+  <div class=" form-popup container1 mat-elevation-z8 shadow-lg"  [hidden]="!contractorForm">
+    <!-- contractor employee add or update forem -->
+     <div class="bg-blue-600 flex items-center justify-center py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 lg:text-3xl opacity-100 sm:text-2xl text-xl">{{(contractorForm && !showedit) ? 'add_circle' : 'edit'}}</mat-icon>
+        </div>
+         <h4 class="lg:text-3xl text-white sm:text-2xl text-xl">{{(contractorForm && !showedit)? 'Add Contract Employee' : 'Update Contract Employee'}}</h4>
+      </div>
+     </div>
+    <!-- add contractor employee form -->
+    <br />
+    <!-- material UI stepper Component -->
+        <mat-vertical-stepper  #stepper>
+              <!-- Basic Details -->
+            <mat-step  *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' "  required label="Basic Details" [stepControl]="contractEmpBasicDetails"   active>
+              <!-- basic details form -->
+              <form  [formGroup]="contractEmpBasicDetails">
+                <!-- first row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                   <!-- Contractor Name -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">badge</mat-icon>
+                    Contractor
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="contractorName" 
+                    [options]="activeData"
+                    optionLabel="Cont_company_name"
+                    optionValue="Con_Id"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    [readonly]="(status === 'SUBMITTED' || status === 'APPOINTED') ? true : false"
+                    placeholder="Select Contractor">
+                  </p-dropdown>
+                  </div>
+                  <!-- employee name-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    Employee Name
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Employee Name"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="employeeName"
+                      (keypress)="keyPressAlpha($event)"
+                    />
+                  </div>
+                  <!-- father name -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    Father Name
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      placeholder="Father | Hubsband | Spouse Name"
+                      id="name"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="spouseName"
+                      (keypress)="keyPressAlpha($event)"
+                    />
+                  </div>
+                </div>
+                <!-- second row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                   <!-- DOB -->
+                  <div class="w-full mt-3 mx-2">
+                  <label class="text-blue-600 flex items-center justify-start gap-1 mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                      Date Of Birth
+                    </label>
+                  <p-calendar 
+                      [disabled]="isDOJReadOnly"
+                      dateFormat="yy-mm-dd"
+                      formControlName="DOB"
+                      [maxDate]="maxDate"
+                      styleClass="w-full !font-poppins"
+                      [showIcon]="true" >
+                  </p-calendar>
+                  </div>
+                 <!-- religion -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">temple_hindu</mat-icon>
+                    Religion
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="religion" 
+                    [options]="religionData"
+                    optionLabel="religion_name"
+                    optionValue="slno"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    [readonly]="(status === 'SUBMITTED' || status === 'APPOINTED') ? true : false"
+                    placeholder="Select Religion">
+                  </p-dropdown>
+                  </div>
+                  <!-- ethnic origin -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    Ethnic Origin
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      placeholder="Enter Ethnic Origin"
+                      id="name"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" 
+                      formControlName="Caste"
+                      (keypress)="keyPressAlpha($event)"
+                    />
+                  </div>
+                </div>
+                <!-- third row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                 <!-- maritial status -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">face_shake</mat-icon>
+                    Marital Status
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="maritalStatus"
+                    [options]="maritalStatusOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    placeholder="Select Marital Status">
+                  </p-dropdown>
+                  </div>
+                  <!-- gender -->
+                  <div class="w-full mt-3 mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">female</mat-icon>
+                     Gender
+                  </label><br />
+                  <p-dropdown 
+                     formControlName="gender"
+                    [options]="genderOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    placeholder="Select Gender">
+                  </p-dropdown>
+                  </div>
+                  <!-- Mobile Number -->
+                  <div class="w-full mt-3 mx-2">
+                    <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="payroll-area">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">call</mat-icon>
+                      Mobile Number
+                    </label> <br>
+                  <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping"
+                        formControlName="EmpMobileNo"
+                        styleClass="w-full"
+                        [maxlength]="10"
+                        [minlength]="10"
+                        (input)="mobileNumber($event, 'EmpMobileNo')"
+                        [useGrouping]="false" 
+                        ></p-inputNumber>
+                  </div>
+                </div>
+                 <!-- fourth row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                  <!-- adhaar Number -->
+                  <div class="w-1/2 mt-3 mx-2">
+                    <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="payroll-area">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">badge</mat-icon>
+                      Adhaar Number
+                    </label> <br>
+                  <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping"
+                        formControlName="adhaarNo"
+                        styleClass="w-full"
+                        [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'"
+                        [maxlength]="12"
+                        [minlength]="12"
+                        (onInput)="adhaarNumber($event, 'adhaarNo')"
+                        [useGrouping]="false" 
+                        ></p-inputNumber>
+                  </div>
+                  <!-- photo attachment -->
+                   <div class="w-full mt-3 mx-2">
+                    <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1" for="photo">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">photo</mat-icon>
+                      Photo Attachment
+                    </label> <br>
+                    <mat-form-field id="photo" appearance="outline" class="example-full-width">
+                      <input type="text" readonly matInput formControlName="Photo_Name" />
+                      <input type="text" readonly matInput formControlName="Photo_File" hidden />
+                      <input type="file" accept="image/*" (change)="onFileChange(fileInput)" #fileInput hidden />
+                      <button mat-button mat-icon-button matSuffix (click)="fileInput.click()">
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+                    </mat-form-field>
+                    <a  [href]=fileUrl (click)="viewFile()" target = "_blank" style="padding-left: 1em;"  id="sec">View</a>
+                   </div>
+                </div>
+                <!-- basic details save btn -->
+                <div style="display: flex; justify-content: space-around ; padding-top:1rem;">
+                  <!-- back btn -->
+                <button 
+                 (click)="closeAllForms()"
+                 class="!bg-purple-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">close</mat-icon>
+                  Close
+                </button>
+                <!-- save btn -->
+                  <button 
+                    id="green"
+                    matStepperNext
+                    class="!bg-[#3B82F6] !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" >
+                    <mat-icon class="text-[20px]">save</mat-icon>
+                  Save
+                  </button>
+
+                </div>
+              </form>
+            </mat-step>
+        <!-- Address Details -->
+          <mat-step   *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' " required label="Address Details" active [stepControl]="contractEmpOtherDetails" >
+          <!-- <mat-step   required label="Address Details" active [stepControl]="contractEmpOtherDetails" > -->
+          <form [formGroup]="contractEmpOtherDetails">
+                <!-- first row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- emergency contatct relation -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">person_heart</mat-icon>
+                    Emergency Contact Relation
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="emergencyContactRelation" 
+                    [options]="realtionOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    placeholder="Select Relation">
+                  </p-dropdown>
+                  </div>
+                  <!-- emergency contact person name-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                     Emergency Contact Person Name
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Relation Name"
+                      (keypress)="keyPressAlpha($event)" 
+                      formControlName="emergencyContactPerson"
+                    />
+                  </div>
+                  <!-- emergency contact number -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    Emergency Contact Person Number
+                    </label><br />
+                  <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping"
+                        styleClass="w-full"
+                        [maxlength]="10"
+                        [minlength]="10"
+                        placeholder="Enter Contact Number"
+                        formControlName="emergencyContactNo" 
+                        (input)="mobileNumber($event, 'emergencyContactNo')"
+                        [useGrouping]="false" 
+                        ></p-inputNumber>
+                  </div>
+                </div>
+                <!--second row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- pincode -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">fiber_pin</mat-icon>
+                    Pincode
+                  </label><br />
+                  <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping"
+                        styleClass="w-full"
+                        [maxlength]="6"
+                        [minlength]="6"
+                        [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'"
+                        placeholder="Enter Pincode"
+                        formControlName="pincode" 
+                        (onInput)="getCity_State_Perm($event)"
+                        [useGrouping]="false" 
+                      ></p-inputNumber>
+                  </div>
+                  <!-- city -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                     City
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter City"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="city" 
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <!-- state -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    State
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter State"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="state"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+                <!-- third row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                  <!-- permanent Address -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">location_on</mat-icon>
+                    Permanent Address
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Permanent Address"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="address"
+                    />
+                  </div>
+                  <!-- temporary address -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">location_on</mat-icon>
+                     Temporary Address
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Temporary Address"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="TempAddress"
+                    />
+                  </div>
+                  <!-- pincode -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">fiber_pin</mat-icon>
+                    Pincode
+                  </label><br />
+                  <p-inputNumber 
+                        mode="decimal" 
+                        inputId="withoutgrouping"
+                        styleClass="w-full"
+                        [maxlength]="6"
+                        [minlength]="6"
+                        [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'"
+                        placeholder="Enter Pincode"
+                        formControlName="TempPincode" 
+                        (onInput)="getCity_State_Temp($event)"
+                        [useGrouping]="false" 
+                      ></p-inputNumber>
+                  </div>
+                </div>
+                <!-- same address checkbox -->
+                  <div class="w-full mx-2 mt-2">
+                    <mat-checkbox formControlName="addressCheckBox" (change)="copyPermanentAddress($event)"  class="example-margin !font-poppins">
+                      Same As Permanent Address
+                    </mat-checkbox>
+                  </div>
+                <!-- row four -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-2">
+                  <!-- city -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                     City
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Temporary City"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="TempCity" 
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <!-- state -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    State
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Temporary State"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" 
+                      formControlName="TempState"
+                      [readOnly]="true"
+                    />
+                  </div>
+                  <!-- blood group -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">bloodtype</mat-icon>
+                    Blood Group
+                  </label><br />
+                  <p-dropdown 
+                    formControlName="bloodGroup" 
+                    [options]="bloodGroupOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    placeholder="Select Blood Group">
+                  </p-dropdown>
+                  </div>
+                </div>
+                <!-- row five -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- PF UAN Number -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                    PF | UAN Number
+                  </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter PF | UAN Number"
+                      (keypress)="keyPressAlphaNumeric($event)" 
+                      style="text-transform: uppercase" 
+                      formControlName="PF_UAN"
+                    />
+                  </div>
+                  <!-- ESI number -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                     ESI Number
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter ESI Number"
+                      (keypress)="keyPressAlphaNumeric($event)" 
+                      style="text-transform: uppercase" 
+                      formControlName="ESI_No"
+                    />
+                  </div>
+                  <!-- transport facility -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">commute</mat-icon>
+                    Transport Facility
+                    </label><br />
+                 <mat-radio-group formControlName="Van_Eligible" (click)='handletransport()' aria-label="Select an option">
+                    <mat-radio-button value='Yes'>Yes</mat-radio-button>
+                    <mat-radio-button value="No" class="ml-4">No</mat-radio-button>
+                  </mat-radio-group>
+                  </div>
+                </div>
+                <!-- row six -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- transporter -->
+                  <div class="w-full mx-2" *ngIf="contractEmpOtherDetails.get('Van_Eligible').value === 'Yes'">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                    Transporter
+                  </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Transporter" 
+                      formControlName="transporter"
+                    />
+                  </div>
+                  <!-- village -->
+                  <div class="w-full mx-2" *ngIf="contractEmpOtherDetails.get('Van_Eligible').value === 'Yes'">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+                     Village
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Village"
+                      formControlName="village"
+                    />
+                  </div>
+                </div>
+                <!-- stepper action buttons -->
+              <div style="display: flex; justify-content: space-around ;padding-top:1em">
+                <!-- back btn -->
+                 <button 
+                 matStepperPrevious
+                 class="!bg-purple-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">arrow_back</mat-icon>
+                  Back
+                 </button>
+                <!-- close all btn *ngIf="issupervisor=='true'"  -->
+                 <button 
+                  pButton
+                  label="Close"
+                  icon="pi pi-times"
+                  id="red" 
+                  class="!bg-[#f8f9fa] !text-black !font-bold !px-8 !py-2 !rounded-[1rem] shadow-md border-none"
+                  (click)="closeAllForms()">
+                  <!-- <mat-icon class="text-[20px]">close</mat-icon>
+                  Close -->
+                 </button>
+                 <!-- submit btn -->
+                 <button 
+                  class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" 
+                  *ngIf="issupervisor=='true' && !showedit"  
+                  id="green" 
+                  (click)="SubmitBasicDetails($event)">
+                  Submit 
+                  <mat-icon class="text-[20px]">send</mat-icon>
+                 </button>
+                 <!-- update button -->
+                 <button 
+                  *ngIf="issupervisor=='true' && showedit"  
+                  id="green" 
+                  (click)="updateByContractor()"
+                  class="!bg-yellow-400 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" 
+                  >
+                  <mat-icon class="text-[20px]">sync</mat-icon>
+                 Update
+                 </button>
+                 <!-- save btn for next stepper -->
+                <button 
+                 *ngIf="issupervisor=='false'"  
+                 matStepperNext
+                 class="!bg-[#3B82F6] !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" >
+                   <mat-icon class="text-[20px]">save</mat-icon>
+                 Save
+                </button>
+              </div>
+              <!-- next btn for next stepper -->
+              <div *ngIf="conEmpEditFlag==true"
+                style="display: flex; justify-content: space-around;padding-top:0.5em"
+              >
+                <button  
+                 color="green"  class="!bg-[#3B82F6] !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 matStepperNext>
+                 <mat-icon class="text-[20px]">arrow_forward</mat-icon>
+                 Next
+                </button>
+              </div>            
+          </form>
+         </mat-step>
+
+        <!-- Contract Employee Details *ngIf = "issupervisor=='false'" -->
+        <mat-step *ngIf = "issupervisor=='false'" required label="Contract Employee Details"  [stepControl]="contractEmpDetails">
+          <form   [formGroup]="contractEmpDetails">
+                <!-- first row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                  <!-- gen id-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">code</mat-icon>
+                     Gen ID
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="empId"
+                    />
+                  </div>
+                  <!-- bio metric id-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">code</mat-icon>
+                    Biometric ID
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="bioMiD"
+                    />
+                  </div>
+                  <!-- department -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">store</mat-icon>
+                    Department
+                  </label><br />
+                  <p-dropdown 
+                    [options]="dept"
+                    optionLabel="dept_name"
+                    optionValue="dept_slno"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    formControlName="dept" 
+                    (onChange)="getline_Role($event)"
+                    placeholder="Select Department">
+                  </p-dropdown>
+                  </div>
+                </div>
+                 <!-- second row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- DOJ -->
+                  <div class="w-full mt-3 mx-2">
+                  <label class="text-blue-600 flex items-center justify-start gap-1 mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                      Date Of Join
+                    </label>
+                    <!--  [minDate]="DOJminDate"
+                    [maxDate]="DOJmaxDate" -->
+                  <p-calendar 
+                    formControlName="DOJ"
+                    dateFormat="yy-mm-dd"
+                    [disabled]="isDOJReadOnly"
+                    [showIcon]="true" >
+                  </p-calendar>
+                  </div>
+                  <!-- department line-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">linear_scale</mat-icon>
+                   Line
+                  </label><br />
+                  <p-dropdown 
+                    [options]="line"
+                    optionLabel="line_name"
+                    optionValue="line_code"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    formControlName="line"
+                    placeholder="Select Line">
+                  </p-dropdown>
+                  </div>
+                  <!-- role/activity -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">person_celebrate</mat-icon>
+                   Role | Activity
+                  </label><br />
+                  <p-dropdown 
+                    [options]="Roles"
+                    optionLabel="Role_Name"
+                    optionValue="Role_Id"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    formControlName="Role" 
+                    (onChange)="onRoleChange_1($event)"
+                    placeholder="Select Role">
+                  </p-dropdown>
+                  </div>
+                </div>
+                 <!-- third row -->
+                <div class="flex items-center justify-start flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- payroll area -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
+                   Payroll Area
+                  </label><br />
+                  <!-- [disabled]="isDOJReadOnly" -->
+                  <p-dropdown 
+                    [options]="payrollArea"
+                    optionLabel="PayrollArea"
+                    optionValue="PayrollArea"
+                    styleClass="w-full"
+                    formControlName="payrollArea"
+                    placeholder="Select PayrollArea">
+                  </p-dropdown>
+                  </div>
+                   <!-- work contract-->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">work</mat-icon>
+                     Work Contract
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="DorInD" 
+                      [readOnly]="true" 
+                      [disabled]="true" 
+                    />
+                  </div>
+                  <!-- reporting person -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">person_celebrate</mat-icon>
+                   Reporting Person
+                  </label><br />
+                  <p-dropdown 
+                    [options]="repTo"
+                    optionLabel="emp_name"
+                    optionValue="empl_slno"
+                    styleClass="w-full"
+                    [disabled]="isDOJReadOnly"
+                    formControlName="reToPerson"
+                    placeholder="Select Reporting Person">
+                  </p-dropdown>
+                  </div>
+                </div>
+          <!-- action buttons -->
+              <div style="display: flex; justify-content: space-around ;padding-top:3em">
+                <!-- reset -->
+                <button 
+                *ngIf="showedit" 
+                  (click)="stepper.reset()" 
+                  (click)="reset()"
+                  class="!bg-orange-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">sync</mat-icon>
+                  Reset
+                </button>
+                <!-- back btn -->
+                <button 
+                 matStepperPrevious
+                 class="!bg-purple-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">arrow_back</mat-icon>
+                  Back
+                </button>
+                <!-- save btn -->
+                <button 
+                 *ngIf="showRelieving"  
+                  matStepperNext
+                  class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                  [disabled]="!contractEmpDetails.valid"
+                 >
+                  <mat-icon class="text-[20px]">save</mat-icon>
+                  Save
+                </button>
+                <!-- submit approval -->
+                <button 
+                 *ngIf="ishr== 'true' && showedit " 
+                 (click)="submitEmployeeDetails()"  
+                 [disabled]="status === 'RELIEVED' || status === 'APPOINTED'"
+                 class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 [disabled]="!contractEmpDetails.valid"
+                 >
+                  <mat-icon class="text-[20px]">approval_delegation</mat-icon>
+                  Submit For Approval
+                </button>
+                <!-- update -->
+                <button 
+                 *ngIf="ishr== 'true' && !showRelieving && !showedit " 
+                 (click)="update_By_HR()" 
+                 class="!bg-yellow-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">sync</mat-icon>
+                  Update
+                </button>
+                <!-- approve approveByHrAppr() -->
+                <button 
+                 pButton
+                 label="Approve"
+                 icon="pi pi-check-square"
+                 *ngIf="ishrappr== 'true' " [hidden]="status === 'RELIEVED' || status === 'APPOINTED'"  (click)="approveByHrAppr()"
+                 class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 [disabled]="!contractEmpDetails.valid"
+                 >
+                  <!-- <mat-icon class="text-[20px]">approval_delegation</mat-icon>
+                  Approve -->
+                </button>
+              </div>
+         </form>
+        </mat-step>
+
+         <!-- Payscale Details  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" -->
+          <mat-step  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
+            <form  [formGroup]="contractEmpPayscaleDetails" >
+              <div id="fourthBox">
+                <!-- payscale code -->
+                <mat-form-field appearance="outline">
+                  <mat-label>Payscale Code</mat-label>
+                  <mat-select  formControlName="payscaleCode"  (selectionChange)="seletePayscale($event.value)"  >
+                    <mat-option *ngFor="let data of payscaleData" [value]="data.Payscale_SlNo">{{data.Payscale_code}}/{{data.Description}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="contractEmpPayscaleDetails.get('payscaleCode')?.hasError('required')">Please Select Payscale code </mat-error>
+                </mat-form-field>
+                <!-- payroll details form -->
+                <app-payroll-display-form 
+                [selectedPayscale]="selectedPayscale" 
+                [Pay_apln_slno]="Pay_apln_slno "
+                [selectedPayrollData]="selectedPayrollData"  
+                [selectedContractorData]="selectedContractorData" 
+                 [hidden]="!selectPayscale"></app-payroll-display-form>
+                 <!-- action btn -->
+                <div style="display: flex; justify-content: space-around ;padding-top:3em">
+                  <!-- back btn -->
+                  <button 
+                   (click)="hidePayscale()" 
+                   matStepperPrevious
+                   class="!bg-purple-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">arrow_back</mat-icon>
+                    Back
+                  </button>
+                  <!-- save btn -->
+                  <button  
+                   matStepperNext
+                   class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">save</mat-icon>
+                   Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-step>
+
+             <!-- Releaving Details  *ngIf = " issupervisor=='false' && showRelieving" -->
+            <mat-step *ngIf = " issupervisor=='false' && showRelieving" required label="Releaving Details" [stepControl]="contractEmpReleavingDetails">
+            <!-- <mat-step   required label="Releaving Details" [stepControl]="contractEmpReleavingDetails"> -->
+              <form [formGroup]="contractEmpReleavingDetails">
+                <mat-hint> 
+                  *NOTE: Please fill these details during RELIEVING and change status to In-Active 
+                </mat-hint>
+                 <!-- first row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                  <!-- status -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">wifi_2_bar</mat-icon>
+                    Status
+                  </label><br />
+                  <p-dropdown 
+                    [options]="activestatusOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    formControlName="status"
+                    placeholder="Select Status">
+                  </p-dropdown>
+                  </div>
+                 <!-- reason for releaving -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">question_mark</mat-icon>
+                    Reason For Releaving
+                  </label><br />
+                  <p-dropdown 
+                    [options]="reasonData"
+                    optionLabel="R_Reason"
+                    optionValue="R_Reason"
+                    styleClass="w-full"
+                    formControlName="reasonForReleaving"
+                    placeholder="Select Reason">
+                  </p-dropdown>
+                  </div>
+                  <!-- service years -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">event</mat-icon>
+                    Service Period
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="servicePeriod"
+                      [readOnly]="true"
+                    />
+                  </div>
+                </div>
+                <!-- second row DOE -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3" >
+                  <!-- DOE -->
+                  <div class="w-[32%] mt-3 mx-2">
+                  <label class="text-blue-600 flex items-center justify-start gap-1 mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                      Date Of Exit
+                    </label>
+                  <p-calendar 
+                    formControlName="DOE"
+                    dateFormat="yy-mm-dd"
+                    [autoZIndex]="false"
+                    [baseZIndex]="100"
+                    [minDate]="DoEminDate"
+                    [maxDate]="DoEmaxDate"
+                    [disabled]="isDOJReadOnly"
+                    (onSelect)="onDOESelected($event)"
+                    [showIcon]="true" >
+                  </p-calendar>
+                  </div>
+                </div>
+                <!-- action buttons -->
+            <div  style="display: flex; justify-content: space-around ;padding-top:3em">
+              <!-- reset -->
+              <button 
+               *ngIf="ishrappr== 'false' " 
+               (click)="stepper.reset()" 
+               (click)="reset()"
+               class="!bg-orange-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">sync</mat-icon>
+                Reset
+              </button>
+              <!-- back -->
+              <button 
+               matStepperPrevious
+               class="!bg-purple-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">arrow_back</mat-icon>
+                Back
+              </button>
+              <!-- <button mat-raised-button id="green" color="primary" (click)="showRejectForm()"  >
+                Reject
+              </button> -->
+
+              <!-- submit approval -->
+              <button 
+               *ngIf="(ishr== 'true' && ishrappr== 'false')   && showedit && ((status==='PENDING' || status==='REJECTED' )&& (status !='APPOINTED')) " 
+               (click)="submitEmployeeDetails()"
+               class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">approval_delegation</mat-icon>
+                Submit For Approval
+              </button>
+              <!-- update -->
+              <button 
+               *ngIf="(ishr== 'true' && ishrappr== 'false') && !showedit " 
+                (click)="update_By_HR()"  
+                [disabled]=dolUpdate
+                class="!bg-yellow-500 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">sync</mat-icon>
+                Update
+              </button>
+              <!-- <button *ngIf="ishrappr== 'true' " mat-raised-button id="red" color="primary" (click)="openPopupForRej()">
+                Reject
+              </button> -->
+              <!-- approve -->
+              <button 
+               *ngIf="ishrappr== 'true' && !showApprove" 
+                (click)="approveByHrAppr()"
+                class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
+                 >
+                  <mat-icon class="text-[20px]">approval_delegation</mat-icon>
+                Approve
+              </button>
+              <!-- <button *ngIf="ishrappr== 'true' && showApprove" mat-raised-button id="green" color="primary" >
+                Approve
+              </button> -->
+            </div>
+              </form>
+           </mat-step>
+
+        </mat-vertical-stepper>
+  </div>
+
+<!-- contract employee details -->
+<div class="container2"  *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' " >
+  <!-- contractor employee master header-->
+    <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+      <div class="flex items-start justify-start flex-col">
+        <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+        <mat-icon>recent_actors</mat-icon> Contractor Employee Master  <hr/>
+      </h1>
+      <p class="mt-1 text-gray-400">View and Manage Contractor Employee</p>
+      </div>
+      <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+    </div>
+      <!-- contractor employee master filters -->
+      <div>
+        <!--contract employee filter -->
+      <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+        <!-- filter header -->
+          <div class="relative">
+            <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+              Filters <mat-icon>filter_alt</mat-icon>
+            </h1>
+            <!-- primeNG speedDial -->
+            <p-speedDial 
+              [model]="items" 
+              direction="left"
+              className="absolute right-0 top-0"
+              buttonClassName="!h-[2.5rem] !w-[2.5rem]"
+              *ngIf="issupervisor === 'true'"
+            >
+            </p-speedDial>
+          </div>
+      <form [formGroup]="form" >
+        <!--contract employee filter first row -->
+        <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+          <!-- Contractor name -->
+          <div class="w-full p-fluid">
+            <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Search</label> <br>
+            <input 
+            type="text"
+            placeholder="Contractor Name" 
+            pInputText
+            styleClass="w-full !font-poppins" 
+            formControlName="CName" />
+          </div>
+          <!-- Employee name -->
+          <div class="w-full p-fluid">
+            <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Search</label> <br>
+            <input 
+            type="text"
+            placeholder="Employee Name" 
+            pInputText
+            styleClass="w-full !font-poppins" 
+            formControlName="EName" />
+          </div>
+          <!-- application status filter -->
+            <div class="font-poppins w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Status</label> <br>
+                <p-dropdown 
+                    [options]="statusOption"
+                    formControlName="status"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full" 
+                    placeholder="Select Status" ></p-dropdown>
+            </div>
+        <!-- search btn -->
+        <div class="mt-8 ml-3">
+            <p-button 
+            icon="pi pi-search"
+            styleClass="rounded-[1.5rem] mt-2"
+            (onClick)="searchfilter()" 
+          >
+        </p-button>
+        </div>
+        </div>
+      </form>
+      </div>
+      </div>
+
+      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+      <!-- contractor employee table -->
+      <ng-template #show>
+          <div class="h-[90svh] lg:h-[80vh] xl:h-[78vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+              <table id="table"
+        class="table-auto !w-full">
+            <!-- table header -->
+                  <thead class="sticky top-0">
+                      <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">SNo</th>
+
+                          <!-- <th div class="text-center">Plant</th> -->
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Gen ID</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Punch ID</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Payroll Area</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0">Contractor Name</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0">Employee Name</th>
+                          <!-- <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Father Name</th> -->
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">DOB</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Gender</th>
+                          <!-- <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Mobile Number</th> -->
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Adhaar Number</th>
+                          <!-- <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Direct Or Indirect</th> -->
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">DOJ</th>
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">DOL</th>
+                          <!-- <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Application Status</th> -->
+                          <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Created On</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-4 !border-none !border-0 text-center">Action</th>
+                      </tr>
+                  </thead>
+                <!-- table body -->
+                  <tbody >
+                      <!-- <tr *ngFor="let data of (issupervisor === 'true' || ishr === 'true') ? filteredClHRdata : Searchfilter; let i = index"> -->
+                      <tr 
+                       *ngFor="let data of filterinfo; let i = index"
+                       class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+                       >
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.plant_name }}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.gen_id }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ data.biometric_no }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data?.payrollArea ? data.payrollArea : '-' }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{ data.Cont_company_name }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ data.fullname }}</td>
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.fathername }}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.birthdate | date: 'dd-MM-yyyy' }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.gender }}</td>
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.mobile_no1 }}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.aadhar_no }}</td>
+                        <!-- <td *ngIf="data.workcontract == '01' ; else InDirect">DIRECT</td>
+                        <ng-template #InDirect>
+                          <td *ngIf="data.workcontract == '02'">INDIRECT</td>
+                          <td *ngIf="!data.workcontract"> </td>
+                        </ng-template> -->
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.workcontract }}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.doj }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.dol }}</td>
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.apln_status | uppercase }}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.created_dt | date: 'dd-MM-yyyy' }}</td>
+                        <!-- action btns -->
+                        <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                          <!-- edit by hr -->
+                          <button 
+                           *ngIf="(issupervisor == 'true' || ishr == 'true' || ishrappr == 'true' || isadmin == 'true' ) && (data.apln_status ==='RELIEVED'  ) " 
+                            (click)="onEditByHr(data, false)">
+                            <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon> 
+                          </button>  
+                          <!-- edit by hr -->
+                          <button *ngIf="(ishrappr == 'true'  ) && (data.apln_status ==='APPOINTED'  ) "
+                            (click)="onEditByHr(data, false)">
+                            <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon> 
+                          </button>  
+                          <!-- edit supervisor -->
+                          <button  
+                          *ngIf="issupervisor == 'true' && (data.apln_status === 'PENDING' || data.apln_status == 'Deleted' || data.apln_status == 'REJECTED'  ) "
+                            (click)="onEditByHr(data, true)">
+                            <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                          </button>
+                          <!-- onboard contract employee -->
+                          <button 
+                           *ngIf="( (ishr == 'true' && ishrappr=='false')  || isadmin =='true') &&(data.apln_status === 'PENDING'||data.apln_status === 'SUBMITTED'|| data.apln_status == 'Deleted' || data.apln_status == 'REJECTED' || data.apln_status == 'APPOINTED') "
+                            (click)="onEditByHr(data, true)">
+                            <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                          </button>
+                          <!-- edit by hr -->
+                          <button 
+                           *ngIf="( ishrappr =='true') &&(data.apln_status === 'PENDING'||data.apln_status === 'SUBMITTED'|| data.apln_status == 'Deleted' || data.apln_status == 'REJECTED') "
+                            (click)="onEditByHr(data, true)">
+                            <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                          </button>
+                          <!-- delete by hr -->
+                          <button  *ngIf="data.apln_status !== 'Deleted' && data.apln_status !== 'REJECTED' && data.apln_status !== 'RELIEVED'  && data.apln_status!== 'APPOINTED' "
+                            (click)="openDeleteConfirmationDialog(data.apln_slno)">
+                            <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </ng-template> 
+</div>
+
+
+

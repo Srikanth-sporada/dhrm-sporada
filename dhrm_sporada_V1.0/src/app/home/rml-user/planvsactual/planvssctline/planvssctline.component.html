@@ -1,0 +1,49 @@
+<div class="px-4 rounded-md border border-gray-400 shadow-md my-4">
+
+    <p class="py-2 sm:text-[1.35rem] xl:text-[2rem] text-center text-gray-600 font-semibold flex items-center justify-center gap-4"> 
+    <mat-icon class="text-blue-600 sm:text-[1.35rem] xl:text-[1.8rem]">handyman</mat-icon>
+    Plan Vs Actual Line Wise Report
+  </p>
+    <!-- line wise report filter -->
+     <div class="flex items-center justify-evenly gap-2 flex-col md:flex-row">
+        <div class="w-full md:mb-4">
+        <label for="plant" class="text-gray-400 font-semibold">Department</label> <br>
+        <p-dropdown 
+          [options]="department" 
+          [(ngModel)]="selectedDept"
+          (ngModelChange)="getPlanvsActLine()"
+          placeholder="Select Department"
+          optionLabel="dept_name"
+          [checkmark]="true"
+          optionValue="dept_slno"
+          styleClass="w-full !font-poppins"
+          >
+        </p-dropdown>
+      </div>
+    <!-- work type filter -->
+      <div class="w-full md:mb-4">
+        <label for="plant" class="text-gray-400 font-semibold">Work Type</label> <br>
+        <p-dropdown 
+          [options]="dropdownMenu" 
+          [(ngModel)]="worktype"
+          (ngModelChange)="getPlanvsActLine()"
+          placeholder="Select Work Type"
+          optionLabel="name"
+          [checkmark]="true"
+          optionValue="value"
+          styleClass="w-full !font-poppins"
+          >
+        </p-dropdown>
+      </div>
+     </div>
+  <canvas
+    class="chart"
+    baseChart
+    class="chart"
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [type]="barChartType"
+  >
+  </canvas>
+</div>

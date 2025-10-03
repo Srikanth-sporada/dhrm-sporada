@@ -1,0 +1,95 @@
+<div class="!font-poppins">
+  <!-- modal header -->
+  <div class="bg-blue-600 flex items-center justify-center py-4">
+      <div class="flex items-center justify-center text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">more_time</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">Apply Comp-Off</h4>
+      </div>
+   </div>
+  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2">
+    <div><b class="mr-2 text-blue-600 font-semibold">Name:</b>{{ data.fullname }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Gen ID:</b>{{ data.gen_id }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Category:</b>{{ data.apprentice_type }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Department:</b>{{ data.dept_name }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Line:</b>{{ data.Line_Name }}</div>
+  </div>
+  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2">
+    <div><b class="mr-2 text-blue-600 font-semibold">Total Excess Hrs Worked:</b>{{ data.excess_hr }}</div>
+    <div><b class="mr-2 text-blue-600 font-semibold">Approved OT Hrs:</b>{{ data.ot }}</div>
+    <div><b class="mr-2 text-blue-600 font-semibold">Adjusted in C-OFF :</b>{{ data.coff }}</div>
+    <div><b class="mr-2 text-blue-600 font-semibold">Balanceq Hrs:</b>{{ data.bal }}</div>
+    <!-- <div [hidden]="applyshow" ><b>Un-Approved Balance Hrs:</b>{{ data.bal }}</div> -->
+  </div>
+  <div >
+    <!-- <mat-checkbox
+      [(ngModel)]="selectAll"
+      style="margin-left: 20px"
+      color="primary"
+      (ngModelChange)="handelSelectAll()"
+      >Select All</mat-checkbox
+    > -->
+    <div class="details my-2 mx-2">
+      <button 
+       (click)="approve()" 
+       [disabled]="loading" 
+       [hidden]="applyshow" 
+       pButton
+       label="Approve"
+       icon="pi pi-check-square">
+      </button>
+
+      <mat-checkbox [(ngModel)]="agreed" [disabled]="loading" [hidden]="!applyshow" style="font-size: 17px;font-weight: 700;font-family: var(--poppins);" class="text-blue-600 text-wrap">
+        I agree to adjust my OT Hrs into my LOP days as per C-Off Procedure. I am aware once my Cell Leader approves my request, it can't be cancelled.
+      </mat-checkbox>
+
+      
+    </div>
+
+    <div class="my-2 mx-2">
+      <!-- [hidden]="!applyshow" -->
+    <button 
+     (click)="apply_Operator_Coff()" 
+     [disabled]="loading"
+     [hidden]="!applyshow" 
+     pButton
+     label="Apply C-Off"
+     icon="pi pi-verified">
+    </button>
+    </div>
+  </div>
+  <!-- table -->
+  <div class="shadow-md rounded-md border border-gray-400">
+      <table id="table" class="table-auto !w-full">
+        <!-- table head -->
+        <thead >
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Absent Date</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Present Day</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Coff Required</th>
+            <th class="!text-white rounded-e-lg !px-2 !py-4 !border-none !border-0 text-center">Required OT Hours</th>
+          </tr>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr *ngFor="let item of absentData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+            <td class="!px-2 !py-4 !rounded-s-md text-center">
+              <mat-checkbox
+                [(ngModel)]="item.selected"
+                color="primary"
+                (ngModelChange)="checkItems(i)"
+                [disabled]="(sum+item.hrs_req)>data.bal && !item.selected"
+                >{{ i + 1 }}</mat-checkbox
+              >
+            </td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.absent_days|date:'dd-MM-yyyy' }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.present_type }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.absent_day }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.hrs_req }}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>

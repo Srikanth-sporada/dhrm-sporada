@@ -1,0 +1,169 @@
+<!-- header -->
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>browse_gallery</mat-icon>OT Request FH Approval<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage OT Request FH Approval</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+</div>
+
+<!-- filter-->
+   <div>
+    <!--  filters -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+       <!-- download btn-->
+        <p-button 
+         icon="pi pi-download" 
+         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
+         (click)="exportexcel()"></p-button>
+      </div>
+     <div>
+     <!--  filter row one -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+     <!-- category -->
+        <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Category</label> <br>
+           <p-dropdown 
+            [options]="categories"
+           [(ngModel)]="cat"
+           (ngModelChange)="filterChanged()"
+            optionLabel="categorynm"
+            optionValue="categorynm"
+            styleClass="w-full" 
+            placeholder="Select Category" ></p-dropdown>
+        </div>
+       <!-- department filter -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Department</label> <br>
+          <p-dropdown 
+            [options]="departmentList"
+            (ngModelChange)="filterChanged()"
+           [(ngModel)]="selectedDept"
+            optionLabel="dept_name"
+            optionValue="dept_name"
+            styleClass="w-full" 
+            placeholder="Select Department" ></p-dropdown>
+       </div>
+       <!-- clear btn -->
+        <div class="w-full">
+           <button
+           pButton
+           label="Clear"
+           icon="pi pi-times"
+           class="mt-9"
+           (click)="clear()">
+
+           </button>
+        </div>
+     </div>
+     <!-- row two -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+            <mat-checkbox
+              [(ngModel)]="selectAll"
+              color="primary"
+              class="font-poppins"
+              (ngModelChange)="handelSelectAll()"
+              >Select All</mat-checkbox>
+
+              <button
+      (click)="submit()"
+      pButton
+      label="Approve"
+      icon="pi pi-check-circle"
+      [disabled]="loading"
+    >
+    </button>
+      </div>
+     </div>
+  </div>
+   </div>
+<!-- <div class="select_menu !font-poppins">
+  <mat-checkbox
+    [(ngModel)]="selectAll"
+    style="margin-left: 20px"
+    color="primary"
+    class="font-poppins"
+    (ngModelChange)="handelSelectAll()"
+    >Select All</mat-checkbox>
+  <div style="margin: 0 20px 10px 0">
+    <button
+      (click)="submit()"
+      pButton
+      label="Approve"
+      icon="pi pi-check-circle"
+      [disabled]="loading"
+    >
+    </button>
+  </div>
+</div> -->
+
+<!-- approval table -->
+<div class="h-[90svh] lg:h-[70vh] xl:h-[70vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+
+    <table id="table" class="table-auto !w-full">
+      <!-- table head -->
+      <thead class="sticky top-0">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approved Excess Hrs</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Adjusted for COFF</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approved OT Hrs</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Balance Hrs For OT</th>
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Approve</th>
+        </tr>
+      </thead>
+      <!-- table body -->
+      <tbody>
+        <!-- | datefilter : date | categoryfilter : cat : selectedDept; -->
+        <tr
+          *ngFor="let item of data  let i = index"
+          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+        >
+          <td class="!px-2 !py-4 !rounded-s-md text-center relative">
+            <mat-checkbox
+              [(ngModel)]="item.selected"
+              color="primary"
+              (ngModelChange)="checkItems()"
+              >{{ i + 1 }}</mat-checkbox
+            >
+          </td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.fullname }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.dept_name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Line_Name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.excess_hr }}
+            <button class="text-blue-600 font-[20px]" (click)="openExcessHourDetais(item)"><mat-icon>visibility</mat-icon></button>
+          </td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.coff }}
+            <button class="text-blue-600 font-[20px]" (click)="openCoffDeatisl(item)"><mat-icon>visibility</mat-icon></button></td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ot }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.bal }}</td>
+          <!-- action btn -->
+          <td class="!px-2 !py-4 flex items-center justify-center">
+            <button 
+              pButton 
+              (click)="approve(item)"
+              label="Approve"
+              icon="pi pi-check-circle" 
+              [disabled]="loading"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>

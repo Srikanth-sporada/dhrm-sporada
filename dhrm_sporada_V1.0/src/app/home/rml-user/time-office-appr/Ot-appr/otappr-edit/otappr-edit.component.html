@@ -1,0 +1,123 @@
+<!-- header -->
+  <div class="bg-blue-600 flex items-center justify-start py-4">
+      <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">edit</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">Update OT Approver</h4>
+      </div>
+  </div>
+  <br>
+  <!-- update ot approver form -->
+  <div>
+      <!-- plant dropdown -->
+      <div class="mx-2">  
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
+          Plant
+        </label><br />
+        <p-dropdown 
+         styleClass="w-full"
+         [(ngModel)]="data.plant" 
+          [disabled]="true"
+          [placeholder]="data.plant" >
+        </p-dropdown>
+      </div>
+       <!-- employee name -->
+        <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
+            Employee Name
+          </label>
+          <br />
+          <input
+            class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
+            type="text"
+            id="code"
+           [(ngModel)]="data.exec"
+           [disabled]="true"
+            placeholder="Enter Employee Name"
+          />
+        </div>
+      <!-- funcitonal head -->
+      <div class="mx-2 mt-3">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+           <mat-icon class="text-2xl text-blue-600 h-0 w-0">functions</mat-icon>
+          Functional Head
+        </label><br />
+        <p-dropdown 
+          [(ngModel)]="selectedOtAppr"
+          [options]="otApprovers"
+          optionLabel="Emp_Name"
+          optionValue="empl_slno"
+          styleClass="w-full"
+          placeholder="Select Functional Head" >
+        </p-dropdown>
+      </div>
+     <!-- HR  head -->
+      <div class="mx-2 mt-3">
+        <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+           <mat-icon class="text-2xl text-blue-600 h-0 w-0">account_circle</mat-icon>
+         HR Head
+        </label><br />
+        <p-dropdown 
+          [(ngModel)]="selectedHr"
+          [options]="headHr"
+          optionLabel="Emp_Name"
+          optionValue="empl_slno"
+          styleClass="w-full"
+          placeholder="Select HR Head" >
+        </p-dropdown>
+      </div>
+      <br>
+  </div>
+
+  <!-- modal footer -->
+  <div class="modal-footer bg-gray-100">
+    <button 
+     class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+     (click)="close()">Cancel</button>
+     <button 
+      class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
+      (click)="submit()">Update OT Approver</button>
+  </div>
+
+<!-- <h1 style="text-align: center">OT Approver Mapping Edit</h1>
+<div class="container">
+  <mat-form-field appearance="outline">
+    <mat-label>Plant</mat-label>
+    <input matInput placeholder="label" value="value" [(ngModel)]="data.plant" disabled=""/>
+  </mat-form-field>
+  <mat-form-field
+    class="example-full-width"
+    appearance="outline"
+    class="width:400px"
+  >
+    <mat-label>Employee Name</mat-label>
+   <input matInput  type="text" [(ngModel)]="data.exec" disabled="">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Functional Head</mat-label>
+    <mat-select
+      placeholder="Placeholder"
+      [(ngModel)]="selectedOtAppr"
+      name="item"
+    >
+      <mat-option *ngFor="let item of otApprovers" [value]="item.empl_slno">
+        {{ item.Emp_Name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>HR Head</mat-label>
+    <mat-select placeholder="Placeholder" [(ngModel)]="selectedHr" name="item">
+      <mat-option *ngFor="let item of headHr" [value]="item.empl_slno">
+        {{ item.Emp_Name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="button">
+  <button mat-raised-button color="accent" (click)="close()">close</button>
+  <button mat-raised-button color="primary" (click)="submit()">Update</button>
+</div> -->

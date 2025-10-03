@@ -1,0 +1,1748 @@
+<!-- <p>    this is a {{View_screen}} {{Approve_screen}} {{Sal_Id}}  edit {{Edit}} -payscale works!</p>  -->
+
+<div class="mx-2">
+  <!-- approve payscale  header -->
+      <div class="!flex  gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+        <div class="flex items-start justify-start flex-col">
+          <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+          <mat-icon>approval_delegation</mat-icon>Salary Details<hr/>
+        </h1>
+        <p class="mt-1 text-gray-400">View and Approve Salary</p>
+        </div>
+        <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+      </div>
+  <!-- salary form -->
+  <form [formGroup]="newSalarySlipForm">
+    <div class="container">
+      <!-- variables -->
+      <div style="display: flex; justify-content: flex-end; align-items: center">
+        <span
+          style="
+            display: flex;
+            justify-content: flex-end;
+            background-color: blue;
+            border: 1px solid blue;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: .5rem;
+            margin-bottom: .5rem;
+            border-radius: 5px;
+          "
+        ></span>
+        <strong class="mb-2">Variables</strong>
+      </div>
+
+      <!-- employee details -->
+      <div *ngIf="Edit == true && view == false" id="ndLine">
+        <!-- name -->
+        <div class="row">
+          <div class="col-6 colborder">
+            <div class="row">
+              <div class="col-6">
+                <ng-container>
+                  <p class="col" id="Name">
+                    <label class="!font-poppins text-blue-600">Name </label>
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" id="Gen">
+                    <label class="!font-poppins text-blue-600">Gen ID </label>
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" id="Punch">
+                    <label class="!font-poppins text-blue-600">Punch ID </label>
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" id="DOB">
+                    <label class="!font-poppins text-blue-600">DOB </label>
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" id="DOJ">
+                    <label class="!font-poppins text-blue-600">DOJ </label>
+                  </p>
+                </ng-container>
+                <!-- <ng-container>
+                                      <p class="col" id="Description" > <label  style="color:black">Payscale Description</label> </p>
+                                     </ng-container> -->
+              </div>
+              <!-- values -->
+              <div class="col-6 !font-poppins">
+                <ng-container>
+                  <p class="col" for="Name">
+                    : {{ this.formGroup.get("fullname")?.value || null }}
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" for="Gen">
+                    : {{ this.formGroup.get("gen_id")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" for="Punch">
+                    : {{ this.formGroup.get("punch_id")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" for="DOB">
+                    :
+                    {{
+                      this.formGroup.get("birthdate")?.value
+                        | date : "dd/MM/yyyy"
+                    }}
+                  </p>
+                </ng-container>
+                <ng-container>
+                  <p class="col" for="DOJ">
+                    :
+                    {{ this.formGroup.get("doj")?.value | date : "dd/MM/yyyy" }}
+                  </p>
+                </ng-container>
+                <!-- <ng-container >
+                                  <p class="col"   for="Description" >
+                                    : {{this.formGroup.get('Description')?.value}}  
+                                  </p>
+                                </ng-container> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <ng-container>
+                  <p class="col" id="Category">
+                    <label class="text-blue-600 !font-poppins">Category </label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" id="Department">
+                    <label class="text-blue-600 !font-poppins"> Department Name</label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" id="Line">
+                    <label class="text-blue-600 !font-poppins"> Line Name</label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" id="Contractor">
+                    <label class="text-blue-600 !font-poppins"> Contractor Name</label>
+                  </p>
+                </ng-container>
+                <!-- <ng-container >
+                                  <p class="col" id="Contractor"  >
+                                    <label  style="color:black"> Salary Revision No</label>
+                                  </p>
+                    
+                                </ng-container>
+                     -->
+
+                <ng-container *ngIf="this.Approve_screen === 'view'">
+                  <p class="col" id="Effective">
+                    <label class="text-blue-600 !font-poppins">Payscale Effective Date</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    this.Approve_screen === 'approve' ||
+                    this.Approve_screen === 'view'
+                  "
+                >
+                  <p class="col" id="Effective">
+                    <label class="text-blue-600 !font-poppins"> Payscale Effective Date</label>
+                  </p>
+                </ng-container>
+                <ng-container *ngIf="this.Approve_screen === 'update'">
+                  <p class="col" id="Effective">
+                    <label class="text-blue-600 !font-poppins">Current Effective Date</label>
+                  </p>
+                </ng-container>
+                <ng-container *ngIf="this.Approve_screen === 'update'">
+                  <p class="col" id="Effective">
+                    <label class="text-blue-600 !font-poppins"> New Effective Date</label>
+                  </p>
+                </ng-container>
+              </div>
+
+              <div class="col-6">
+                <ng-container>
+                  <p class="col" for="Category">
+                    : {{ this.formGroup.get("apprentice_type")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" for="Department">
+                    : {{ this.formGroup.get("dept_name")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" for="Line">
+                    : {{ this.formGroup.get("Line_Name")?.value }}
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p class="col" for="Contractor">
+                    : {{ this.formGroup.get("Cont_company_name")?.value }}
+                  </p>
+                </ng-container>
+                <!-- <ng-container   >
+                                    <p class="col" for="Contractor">
+                                      : {{this.formGroup.get('Sal_Rev_No')?.value}}   </p>
+                                </ng-container> -->
+
+                <ng-container *ngIf="this.Approve_screen === 'view'">
+                  <p class="col" for="Effective">
+                    : {{ this.Effective_Date | date : "dd/MM/yyyy" }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="this.Approve_screen === 'approve' || this.update"
+                >
+                  <p class="col" for="Effective">
+                    : {{ this.Effective_Date | date : "dd/MM/yyyy" }}
+                  </p>
+                </ng-container>
+
+                <ng-container *ngIf="this.Approve_screen === 'update' && !Edit">
+                  <p class="col" for="Effective">
+                    :
+                    {{
+                      this.formGroup.get("Effective_From")?.value
+                        | date : "dd/MM/yyyy"
+                    }}
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="this.Approve_screen === 'update' && Edit"
+                  style="
+                    border: none;
+                    margin-left: 0 0 0 4em;
+                    padding-left: 0 0 0 2em;
+                  "
+                >
+                  <p class="col">
+                    :
+                    <input
+                      type="date"
+                      id="Effective_From"
+                      formControlName="New_Effective_From"
+                      [min]="minDate()"
+                      style="
+                        border: none;
+                        margin-left: 0 0 0 4em;
+                        padding-left: 0 0 0 2em;
+                      "
+                      appDateInputRestriction
+                    />
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- earnings and deductiond -->
+      <div id="rdLine">
+        <div class="row">
+          <div class="col-6 colborder">
+            <div class="col">
+              <h4 class="text-green-600 font-seminbold !text-[1rem]">Earnings</h4>
+            </div>
+            <div class="row">
+              <!-- name -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Stipend')?.value !== 0 &&
+                    newSalarySlipForm?.get('Stipend')?.value > 0
+                  "
+                >
+                  <p class="col" id="stipend">
+                    <label style="color: black">Stipend </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Basic')?.value !== 0 &&
+                    newSalarySlipForm?.get('Basic')?.value > 0
+                  "
+                >
+                  <p class="col" id="Basic_amt">
+                    <label style="color: black">Basic </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('DA')?.value !== 0 &&
+                    newSalarySlipForm?.get('DA')?.value > 0
+                  "
+                >
+                  <p class="col" id="DA">
+                    <label style="color: black">DA </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('HRA')?.value !== 0 &&
+                    newSalarySlipForm?.get('HRA')?.value > 0
+                  "
+                >
+                  <p class="col" id="HRA">
+                    <label style="color: black">HRA </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Leave_Salary')?.value !== 0 &&
+                    newSalarySlipForm?.get('Leave_Salary')?.value > 0
+                  "
+                >
+                  <p class="col" id="Leave_Salary">
+                    <label style="color: black"> Leave Salary Allowance</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Washing_allow')?.value !== 0 &&
+                    newSalarySlipForm?.get('Washing_allow')?.value > 0
+                  "
+                >
+                  <p class="col" id="Washing_allow">
+                    <label style="color: black"> Washing Allowance</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Monthly_Bonus')?.value !== 0 &&
+                    newSalarySlipForm?.get('Monthly_Bonus')?.value > 0
+                  "
+                >
+                  <p class="col" id="Monthly_Bonus">
+                    <label style="color: black">Monthly Bonus </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Monthly_Attn_Incentive')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Monthly_Attn_Incentive')?.value > 0
+                  "
+                >
+                  <p class="col" id="Monthly_Attn_Incentive">
+                    <label style="color: black">Attendance Bonus </label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Sat_and_Mon_Incentive"
+                    *ngIf="
+                      newSalarySlipForm?.get('Sat_and_Mon_Incentive')?.value >
+                        0 &&
+                      newSalarySlipForm?.get('Sat_and_Mon_Incentive')?.value !==
+                        0
+                    "
+                  >
+                    <label style="color: black">Sat & Mon Incentive </label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Retention_Incentive"
+                    *ngIf="
+                      newSalarySlipForm?.get('Retention_Incentive')?.value !==
+                        0 &&
+                      newSalarySlipForm?.get('Retention_Incentive')?.value > 0
+                    "
+                  >
+                    <label style="color: black">Retention Incentive </label>
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Spl_allow"
+                    *ngIf="
+                      newSalarySlipForm?.get('Spl_allow')?.value > 0 &&
+                      newSalarySlipForm?.get('Spl_allow')?.value !== 0
+                    "
+                  >
+                    <label style="color: black"> Special Allowance </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Skilled_allow_P3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Skilled_allow_P3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Skilled_allow_P3">
+                    <label style="color: black">Skilled Allowance</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Amenities_Allow')?.value !== 0 &&
+                    newSalarySlipForm?.get('Amenities_Allow')?.value > 0
+                  "
+                >
+                  <p class="col" id="Amenities_Allow">
+                    <label style="color: black">Amenities Allowance </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_1')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_1')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_1">
+                    <label style="color: black">Other Allowance 1</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_2')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_2')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_2">
+                    <label style="color: black">Other Allowance 2</label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_3">
+                    <label style="color: black">Other Allowance 3</label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_4')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_4')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_allowance_4">
+                    <label style="color: black">Other Allowance 4</label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Night_shift_allowance')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Night_shift_allowance')?.value > 0
+                  "
+                >
+                  <p class="col" id="Night_shift_allowance">
+                    <label style="color: blue"> Nightshift Allowance</label>
+                  </p>
+                </ng-container>
+              </div>
+              <!-- value -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Stipend')?.value !== 0 &&
+                    newSalarySlipForm?.get('Stipend')?.value > 0
+                  "
+                >
+                  <p class="col" for="Stipend">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Stipend"
+                      (input)="onInputChanged($event, 'Stipend')"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Basic')?.value !== 0 &&
+                    newSalarySlipForm?.get('Basic')?.value > 0
+                  "
+                >
+                  <p class="col" for="Basic">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Basic"
+                      (input)="onInputChanged($event, 'Basic')"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('DA')?.value !== 0 &&
+                    newSalarySlipForm?.get('DA')?.value > 0
+                  "
+                  for="DA"
+                >
+                  <p class="col">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'DA')"
+                      formControlName="DA"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('HRA')?.value !== 0 &&
+                    newSalarySlipForm?.get('HRA')?.value > 0
+                  "
+                >
+                  <p class="col" for="HRA">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'HRA')"
+                      formControlName="HRA"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Leave_Salary')?.value !== 0 &&
+                    newSalarySlipForm?.get('Leave_Salary')?.value > 0
+                  "
+                >
+                  <p class="col" for="Leave_Salary">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Leave_Salary')"
+                      formControlName="Leave_Salary"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Washing_allow')?.value !== 0 &&
+                    newSalarySlipForm?.get('Washing_allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Washing_allow">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Washing_allow')"
+                      formControlName="Washing_allow"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Monthly_Bonus')?.value !== 0 &&
+                    newSalarySlipForm?.get('Monthly_Bonus')?.value > 0
+                  "
+                >
+                  <p class="col" for="Monthly_Bonus">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Monthly_Bonus')"
+                      formControlName="Monthly_Bonus"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Monthly_Attn_Incentive')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Monthly_Attn_Incentive')?.value > 0
+                  "
+                >
+                  <p class="col" for="Monthly_Attn_Incentive">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Monthly_Attn_Incentive')"
+                      formControlName="Monthly_Attn_Incentive"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Sat_and_Mon_Incentive')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Sat_and_Mon_Incentive')?.value > 0
+                  "
+                >
+                  <p class="col" for="Sat_and_Mon_Incentive">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Sat_and_Mon_Incentive')"
+                      formControlName="Sat_and_Mon_Incentive"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Retention_Incentive')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Retention_Incentive')?.value > 0
+                  "
+                >
+                  <p class="col" for="Retention_Incentive">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Retention_Incentive')"
+                      formControlName="Retention_Incentive"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Spl_allow')?.value !== 0 &&
+                    newSalarySlipForm?.get('Spl_allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Spl_allow">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Spl_allow')"
+                      formControlName="Spl_allow"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Skilled_allow_P3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Skilled_allow_P3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Skilled_allow_P3">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Skilled_allow_P3')"
+                      formControlName="Skilled_allow_P3"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Amenities_Allow')?.value !== 0 &&
+                    newSalarySlipForm?.get('Amenities_Allow')?.value > 0
+                  "
+                >
+                  <p class="col" for="Amenities_Allow">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Amenities_Allow')"
+                      formControlName="Amenities_Allow"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_1')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_1')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_1">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_allowance_1')"
+                      formControlName="Other_allowance_1"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_2')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_2')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_2">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_allowance_2')"
+                      formControlName="Other_allowance_2"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_3">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_allowance_3')"
+                      formControlName="Other_allowance_3"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_allowance_4')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_allowance_4')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_allowance_4">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_allowance_4')"
+                      formControlName="Other_allowance_4"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Night_shift_allowance')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Night_shift_allowance')?.value > 0
+                  "
+                >
+                  <p
+                    class="col"
+                    style="color: blue"
+                    for="Night_shift_allowance"
+                  >
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Night_shift_allowance')"
+                      formControlName="Night_shift_allowance"
+                    />
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- <div class="col-6 last1">
+  <div class="row ">
+    <div class="col-6">
+      <p class="col" id="totalEarnings">
+      <label>Total Earnings</label>
+    </p>
+    </div>
+    <div class="col-6">
+      <p class="col" for="totalEarnings">
+      :<input type="number" id="payinput" formControlName="Total_Earn"  readonly/> 
+    </p>
+    </div>
+    
+  </div>
+
+</div> -->
+          </div>
+          <!-- deductions -->
+          <div class="col-6">
+            <div class="col">
+              <h4 class="text-red-500 font-seminbold !text-[1rem]">Deductions</h4>
+            </div>
+            <div class="row">
+              <!-- name -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Canteen')?.value !== 0 &&
+                    newSalarySlipForm?.get('Canteen')?.value > 0
+                  "
+                >
+                  <p class="col" id="Canteen">
+                    <label class="text-black"> Canteen </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('WC_Policy')?.value !== 0 &&
+                    newSalarySlipForm?.get('WC_Policy')?.value > 0
+                  "
+                >
+                  <p class="col" id="WC_Policy">
+                    <label class="text-black"> WC_Policy </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Insurance')?.value !== 0 &&
+                    newSalarySlipForm?.get('Insurance')?.value > 0
+                  "
+                >
+                  <p class="col" id="Insurance">
+                    <label class="text-black"> Insurance </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Shoe_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Shoe_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Shoe_FirstTime">
+                    <label class="text-black">
+                      Shoe FirstTime
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Glass_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Glass_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Glass_FirstTime">
+                    <label class="text-black">
+                      Goggles FirstTime
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Uniform_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Uniform_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Uniform_FirstTime">
+                    <label class="text-black">
+                      Uniform FirstTime
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Coat_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Coat_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" id="Coat_FirstTime">
+                    <label class="text-black">
+                      Coat FirstTime
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_1')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_1')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_1">
+                    <label class="text-black">
+                      Other Deduction 1
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_2')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_2')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_2">
+                    <label class="text-black">
+                      Other Deduction 2
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_3')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_3">
+                    <label class="text-black">
+                      Other Deduction 3
+                    </label>
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_4')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_4')?.value > 0
+                  "
+                >
+                  <p class="col" id="Other_deduction_4">
+                    <label class="text-black">
+                      Other Deduction 4
+                    </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('EM_PF_Cal_Val')?.value !== 0 &&
+                    newSalarySlipForm?.get('EM_PF_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container> -->
+                  <p class="col" id="EM_PF">
+                    <label class="text-black">
+                      PF {{ newSalarySlipForm?.get("EM_PF_Percent")?.value }}%
+                    </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('EM_ESI_Cal_Val')?.value !== 0 &&
+                    newSalarySlipForm?.get('EM_ESI_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container> -->
+                  <p class="col" id="EM_ESI">
+                    <label class="text-black">
+                      ESI {{ newSalarySlipForm?.get("EM_ESI_Percent")?.value }}%
+                    </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Transport')?.value !== 0 &&
+                    newSalarySlipForm?.get('Transport')?.value > 0
+                  "
+                >
+                  <p class="col" id="Transport">
+                    <label style="color: blue"> Transport </label>
+                  </p>
+                </ng-container>
+              </div>
+              <!-- values -->
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Canteen')?.value !== 0 &&
+                    newSalarySlipForm?.get('Canteen')?.value > 0
+                  "
+                >
+                  <p class="col" for="Canteen">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Canteen')"
+                      formControlName="Canteen"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('WC_Policy')?.value !== 0 &&
+                    newSalarySlipForm?.get('WC_Policy')?.value > 0
+                  "
+                >
+                  <p class="col" for="WC_Policy">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'WC_Policy')"
+                      formControlName="WC_Policy"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Insurance')?.value !== 0 &&
+                    newSalarySlipForm?.get('Insurance')?.value > 0
+                  "
+                >
+                  <p class="col" for="Insurance">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Insurance')"
+                      formControlName="Insurance"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Shoe_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Shoe_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Shoe_FirstTime">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Shoe_FirstTime')"
+                      formControlName="Shoe_FirstTime"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Glass_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Glass_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Glass_FirstTime">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Glass_FirstTime')"
+                      formControlName="Glass_FirstTime"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Uniform_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Uniform_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Uniform_FirstTime">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Uniform_FirstTime')"
+                      formControlName="Uniform_FirstTime"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Coat_FirstTime')?.value !== 0 &&
+                    newSalarySlipForm?.get('Coat_FirstTime')?.value > 0
+                  "
+                >
+                  <p class="col" for="Coat_FirstTime">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Coat_FirstTime')"
+                      formControlName="Coat_FirstTime"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_1')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_1')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_1">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_deduction_1')"
+                      formControlName="Other_deduction_1"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_2')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_2')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_2">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_deduction_2')"
+                      formControlName="Other_deduction_2"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_3')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_3')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_3">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_deduction_3')"
+                      formControlName="Other_deduction_3"
+                    />
+                  </p>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Other_deduction_4')?.value !== 0 &&
+                    newSalarySlipForm?.get('Other_deduction_4')?.value > 0
+                  "
+                >
+                  <p class="col" for="Other_deduction_4">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Other_deduction_4')"
+                      formControlName="Other_deduction_4"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('EM_PF_Cal_Val')?.value !== 0 &&
+                    newSalarySlipForm?.get('EM_PF_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container > -->
+                  <p class="col" for="EM_PF">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'EM_PF_Cal_Val')"
+                      formControlName="EM_PF_Cal_Val"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('EM_ESI_Cal_Val')?.value !== 0 &&
+                    newSalarySlipForm?.get('EM_ESI_Cal_Val')?.value > 0
+                  "
+                >
+                  <!-- <ng-container > -->
+                  <p class="col" for="EM_ESI">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'EM_ESI_Cal_Val')"
+                      formControlName="EM_ESI_Cal_Val"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Transport')?.value !== 0 &&
+                    newSalarySlipForm?.get('Transport')?.value > 0
+                  "
+                >
+                  <p class="col" style="color: blue" for="Transport">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      (input)="onInputChanged($event, 'Transport')"
+                      formControlName="Transport"
+                    />
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+            <!-- <div class="row last">
+                              <div class="col-6">
+                                    <p class="col" id="totalDeduction">
+                                  <label>Total Deduction</label>
+                                </p>
+                              </div>
+                              <div class="col-6">
+                    <p class="col" for="totalDeduction">
+                                  : <input type="number" id="payinput" formControlName="Total_deduct"    readonly/> 
+                                </p>
+                              </div>
+                            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div id="ndLine">
+        <div class="row">
+          <!-- total earnings -->
+          <div class="col-6 colborder">
+            <div class="row">
+              <div class="col-6">
+                <p class="col text-green-600" id="totalEarnings">
+                  <label>Total Earnings</label>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="col text-green-600" for="totalEarnings">
+                  : &#8377;<input
+                    type="number"
+                    id="payinput"
+                    class="text-green-600"
+                    formControlName="Gross_Earning"
+                    readonly
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- total decutions -->
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <p class="col text-red-500" id="totalDeduction">
+                  <label>Total Deduction</label>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="col text-red-500" for="totalDeduction">
+                  : &#8377;<input
+                    type="number"
+                    id="payinput"
+                    class="text-red-500"
+                    formControlName="Gross_Deduction"
+                    readonly
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- paid to contractor -->
+      <div id="ndLine">
+        <div class="col">
+          <h4>To Be Paid to Contractor</h4>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('NSDC_Contribution')?.value !== 0 &&
+                    newSalarySlipForm?.get('NSDC_Contribution')?.value > 0
+                  "
+                >
+                  <p class="col" id="NSDC_Contribution">
+                    <label style="color: rgb(0, 0, 0)"
+                      >NSDC Contribution
+                    </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Uniform_Charges')?.value !== 0 &&
+                    newSalarySlipForm?.get('Uniform_Charges')?.value > 0
+                  "
+                >
+                  <p class="col" id="Uniform_Charges">
+                    <label style="color: rgb(0, 0, 0)">Uniform Charges </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Labour_Welfare_Fund')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Labour_Welfare_Fund')?.value > 0
+                  "
+                >
+                  <p class="col" id="Labour_Welfare_Fund">
+                    <label style="color: rgb(0, 0, 0)"
+                      >Labour Welfare Fund
+                    </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Insurance_Premium')?.value !== 0 &&
+                    newSalarySlipForm?.get('Insurance_Premium')?.value > 0
+                  "
+                >
+                  <p class="col" id="Insurance_Premium">
+                    <label style="color: rgb(0, 0, 0)"
+                      >Insurance Premium
+                    </label>
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('NSDC_Contribution')?.value !== 0 &&
+                    newSalarySlipForm?.get('NSDC_Contribution')?.value > 0
+                  "
+                >
+                  <p class="col" for="NSDC_Contribution">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="NSDC_Contribution"
+                      (input)="onInputChanged($event, 'NSDC_Contribution')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Uniform_Charges')?.value !== 0 &&
+                    newSalarySlipForm?.get('Uniform_Charges')?.value > 0
+                  "
+                >
+                  <p class="col" for="Uniform_Charges">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Uniform_Charges"
+                      (input)="onInputChanged($event, 'Uniform_Charges')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Labour_Welfare_Fund')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Labour_Welfare_Fund')?.value > 0
+                  "
+                >
+                  <p class="col" for="Labour_Welfare_Fund">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Labour_Welfare_Fund"
+                      (input)="onInputChanged($event, 'Labour_Welfare_Fund')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Insurance_Premium')?.value !== 0 &&
+                    newSalarySlipForm?.get('Insurance_Premium')?.value > 0
+                  "
+                >
+                  <p class="col" for="Insurance_Premium">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Insurance_Premium"
+                      (input)="onInputChanged($event, 'Insurance_Premium')"
+                    />
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Learning_Fees')?.value !== 0 &&
+                    newSalarySlipForm?.get('Learning_Fees')?.value > 0
+                  "
+                >
+                  <p class="col" id="Learning_Fees">
+                    <label style="color: rgb(0, 0, 0)">Learning Fees</label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Workmen_Compensation')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Workmen_Compensation')?.value > 0
+                  "
+                >
+                  <p class="col" id="Workmen_Compensation">
+                    <label style="color: rgb(0, 0, 0)"
+                      >Workmen Compensation</label
+                    >
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Emp_Comp_Ins')?.value !== 0 &&
+                    newSalarySlipForm?.get('Emp_Comp_Ins')?.value > 0
+                  "
+                >
+                  <p class="col" id="Emp_Comp_Ins">
+                    <label style="color: rgb(0, 0, 0)">Emp_Comp + Ins </label>
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Higher_Education_Fee')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Higher_Education_Fee')?.value > 0
+                  "
+                >
+                  <p class="col" id="Higher_Education_Fee">
+                    <label style="color: rgb(0, 0, 0)"
+                      >Higher Education Fee</label
+                    >
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-6">
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Learning_Fees')?.value !== 0 &&
+                    newSalarySlipForm?.get('Learning_Fees')?.value > 0
+                  "
+                >
+                  <p class="col" for="Learning_Fees">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Learning_Fees"
+                      (input)="onInputChanged($event, 'Learning_Fees')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Workmen_Compensation')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Workmen_Compensation')?.value > 0
+                  "
+                >
+                  <p class="col" for="Workmen_Compensation">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Workmen_Compensation"
+                      (input)="onInputChanged($event, 'Workmen_Compensation')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Emp_Comp_Ins')?.value !== 0 &&
+                    newSalarySlipForm?.get('Emp_Comp_Ins')?.value > 0
+                  "
+                >
+                  <p class="col" for="Emp_Comp_Ins">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Emp_Comp_Ins"
+                      (input)="onInputChanged($event, 'Emp_Comp_Ins')"
+                    />
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    newSalarySlipForm?.get('Higher_Education_Fee')?.value !==
+                      0 &&
+                    newSalarySlipForm?.get('Higher_Education_Fee')?.value > 0
+                  "
+                >
+                  <p class="col" for="Higher_Education_Fee">
+                    : &#8377;<input
+                      type="number"
+                      readonly
+                      id="payinput"
+                      formControlName="Higher_Education_Fee"
+                      (input)="onInputChanged($event, 'Higher_Education_Fee')"
+                    />
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" sty>
+          <div class="col-3">
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('EMP_PF_Cal_Val')?.value !== 0 &&
+                newSalarySlipForm?.get('EMP_PF_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container> -->
+              <p class="col" id="EMR_PF">
+                <label style="color: rgb(0, 0, 0)">
+                  PF {{ newSalarySlipForm?.get("EMP_PF_Percent")?.value }}%
+                </label>
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('EMP_ESI_Cal_Val')?.value !== 0 &&
+                newSalarySlipForm?.get('EMP_ESI_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container> -->
+              <p class="col" id="EMR_ESI">
+                <label style="color: rgb(0, 0, 0)">
+                  ESI {{ newSalarySlipForm?.get("EMP_ESI_Percent")?.value }}%
+                </label>
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('Service_Charge_Fixed')?.value !== 0 &&
+                newSalarySlipForm?.get('Service_Charge_Fixed')?.value > 0
+              "
+            >
+              <p class="col" id="Service_Charge_Fixed">
+                <label style="color: rgb(0, 0, 0)">
+                  Service Charge Fixed
+                </label>
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('Service_charges_Percentage')?.value !==
+                  0 &&
+                newSalarySlipForm?.get('Service_charges_Percentage')?.value > 0
+              "
+            >
+              <p class="col" id="Service_charges_Percentage">
+                <label style="color: rgb(0, 0, 0)">
+                  Service Charge Percentage
+                </label>
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="newSalarySlipForm?.get('SC_Base')?.value !== null"
+            >
+              <p class="col" id="SC_Base">
+                <label style="color: rgb(0, 0, 0)">
+                  Service Tax 18% On
+                  {{ newSalarySlipForm?.get("SC_Base")?.value }}
+                </label>
+              </p>
+            </ng-container>
+          </div>
+          <div class="col-3">
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('EMP_PF_Cal_Val')?.value !== 0 &&
+                newSalarySlipForm?.get('EMP_PF_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container > -->
+              <p class="col" for="EMR_PF">
+                : &#8377;<input
+                  type="number"
+                  readonly
+                  id="payinput"
+                  (input)="onInputChanged($event, 'EMP_PF_Cal_Val')"
+                  formControlName="EMP_PF_Cal_Val"
+                />
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('EMP_ESI_Cal_Val')?.value !== 0 &&
+                newSalarySlipForm?.get('EMP_ESI_Cal_Val')?.value > 0
+              "
+            >
+              <!-- <ng-container > -->
+              <p class="col" for="EMR_ESI">
+                : &#8377;<input
+                  type="number"
+                  readonly
+                  id="payinput"
+                  (input)="onInputChanged($event, 'EMP_ESI_Cal_Val')"
+                  formControlName="EMP_ESI_Cal_Val"
+                />
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('Service_Charge_Fixed')?.value !== 0 &&
+                newSalarySlipForm?.get('Service_Charge_Fixed')?.value > 0
+              "
+            >
+              <p class="col" for="Service_Charge_Fixed">
+                : &#8377;<input
+                  type="number"
+                  readonly
+                  id="payinput"
+                  (input)="onInputChanged($event, 'Service_Charge_Fixed')"
+                  formControlName="Service_Charge_Fixed"
+                />
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="
+                newSalarySlipForm?.get('Service_charges_Percentage')?.value !==
+                  0 &&
+                newSalarySlipForm?.get('Service_charges_Percentage')?.value > 0
+              "
+            >
+              <p class="col" for="Service_charges_Percentage">
+                : &#8377;<input
+                  type="number"
+                  readonly
+                  id="payinput"
+                  (input)="onInputChanged($event, 'Servive_Charge_Val')"
+                  formControlName="Servive_Charge_Val"
+                />
+              </p>
+            </ng-container>
+            <ng-container
+              *ngIf="newSalarySlipForm?.get('SC_Base')?.value !== null"
+            >
+              <p class="col" for="SC_Base">
+                : &#8377;<input
+                  type="text"
+                  readonly
+                  id="payinput"
+                  (input)="onInputChanged($event, 'Service_Tax_Val')"
+                  formControlName="Service_Tax_Val"
+                />
+              </p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTC + GST + NET -->
+      <div id="ndLine" style="display: flex; justify-content: space-around; padding-top: 0.5em">
+        <p>
+          <strong>CTC </strong> :&#8377;<input id="payinput" formControlName="ToTal_Base_Value" readonly class="text-green-600 font-semibold"/>
+        </p>
+        <p>
+          <strong>CTC + GST</strong> :&#8377;<input id="payinput" formControlName="CTC" readonly class="text-purple-600 font-semibold"/>
+        </p>
+
+        <p>
+          <strong>Net Take Home : &#8377;</strong>
+          <input
+            id="payinput"
+            formControlName="Net_Take_Home"
+            value=""
+            readonly
+            class="text-green-600 font-semibold"
+          />
+        </p>
+      </div>
+    </div>
+  </form>
+
+  <!-- action buttons -->
+  <ng-container>
+    <div>
+      <!-- <ng-template  >
+    <ng-container  > -->
+      <div
+        *ngIf="Edit == true && view == false"
+        style="display: flex; justify-content: space-around; padding: 1em"
+      >
+         <button 
+          class="px-4 py-1 bg-purple-600 !text-white rounded-lg font-semibold" 
+          (click)="goBack()">
+          Back
+        </button>
+        <button
+          class="px-4 py-1 bg-blue-600 !text-white rounded-lg font-semibold"
+          (click)="approve_Salary()"
+        >
+          Approve
+        </button>
+        <button
+          class="px-4 py-1 bg-orange-600 !text-white rounded-lg font-semibold"
+          (click)="reworkpayscale()"
+        >
+          Rework
+        </button>
+      </div>
+      <div
+        *ngIf="view == true"
+        style="display: flex; justify-content: space-around; padding: 1em"
+      >
+        <button class="px-4 py-1 bg-purple-600 !text-white rounded-lg font-semibold" (click)="goBack()">
+          Back
+        </button>
+      </div>
+      <!-- </ng-container>
+  
+</ng-template> -->
+    </div>
+  </ng-container>
+</div>

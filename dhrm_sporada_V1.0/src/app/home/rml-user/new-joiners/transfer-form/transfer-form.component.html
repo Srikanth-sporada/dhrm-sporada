@@ -1,0 +1,382 @@
+<div class="h-full">
+  <div class="row justify-content-md-center mx-4 mt-3">
+    <div class="shadow round w-full">
+      <div class="px-2 mx-2">
+        <!-- employee transfer header header -->
+        <div
+          class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+        >
+          <div class="flex items-start justify-start flex-col">
+            <h1
+              class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-1 text-blue-600"
+            >
+              <mat-icon>store</mat-icon> Department Transfer
+              <hr />
+            </h1>
+            <p class="mt-1 text-blue-600 font-semibold ml-2">
+              {{ fullname | uppercase }} - {{ genID }}
+            </p>
+          </div>
+        </div>
+        <!-- department transfer form -->
+        <form [formGroup]="form">
+          <!--  row one -->
+          <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
+          >
+            <!-- application number -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+                Application No
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="apln_slno"
+                readonly
+              />
+            </div>
+            <!-- employee id -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+               Employee ID
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="idno" 
+                readonly
+              />
+            </div>
+            <!-- employee name -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+                Employee Name
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="fullname" readonly
+              />
+            </div>
+          </div>
+           <br>
+          <!--  row two -->
+          <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
+          >
+            <!-- current department -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+                Current Department
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="current_department"
+                readonly
+              />
+            </div>
+            <!-- curret line-->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+               Current Line
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="current_line"
+                readonly
+              />
+            </div>
+            <!-- role -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+                Role | Activity
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+               formControlName="current_Role" 
+               readonly
+              />
+            </div>
+          </div>
+          <br>
+          <!--  row three -->
+          <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
+          >
+            <!-- Reportin Officer -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+                Reporting Officer
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="emp_name"
+                readonly
+              />
+            </div>
+            <!-- current work category -->
+            <div class="w-full p-fluid">
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
+               Current Work Category
+              </label>
+              <br />
+              <input
+                type="text"
+                pInputText
+                styleClass="w-full !font-poppins"
+                formControlName="workcat"
+                readonly
+              />
+            </div>
+            <!-- change to department -->
+            <div class="font-poppins w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Change Department To</label> <br>
+                <p-dropdown 
+                    [options]="changedepartment"
+                    formControlName="changedepartment"
+                    (onChange)="getline_Role($event)"
+                    optionLabel="dept_name"
+                    optionValue="dept_slno"
+                    styleClass="w-full" 
+                    placeholder="Select Department" ></p-dropdown>
+            </div>
+          </div>
+          <br>
+          <!--  row four -->
+          <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
+          >
+            <!-- change line -->
+            <div class="font-poppins w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Change Line To</label> <br>
+                <p-dropdown 
+                    [options]="changeline"
+                    formControlName="changeline"
+                    optionLabel="line_name"
+                    optionValue="line_code"
+                    styleClass="w-full" 
+                    placeholder="Select Line" ></p-dropdown>
+            </div>
+            <!-- change role -->
+            <div class="font-poppins w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Change Role To</label> <br>
+                <p-dropdown 
+                    [options]="changeRole"
+                    (onChange)="onRoleChange($event)"
+                    formControlName="change_Role"
+                    optionLabel="Role_Name"
+                    optionValue="Role_Id"
+                    styleClass="w-full" 
+                    placeholder="Select Role" ></p-dropdown>
+            </div>
+            <!-- reporting to -->
+            <div class="font-poppins w-full">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Reporting To</label> <br>
+                <p-dropdown 
+                    [options]="reportingto"
+                    formControlName="reportingto"
+                    optionLabel="emp_name"
+                    optionValue="empl_slno"
+                    styleClass="w-full" 
+                    placeholder="Select Reporting Officer" ></p-dropdown>
+            </div>
+          </div>
+           <!-- action buttons -->
+        <div class="w-full mt-8 ml-3 gap-4 mb-4">
+            <!-- transfer -->
+            <p-button 
+               [disabled]="form.invalid"
+                icon="pi pi-sync"
+                iconPos="right"
+                styleClass="rounded-[1.5rem] mt-2"
+                (onClick)="submit()"
+                label="Transfer"  
+            >
+            </p-button> 
+            <!-- back  -->
+            <p-button 
+                icon="pi pi-angle-double-left"
+                styleClass="rounded-[1.5rem] mt-2 ml-4 bg-purple-500 border-none"
+                (onClick)="goBack()"
+                label="Back"  
+            >
+            </p-button> 
+        </div>
+          <!-- <div class="row">
+            <div class="col">
+              <label>Employee ID: </label><br />
+              <input class="form-control" formControlName="idno" readonly />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Employee Name: </label><br />
+              <input class="form-control" formControlName="fullname" readonly />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Current Department: </label><br />
+              <input
+                class="form-control"
+                type="text"
+                formControlName="current_department"
+                readonly
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Current Line: </label><br />
+              <input
+                class="form-control"
+                type="text"
+                formControlName="current_line"
+                readonly
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Role/Activity: </label><br />
+              <input
+                class="form-control"
+                type="text"
+                formControlName="current_Role"
+                readonly
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Reporting Officer: </label><br />
+              <input
+                class="form-control"
+                type="text"
+                formControlName="emp_name"
+                readonly
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Current Work Category: </label><br />
+              <input
+                class="form-control"
+                type="text"
+                formControlName="workcat"
+                readonly
+              />
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Change Department To: </label><br />
+              <select
+                (change)="getline_Role($event)"
+                class="form-control"
+                formControlName="changedepartment"
+              >
+                <option value="">select</option>
+                <option
+                  *ngFor="let i of changedepartment"
+                  [ngValue]="i.dept_slno"
+                >
+                  {{ i.dept_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Change Line To: </label><br />
+              <select class="form-control" formControlName="changeline">
+                <option value="">select</option>
+                <option *ngFor="let i of changeline" [ngValue]="i.line_code">
+                  {{ i.line_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col">
+              <label>Change Role/Activity To: </label><br />
+              <select
+                class="form-control"
+                (change)="onRoleChange($event)"
+                formControlName="change_Role"
+              >
+                <option value="">select</option>
+                <option *ngFor="let row of changeRole" [value]="row.Role_Id">
+                  {{ row.Role_Name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br />
+
+          <div class="row">
+            <div class="col">
+              <label>Work Description:</label><br />
+              <input
+                class="form-control"
+                type="text"
+                [readonly]="true"
+                formControlName="changeworkcat"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label>Reporting To:</label><br />
+              <select class="form-control" formControlName="reportingto">
+                <option value="">select</option>
+                <option *ngFor="let i of reportingto" [ngValue]="i.empl_slno">
+                  {{ i.emp_name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <br />
+
+          <br />
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            style="width: 150px"
+            [disabled]="form.invalid"
+            (click)="submit()"
+          >
+            Transfer
+          </button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

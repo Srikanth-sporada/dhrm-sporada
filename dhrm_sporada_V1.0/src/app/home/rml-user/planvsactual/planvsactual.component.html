@@ -1,0 +1,70 @@
+<div class="mt-4 mx-4">
+   <!-- plan vs actual header -->
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>calendar_view_week</mat-icon>Plan Vs Actual<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View Plan Vs Actual Reports</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+  <!-- filters division -->
+<div class="options">
+  </div>
+    <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-25 border border-gray-400 ">
+    <!-- filter header -->
+      <div class="relative mb-2">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <div class="flex items-center flex-col md:flex-row gap-4">
+       <!-- prime ng calander -->
+     <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400">Date</label> <br>
+      <p-calendar 
+        [(ngModel)]="date"
+        dateFormat="yy-mm-dd"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+     </div>
+    <!-- primeg dropdown -->
+     <div class="w-full">
+      <label for="plant" class="text-gray-400 font-semibold">Plant</label> <br>
+      <p-dropdown 
+        [options]="plants" 
+        [(ngModel)]="selectedPlant" 
+        placeholder="Select a Plant"
+        optionLabel="plant_name"
+        [checkmark]="true"
+        optionValue="plant_code"
+        styleClass="w-full !font-poppins"
+        [disabled]="isadmin == 'false'" >
+      </p-dropdown>
+     </div>
+    </div>
+  </div>
+  <!-- plan vs actual reports -->
+  <div>
+    <!-- direct and indirect reports -->
+   <app-directandindirect 
+    [plant]="selectedPlant" 
+    and [date]="date">
+  </app-directandindirect>
+  <!-- plan vs actual report -->
+   <app-planvsactdept 
+      [plant]="selectedPlant" 
+      and [date]="date">
+  </app-planvsactdept>
+  <!-- plan vs actual line report -->
+   <app-planvssctline 
+    [plant]="selectedPlant" 
+    and [date]="date">
+  </app-planvssctline>
+  </div>
+</div>

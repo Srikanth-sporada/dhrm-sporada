@@ -1,0 +1,159 @@
+<!-- approve request -->
+<ng-template #content1 let-modal>
+  <div class="modal-content1 container">
+    <br />
+    <div class="row">
+      <div class="col">
+        Are you sure you want to approve the request?
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-success btn-sm"
+              (click)="approve(1)"
+              style="margin-top: 20px; text-align: center"
+              type="submit"
+            >
+              <span style="font-size: 14px" (click)="modal.close('Close click')"
+                >YES</span
+              >
+            </button>
+          </div>
+          <div class="col">
+            <div class="button">
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin-top: 20px; text-align: center"
+                type="submit"
+              >
+                <span
+                  style="font-size: 14px"
+                  (click)="modal.close('Close click')"
+                  >NO</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
+    <br />
+  </div>
+</ng-template>
+
+<!-- reject request -->
+<ng-template #content2 let-modal>
+  <div class="modal-content1 container">
+    <br />
+    <div class="row">
+      <div class="col">
+        Are you sure you want to Reject the request?
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-success btn-sm"
+              (click)="approve(0)"
+              style="margin-top: 20px; text-align: center"
+              type="submit"
+              (click)="modal.close('Close click')"
+            >
+              <span style="font-size: 14px">YES</span>
+            </button>
+          </div>
+          <div class="col">
+            <div class="button">
+              <button
+                class="btn btn-danger btn-sm"
+                style="margin-top: 20px; text-align: center"
+                type="submit"
+                (click)="modal.close('Close click')"
+              >
+                <span style="font-size: 14px">NO</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
+    <br />
+  </div>
+</ng-template>
+<!-- <div class= "container">
+    <div class="md-5">
+    <br>
+    
+        <mat-label> <div class="fs-text"><b>Comp Off</b></div></mat-label>
+        <mat-form-field>
+          <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp
+                          startView="multi-year"
+                          (yearSelected)="chosenYearHandler($event)"
+                          (monthSelected)="chosenMonthHandler($event, dp)"
+                          panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
+</div> -->
+
+<!-- header -->
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>browse_gallery</mat-icon>Forgot To Punch Approval<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Forgot To Punch Approval</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+</div>
+
+<!-- forgot to punch approval -->
+<div class="h-[90svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+  <table id="table" class="table-auto !w-full">
+    <!-- table head -->
+      <thead class="sticky top-0">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Emp Name</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attendance Date</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Actual In</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Actual Out</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Requested In</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Requested Out</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Reason</th>
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Approve/Reject</th>
+        </tr>
+      </thead>
+      <!-- table body -->
+      <tbody>
+        <tr *ngFor="let i of table_data; let a = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.gen_id }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.EmpName }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.attDate }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.actualIn==null?'-':i.actualIn }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.actualOut==null?'-':i.actualOut }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.requestedIn==null?'-':i.requestedIn }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.requestedOut==null?'-':i.requestedOut }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md ">{{ i.reason }}</td>
+          <td class="flex items-center justify-center !px-2 !py-4 !rounded-s-md ">
+            <button (click)="open(content1, a)">
+              <mat-icon class="text-[20px] text-green-600">done</mat-icon>
+            </button>
+            <button
+              (click)="open1(content2, a)"
+            >
+              <mat-icon class="text-[20px] text-red-500">clear</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>

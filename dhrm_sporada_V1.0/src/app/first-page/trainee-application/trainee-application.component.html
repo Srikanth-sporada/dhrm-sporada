@@ -1,0 +1,81 @@
+<!-- user login form -->
+<form [formGroup]="traineeApplicationForms">
+  <!-- company name -->
+<span class="font-bold block mb-2">Company Name</span>
+  <p-dropdown
+    [options]="companycode"
+    optionLabel="company_name"
+    optionValue="sno"
+    placeholder="Choose Company Name"
+    styleClass="font-poppins w-full mb-3"
+    formControlName="company"
+    [loading]="true"
+    (onChange)="getplantcode($event)"
+  ></p-dropdown>
+  <br />
+
+  <!-- Plane Name -->
+  <span class="font-bold block mb-2">Plant Name</span>
+  <p-dropdown
+    [options]="plantcode"
+    optionLabel="plant_name"
+    optionValue="plant_name"
+    placeholder="Choose Company Name"
+    styleClass="font-poppins w-full mb-3"
+    formControlName="plant"
+  ></p-dropdown>
+  <!--  mobile number -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Mobile Number</span>
+    <p-inputMask
+      mask="99999-99999"
+      placeholder="99999-99999"
+      styleClass="w-full"
+      formControlName="mobileNumber"
+      [unmask]="true"
+      [(ngModel)]="mobilenum"
+      (ngModelChange)="getPassword($event)"
+    >
+    </p-inputMask>
+  </div>
+  <!-- password -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Password</span>
+    <p-password  
+      [toggleMask]="true" 
+      [feedback]="false" 
+      inputStyleClass="w-full" 
+      styleClass="w-full"
+      formControlName="pass"
+      [disabled]="true"
+      > 
+  </p-password>
+  </div>
+  <!-- remember me -->
+  <!-- <div class="flex items-center my-4 justify-between">
+    <div class="flex items-center justify-center text-center gap-2">
+      <p-checkbox inputId="remember-me" name="pizza" value="yes"></p-checkbox>
+      <label for="remember-me" class="m-0 text-[14px]">Remember Me</label>
+    </div>
+
+    <p class="text-blue-500 hover:cursor-pointer mb-0 text-[14px]">Forgot Password?</p>
+  </div> -->
+  <!-- login button -->
+  <div
+    class="px-2 font-poppins font-semibold flex items-center justify-center mt-6 lg:mt-4 xl:mt-6"
+  >
+    <p-button
+      label="Apply"
+      icon="pi pi-send"
+      [fluid]="true"
+      iconPos="right"
+      class="font-poppins"
+     (click)="sendFormData()"
+     [disabled]="!traineeApplicationForms.valid"
+     (click)="setCookie()"
+     
+    ></p-button>
+  </div>
+
+  <!-- prime ng -->
+</form>

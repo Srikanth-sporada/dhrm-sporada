@@ -1,0 +1,23 @@
+.data{
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: larger;
+    margin: 20px 0;
+}
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 20px;
+    gap: 20px;
+}
+::ng-deep .mat-dialog-container{
+    padding: 0px !important;
+    width:30vw;
+}
+

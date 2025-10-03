@@ -1,0 +1,395 @@
+.button{
+
+    padding-right:50px;
+  }
+  .button1{
+  
+  padding-right:50px;
+  }
+  #title1{
+    font-size: 20px;
+  
+    color:rgb(0, 0, 139);
+    font-weight:bolder;
+    text-align:center;
+    text-decoration: solid;
+    font-weight:900;
+  }
+  .btn {
+    float: right;
+  
+  }
+  .boxx{
+    box-sizing: 100%;
+  }
+  
+  /* th{
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+  }
+  td{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 500;
+    font-size: medium;
+  }
+  th { background: #c5c5c5;}
+  table 
+  {
+  border-collapse: collapse;
+  width: 100%;
+  }
+  td, th {
+     border: 1px solid #cdcdcd;     padding: 5px 0px;
+    text-align: center;} */
+  .form-group
+  {
+  background-color: lightgrey;
+  }
+  
+  .quantity::-webkit-inner-spin-button, 
+  .quantity::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }
+
+  /* tbody
+  {
+  text-align: center;
+  
+  } */
+  
+  .table-wrapper
+  {
+    display: block;
+  }
+  .search{
+  margin-left: 0px;
+  }
+  .button{
+  
+    padding-right:50px;
+  }
+  .button1{
+  
+  padding-right:50px;
+  }
+  
+  
+.dark-modal .modal-content {
+    background-color: #292b2c;
+    color: white;
+    }
+    .dark-modal .close {
+    color: white;
+    }
+    .light-blue-backdrop {
+    background-color: #5cb3fd;
+    }
+    
+    
+    .modal-backdrop {
+    z-index: 1040 !important;
+    }
+    .modal-content {
+    margin: 2px auto;
+    z-index: 1100 !important;
+    }
+
+    /* .text-center{
+        width: 500px;
+        background-color: darkblue;
+      
+      } */
+      .modal-content{
+        margin-top: 5%;
+        -webkit-box-shadow: 9px 10px 30px 0px;
+        -moz-box-shadow: 9px 10px 30px 0px ;
+        box-shadow: 9px 10px 30px 0px;
+        padding: 20px; 
+        border-radius: 10px; 
+        height:100%;
+        background-color: rgb(255, 253, 253);
+       
+      }
+      .file-input {
+        display: none;
+      }
+
+      /* .input2 {
+        min-width: 200px;
+        background-color: #f5f5f5;
+        color: #242424;
+        padding: .15rem .5rem;
+        min-height: 40px;
+        border-radius: 6px;
+        outline: 10px;
+        border: 15px;  font-size: 16px;
+        line-height: 1.15;
+        box-shadow: 0px 10px 20px -18px;
+      }
+      
+      .input2:focus {
+        border-bottom: 2px solid #5b5fc7;
+        border-radius: 4px 4px 2px 2px;
+      }
+      
+      .input2:hover {
+        outline: 3px solid lightgrey;
+      } */
+      ::ng-deep .mat-select-value {
+        text-align: left;
+        margin-top: 8%;
+      }
+
+      /* overflow fix for ng popup components */
+:host ::ng-deep .mat-vertical-stepper-content{
+  overflow: visible !important;
+}
+      .modal-title{
+        color:rgb(0, 0, 139);
+        text-decoration: solid;
+        font-size: larger;
+        font-weight:900;
+      }
+      /* ================================== */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        z-index: 1000; 
+      }
+
+      .form-popup {
+        position: fixed;
+        top: 52%;
+        left: 57%;
+        height: 65%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        /* background-color: rgba(0,0,0,0.5); */
+        overflow-y: auto;
+        /* padding: 30px; */
+        /* border: 1px solid black; */
+        z-index: 1100 !important;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+   
+      .container1 {
+        width: 63%;
+        height: 46em;
+        /* padding-top: 10px; */
+        overflow-y: none;
+        border-radius: 13px;
+        /* margin-bottom: 5em; */
+      }
+      
+      div#radio {
+        margin: 0 0 0.5em 3em
+      }
+      :host ::ng-deep #radio mat-radio-button{
+        margin-left: 0.5em
+      }
+
+  .heading {
+    width: 100%;
+  }
+  .head1 {
+    margin-top: 0.9em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .head2{
+    margin-top: 0.9em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  @media (min-width: 48em) {
+    .head1 {
+      margin-top: 2em;
+      width: 58%;
+      float: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .head2 {
+      margin-top: 2em;
+      width: 42%;
+      float: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .heading {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+      .columns {
+        width: 100%;
+      }
+      .column {
+        margin-top: 0.9em;
+        width: 100%;
+      }
+      @media (min-width: 48em) {
+        .column {
+          width: 50%;
+          float: left;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .columns {
+          content: '';
+          display: table;
+          clear: both;
+        }
+
+  
+
+      }
+
+      /* h4, h3 ,h2 {
+        margin: 0 0 30px 0;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color:rgb(0, 0, 139);
+    } */
+  :host ::ng-deep .mat-step-text-label{
+    font-family: var(--poppins);
+    font-weight: bold;
+  }
+    :host ::ng-deep #firstBox mat-form-field {
+      width: 35.5rem;
+      height: 4.5em;
+    }
+    :host ::ng-deep #item-2 mat-form-field {
+      margin-left: 0.2em;   
+      /* margin-bottom: 0.7em; */
+      width: 15.5rem;
+      height: 4.5em;
+    }
+.mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0px 0.75em 0 0.75em;
+  margin-top: -1.25em;
+  position: relative;
+}
+
+:host ::ng-deep  .mat-vertical-stepper-header {
+display: flex;
+align-items: center;
+padding: 10px 24px;
+}
+
+
+
+
+::ng-deep .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+      background-color: rgb(101, 168, 95)!important;
+    }
+    
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.6em 0 0.6em 0;
+}
+
+   
+
+    #green  {
+      color: rgb(243 241 241 / 87%);
+      background-color: #135e22;
+  }
+  
+  #red{
+      color: rgb(243 241 241 / 87%);
+      background-color: #dd1a1a;
+  }
+  
+
+  /* //input outline color */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgb(15, 92, 180)!important;
+  /* // opacity: 1!important; */
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick{
+color: red!important;
+
+}
+
+::ng-deep .mat-label{
+color: black;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+color: rgb(15, 92, 180)!important;
+}
+
+/* //mat-input focused color */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color:rgb(15, 92, 180)!important;
+}
+
+@media (min-width: 801px) and (max-width: 1199px) {
+  container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1910px;
+}
+
+:host ::ng-deep #firstBox mat-form-field {
+
+    width: 63%;
+  height: 4.5em;
+}
+:host ::ng-deep #item-2 mat-form-field {
+  margin-right: 0.5rem;   
+  /* margin-bottom: 0.7em; */
+  width: 41%;
+  height: 4.5em;
+}
+:host ::ng-deep #fir mat-form-field {
+  margin-right: 0.5rem;   
+  margin-bottom: 0.7em;
+  width: 30%;
+  height: 4.5em;
+}
+
+}
+
+
+@media (min-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1710px;
+}
+
+:host ::ng-deep #firstBox mat-form-field {
+
+    width: 83%;
+  height: 4.5em;
+}
+:host ::ng-deep #item-2 mat-form-field {
+  margin-right: 0.5rem;   
+  /* margin-bottom: 0.7em; */
+  width: 41%;
+  height: 4.5em;
+}
+:host ::ng-deep #fir mat-form-field {
+  margin-right: 0.5rem;   
+  margin-bottom: 0.7em;
+  width: 30%;
+  height: 4.5em;
+}
+
+
+
+}

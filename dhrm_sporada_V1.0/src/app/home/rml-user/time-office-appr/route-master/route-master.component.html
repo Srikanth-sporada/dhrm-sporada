@@ -1,0 +1,141 @@
+<div class="">
+  <!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>place</mat-icon>Route Master<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Routes</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+    <div style="display: flex; align-items: center; justify-content: flex-end; width: 100%; margin-top: 0.5rem;margin-bottom: 1rem;">
+      <button pButton icon="pi pi-plus-circle" (click) ='add_On()' style="margin-right: 2rem;" class="rounded-3xl" >
+      </button>
+      <button pButton icon="pi pi-download" (click)="exportExcel()" class="rounded-3xl mr-3">
+      </button> 
+     
+    </div>
+    
+    <div class="h-[90svh] lg:h-[95vh] xl:h-[90vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-3"> 
+      <table id="table" class="table-auto !w-full">
+            <thead class="sticky top-0">
+                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0">Route name</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0">Created By</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0">Created On</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                    <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor="let data of routelist ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ i + 1 }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Plant}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md">{{data.Route_Name}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md">{{data.Created_By}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md">{{data.Created_On | date:'longDate'}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center " *ngIf="data.Status == 'Active'; else inactive">Active</td>
+          <ng-template #inactive>
+            <td>InActive</td>
+          </ng-template>
+                  
+          <td style="display: flex; justify-content: center" class="!px-2 !py-4 !rounded-s-md">
+            <button
+            *ngIf="data.Status == 'Active' "
+              (click) ='view_On(data)'
+            >
+              <!-- <button mat-mini-fab  color="basic" [routerLink]="['/rml/contra/mst_payscale', 'master',data.Effective_Date]" class="view-button" > -->
+
+              <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
+            </button>
+     
+            <button
+            *ngIf="data.Status == 'Active' "
+           (click)="delete($event,data)"
+            >
+              <mat-icon class="text-[20px] text-red-500">delete</mat-icon>
+            </button>
+          </td>
+                 
+                   </tr>
+            </tbody> 
+              
+        </table>
+    </div>
+    
+
+    </div>
+
+
+    <div class="shadow-lg">
+        <div
+          class="form-popup container1 mat-elevation-z8"
+          [hidden]="!addForm"
+        >
+          <!-- <div class=" form-popup container1 mat-elevation-z8"  > -->
+      
+          <div class="heading" style="padding-bottom: 2px">
+            <div class="head1">
+              <h2>Add Route</h2>
+            </div>
+            <div class="head2">
+              <!-- <button (click)="closeAllForms()">X</button> -->
+            </div>
+          </div>
+      
+          <hr style="border-block-color: #2563eb" class="border-y-blue-600"/>
+            <span style=" display:flex; margin-top: 2rem;">
+     
+                <mat-form-field appearance="outline" style="width: 100%;margin-left: 0rem;">
+                    <mat-label>Route Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="route" />
+                </mat-form-field>
+        
+        </span>
+
+            <span style=" display:flex; margin-top: 1rem;">
+            <button mat-raised-button color="warn" (click) ='close()' type="close"style="width: 50%;">Close</button>
+            <button mat-raised-button color="primary"  [disabled]="!route" (click)="submt_Route()"  style="width: 50%;margin-left: 1rem;">Add</button>
+          </span>
+     
+        </div>
+      </div>
+    <div class="shadow-lg">
+        <div
+          class="form-popup container1 mat-elevation-z8"
+          [hidden]="!viewForm"
+        >
+          <!-- <div class=" form-popup container1 mat-elevation-z8"  > -->
+      
+          <div class="heading" style="padding-bottom: 2px">
+            <div class="head1">
+              <h2>Edit Route</h2>
+            </div>
+            <div class="head2">
+              <!-- <button (click)="closeAllForms()">X</button> -->
+            </div>
+          </div>
+      
+          <hr style="border-block-color: orange" />
+            <span style=" display:flex; margin-top: 2rem;">
+     
+                <mat-form-field appearance="outline" style="width: 100%;margin-left: 0rem;">
+                    <mat-label>Route Name</mat-label>
+                    <input type="text" matInput [(ngModel)]="route" />
+                </mat-form-field>
+        
+        </span>
+
+            <span style=" display:flex; margin-top: 1rem;">
+            <button mat-raised-button color="warn"  (click) ='close()' type="close"style="width: 50%;">Close</button>
+            <button mat-raised-button color="primary" [disabled]="!route"  (click)="Edit_route()"  style="width: 50%;margin-left: 1rem;">Update</button>
+          </span>
+     
+        </div>
+      </div>

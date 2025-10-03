@@ -1,0 +1,52 @@
+
+<div class="!font-poppins">
+  <!-- modal header -->
+  <div class="bg-blue-600 flex items-center justify-center py-4">
+      <div class="flex items-center justify-center text-white font-poppins mx-4 gap-2">
+        <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+           <mat-icon class="h-0 w-0 text-2xl opacity-100">more_time</mat-icon>
+        </div>
+         <h4 class="text-2xl text-white">Comp-Off Details</h4>
+      </div>
+   </div>
+   <!-- employee details -->
+  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 gap-">
+    <div><b class="mr-2 text-blue-600 font-semibold">Name:</b>{{ data.fullname }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Gen ID:</b>{{ data.gen_id }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Category:</b>{{ data.apprentice_type }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Department:</b>{{ data.dept_name }}</div>
+    <div><b class="mx-2 text-blue-600 font-semibold">Line:</b>{{ data.Line_Name }}</div>
+  </div>
+  <div class="shadow-md rounded-md border border-gray-400">
+    <table id="table" class="table-auto !w-full">
+      <!-- table head -->
+        <thead>
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Date</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Hours Utilised</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">No of days</th>
+            <th class="!text-white rounded-e-lg !px-2 !py-4 !border-none !border-0 text-center">Approved By</th>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr *ngFor="let item of coffData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+            <td class="!px-2 !py-4 !rounded-s-md text-center">
+             {{i+1}}
+            </td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.date|date:'dd-MM-yyyy' }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.hours}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.day}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Emp_Name}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+<div style="display: flex;justify-content: flex-end;" class="bg-gray-100 py-2 mt-3">
+  <button class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md" (click)="close()">close</button>
+</div>
+  
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+
+
