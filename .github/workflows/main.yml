@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dhrm_sporada_V1.0
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
