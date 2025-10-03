@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { of } from "rxjs";
 import { isThisSecond } from "date-fns";
+import { MessageService } from "primeng/api";
 @Component({
   selector: "app-evaluation-form",
   templateUrl: "./evaluation-form.component.html",
@@ -17,7 +18,12 @@ export class EvaluationFormComponent implements OnInit {
   pp: any;
   line: any;
   department: any;
-  new_skill_lvl: any = [1, 2, 3, 4];
+  new_skill_lvl: any = [
+    {label:'1',value:1},
+    {label:'2',value:2},
+    {label:'3',value:3},
+    {label:'4',value:4}
+  ];
   process_trained: any;
   uniqueId: any = { mobile: "" };
   form: any;
@@ -50,13 +56,16 @@ export class EvaluationFormComponent implements OnInit {
   sup_file: any;
   fileDetails:any
   filesup:any
+  all:any;
+  userDetails:any;
   constructor(
     private fb: UntypedFormBuilder,
     private http: HttpClient,
     private service: ApiService,
     private active: ActivatedRoute,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private messageService:MessageService,
   ) {
     this.form = this.fb.group({
       evaluation_date: ["", Validators.required],
@@ -83,20 +92,32 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     console.log("ng on init");
     this.service
       .getoperations(this.active.snapshot.paramMap.get("id"))
       .subscribe((response) => {
         console.log(response)
         this.curr_oprn = response;
+      },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
       });
       this.service.getFileDetails(this.active.snapshot.paramMap.get("id")).subscribe((response:any)=>{
         if(response.status='success'){
           this.fileDetails=response.data
           console.log(this.fileDetails)
         }else{
-          alert(response.status)
+          // alert(response.status)
+          this.messageService.add({severity:'warn',summary:response?.message})
         }
+      }, (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
       })
     this.appr = this.active.snapshot.paramMap.get("nav") == "3" ? true : false;
 
@@ -156,10 +177,10 @@ export class EvaluationFormComponent implements OnInit {
             this.form.controls["department"].disable();
 
             this.department = this.department_.map((a: any) => a.dept_name);
-            this.process_trained = this.process_trained.map(
-              (a: any) => a.oprn_desc
-            );
-
+            // this.process_trained = this.process_trained.map(
+            //   (a: any) => a.oprn_desc
+            // );
+           console.log(this.process_trained)
             this.form.controls["curr_dept"].setValue(this.obj[0][0]?.dept_slno);
             this.form.controls["curr_line"].setValue(this.obj[0][0]?.line_code);
             this.form.controls["curr_skill_level"].setValue(
@@ -179,11 +200,19 @@ export class EvaluationFormComponent implements OnInit {
                   );
                   this.form.controls["line"].disable();
                 },
+                error: (error) => {
+                    console.log(error);
+                    this.messageService.add({severity:'error',summary:error.message})
+                  }
               });
           } catch (error) {
             console.log(error);
           }
         },
+        error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
       });
 
     if (
@@ -226,6 +255,10 @@ export class EvaluationFormComponent implements OnInit {
               this.url + "/skill_dev/" + response[0][0]?.sup_filename;
             this.sup_file = response[0][0]?.sup_filename;
           },
+          error: (error) => {
+            console.log(error);
+            this.messageService.add({severity:'error',summary:error.message})
+          }
         });
     }
   }
@@ -268,12 +301,17 @@ export class EvaluationFormComponent implements OnInit {
                   console.log(response);
                 },
               });
-            alert("Trainee has been Evaluated");
+            // alert("Trainee has been Evaluated");
+            this.messageService.add({severity:'info',summary:'Trainee has been Evaluated'})
             this.router.navigate([
               "/rml/skill-developement/trainer-evaluation",
             ]);
           }
         },
+        error : (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
       });
     } else if (this.active.snapshot.paramMap.get("nav") == "2") {
       try {
@@ -298,7 +336,8 @@ export class EvaluationFormComponent implements OnInit {
           next: (response: any) => {
             console.log(response);
             if (response.message == "success") {
-              alert("Trainee has been Evaluated");
+              // alert("Trainee has been Evaluated");
+               this.messageService.add({severity:'info',summary:'Trainee has been Evaluated'})
               this.router.navigate([
                 "/rml/skill-developement/supervisor-evaluation",
               ]);
@@ -312,7 +351,8 @@ export class EvaluationFormComponent implements OnInit {
     this.file = event.target.files[0];
     if(this.file?.size>2000000){
       this.form.get("upload_file_tra").setValue(null)
-      alert("FileSize Should be less Than 2MB")
+      // alert("FileSize Should be less Than 2MB");
+       this.messageService.add({severity:'info',summary:'FileSize Should be less Than 2MB'})
       const file:any = document.getElementById('filetre')
       file.value=''
       return
@@ -340,6 +380,10 @@ export class EvaluationFormComponent implements OnInit {
         console.log(response);
         console.log("test");
       },
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     });
   }
 
@@ -348,7 +392,7 @@ export class EvaluationFormComponent implements OnInit {
     console.log(this.filesup.size)
     if(this.filesup.size>2000000){
       this.form.get("upload_file_sup").setValue(null)
-      alert("FileSize Should be less Than 2MB")
+     this.messageService.add({severity:'info',summary:'FileSize Should be less Than 2MB'})
       const file:any = document.getElementById('filesup')
       console.log(file)
       file.value=''
@@ -375,7 +419,10 @@ export class EvaluationFormComponent implements OnInit {
       next: (response) => {
         console.log(response);
         console.log("test");
-      },
+      }, error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     });
   }
   cal() {
@@ -396,7 +443,11 @@ export class EvaluationFormComponent implements OnInit {
           console.log(response);
           this.line = response[0];
           this.line = this.line.map((a: any) => a.line_name);
-        },
+        }, 
+        error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
       });
   }
 }

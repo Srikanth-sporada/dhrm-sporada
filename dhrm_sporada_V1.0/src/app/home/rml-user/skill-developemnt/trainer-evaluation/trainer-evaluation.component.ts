@@ -6,6 +6,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from "src/app/loaderservice.service";
 import * as XLSX from "xlsx";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-trainer-evaluation",
@@ -15,17 +16,31 @@ import * as XLSX from "xlsx";
 export class TrainerEvaluationComponent implements OnInit {
   someSubscription: any;
   filterinfo: any = [];
+
   id: any;
   form: any;
   searchText: any;
-  year: Number[] = [];
+  year: {year:Number}[] = [];
   options = [
     { label: "0 to 60 days", value: "0-60" },
     { label: "61 to 120 days", value: "61-120" },
     { label: "121 to 180 days", value: "121-180" },
     { label: "181 to 270 days", value: "181-270" },
   ];
+  evaluationOptions = [
+  { value: '1', label: 'First Evaluation' },
+  { value: '2', label: 'Second Evaluation' },
+  { value: '3', label: 'Third Evaluation' },
+  { value: '4', label: 'Fourth Evaluation' }
+];
 
+statusOptions = [
+  { value: 'PENDING', label: 'PENDING' },
+  { value: 'APPROVED', label: 'COMPLETED' }
+];
+
+  all:any;
+  userDetails:any;
   constructor(
     private fb: UntypedFormBuilder,
     private http: HttpClient,
@@ -33,7 +48,8 @@ export class TrainerEvaluationComponent implements OnInit {
     private active: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    public loader: LoaderserviceService
+    public loader: LoaderserviceService,
+    private messageService:MessageService
   ) {
     this.form = this.fb.group({
       status: ["1"],
@@ -45,17 +61,26 @@ export class TrainerEvaluationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     const currentYear = new Date().getFullYear();
     const oldestYear = currentYear - 45;
     for (let i = currentYear; i >= oldestYear; i--) {
-      this.year.push(i);
+      this.year.push({year:i});
     }
-
+    console.log(this.year)
     this.service.evaluationdays(this.form.value).subscribe({
       next: (response) => {
         console.log(response);
         this.filterinfo = response;
       },
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     });
   }
 
@@ -76,6 +101,10 @@ export class TrainerEvaluationComponent implements OnInit {
         console.log(response);
         this.filterinfo = response;
       },
+       error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     });
   }
 
@@ -89,5 +118,6 @@ export class TrainerEvaluationComponent implements OnInit {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Table");
     XLSX.writeFile(wb, "table.xlsx");
+    this.messageService.add({severity:'info',summary:'Data Exported!'})
   }
 }

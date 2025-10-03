@@ -138,17 +138,26 @@ export class WeekOffComponent implements OnInit {
   }
 
 onWeekOffChange(item: any): void {
+  // getting fivedays mapping status of the trainee
+  const fiveDaysMapping = item.active_status;
   const selected = item.week_off_day || [];
 
-  if (selected.length > 2) {
+  if (selected.length > 2 && fiveDaysMapping == 'Y') {
     // Remove the last selected value
     selected.pop();
     item.week_off_day = [...selected];
     // alert('You can select only 2 days as week off.');
     this.messageService.add({severity:'warn',summary:'You can select only 2 days as week off.'})
-  }
-
+  } else if(selected.length > 1 && (!fiveDaysMapping || fiveDaysMapping == 'N')){
+    // Remove the last selected value
+    selected.pop();
+    item.week_off_day = [...selected];
+    // alert('You can select only 2 days as week off.');
+    this.messageService.add({severity:'warn',summary:'You can select only 1 day as week off.'})
+  }else{
   this.checkIfAbsent(item.apln_slno, item.week_off_day);
+    
+  }
 }
   // check if the selected day is absent
   checkIfAbsent(emp_id:any,day:any){

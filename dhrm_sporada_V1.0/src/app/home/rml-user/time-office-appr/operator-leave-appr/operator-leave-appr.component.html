@@ -138,17 +138,15 @@
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_1_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L1_Approval_Status }}</td>
             <!-- actions -->
-            <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
+            <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center gap-3">
               <button
                 pButton
-                label="Approve"
                 icon="pi pi-check-circle"
                 (click)="l1_Approver(data)"
                 [disabled]="data.L1_Approval_Status !== l1_status">
               </button>
               <button
                pButton
-               label="Reject"
                icon="pi pi-times-circle"
                 (click)="reject_leave(data)"
                 [disabled]="data.L1_Approval_Status !== l1_status">
@@ -229,11 +227,10 @@
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_2_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L2_Approval_Status }}</td>
             <!-- action buttons -->
-            <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center" *ngIf="ishrappr === 'true'">
+            <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center gap-3" *ngIf="ishrappr === 'true'">
               <!-- approve btn -->
               <button
                pButton
-               label="Approve"
                icon="pi pi-check-circle"
                 [disabled]="
                   data.L2_Approval_Status !== l2_status || atLeastOneSelected()
@@ -243,7 +240,6 @@
               <!-- rejec btn -->
               <button
                 pButton
-                label="Reject"
                 icon="pi pi-times-circle"
                 (click)="reject_leave(data)"
                 [disabled]="data.L2_Approval_Status !== l2_status">

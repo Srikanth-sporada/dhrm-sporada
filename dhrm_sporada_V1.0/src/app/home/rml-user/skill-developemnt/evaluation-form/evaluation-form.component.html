@@ -1,80 +1,260 @@
-<div class="container">
+<!-- header -->
+<div
+  class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
+>
+  <div class="flex items-start justify-start flex-col">
+    <h1
+      class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+    >
+      <mat-icon>people</mat-icon> Evaluation Form
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Test Evaluation</p>
+  </div>
+  <!-- user details -->
+  <h1
+    class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+  >
+    {{ userDetails }}
+  </h1>
+</div>
+
+<!-- evaluation details -->
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+  <!-- user information -->
+  <div class="flex items-start justify-start gap-3">
+    <!-- image -->
+    <img
+          [src]="this.image"
+          alt="Avatar"
+          style="display: flex; justify-content: center; align-items: center"
+          class="object-fit h-24 w-24 rounded-full"
+
+        />
+        <!-- table -->
+        <table class="table-auto">
+          <thead>
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+               <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Emp ID</th>
+               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
+               <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Line</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{name}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{id}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{cat}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ dept }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ ln }}</td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+    <!-- skill desc -->
+     <div>
+      <table>
+      <thead class="table_header">
+        <th class="cell1">Level</th>
+        <th class="cell1">Skill Description</th>
+      </thead>
+      <tbody>
+        <tr class="yellow">
+          <td class="cell1">Level-1</td>
+          <td class="cell1">Load/Unload, Inspection, NC Handling</td>
+        </tr>
+        <tr class="blue">
+          <td class="cell1">Level-2</td>
+          <td class="cell1">Tool Change Over & Minor Correction</td>
+        </tr>
+        <tr class="green">
+          <td class="cell1">Level-3</td>
+          <td class="cell1">Setting Change & Basic CNC Programming</td>
+        </tr>
+        <tr class="darkgreen">
+          <td class="cell1">Level-4</td>
+          <td class="cell1">Setting Change & Advance CNC Programming</td>
+        </tr>
+      </tbody>
+    </table>
+     </div>
+  </div>
+
+  <!-- evaluation form -->
+<div>
+  <div
+    class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
+  >
+    <!-- forms -->
+    <div class="relative">
+      <h1
+        class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
+      >
+        Evaluation Form<mat-icon>article</mat-icon>
+      </h1>
+    </div>
+    <div>
+      <!-- row one -->
+      <div
+        class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
+        [formGroup]="form"
+      >
+        <!-- Evaluation date -->
+        <div class="font-poppins w-full">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >Evaluation Date</label
+          >
+          <br />
+          <p-calendar
+          formControlName="evaluation_date"
+          [disabled]="readable"
+          [showIcon]="true"
+          dateFormat="yy-mm-dd"
+          styleClass="w-full">
+          </p-calendar>
+        </div>
+        <!-- score obtained -->
+        <div class="font-poppins w-full p-fluid">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >Score Obtained</label
+          >
+          <br />
+          <input
+            type="number"
+            pInputText
+            styleClass="w-full !font-poppins"
+            formControlName="score_obtained"
+            [readonly]="readable"
+            placeholder="Enter Score Obtained"
+          />
+        </div>
+        <!-- total -->
+        <div class="font-poppins w-full p-fluid">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >Score For (Total)</label
+          >
+          <br />
+          <input
+            type="number"
+            pInputText
+            styleClass="w-full !font-poppins"
+            formControlName="score_for"
+            (ngModelChange)="cal()"
+            [readonly]="readable"
+            placeholder="Enter Total Score"
+          />
+        </div>
+        <!-- percentage --> 
+        <div class="font-poppins w-full p-fluid">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >Percentage</label
+          >
+          <br />
+          <input
+            type="number"
+            pInputText
+            styleClass="w-full !font-poppins"
+           formControlName="percentage"
+            [readonly]="true"
+          />
+        </div>
+      </div>
+      <!-- filters second row -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+        <!-- training document -->
+        <div class="w-full p-fluid">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+            >Training Document</label
+          >
+          <br />
+          <input
+                class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"
+                type="file"
+                id="filetre"
+                (change)="files($event)"
+                [disabled]="appr"
+              />
+        </div>
+        <!-- Supervisor Evaluation Document -->
+        <div class="w-full p-fluid">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+            >Supervisor Document</label
+          >
+          <br />
+           <input
+                class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"
+                type="file"
+                id="filesup"
+                (change)="filessup($event)"
+                [disabled]="appr"
+              />
+        </div>
+         <!--new skill level -->
+        <div class="font-poppins w-full">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >New Skill Level</label
+          >
+          <br />
+          <p-dropdown
+            [options]="new_skill_lvl"
+            formControlName="new_skill"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+            placeholder="Enter Skill Level"
+          ></p-dropdown>
+        </div>
+        <!-- process trained -->
+        <div class="font-poppins w-full">
+          <label
+            for="status"
+            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+            >Process Trained</label
+          >
+          <br />
+          <p-dropdown
+            [options]="process_trained"
+            formControlName="process_trained"
+            optionLabel="oprn_desc"
+            optionValue="oprn_desc"
+            [optionValue]="pp"
+            styleClass="w-full"
+            placeholder="Enter Processed Trained"
+          ></p-dropdown>
+        </div>
+      </div>
+      <!-- back btn *ngIf="appr"-->
+        <div class="w-full">
+          <p-button
+            icon="pi pi-angle-left"
+            styleClass="rounded-[1.5rem] mt-2"
+             
+            [routerLink]="[this.nav]"
+            label="Back"
+          >
+          </p-button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container">
   <div class="row1">
     <div class="col">
       <br />
       <h1>&nbsp;<b>Evaluation Form</b></h1>
-      <div class="card">
-        <img
-          class="img"
-          [src]="this.image"
-          alt="Avatar"
-          style="display: flex; justify-content: center; align-items: center"
-        />
-        <table class="table-bordered" style="width: 400px">
-          <br /><br />
-
-          <div class="px-5">
-            <tr class="font"></tr>
-            <tr>
-              <td class="stylecommand"><b>Name</b></td>
-              <br />
-              <td class="emp_details">{{ name }}</td>
-              <br /><br />
-            </tr>
-            <tr>
-              <td class="stylecommand"><b>Emp ID</b></td>
-              <br />
-              <td class="emp_details">{{ id }}</td>
-              <br /><br />
-            </tr>
-            <tr>
-              <td class="stylecommand"><b>Category</b></td>
-              <br />
-              <td class="emp_details">{{ cat }}</td>
-              <br /><br />
-            </tr>
-            <tr>
-              <td class="stylecommand"><b>Department</b></td>
-              <br />
-              <td class="emp_details">{{ dept }}</td>
-              <br /><br />
-            </tr>
-            <tr>
-              <td class="stylecommand"><b> Line</b></td>
-              <br />
-              <td class="emp_details">{{ ln }}</td>
-              <br /><br />
-            </tr>
-            <!-- <tr>
-                    <td class = "stylecommand" ><b> Skill Level</b></td><br>
-                    <td >{{skill}}</td><br><br></tr>
-                    <tr>
-                        <td class = "stylecommand" ><b> Operation Trained</b></td><br>
-                        <td ><div *ngFor="let i of pt">{{i}}</div></td></tr> -->
-            <!-- <tr>
-              <td *ngIf="readable" class="stylecommand">
-                <b> Uploaded File&nbsp;</b>
-              </td>
-              <br />
-              <td *ngIf="readable">
-                <a [href]="this.uploaded" target="_blank">&nbsp;View Hr file</a>
-              </td>
-            </tr>
-            <tr>
-              <td *ngIf="appr && sup_file != null" class="stylecommand">
-                <b> Uploaded File&nbsp;</b>
-              </td>
-              <br />
-              <td *ngIf="appr">
-                <a [href]="this.uploaded2" target="_blank"
-                  >&nbsp;{{ sup_file == null ? null : txt }}</a
-                >
-              </td>
-            </tr> -->
-            <br /><br />
-          </div>
-        </table>
-      </div>
+      
     </div>
   </div>
   <div class="row1">
@@ -205,16 +385,6 @@
             <br />
           </div>
           <br />
-          <!-- <button
-            *ngIf="!appr"
-            [disabled]="form.invalid"
-            type="submit"
-            [routerLink]="[this.nav]"
-            (click)="submit()"
-            class="btn btn-success btn-lg"
-          >
-            {{ save }}
-          </button> -->
           <button
             *ngIf="appr"
             [routerLink]="[this.nav]"
@@ -228,91 +398,42 @@
   </div>
 
   <br /><br />
-</div>
-<div style="display: flex; justify-content: space-around; align-items: center">
-  <div class="desc_table">
-    <table>
-      <thead class="table_header">
-        <th class="cell1">Level</th>
-        <th class="cell1">Skill Description</th>
-      </thead>
-      <tbody>
-        <tr class="yellow">
-          <td class="cell1">Level-1</td>
-          <td class="cell1">Load/Unload, Inspection, NC Handling</td>
-        </tr>
-        <tr class="blue">
-          <td class="cell1">Level-2</td>
-          <td class="cell1">Tool Change Over & Minor Correction</td>
-        </tr>
-        <tr class="green">
-          <td class="cell1">Level-3</td>
-          <td class="cell1">Setting Change & Basic CNC Programming</td>
-        </tr>
-        <tr class="darkgreen">
-          <td class="cell1">Level-4</td>
-          <td class="cell1">Setting Change & Advance CNC Programming</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div style="margin-right: 20%">
-    <table *ngIf="fileDetails.length != 0" style="border: 2px solid black">
-      <thead class="table_header">
-        <th class="cell1">Evaluation No</th>
-        <th class="cell1">Trainer File</th>
-        <th class="cell1">Supervisor File</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of fileDetails" style="margin: 20px 30px">
-          <td style="margin: 20px 30px" class="cell1">
-            Evaluation-{{ item.curr_skill_level }}
-          </td>
-          <td class="cell1">
-            <a [href]="getUrl(item.tnr_filename)" target="_blank">Test Doc</a>
-          </td>
-          <td class="cell1">
-            <a [href]="getUrl(item.sup_filename)" target="_blank"
-              >Evaluation Doc</a
-            >
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div style="margin: 0 0 0 30px">
-  <h3>Name: {{ name }}({{ id }})</h3>
-</div>
-<div class="matrix">
-  <table id="table" class="customtable">
-    <thead class="table_header">
-      <th style="text-align: center" class="cell">Sl.no</th>
-      <th class="cell">Operations</th>
-      <th class="cell">Level-1</th>
-      <th class="cell">Level-2</th>
-      <th class="cell">Level-3</th>
-      <th class="cell">Level-4</th>
+</div> -->
+
+<!-- skill table -->
+<div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[100vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+  <table id="table" class="table-auto !w-full">
+    <!-- table head -->
+    <thead class="sticky top-0">
+      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
+      </tr>
     </thead>
-    <tbody style="background-color: whitesmoke">
-      <tr *ngFor="let oprn of curr_oprn; let i = index">
-        <td style="text-align: center" class="cell">{{ i + 1 }}</td>
-        <td class="cell">{{ oprn.oprn_desc }}</td>
+    <!-- table body -->
+    <tbody>
+      <tr *ngFor="let oprn of curr_oprn; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+        <td class="!px-2 !py-4 text-center">{{ i + 1 }}</td>
+        <td class="!px-2 !py-4 text-center">{{ oprn.oprn_desc }}</td>
         <td
           [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
-          class="cell"
+          class="!px-2 !py-4 text-center"
         ></td>
         <td
           [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
-          class="cell"
+          class="!px-2 !py-4 text-center"
         ></td>
         <td
           [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
-          class="cell"
+          class="!px-2 !py-4 text-center"
         ></td>
         <td
           [ngClass]="{ darkgreen: oprn.oprn_trained == 4 ? true : false }"
-          class="cell"
+          class="!px-2 !py-4 text-center"
         ></td>
       </tr>
     </tbody>

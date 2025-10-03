@@ -6,7 +6,7 @@
     box-sizing: 100%;
 }
 
-th{
+/* th{
     color: white;
     font-family: 'Montserrat', sans-serif;
   }
@@ -21,17 +21,17 @@ table
 
   width: 100%;
 }
-td, th { border: 1px solid #cdcdcd; padding: 8px; text-align: left;}
+td, th { border: 1px solid #cdcdcd; padding: 8px; text-align: left;} */
 .form-group
 {
   background-color: lightgrey;
 }
 
-tbody
+/* tbody
 {
   text-align: center;
 
-}
+} */
 
 .table-wrapper
 {

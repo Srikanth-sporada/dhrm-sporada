@@ -100,7 +100,7 @@
                  <tbody >
                     <tr *ngFor="let data of optr_Data | leaveFilte1: genId:a1_status; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Gen_id}}</td>
+                     <td class="!px-2 !py-4 !rounded-s-md text-center !text-blue-600 !font-semibold">{{data.Gen_id}}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_Before }}</td>
@@ -162,28 +162,28 @@
                     <tr *ngFor="let data of optr_Data | leaveFilte2: genId:a2_status ; let i = index"
                     [ngStyle]="{'background-color': data.Mid_Permission === 'TRUE' ? '#d6ffd6' : 'rgb(155, 212, 225)'}" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
                     >
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Gen_id}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_Before }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Mid_Day_Permission_min || 120 }} Min</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.applied_on |date :"dd-MM-yyyy" }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.reason }}</td>
-                     <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_After }}</td> -->
+                     <td class="!px-2 !py-4 text-center">{{ i + 1 }}</td>
+                     <td class="!px-2 !py-4 text-center text-blue-600 font-semibold">{{data.Gen_id}}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.fullname}}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.Present_Before }}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.Mid_Day_Permission_min || 120 }} Min</td>
+                     <td class="!px-2 !py-4 text-center">{{data.applied_on |date :"dd-MM-yyyy" }}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.reason }}</td>
+                     <!-- <td class="!px-2 !py-4 text-center">{{data.Present_After }}</td> -->
                   
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Approver_1_name }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.L1_Approval_Status }}</td>
-                     <!-- <td class="!px-2 !py-4 !rounded-s-md text-center"  *ngIf="isRA === true  " >
+                     <td class="!px-2 !py-4 text-center">{{data.Approver_1_name }}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.L1_Approval_Status }}</td>
+                     <!-- <td class="!px-2 !py-4 text-center"  *ngIf="isRA === true  " >
                         <button  mat-raised-button id="green" color="primary" 
                         (click)="l1_Approver(data)"
                        >
                             Approve
                           </button>
                      </td> -->
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Approver_2_name }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.L2_Approval_Status }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center"  *ngIf="ishrappr === 'true'" 
+                     <td class="!px-2 !py-4 text-center">{{data.Approver_2_name }}</td>
+                     <td class="!px-2 !py-4 text-center">{{data.L2_Approval_Status }}</td>
+                     <td class="!px-2 !py-4 text-center"  *ngIf="ishrappr === 'true'" 
                      >
                         <button
                           pButton
@@ -191,7 +191,6 @@
                           icon="pi pi-check-circle"  
                           [disabled]="data.L2_Approval_Status !== l2_status"
                           (click)="l2_Approver(data)">
-                            Approve
                           </button>
                      </td>
                     </tr>

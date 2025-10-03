@@ -4,4 +4,5 @@ node_modules/
 .idea/
 dist/
 src/environments/environment.prod.ts
+*.zip
 

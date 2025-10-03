@@ -36,6 +36,11 @@ import { HREvalformComponent } from './hr-evalform/hr-evalform.component';
 import { SkillMatrixComponent } from './skill-matrix/skill-matrix.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OldSkillTestComponent } from './old-skill-test/old-skill-test.component';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -77,7 +82,12 @@ import { OldSkillTestComponent } from './old-skill-test/old-skill-test.component
     ScrollingModule,
     MatTabsModule,
     NgbPaginationModule,
-    MatProgressSpinnerModule  
+    MatProgressSpinnerModule,
+    ButtonModule,
+    DropdownModule,
+    InputTextModule,
+    CalendarModule, 
+    MultiSelectModule,
   ]
 })
 export class SkillDevelopemntModule { }
