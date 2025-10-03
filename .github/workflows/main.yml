@@ -21,8 +21,10 @@ jobs:
     - name: Build Angular App
       run: npm run build
     - name: Deploy to gh pages
+    # deploy to gh pages
       run: |
         npx angular-cli-ghpages --dir=dist/dhrm-sporadaz
       env:
         CI: true
+        # GH secret token
         GH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
