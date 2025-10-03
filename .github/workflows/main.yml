@@ -19,7 +19,7 @@ jobs:
         node-version: 16
         # install dependencies
     - name: Install Dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
       # build angular application
     - name: Build Angular App
       run: npm run build
