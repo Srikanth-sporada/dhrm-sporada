@@ -1,0 +1,33 @@
+name: CD For Angular Application
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dhrm_sporada_V1.0
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Adding Node.js
+      uses: actions/setup-node@v2
+      # angular supported node version
+      with:
+        node-version: 16
+        # install dependencies
+    - name: Install Dependencies
+      run: npm install --legacy-peer-deps
+      # build angular application
+    - name: Build Angular App
+      run: npm run build
+    - name: Deploy to gh pages
+    # deploy to gh pages
+      run: |
+        npx angular-cli-ghpages --dir=dist/dhrm-sporadaz
+      env:
+        CI: true
+        # GH secret token
+        GH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
