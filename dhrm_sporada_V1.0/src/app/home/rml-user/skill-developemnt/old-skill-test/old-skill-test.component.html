@@ -1,6 +1,6 @@
 <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 20px;">
-    <button onclick="history.back()"
-        style="padding: 8px 16px; font-size: 14px; background-color: #2F58CD; color: white; border: none; border-radius: 4px; cursor: pointer;">
+    <button onclick="history.back()" class="mr-4 mb-3 !bg-blue-600"
+        style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;">
         ← Back
     </button>
 </div>
@@ -9,18 +9,18 @@
 
     <!-- Header -->
     <div
-        style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 10px; margin-top: 30px;">
-
-        <div style="flex: 1; text-align: left; width: 100%;">
-            <h1 class="underline-blue"
+        class="!shadow-md !rounded-md h-full py-2 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 flex">
+       <!-- employee skill status -->
+        <div style="flex: 1; text-align: left; width: 100%;" class>
+            <h1 class="!font-poppins"
                 style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
                 <b>Employee Skill Status</b>
             </h1>
 
             <div style="display: flex; margin-top: 20px;">
                 <!-- Left side: Image -->
-                <div style="flex: 1; text-align: center; padding-right: 20px;">
-                    <img [src]="this.photo" alt="Avatar"
+                <div style="flex: 1; text-align: center;" class="mx-2">
+                    <img [src]="this.photo" alt="Avatar" class="roundeded-full object-cover"
                         style="width: 150px; height: 150px; border-radius: 5%; display: inline-block;">
                 </div>
 
@@ -30,7 +30,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 8px;">
-                                <b>Name</b>
+                                <b class="text-blue-600">Name</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 : {{ skillTestData?.fullname }}
@@ -39,7 +39,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                <b>Emp ID</b>
+                                <b class="text-blue-600">Emp ID</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 : {{ skillTestData?.gen_id }}
@@ -48,7 +48,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                <b>Category</b>
+                                <b class="text-blue-600">Category</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 : {{ skillTestData?.desig_name }}
@@ -57,7 +57,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                <b>Department</b>
+                                <b class="text-blue-600">Department</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 : {{ skillTestData?.dept_name }}
@@ -66,7 +66,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                <b>Line</b>
+                                <b class="text-blue-600">Line</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 {{ skillTestData?.line_name }}
@@ -75,7 +75,7 @@
                         <tr>
                             <td
                                 style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                <b>Active Status</b>
+                                <b class="text-blue-600">Active Status</b>
                             </td>
                             <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 {{ skillTestData?.activestat }}
@@ -86,32 +86,32 @@
             </div>
         </div>
 
-        <div style="width: 2px; background-color: black; height: 250px;"></div>
-
-        <div style="flex: 1; text-align: left; width: 100%;">
-            <h1 class="underline-blue"
+        <div style="width: 2px; background-color: black; height: 250px;" class="mr-2"></div>
+       <!-- offline skill test -->
+        <div>
+            <h1 
                 style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
                 <b>Offline Skill Test Document</b>
             </h1>
-
+<!-- *ngIf="fileDetails.length != 0" -->
             <div style="display: flex; justify-content: center; margin-top: 2%;">
-                <table style="border: 2px solid black;"  *ngIf="fileDetails.length != 0">
-                    <thead class="table_header">
-                        <tr>
-                            <th class="cell1">Evaluation No</th>
-                            <th class="cell1">Trainer File</th>
-                            <th class="cell1">Supervisor File</th>
+                <table>
+                    <thead class="w-full table-auto">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Evaluation No</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Trainer File</th>
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Supervisor File</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of fileDetails" style="margin: 20px 30px">
-                            <td class="cell1">
+                        <tr *ngFor="let item of fileDetails"  class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">
                                 Evaluation-{{ item.curr_skill_level }}
                             </td>
-                            <td class="cell1">
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">
                                 <a [href]="getUrl(item.tnr_filename)" target="_blank">Test Doc</a>
                             </td>
-                            <td class="cell1">
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">
                                 <a [href]="getUrl(item.sup_filename)" target="_blank">Evaluation Doc</a>
                             </td>
                         </tr>
@@ -120,30 +120,29 @@
             </div>
         </div>
     </div>
-
+<br>
     <!-- Matrix Table Below -->
-    <div class="matrix" style="margin-top: 40px;">
-        <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
-            <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
-                <tr>
-                    <th style="text-align: center; height: 30px; border: 2px solid white;" class="cell">Sl.no
+    <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+        <table id="table" class="table-auto !w-full">
+            <thead class="sticky top-0">
+                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno
                     </th>
-                    <th class="cell">Operations</th>
-                    <th class="cell">Level-1</th>
-                    <th class="cell">Level-2</th>
-                    <th class="cell">Level-3</th>
-                    <th class="cell">Level-4</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
+                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
+                    <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
                 </tr>
             </thead>
-            <tbody style="background-color: whitesmoke;">
-                <tr *ngFor="let item of operationsData; let i = index">
-                    <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell">{{ i + 1
-                        }}</td>
-                    <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
-                    <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="cell"></td>
-                    <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="cell"></td>
-                    <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="cell"></td>
-                    <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="cell"></td>
+            <tbody>
+                <tr *ngFor="let item of operationsData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.oprn_desc }}</td>
+                    <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                    <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                    <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                    <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
                 </tr>
             </tbody>
         </table>

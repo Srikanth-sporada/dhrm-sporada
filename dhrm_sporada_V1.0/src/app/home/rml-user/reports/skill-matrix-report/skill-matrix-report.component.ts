@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from "src/app/home/api.service";
 // import * as XLSX from 'xlsx-style';
 import * as XLSX from 'xlsx-js-style';
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-skill-matrix-report',
@@ -25,21 +25,30 @@ export class SkillMatrixReportComponent implements OnInit {
   form: any;
   plant: any;
   ALL = 'Select Department';
-
-  constructor(private fb: UntypedFormBuilder, private api: ClamAPIService, private dialog: MatDialog, private service: ApiService,) {
+  all:any;
+  userDetails:any;
+  constructor(private fb: UntypedFormBuilder, private api: ClamAPIService, private dialog: MatDialog, private service: ApiService, private messageService:MessageService) {
     this.form = this.fb.group({
       department: [this.ALL, Validators.required]
     });
   }
 
   ngOnInit(): void {
-
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.plant = sessionStorage.getItem('plantcode');
 
     if (this.plant) {
       this.service.getDeptForReport(this.plant).subscribe({
         next: (res: any) => {
           this.departments = res.data;
+        },
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
         }
       });
     }
@@ -59,7 +68,8 @@ export class SkillMatrixReportComponent implements OnInit {
     const selectedDept = this.form.get('department')?.value;
 
     if (selectedDept === this.ALL) {
-      alert('Please select a department');
+      // alert('Please select a department');
+      this.messageService.add({severity:'warn',summary:'Please Select Department!'})
       return;
     }
 
@@ -68,7 +78,8 @@ export class SkillMatrixReportComponent implements OnInit {
         next: (res: any) => {
           console.log('report res', res);
           if (!res.data) {
-            this.openAlertDialog('No Data Found !', 'warning');
+            // this.openAlertDialog('No Data Found !', 'warning');
+            this.messageService.add({severity:'info',summary:'Data Not Found!'})
             this.form.reset({
               department: this.ALL
             });
@@ -78,6 +89,10 @@ export class SkillMatrixReportComponent implements OnInit {
               department: this.ALL
             });
           }
+        },
+         error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
         }
       })
     }
@@ -90,8 +105,8 @@ export class SkillMatrixReportComponent implements OnInit {
     const summaryHeader = "Skill Matrix Summary";
 
     // Create worksheets
-    const dataWs: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
-    const summaryWs: XLSX.WorkSheet = XLSX.utils.json_to_sheet(summary);
+    const dataWs: XLSX.WorkSheet | any = XLSX.utils.json_to_sheet(data);
+    const summaryWs: XLSX.WorkSheet | any = XLSX.utils.json_to_sheet(summary);
 
     // Define ranges
     const dataRange = XLSX.utils.decode_range(dataWs['!ref']);
@@ -286,6 +301,8 @@ export class SkillMatrixReportComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
     XLSX.utils.book_append_sheet(wb, ws, 'Skill Matrix Report');
     XLSX.writeFile(wb, 'Skill_Matrix_Report.xlsx');
+
+    this.messageService.add({severity:'info',summary:'Report Downloaded!'})
   }
 
 

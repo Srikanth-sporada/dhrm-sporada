@@ -6,6 +6,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from "src/app/loaderservice.service";
 import * as XLSX from "xlsx";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-skill-matrix',
@@ -13,6 +14,8 @@ import * as XLSX from "xlsx";
   styleUrls: ['./skill-matrix.component.css']
 })
 export class SkillMatrixComponent implements OnInit {
+  all:any;
+  userDetails:any;
   someSubscription: any;
   filterinfo: any = [];
   id: any;
@@ -39,7 +42,8 @@ export class SkillMatrixComponent implements OnInit {
     private active: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    public loader: LoaderserviceService
+    public loader: LoaderserviceService,
+    private messageService:MessageService
   ) {
     this.form = this.fb.group({
       status: ['1'],
@@ -52,6 +56,11 @@ export class SkillMatrixComponent implements OnInit {
   }
 
   ngOnInit(): void {
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     const currentYear = new Date().getFullYear();
     const oldestYear = currentYear - 45;
     for (let i = currentYear; i >= oldestYear; i--) {
@@ -65,9 +74,9 @@ export class SkillMatrixComponent implements OnInit {
         console.log(response);
         this.filterinfo = response;
         this.fullData = response;
-        this.lineOptions = Array.from(new Set(this.filterinfo.map(item => item.Line_Name)));
+        this.lineOptions = Array.from(new Set(this.filterinfo.map( (item:any) => new Object({value: item.Line_Name}))));
         this.departments = Array.from(
-          new Set(this.filterinfo.map(item => item.dept_name))
+          new Set(this.filterinfo.map((item:any) => new Object({value: item.dept_name})))
         ).filter(i => i);
 
       },
@@ -81,7 +90,7 @@ export class SkillMatrixComponent implements OnInit {
     const genId = formValues.gen_id;
   
     // First, filter the full dataset
-    let filtered = this.fullData.filter((record) => {
+    let filtered = this.fullData.filter((record:any) => {
       let isMatch = true;
   
       if (selectedDept && record.dept_name !== selectedDept) {
@@ -103,7 +112,7 @@ export class SkillMatrixComponent implements OnInit {
     this.filterinfo = filtered;
   
     // 🔁 Regenerate lineNames based on the filtered result
-    this.lineNames = Array.from(new Set(filtered.map(item => item.Line_Name)));
+    this.lineNames = Array.from(new Set(filtered.map((item:any)=> item.Line_Name)));
   
     console.log('Filtered Records:', this.filterinfo);
     console.log('Updated Line Names:', this.lineNames);
@@ -122,11 +131,11 @@ export class SkillMatrixComponent implements OnInit {
   
     // Reset the full list of departments and line names
     this.departments = Array.from(
-      new Set(this.fullData.map(item => item.dept_name))
+      new Set(this.fullData.map((item:any) => item.dept_name))
     ).filter(i => i);
   
     this.lineNames = Array.from(
-      new Set(this.fullData.map(item => item.Line_Name))
+      new Set(this.fullData.map((item:any) => item.Line_Name))
     ).filter(i => i);
   }
 
@@ -153,15 +162,15 @@ export class SkillMatrixComponent implements OnInit {
     if (!selectedDept) {
       // If no department is selected, show all lines
       this.lineOptions = Array.from(
-        new Set(this.fullData.map(item => item.Line_Name))
+        new Set(this.fullData.map((item:any) => item.Line_Name))
       );
     } else {
       // If a department is selected, filter lines based on department
       this.lineOptions = Array.from(
         new Set(
           this.fullData
-            .filter(item => item.dept_name === selectedDept)
-            .map(item => item.Line_Name)
+            .filter((item:any)=> item.dept_name === selectedDept)
+            .map((item:any) => item.Line_Name)
         )
       );
     }

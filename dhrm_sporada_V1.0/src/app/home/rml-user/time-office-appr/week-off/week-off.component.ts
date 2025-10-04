@@ -155,13 +155,14 @@ onWeekOffChange(item: any): void {
     // alert('You can select only 2 days as week off.');
     this.messageService.add({severity:'warn',summary:'You can select only 1 day as week off.'})
   }else{
-  this.checkIfAbsent(item.apln_slno, item.week_off_day);
+  this.checkIfAbsent(item,item.apln_slno, item.week_off_day);
     
   }
 }
   // check if the selected day is absent
-  checkIfAbsent(emp_id:any,day:any){
+  checkIfAbsent(item:any,emp_id:any,day:any){
     console.log(day);
+    console.log("USER DATA", item)
     // looping the selected day to check if absent
     day.forEach((day:any) => {
        let date=this.getdatebyno(day)

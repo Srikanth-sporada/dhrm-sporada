@@ -14,29 +14,7 @@ import { LoaderserviceService } from 'src/app/loaderservice.service';
 export class SupervisorEvaluationComponent implements OnInit {
 
   someSubscription:any
-  filterinfo:any = [
-  {
-    doj: '2025-10-03', // ISO format; transform to dd-MM-yyyy in template
-    apln_slno: 237482,
-    fullname: 'John Doe',
-    mobile_no1: '9876543210',
-    line_Name: 'Assembly Line A',
-    dept_name: 'Production',
-    Emp_Name: 'Supervisor A',
-    diff: 2 // example numeric or string diff value
-  },
-  {
-    doj: '2025-09-28',
-    apln_slno:1723892,
-    fullname: 'Jane Smith',
-    mobile_no1: '9123456780',
-    line_Name: 'Assembly Line B',
-    dept_name: 'Quality Control',
-    Emp_Name: 'Supervisor B',
-    diff: 0
-  }
-  // Add more rows as needed
-];
+  filterinfo:any= [];
 
   id:any
   form:any
@@ -77,20 +55,20 @@ export class SupervisorEvaluationComponent implements OnInit {
     }
     console.log("00",this.form.value)
 
-    // this.service.evaluationdaysup(this.form.value)
-    // .subscribe(
-    //   {
-    //     next: (response)=>{console.log(response); 
-    //       this.filterinfo = response
-    //       this.filterinfos = this.filterinfo.filter((obj:any)=> obj.ra_entry !== 'N')
-    //       console.log(this.filterinfos)
-    //     },
-    //     error: (error) => {
-    //       console.log(error);
-    //       this.messageService.add({severity:'error',summary:error.message})
-    //     }
-    //   }
-    // )
+    this.service.evaluationdaysup(this.form.value)
+    .subscribe(
+      {
+        next: (response)=>{console.log(response); 
+          this.filterinfo = response
+          this.filterinfos = this.filterinfo.filter((obj:any)=> obj.ra_entry !== 'N')
+          console.log(this.filterinfos)
+        },
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
+      }
+    )
   }
 
   filter()

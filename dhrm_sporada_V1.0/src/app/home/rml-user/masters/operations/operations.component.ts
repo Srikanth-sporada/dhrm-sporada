@@ -3,9 +3,9 @@ import {
   OnInit,
   ViewEncapsulation,
   ViewChild,
-  ElementRef
+  ElementRef,TemplateRef
 } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import * as XLSX from 'xlsx';
@@ -13,7 +13,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/home/api.service';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from 'src/environments/environment.prod';
-import { ValidatorFn, AbstractControl } from '@angular/forms';
+import { ValidatorFn, AbstractControl,Validator } from '@angular/forms';
+import { MessageService,MenuItem,ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-operations',
@@ -27,9 +28,11 @@ export class OperationsComponent implements OnInit {
   closeResult: string = '';
   form: any;
   sample: any = environment.path;
-
+  plantData:any = []
+  operationData:any= []
+  selectedPlant:any;
   plantname: any;
-  type = ['YES', 'NO'];
+  type = [{label:'YES'}, {label:'NO'}];
   departments: any = [];
   Lines: any = [];
   selectedFile: File | null = null;
@@ -43,22 +46,48 @@ export class OperationsComponent implements OnInit {
   plant: any;
   selectedPlantCode: string = '';
   selectedPlantName: string = '';
-
+  all:any;
+  userDetails:any;
+  // material modal template ref
+    @ViewChild('content', {read: TemplateRef}) addOperationTemplateRef: TemplateRef<unknown> | undefined;
+   items: MenuItem[] = [
+            {
+                icon: 'pi pi-plus-circle',
+                tooltipOptions:{
+                  tooltipLabel: 'Add Operation',
+                },
+                command: () => {
+                    this.open(this.addOperationTemplateRef);
+                }
+            },
+            {
+              icon: 'pi pi-download',
+              tooltipOptions:{
+                tooltipLabel: 'Download',
+              },
+              command: () => {
+                this.exportexcel();
+                this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
+              }
+            }
+  ];
   constructor(
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
     private service: ApiService,
-    public loader: LoaderserviceService
+    public loader: LoaderserviceService,
+    private messageService:MessageService,
+    private confirmationService:ConfirmationService
   ) {
     this.form = this.fb.group({
       oprn_slno: [''],
-      plant_name: [''],
-      oprn_desc: [''],
-      critical_oprn: [''],
+      plant_name: ['',Validators.required],
+      oprn_desc: ['', Validators.required],
+      critical_oprn: ['',Validators.required],
       skill_level: ['', [allowedSkillLevels()]],
-      Active_Sts: [''],
-      Line: [''],
-      Department: ['']
+      Active_Sts: ['', Validators.required],
+      Line: ['', Validators.required],
+      Department: ['', Validators.required]
     });
   }
 
@@ -79,6 +108,11 @@ export class OperationsComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.plant = sessionStorage.getItem('plantcode');
 
     this.getplantcode();
@@ -92,10 +126,14 @@ export class OperationsComponent implements OnInit {
         next: (response: any) => {
           console.log('open response', response);
           this.dummy = response.operations;
-
+          this.operationData = response.operations
           // ✅ Save the plant code and name
           this.selectedPlantCode = response.PlName.plant_code;
           this.selectedPlantName = response.PlName.plant_name;
+        },
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
         }
       });
     }
@@ -107,11 +145,16 @@ export class OperationsComponent implements OnInit {
     this.service.plantcodelist(company).subscribe({
       next: (response) => {
         this.plantname = response;
+        this.plantData = response;
+        this.plantData.push({plant_name:'All',plant_code:''})
         for (const o in this.plantname) {
           this.array.push(this.plantname[o].plant_name);
         }
       },
-      error: (error) => console.log(error)
+     error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
     });
   }
 
@@ -154,7 +197,10 @@ export class OperationsComponent implements OnInit {
           console.log('Type:', typeof response);
           this.departments = response;
         },
-        error: (error) => console.log(error)
+         error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
       });
     } else {
       this.departments = [];
@@ -162,7 +208,7 @@ export class OperationsComponent implements OnInit {
   }
 
   onPlantChange(event: any) {
-    const selectedPlantCode = event.target.value;
+    const selectedPlantCode = event.value;
 
     // Find the selected plant object
     const selectedPlant = this.plantname.find((plant: any) => plant.plant_code === selectedPlantCode);
@@ -189,14 +235,17 @@ export class OperationsComponent implements OnInit {
   }
 
   get_dep_no(event: any) {
-    const fulldep = event.target.value;
-    const selectedDep = fulldep.split(':')[1]?.trim();
+    // const fulldep = event.value;
+    // const selectedDep = fulldep.split(':')[1]?.trim();
 
-    this.service.getoprnLine(selectedDep).subscribe({
+    this.service.getoprnLine(event.value).subscribe({
       next: (response) => {
         this.Lines = response;
       },
-      error: (error) => console.log(error)
+      error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
     });
   }
 
@@ -212,7 +261,7 @@ export class OperationsComponent implements OnInit {
     this.onPlantSelect(this.selectedPlantName);
 
     setTimeout(() => {
-      this.get_dep_no({ target: { value: `dummy: ${selectedDepartment}` } });
+      this.get_dep_no({value:selectedDepartment});
     }, 200);
 
     this.form.controls['plant_name'].setValue(this.selectedPlantCode);
@@ -243,7 +292,8 @@ export class OperationsComponent implements OnInit {
 
     for (const field of requiredFields) {
       if (!this.form.get(field).value) {
-        alert(`Please fill the required field: ${field.replace(/_/g, ' ')}`);
+        this.messageService.add({severity:'warn',summary:`Please fill the required field: ${field.replace(/_/g, ' ')}`})
+        // alert(`Please fill the required field: ${field.replace(/_/g, ' ')}`);
         return;
       }
     }
@@ -252,12 +302,13 @@ export class OperationsComponent implements OnInit {
       const control = this.form.get(field);
 
       if (!control?.value) {
-        alert(`Please fill the required field: ${field.replace(/_/g, ' ')}`);
+        this.messageService.add({severity:'warn',summary:`Please fill the required field: ${field.replace(/_/g, ' ')}`})
         return;
       }
 
       if (field === 'skill_level' && control.invalid) {
-        alert('Skill level must be either 1, 2, 3, or 4.');
+        this.messageService.add({severity:'warn',summary:'Skill level must be either 1, 2, 3, or 4.'});
+        // alert('Skill level must be either 1, 2, 3, or 4.');
         return;
       }
     }
@@ -276,14 +327,20 @@ export class OperationsComponent implements OnInit {
     this.service.addoperation(formData).subscribe({
       next: (response: any) => {
         if (response.message === 'inserted') {
-          alert('Operation Added Successfully');
+          this.messageService.add({severity:'info',summary:'Operation Added Successfully'})
+          // alert('Operation Added Successfully');
         } else {
-          alert('Error While Adding Operation');
+          // alert('Error While Adding Operation');
+          this.messageService.add({severity:'warn',summary:'Error While Adding Operation'})
+
         }
 
         modal.close('Close click');
         this.refreshData();
-      }
+      },error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
     });
   }
 
@@ -306,12 +363,12 @@ export class OperationsComponent implements OnInit {
       const control = this.form.get(field);
 
       if (!control?.value) {
-        alert(`Please fill the required field: ${field.replace(/_/g, ' ')}`);
+       this.messageService.add({severity:'warn',summary:`Please fill the required field: ${field.replace(/_/g, ' ')}`})
         return;
       }
 
       if (field === 'skill_level' && control.invalid) {
-        alert('Skill level must be either 1, 2, 3, or 4.');
+         this.messageService.add({severity:'warn',summary:'Skill level must be either 1, 2, 3, or 4.'});
         return;
       }
     }
@@ -327,7 +384,8 @@ export class OperationsComponent implements OnInit {
       this.service.updateoperation(updatedFormData).subscribe({
         next: (response: any) => {
           if (response.message === 'updated') {
-            alert('Operation Updated Successfully');
+            // alert('Operation Updated Successfully');
+            this.messageService.add({severity:'warn',summary:'Operation Updated Successfully'});
             this.refreshData();
             modal.close('Close click');
             location.reload();
@@ -349,7 +407,8 @@ export class OperationsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Upload error:', err);
-          alert('File upload failed.');
+          // alert('File upload failed.');
+          this.messageService.add({severity:'error',summary:err.message})
         }
       });
     } else {
@@ -362,22 +421,42 @@ export class OperationsComponent implements OnInit {
     this.service.getoperation(this.plant, this.is_admin).subscribe({
       next: (response: any) => {
         this.dummy = response.operations;
-      }
+      },
+      error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
     });
     this.form.reset();
     this.index = -1;
   }
 
-  delete(a: any, slno: any) {
+  delete(event:Event,a: any, slno: any) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+            message: 'Are you sure you want to Delete?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {this.deleteAPICall(a,slno)},
+            reject: () => {
+                this.messageService.add({ severity: 'error', summary: 'Rejected'});
+            }
+      })
+    
+  }
+
+  deleteAPICall(a:any,slno:any){
     this.service.deleteoperation({ slno }).subscribe({
       next: (response: any) => {
         if (response.message === 'success') {
           this.dummy.splice(a, 1);
         }
-      }
+      },
+      error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
     });
   }
-
   // exportexcel(): void {
   //   const newKeys: any = {
 
@@ -460,6 +539,21 @@ export class OperationsComponent implements OnInit {
 
   reset() {
     this.form.reset();
+  }
+  
+  filterPlant(){
+    if(this.selectedPlant == '') {
+      this.dummy = this.operationData;
+    }else{
+      const filteredData = this.operationData.filter((plant:any) => this.selectedPlant == plant.plant_code);
+
+      if(filteredData.length){
+        this.dummy = filteredData;
+      }else{
+        this.dummy = this.operationData;
+        this.messageService.add({severity:'info',summary:'Operation Not Found For Plant:'+ this.selectedPlant})
+      }
+    }
   }
 }
 

@@ -7,7 +7,7 @@
   box-sizing: 100%;
 }
 
-th {
+/* th {
   color: white;
   font-family: 'Montserrat', sans-serif;
 }
@@ -32,7 +32,7 @@ th {
   border: 1px solid #cdcdcd;
   padding: 8px;
   text-align: left;
-}
+} */
 
 .form-group {
   background-color: lightgrey;
@@ -104,11 +104,11 @@ tbody {
   font-weight: 900;
 }
 
-.text-center {
+/* .text-center {
   width: 500px;
   background-color: darkblue;
 
-}
+} */
 
 .modal-content {
   margin-top: 5%;
@@ -117,7 +117,7 @@ tbody {
   -webkit-box-shadow: 9px 10px 30px 0px;
   -moz-box-shadow: 9px 10px 30px 0px;
   box-shadow: 9px 10px 30px 0px;
-  padding: 20px;
+  /* padding: 20px; */
   border-radius: 10px;
   height: 100%;
   background-color: rgb(255, 253, 253);
