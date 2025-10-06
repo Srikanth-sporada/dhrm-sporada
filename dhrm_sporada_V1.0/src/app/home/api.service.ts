@@ -1015,9 +1015,10 @@ export class ApiService {
     );
   }
   // update already updated week off
-  changeEmployeeWeekOff(data:any){
+  changeAlreadyUpdatedEmployeeWeekOff(data:any){
     return this.http.put(this.url + '/ars/second_weekoff_update', data)
   }
+
   getWeekdates(date: any) {
     return this.http.get(this.url + `/ars/getWeekdates?date=${date}`);
   }

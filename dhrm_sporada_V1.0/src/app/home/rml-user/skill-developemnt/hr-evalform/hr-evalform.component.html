@@ -1,4 +1,197 @@
-<div style="width: 100%; height: 100%; margin: 0 auto; display: flex; flex-direction: column;">
+
+<div class="mx-2 mt-2">
+    <!-- primeng tabl panel -->
+     <p-tabView>
+         
+        <!-- employee details -->
+         <p-tabPanel>
+            <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">badge</mat-icon>
+                        <span>Employee Details</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+                <!-- Employee Details Section -->
+                <div  class="!shadow-md !rounded-md h-full py-2 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 flex items-center my-2 gap-4">
+                    
+                    <!-- Image -->
+                        <img [src]="photo" alt="Avatar" class="rounded-full object-cover"
+                            style="width: 150px; height: 150px; display: inline-block;">
+                
+
+                    <!-- Details Table -->
+                    <div style="flex: 3; text-align: left;">
+                        <div style="width: 100%; display: flex; justify-content: flex-end;">
+                    <button onclick="history.back()" class="bg-blue-600 absolute"
+                        style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        ← Back
+                    </button>
+                    </div>
+                        <table style="width: 50%;">
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px; width: 20%;">
+                                    <b class="text-blue-600">Name</b>
+                                </td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px; width: 80%;">
+                                : {{ skillTestData?.fullname }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;">
+                                    <b class="text-blue-600">Emp ID</b></td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                : {{ skillTestData?.gen_id }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;">
+                                    <b class="text-blue-600">Category</b>
+                                </td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                : {{ skillTestData?.desig_name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;">
+                                    <b class="text-blue-600">Department</b>
+                                </td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                : {{ skillTestData?.dept_name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;">
+                                    <b class="text-blue-600">Line</b></td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                : {{ skillTestData?.line_name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;" class="w-full">
+                                    <b class="text-blue-600">Active Status</b></td>
+                                <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                : {{ skillTestData?.activestat }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- Matrix Table Below -->
+                <div class="mt-2 mx-2">
+                    <table id="table" class="w-full table-auto">
+                        <thead>
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno
+                                </th>
+                                <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+                                <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
+                                <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
+                                <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
+                                <th  class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr *ngFor="let item of operationsData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                <td  class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1
+                                    }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.oprn_desc }}</td>
+                                <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                <td [ngClass]="{ 'blue': item.oprn_trained == 2 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                <td [ngClass]="{ 'green': item.oprn_trained == 3 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+         </p-tabPanel>
+
+         <!-- test results -->
+          <p-tabPanel>
+             <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">assignment_turned_in</mat-icon>
+                        <span>Test Results</span>
+                    </div>
+            </ng-template>
+              <!-- content -->
+            <ng-template pTemplate="content">
+                <div style="width: 100%; display: flex; justify-content: flex-end;">
+                <button onclick="history.back()" class="bg-blue-600 mr-3 mb-3"
+                    style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    ← Back
+                </button>
+                </div>
+                <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                    <table id="table" class="table-auto !w-full">
+                        <!-- table head -->
+                        <thead class="sticky top-0">
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                                Sno</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="border: 2px solid white; height: 30px; width: 40%;">Operation</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Score</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Result</th>
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" >Supervisor Abservent
+                            </th>
+                            </tr>
+                        </thead>
+                        <!-- table bbody -->
+                        <tbody>
+                            <tr *ngFor="let item of paperData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                <td class="!px-2 !py-4 !rounded-s-md text-center"> {{ i +
+                                    1 }} </td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Date }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.oprn_desc }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Level_No }}
+                                </td>
+                                
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{
+                                    item.Test_Percentage }}
+                                </td>
+
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">
+                                    <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
+                                        <a [routerLink]="['/rml/skill-developement/answer-paper', item.Peval_slno]">
+                                            {{ item.Test_Result }}
+                                        </a>
+                                    </ng-container>
+                                    <ng-template #noLink>
+                                        {{ item.Test_Result }}
+                                    </ng-template>
+                                </td>
+                                
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">
+                                    <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
+                                        <a [routerLink]="['/rml/skill-developement/Abserv-point', item.Peval_slno]">
+                                            {{ item.Sup_Eval_Status }}
+                                        </a>
+                                    </ng-container>
+                                    <ng-template #notApproved>
+                                        <ng-container *ngIf="item.Sup_Eval_Status === 'PENDING'; else notPending">
+                                            {{ 'PENDING' }}
+                                        </ng-container>
+                                        <ng-template #notPending>
+                                            <span>{{ item.Sup_Eval_Status || 'Unknown' }}</span>
+                                        </ng-template>
+                                    </ng-template>
+                                </td> 
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+          </p-tabPanel>
+     </p-tabView>
+</div>
+
+<!-- <div style="width: 100%; height: 100%; margin: 0 auto; display: flex; flex-direction: column;">
     <mat-tab-group>
         <mat-tab label="Employee Details" class="employee-tab">
             <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 20px;">
@@ -8,7 +201,7 @@
                 </button>
             </div>
 
-            <!-- Header -->
+            
             <div
                 style="display: flex; justify-content: flex-start; align-items: flex-start; width: 100%; margin-bottom: 10px; margin-top: 30px;">
                 <div style="flex: 1; text-align: left;">
@@ -19,15 +212,15 @@
                 </div>
             </div>
 
-            <!-- Employee Details Section -->
+          
             <div style="display: flex; margin-top: 20px;">
-                <!-- Image -->
+               
                 <div style="flex: 1; padding-right: 20px; text-align: center;">
                     <img [src]="photo" alt="Avatar"
                         style="width: 150px; height: 150px; border-radius: 5%; display: inline-block;">
                 </div>
 
-                <!-- Details Table -->
+            
                 <div style="flex: 3; text-align: left;">
                     <table style="width: 50%;">
                         <tr>
@@ -79,7 +272,7 @@
                 </div>
             </div>
 
-            <!-- Matrix Table Below -->
+            
             <div class="matrix" style="margin-top: 40px;">
                 <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
                     <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
@@ -109,7 +302,6 @@
 
         </mat-tab>
 
-        <!-- Answer Sheet -->
         <mat-tab label="Online Test Results" class="company-tab">
 
             <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 20px;">
@@ -184,4 +376,4 @@
 
         </mat-tab>
     </mat-tab-group>
-</div>
+</div> -->

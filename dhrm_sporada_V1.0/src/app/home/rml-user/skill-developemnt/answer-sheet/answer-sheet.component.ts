@@ -50,11 +50,10 @@ export class AnswerSheetComponent implements OnInit {
           ...q,
           img_name: q.image_filename ? `${backendImageBaseUrl}${q.image_filename}` : null
         }));
+      }, (error) => {
+         console.log(error);
       });
       
-    // }
-
-
   }
 
   navigateBack() {

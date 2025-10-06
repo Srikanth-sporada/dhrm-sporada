@@ -1,54 +1,268 @@
-<div style="margin: 50px">
+<div class="mx-2 mt-2">
+
+  <!-- prime ng table panel -->
+   <p-tabView>
+
+    <!-- summary -->
+     <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon>
+                        <span>Summary</span>
+                    </div>
+            </ng-template>
+            <!-- content -->
+            <ng-template pTemplate="content">
+                  <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2 mt-3">
+                    <table id="table" class="table-auto !w-full">
+                      <!-- table head -->
+                      <thead class="sticky top-0">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0">Operations</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-1</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-2</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-3</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Skill Level-4</th>
+                        </tr>
+                      </thead>
+                      <!-- table body -->
+                      <tbody>
+                        <tr *ngFor="let oprn of plantSkill; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md">
+                            {{ oprn.oprn_desc }}
+                          </td>
+                          <td
+                            [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
+                            class="!px-2 !py-4 !rounded-s-md text-center"
+                          >
+                            {{ oprn.level_1 }}
+                          </td>
+                          <td
+                            [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
+                            class="!px-2 !py-4 !rounded-s-md text-center"
+                          >
+                            {{ oprn.level_2 }}
+                          </td>
+                          <td
+                            [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
+                            class="!px-2 !py-4 !rounded-s-md text-center"
+                          >
+                            {{ oprn.level_3 }}
+                          </td>
+                          <td
+                            [ngClass]="{
+                              darkgreen: oprn.oprn_trained == 4 ? true : false
+                            }"
+                            class="!px-2 !py-4 !rounded-s-md text-center"
+                          >
+                            {{ oprn.level_4 }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+            </ng-template>
+     </p-tabPanel>
+
+     <!-- view By person -->
+      <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">person</mat-icon>
+                        <span>View By Person</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+              <div style="margin: 30px">
+                <div>
+                  <mat-form-field>
+                    <mat-label>Gen Id</mat-label>
+                    <input matInput placeholder="Genid" [(ngModel)]="genid" />
+                  </mat-form-field>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    style="margin-left: 10px"
+                    (click)="getSkilldetails()"
+                  >
+                    Search
+                  </button>
+                </div>
+                <div class="matrix" *ngIf="showskillMatrix">
+                  <div class="header">
+                  <div>
+                    <p style="font-size: larger; font-weight: 800">
+                      <span>Name:</span> {{ userData.fullname }} | <span>DOJ:</span
+                      >{{ userData.doj }} | <span>Department:</span
+                      >{{ userData.dept_name }}
+                    </p>
+                  </div>
+                  <div style="margin: 10px 0 10px 50px">
+                    <table
+                      *ngIf="fileDetails.length != 0"
+                      style="border: 2px solid black"
+                    >
+                      <thead class="table_header">
+                        <th class="cell1">Evaluation No</th>
+                        <th class="cell1">Trainer File</th>
+                        <th class="cell1">Supervisor File</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of fileDetails" style="margin: 20px 30px">
+                          <td style="margin: 20px 30px" class="cell1">
+                            Evaluation-{{ item.curr_skill_level }}
+                          </td>
+                          <td class="cell1">
+                            <a [href]="getUrl(item.tnr_filename)" target="_blank"
+                              >Test Doc</a
+                            >
+                          </td>
+                          <td class="cell1">
+                            <a [href]="getUrl(item.sup_filename)" target="_blank"
+                              >Evaluation Doc</a
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                  <table id="table" class="customtable">
+                    <thead class="table_header">
+                      <th style="text-align: center" class="cell">Sl.no</th>
+                      <th class="cell">Operations</th>
+                      <th class="cell">Level-1</th>
+                      <th class="cell">Level-2</th>
+                      <th class="cell">Level-3</th>
+                      <th class="cell">Level-4</th>
+                    </thead>
+                    <tbody style="background-color: whitesmoke">
+                      <tr *ngFor="let oprn of skillData; let i = index">
+                        <td style="text-align: center" class="cell">{{ i + 1 }}</td>
+                        <td class="cell" style="text-align: left; padding-left: 10px">
+                          {{ oprn.oprn_desc }}
+                        </td>
+                        <td
+                          [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{
+                            darkgreen: oprn.oprn_trained == 4 ? true : false
+                          }"
+                          class="cell"
+                        ></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+             </div>
+            </ng-template>
+      </p-tabPanel>
+
+      <!-- view by operation -->
+       <p-tabPanel>
+            <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">business_center</mat-icon>
+                        <span>View By Operation</span>
+                    </div>
+            </ng-template>
+            <!-- content -->
+            <ng-template pTemplate="content">
+              <div style="margin: 30px">
+                <div>
+                  <mat-form-field>
+                    <mat-label>Operation</mat-label>
+                    <mat-select
+                      placeholder="Placeholder"
+                      [(ngModel)]="oprnId"
+                      name="item"
+                    >
+                      <mat-option value=""> Select </mat-option>
+                      <mat-option
+                        *ngFor="let item of oprnsList"
+                        [value]="item.oprn_slno"
+                      >
+                        {{ item.oprn_desc }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    style="margin-left: 10px"
+                    (click)="getOprationData()"
+                  >
+                    Search
+                  </button>
+                </div>
+                <div class="matrix" *ngIf="showOprationData">
+                  <table id="table" class="customtable">
+                    <thead class="table_header">
+                      <th style="text-align: center" class="cell">Sl.no</th>
+                      <th style="text-align: center" class="cell">Name</th>
+                      <th style="text-align: center" class="cell">Genid</th>
+                      <th style="text-align: center" class="cell">Department</th>
+                      <th class="cell">Level-1</th>
+                      <th class="cell">Level-2</th>
+                      <th class="cell">Level-3</th>
+                      <th class="cell">Level-4</th>
+                    </thead>
+                    <tbody style="background-color: whitesmoke">
+                      <tr *ngFor="let oprn of oprnData; let i = index">
+                        <td style="text-align: center" class="cell">{{ i + 1 }}</td>
+                        <td class="cell" style="text-align: left; padding-left: 10px">
+                          {{ oprn.fullname }}
+                        </td>
+                        <td class="cell">{{ oprn.gen_id }}</td>
+                        <td class="cell">{{ oprn.dept_name }}</td>
+                        <td
+                          [ngClass]="{ yellow: oprn.skill_level == 1 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{ blue: oprn.skill_level == 2 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{ green: oprn.skill_level == 3 ? true : false }"
+                          class="cell"
+                        ></td>
+                        <td
+                          [ngClass]="{
+                            darkgreen: oprn.skill_level == 4 ? true : false
+                          }"
+                          class="cell"
+                        ></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </ng-template>
+       </p-tabPanel>
+   </p-tabView>
+</div>
+
+<!-- <div style="margin: 50px">
   <mat-tab-group>
     <mat-tab label="Summary">
-      <div style="margin: 30px">
-        <div class="matrix">
-          <table id="table" class="customtable">
-            <thead class="table_header">
-              <th style="text-align: center" class="cell">Sl.no</th>
-              <th class="cell">Operations</th>
-              <th class="cell">Skill Level-1</th>
-              <th class="cell">Skill Level-2</th>
-              <th class="cell">Skill Level-3</th>
-              <th class="cell">Skill Level-4</th>
-            </thead>
-            <tbody style="background-color: whitesmoke">
-              <tr *ngFor="let oprn of plantSkill; let i = index">
-                <td style="text-align: center" class="cell">{{ i + 1 }}</td>
-                <td class="cell" style="text-align: left; padding-left: 10px">
-                  {{ oprn.oprn_desc }}
-                </td>
-                <td
-                  [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
-                  class="cell"
-                >
-                  {{ oprn.level_1 }}
-                </td>
-                <td
-                  [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
-                  class="cell"
-                >
-                  {{ oprn.level_2 }}
-                </td>
-                <td
-                  [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
-                  class="cell"
-                >
-                  {{ oprn.level_3 }}
-                </td>
-                <td
-                  [ngClass]="{
-                    darkgreen: oprn.oprn_trained == 4 ? true : false
-                  }"
-                  class="cell"
-                >
-                  {{ oprn.level_4 }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      
     </mat-tab>
     <mat-tab label="View By Person">
       <div style="margin: 30px">
@@ -217,4 +431,4 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-</div>
+</div> -->

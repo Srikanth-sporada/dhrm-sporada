@@ -85,9 +85,21 @@ export class WeekOffComponent implements OnInit {
       let data
       if(response.status='success'){
         data = response.data.map((element:any) => {
-          return {...element,week_off_day:element.week_off_day.map((weekOffday:any) => {
-            return weekOffday.toString();
+          // five days default sunday + saturday mapping
+          if(element.active_status == 'Y' && element.week_off_day[0].week_off_day == 7 && element.week_off_day.length == 1){
+            const weekOfArrray = element.week_off_day.map((data:any) => {
+            return data.week_off_day.toString();
+          });
+          // default select for saturday if five day mapping
+          weekOfArrray.unshift('6');
+            return {...element,week_off_day_arr:weekOfArrray}
+          }else{
+               // constructing the respose data for mat multiselect
+            return {...element,week_off_day_arr:element.week_off_day.map((data:any) => {
+            return data.week_off_day.toString();
           })}
+          }
+        
       })
         if(this.cat=='T'){
           data=data.filter((element:any)=>{
@@ -128,44 +140,59 @@ export class WeekOffComponent implements OnInit {
 
   getdatebyno(number:any){
 // console.log('number',number);
-
+  // console.log(number)
     let date = this.weekDates.filter((element:any)=>{
        return element.day == +number
     })
     // console.log(date[0].date);
+    // console.log(date)
     
     return date[0].date
   }
 
-onWeekOffChange(item: any): void {
+onWeekOffChange(item: any, dayValue:any): void {
   // getting fivedays mapping status of the trainee
   const fiveDaysMapping = item.active_status;
-  const selected = item.week_off_day || [];
-
+  const selected = item.week_off_day_arr || [];
+  console.log(selected)
   if (selected.length > 2 && fiveDaysMapping == 'Y') {
     // Remove the last selected value
-    selected.pop();
-    item.week_off_day = [...selected];
+    // selected.pop();
+    selected.shift() // remove the first element
+    item.week_off_day_arr = [...selected];
     // alert('You can select only 2 days as week off.');
-    this.messageService.add({severity:'warn',summary:'You can select only 2 days as week off.'})
+    console.log(item.week_off_day);
+    const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
+    console.log(changedWeekOff);
+    this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, changedWeekOff.trn_woff_id);
+
+    // this.messageService.add({severity:'warn',summary:'You can select only 2 days as week off.'});
   } else if(selected.length > 1 && (!fiveDaysMapping || fiveDaysMapping == 'N')){
     // Remove the last selected value
-    selected.pop();
-    item.week_off_day = [...selected];
+    // selected.pop();
+    selected.shift() // remove the first element
+    item.week_off_day_arr = [...selected];
     // alert('You can select only 2 days as week off.');
-    this.messageService.add({severity:'warn',summary:'You can select only 1 day as week off.'})
+    console.log(item.week_off_day);
+    const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
+    console.log(changedWeekOff);
+    this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, changedWeekOff.trn_woff_id);
+
+    // this.messageService.add({severity:'warn',summary:'You can select only 1 day as week off.'});
   }else{
-  this.checkIfAbsent(item,item.apln_slno, item.week_off_day);
-    
+    console.log(item.week_off_day);
+    const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
+    console.log(changedWeekOff);
+    this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, changedWeekOff.trn_woff_id);
   }
 }
+
   // check if the selected day is absent
-  checkIfAbsent(item:any,emp_id:any,day:any){
-    console.log(day);
-    console.log("USER DATA", item)
+  checkIfAbsent(item:any,emp_id:any,day:any, weekOffID:any){
+    console.log(weekOffID)
     // looping the selected day to check if absent
     day.forEach((day:any) => {
-       let date=this.getdatebyno(day)
+       let date = this.getdatebyno(day)
     let sunday=this.getdatebyno(7)
     this.apiService.checkIfAbsent(emp_id,date,sunday).subscribe((response:any)=>{
       // console.log(response)
@@ -178,7 +205,7 @@ onWeekOffChange(item: any): void {
         this.messageService.add({severity:'info',summary:`Selected day is previous payroll period`})
         this.data.forEach((element:any)=>{
           if(element.apln_slno==emp_id){
-            element.week_off_day='7'
+            element.week_off_day_arr = ['7']
           }
         })
       }
@@ -188,9 +215,24 @@ onWeekOffChange(item: any): void {
           this.messageService.add({severity:'warn',summary:response.is_valid.message})
         this.data.forEach((element:any)=>{
           if(element.apln_slno==emp_id){
-            element.week_off_day='7'
+            element.week_off_day_arr= ['7']
           }
         })
+        }
+
+        // checking if the selected date is absent
+        if(!response.is_valid.status){
+          if(item.already_applied == 1){
+            const updateData = {
+              emp_id: item.apln_slno,
+              week_of_date:date,
+              trn_woff_id: weekOffID
+
+            }
+            // api call
+            this.changealreadyUpdatedWeekOff(updateData);
+            console.log('updatedData',updateData)
+          }
         }
       }
     }, (error) => {
@@ -199,7 +241,25 @@ onWeekOffChange(item: any): void {
     })
     })
   }
-
+  
+  // update already changed weekoff
+  changealreadyUpdatedWeekOff(data:any){
+    this.apiService.changeAlreadyUpdatedEmployeeWeekOff(data).subscribe({
+      next: (response:any) => {
+         console.log(response)
+         if(response.status == 'success'){
+          this.messageService.add({severity:'info',summary:response.message});
+          // api call for refresh the data
+          this.getData()
+         }else{
+          this.messageService.add({severity:'warn',summary:response.message})
+         }
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
   updateData(){
     this.loading=true
     let changeData=this.data.filter((element:any)=>{
@@ -214,7 +274,7 @@ onWeekOffChange(item: any): void {
    let updatedDate = changeData.map((element:any)=>{
     // console.log('element',element);
     let weekOfDayArr:any[] = [];
-    element.week_off_day.forEach((day:any) => {
+    element.week_off_day_arr.forEach((day:any) => {
       const weekOfDay = this.getdatebyno(day);
       weekOfDayArr.push(weekOfDay);
     })

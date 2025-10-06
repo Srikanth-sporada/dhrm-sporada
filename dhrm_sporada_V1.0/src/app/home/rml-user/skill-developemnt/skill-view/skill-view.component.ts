@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import { environment } from "src/environments/environment.prod";
+import { MessageService } from "primeng/api";
 @Component({
   selector: "app-skill-view",
   templateUrl: "./skill-view.component.html",
@@ -18,9 +19,17 @@ export class SkillViewComponent implements OnInit {
   plantSkill:any;
   fileDetails:any;
   url:any = environment.path;
-  constructor(private apiService: ApiService) {}
+  all:any;
+  userDetails:any;
+
+  constructor(private apiService: ApiService, private messageService:MessageService) {}
 
   ngOnInit() {
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.apiService.getOperationList().subscribe((response: any) => {
       if (response.status == "success") {
         this.oprnsList = response.data;

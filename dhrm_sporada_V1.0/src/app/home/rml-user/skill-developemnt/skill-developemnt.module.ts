@@ -41,6 +41,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TabViewModule } from 'primeng/tabview';
+import { InputTextareaModule } from "primeng/inputtextarea";
 
 @NgModule({
   declarations: [
@@ -86,8 +88,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ButtonModule,
     DropdownModule,
     InputTextModule,
-    CalendarModule, 
+    CalendarModule,
     MultiSelectModule,
-  ]
+    TabViewModule,
+    InputTextareaModule
+]
 })
 export class SkillDevelopemntModule { }

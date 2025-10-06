@@ -149,10 +149,10 @@
           <td  class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
           <td  class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
             <mat-button-toggle-group
-              [(ngModel)]="item.week_off_day"
+              [(ngModel)]="item.week_off_day_arr"
               aria-label="Font Style"
               [disabled]="item.already_applied==7"
-              (ngModelChange)="onWeekOffChange(item)"
+              (change)="onWeekOffChange(item, $event.value)" 
               [multiple]="true"> 
               <mat-button-toggle value="1"> Monday</mat-button-toggle>
               <mat-button-toggle value="2">Tuesday</mat-button-toggle>

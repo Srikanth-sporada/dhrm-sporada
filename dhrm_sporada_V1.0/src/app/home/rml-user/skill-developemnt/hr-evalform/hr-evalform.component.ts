@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/home/api.service';
 import { Router } from '@angular/router';
 import { environment } from "src/environments/environment.prod";
 import { ActivatedRoute } from '@angular/router';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-hr-evalform',
   templateUrl: './hr-evalform.component.html',
@@ -34,7 +34,8 @@ export class HREvalformComponent implements OnInit {
     private service: ApiService,
     private fb: UntypedFormBuilder,
     private router: Router,
-    private route: ActivatedRoute // ✅ this is the right one
+    private route: ActivatedRoute, // ✅ this is the right one
+    private messageService:MessageService
   ) {
     this.form = this.fb.group({
       genid: [sessionStorage.getItem('user_name')],
@@ -44,7 +45,6 @@ export class HREvalformComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.aplnNo = this.route.snapshot.paramMap.get('peval');
 
     console.log('aplnNo', this.aplnNo)
@@ -81,12 +81,14 @@ export class HREvalformComponent implements OnInit {
           },
           (error) => {
             console.error('Error fetching answersheet', error);
+            this.messageService.add({severity:'error',summary:error.message})
           }
         );
 
       },
       (error) => {
         console.error('Error fetching skill test data', error);
+        this.messageService.add({severity:'error',summary:error.message})
       }
     );
 
