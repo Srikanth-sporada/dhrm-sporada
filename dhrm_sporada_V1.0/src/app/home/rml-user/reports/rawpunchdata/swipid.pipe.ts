@@ -13,7 +13,7 @@ export class SwipidPipe implements PipeTransform {
       return value;
     }
     const filterdata =  value.filter((data:any)=>{
-      return data.punchID==id
+      return data.punchID == id
     })
     return filterdata
   }

@@ -1,61 +1,86 @@
-<div class="container">
+<!--  header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon> fastfood</mat-icon> Canteen  Report  <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">Download Canteen Report</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
 
-    <div  style = "margin-top: 40px;">
-      <div>
-          <h1><b>Canteen Report</b></h1>
-      </div> 
-      
+  <!-- filters -->
+   <div>
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+     <div [formGroup]="cntForm">
+     <!-- row one --> 
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+       <!-- from date-->
+        <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+          <p-calendar 
+             formControlName="FromDate"
+            dateFormat="yy-mm-dd" 
+            styleClass="w-full !font-poppins"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+        <!-- to date -->
+        <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+          <p-calendar 
+            formControlName="ToDate"
+            dateFormat="yy-mm-dd" 
+            styleClass="w-full !font-poppins"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+       <!-- report type -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Report Type</label> <br>
+          <p-dropdown 
+            [options]="reportTypeOptions"
+            formControlName="rpt_type"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+            placeholder="Select Report Type" ></p-dropdown>
+       </div>
+       
+     </div>
+     <!--  second row -->
+      <div class="flex items-center  w-full flex-col sm:flex-row sm:gap-2">
+       <!-- Plant -->
+       <div class="font-poppins w-full sm:w-1/3">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+          <p-dropdown 
+            [options]="plantList"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full"
+            placeholder="Select Plant" ></p-dropdown>
+       </div>
+       <!-- download btn -->
+        <div class="mt-8 ml-3">
+          <p-button 
+            icon="pi pi-download"
+            styleClass="rounded-[1.5rem] mt-2"
+            (onClick)="download()"
+            label="Download"  
+          >
+        </p-button> 
+        </div>
+     </div>
+     </div>
+  </div>
+   </div>
 
- 
-        <div class="filter-container">
-
-          <div class="filter-row1">
-            <from [formGroup]="cntForm">
-
-                <mat-form-field appearance="outline">
-                    <mat-label>From Date</mat-label>
-                    <input
-                    type="date"
-                      matInput
-                      formControlName="FromDate"
-                    />
-                  </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>To Date</mat-label>
-                    <input
-                    type="date"
-                      matInput
-                      formControlName="ToDate"
-                    />
-                  </mat-form-field>
-            
-            
-            <mat-form-field appearance="outline"  > 
-              <mat-label>Report Type </mat-label>
-              <mat-select formControlName="rpt_type">
-                <!-- <mat-option value="">ALL</mat-option> -->
-                <mat-option value="Summary">Summary Report</mat-option>
-             
-                <mat-option value="Detailed">Detailed Report</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="isadmin === 'true'" appearance="outline"  > 
-              <mat-label>Plant </mat-label>
-              <mat-select formControlName="plant">
-                <mat-option value="">ALL</mat-option>
-                <mat-option value="1000">1000</mat-option>
-                <mat-option value="1200">1200</mat-option>
-                <mat-option value="1300">1300</mat-option>
-                <mat-option value="1150">1150</mat-option>
-                <mat-option value="1250">1250</mat-option>
-              </mat-select>
-            </mat-form-field>
-            </from>
-          </div>
-
-          <div class="download">
-            <button (click)="download()" [hidden]="button1">Download</button>
-          </div>
-          
-        
-</div>

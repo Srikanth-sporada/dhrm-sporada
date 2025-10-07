@@ -227,7 +227,6 @@ onWeekOffChange(item: any, dayValue:any): void {
               emp_id: item.apln_slno,
               week_of_date:date,
               trn_woff_id: weekOffID
-
             }
             // api call
             this.changealreadyUpdatedWeekOff(updateData);

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as moment from "moment";
 import * as XLSX from "xlsx-js-style";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-ars-reports",
@@ -26,7 +27,6 @@ export class ArsReportsComponent implements OnInit {
   sapReport:any[]=['OPtr']
   sapType:any[]=['Payroll']
   filterReportTypr:any[]
-  
   reportType: any = [
     { name: "Muster", code: "mr", days: 7 ,plant:'All'},
     { name: "Forgot To Punch", code: "fp", days: 31 ,plant:'All'},
@@ -56,25 +56,36 @@ export class ArsReportsComponent implements OnInit {
     { name: "Van Delay Regularization Report", code: "VDR", days: 365 ,plant:'All'},
     
   ]
-   
+  employeeTypes = [
+  { label: 'Trainee', value: 'T' },
+  { label: 'Operator', value: 'O' }
+];
+
+employeeTypeOptions = [
+  { label: 'SAP', value: 'S' },
+  { label: 'NON SAP', value: 'N' }
+];
+
+   all:any;
+   userDetails:any;
   loading:any=false;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private messageService:MessageService) {}
 
   ngOnInit() {
-    this.from=moment(new Date()).format("YYYY-MM-DD");
-    this.to =moment(new Date()).format("YYYY-MM-DD");
-    this.fromMax = moment(new Date()).format("YYYY-MM-DD");
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
+    this.from= new Date();
+    this.to = new Date();
+    this.fromMax = new Date();
     this.plant = "";
     this.selectedReportType = "mr";
     const plantCode = sessionStorage.getItem("plantcode");
     this.isadmin = sessionStorage.getItem("isadmin");
     this.isHrappr = sessionStorage.getItem("ishrappr");
-
-
-
-  
-
     
     if (this.isadmin == "false") {
       this.plant = plantCode;
@@ -84,11 +95,14 @@ export class ArsReportsComponent implements OnInit {
       next: (response: any) => {
         this.plantlist = response;
       },
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.response})
+      },
     });
   }
 
-  datechnage() {
+  datechange() {
     let type = this.reportType.filter((element: any) => {
   
       return element.code == this.selectedReportType;
@@ -119,15 +133,13 @@ export class ArsReportsComponent implements OnInit {
   
   
       if (max < today) {
-        this.max = max;
-        this.to = max;
+        this.max = new Date(max);
+        this.to = new Date(max);
       }
       else {
-        this.max = today;
-        this.to = today;
+        this.max = new Date(today);
+        this.to = new Date(max);
       }
-  
-    
     }
     else{
       let from = new Date(this.from);
@@ -146,28 +158,25 @@ export class ArsReportsComponent implements OnInit {
   
   
       if (max < today) {
-        this.max = max;
-        this.to = max;
+        this.max = new Date(max);
+        this.to = new Date(max);
       }
       else {
-        this.max = today;
-        this.to = today;
+        this.max = new Date(today);
+        this.to = new Date(today);
       }
-      this.to = today;
+      this.to = new Date(today);
   
     }
   
    
   }
 
-
-
-
   getData() {
     this.loading = true;
     let data = {
-      from: this.monthReport.includes(this.selectedReportType) ? this.from + '-01' : this.from,
-      to: this.to,
+      from: this.monthReport.includes(this.selectedReportType) ? moment(this.from).format('YYYY-MM-DD') : moment(this.from).format('YYYY-MM-DD'),
+      to: moment(this.to).format('YYYY-MM-DD'),
       type: this.selectedReportType,
       plant: this.plant,
       cat: this.employeeType
@@ -177,7 +186,8 @@ export class ArsReportsComponent implements OnInit {
       console.log(resp);
       if (resp.status === 'success') {
         if (Array.isArray(resp.data) && resp.data.length === 0) {
-          alert('No data found');
+          // alert('No data found');
+          this.messageService.add({severity:'info',summary:'No Data Found!'})
           this.loading = false;
         } else {
           this.exportexcel(resp.data);
@@ -185,10 +195,14 @@ export class ArsReportsComponent implements OnInit {
           this.loading = false;
         }
       } else {
-        alert(resp.message);
+        // alert(resp.message);
+        this.messageService.add({severity:'warn',summary:resp.message})
         this.loading = false;
       }
-    });
+    },  (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.response})
+      });
   }
   
 
@@ -238,6 +252,7 @@ export class ArsReportsComponent implements OnInit {
       console.log(type[0].code);
       if (!type || type.length === 0) {
         console.error('Invalid report type selected');
+        this.messageService.add({severity:'warn',summary:'Invalid report type selected'})
         return;
       }
   
@@ -276,15 +291,16 @@ export class ArsReportsComponent implements OnInit {
         ];
       } 
       
-      
-      
       else {
         console.error('Unsupported report type');
+        this.messageService.add({severity:'warn',summary:'Unsupported report type'})
         return;
       }
   
       if (sheets.length === 0) {
         console.error('No sheets defined for the selected report type');
+        this.messageService.add({severity:'warn',summary:'No sheets defined for the selected report type'})
+
         return;
       }
   
@@ -319,17 +335,14 @@ export class ArsReportsComponent implements OnInit {
           XLSX.utils.book_append_sheet(wb, ws, `${sheet.sheetName}`);
         } else {
           console.error(`Invalid data format for ${sheet.sheetName}.`);
+          this.messageService.add({severity:'warn',summary:`Invalid data format for ${sheet.sheetName}.`})
           var ws = XLSX.utils.json_to_sheet(sheet.dataArray);
-
-
-
-
-
           XLSX.utils.book_append_sheet(wb, ws, `${sheet.sheetName}`);
         }
       });
   
       XLSX.writeFile(wb, `${type[0].name}-report.xlsx`);
+      this.messageService.add({severity:'info',summary:'Data Downloaded!'})
     } else {
       let type = this.reportType.filter((element: any) => element.code == this.selectedReportType);
       var ws = XLSX.utils.json_to_sheet(data);
@@ -353,6 +366,8 @@ export class ArsReportsComponent implements OnInit {
     
       XLSX.utils.book_append_sheet(wb, ws, "Report");
       XLSX.writeFile(wb, `${type[0]?.name}-report.xlsx`);
+      this.messageService.add({severity:'info',summary:'Data Downloaded!'})
+
     }
   }
 
