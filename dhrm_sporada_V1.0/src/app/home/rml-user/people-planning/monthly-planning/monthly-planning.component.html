@@ -1,68 +1,114 @@
-<div class="container">
-  <div class="px-5 py-5">
-    <mat-form-field appearance="fill">
-        <mat-label>Month and Year</mat-label>
-        <input matInput [matDatepicker]="dp" [formControl]="date">
-        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp
-                        startView="multi-year"
-                        (monthSelected)="setMonthAndYear($event, dp)"
-                        panelClass="example-month-picker">
-        </mat-datepicker>
-      </mat-form-field>
-    <button mat-raised-button color="primary" style="margin: 0 10px" (click)="getData()">
-      View Data
-    </button>
-    <button mat-raised-button color="primary" style="margin: 0 10px" (click)="naviagToUpload()">
-        Upload Data
-    </button>
+<div class="mx-3">
+    <!-- header -->
+    <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+      <div class="flex items-start justify-start flex-col">
+        <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+        <mat-icon>today</mat-icon> Monthly Planning<hr/>
+      </h1>
+      <p class="mt-1 text-gray-400">View and Upload Monthly Planning Data</p>
+      </div>
+      <!-- user details -->
+          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+            {{userDetails}}
+          </h1>
+    </div>
+
+     <!-- actions  -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- action header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <!-- actions divison -->
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+
+     <!-- to date -->
+     <div class="w-full sm:w-1/3">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Excel File</label> <br>
+      <p-calendar
+      styleClass="w-full"
+      dateFormat="yy-mm-dd"
+      [formControl]="date"
+      view="month"
+      [showIcon]="true"
+      (onSelect)="setMonthAndYear()"
+      >
+
+      </p-calendar>
+     </div>
+       <!-- download template -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-eye"
+        styleClass="rounded-[1.5rem] mt-2"
+        (onClick)="getData()"
+        label="View Data"  
+      >
+     </p-button> 
+     </div>
+       <!-- upload -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-upload"
+        label="Upload"
+        styleClass="rounded-[1.5rem] mt-2 "
+        (onClick)="naviagToUpload()"  
+      >
+     </p-button> 
+     </div>
+     </div>
   </div>
-  <table class="table table-bordered table-striped table-hover">
-    <table id="table">
-      <thead>
-        <tr>
-          <th class="text-center header">Sl.No</th>
-          <th class="text-center header">Department Name</th>
-          <th class="text-center header">Line Name</th>
-          <th class="text-center header">Driect A</th>
-          <th class="text-center header">Direct B</th>
-          <th class="text-center header">Direct C</th>
-          <th class="text-center header">Direct Gen</th>
-          <th class="text-center header">Total Direct</th>
-          <th class="text-center header">Indirect A</th>
-          <th class="text-center header">Indriect B</th>
-          <th class="text-center header">Indirect C</th>
-          <th class="text-center header">Indirect G</th>  
-          <th class="text-center header">Indriect Total</th>
-          <th class="text-center header">Others A</th>
-          <th class="text-center header">Others B</th>
-          <th class="text-center header">Others C</th>
-          <th class="text-center header">Others G</th>  
-          <th class="text-center header">Others Total</th>
+ 
+  <div class="h-[90svh] lg:h-[80vh] xl:h-[78vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
+  <table id="table" class="table-auto !w-full">
+      <!-- table head -->
+      <thead class="sticky top-0">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Driect A</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Direct B</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Direct C</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Direct Gen</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Total Direct</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Indirect A</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Indriect B</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Indirect C</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Indirect G</th>  
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Indriect Total</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Others A</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Others B</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Others C</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Others G</th>  
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Others Total</th>
         </tr>
       </thead>
+      <!-- table body -->
       <tbody>
-        <tr *ngFor="let item of data;let i=index">
-          <td>{{i+1}}</td>
-          <td>{{item.dept_name}}</td>
-          <td>{{item.Line_Name}}</td>
-          <td>{{item.da}}</td>
-          <td>{{item.db}}</td>
-          <td>{{item.dc}}</td>
-          <td>{{item.dg}}</td>
-          <td>{{item.da+item.db+item.dc+item.dg}}</td>
-          <td>{{item.ia}}</td>
-          <td>{{item.ib}}</td>
-          <td>{{item.ic}}</td>
-          <td>{{item.ig}}</td>
-          <td>{{item.ia+item.ib+item.ic+item.ig}}</td>
-          <td>{{item.oa}}</td>
-          <td>{{item.ob}}</td>
-          <td>{{item.oc}}</td>
-          <td>{{item.og}}</td>
-          <td>{{item.oa+item.ob+item.oc+item.og}}</td>
+        <tr *ngFor="let item of data;let i=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{item.dept_name}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{item.Line_Name}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.da}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.db}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.dc}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.dg}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.da+item.db+item.dc+item.dg}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ia}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ib}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ic}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ig}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ia+item.ib+item.ic+item.ig}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.oa}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.ob}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.oc}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.og}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.oa+item.ob+item.oc+item.og}}</td>
         </tr>
       </tbody>
     </table>
-  </table>
+  </div>
 </div>

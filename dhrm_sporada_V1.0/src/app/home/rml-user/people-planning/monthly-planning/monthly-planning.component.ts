@@ -21,7 +21,7 @@ const material = [MatSidenav, MatTableModule];
 import { MatDatepicker } from "@angular/material/datepicker";
 import * as _moment from "moment";
 import { Moment } from "moment";
-
+import { MessageService } from "primeng/api";
 const moment = _moment;
 
 export const MY_FORMATS = {
@@ -55,26 +55,28 @@ export class MonthlyPlanningComponent implements OnInit {
   month: any;
   year: any;
   data:any;
-  constructor(private route:ActivatedRoute,private router:Router,private location: Location,private apiService:ApiService) {}
+  all:any;
+  userDetails:any;
+
+  constructor(private route:ActivatedRoute,private router:Router,private location: Location,private apiService:ApiService, private messageService:MessageService) {}
+
   ngOnInit(): void {
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.month=this.date.value?.month()
     this.month=this.month+1
     this.year=this.date.getRawValue()?.year()
     this.getData()
   }
-  setMonthAndYear(
-    normalizedMonthAndYear: Moment,
-    datepicker: MatDatepicker<Moment>
-  ) {
-    const ctrlValue: any = this.date.value;
-    ctrlValue.month(normalizedMonthAndYear.month());
-    ctrlValue.year(normalizedMonthAndYear.year());
-    this.month = normalizedMonthAndYear.month();
-    this.month=this.month+1
-    this.year = normalizedMonthAndYear.year();
-    this.date.setValue(ctrlValue);
-    datepicker.close();
-    console.log(this.month, this.year);
+  setMonthAndYear() {
+    console.log(this.date.value);
+    this.month = moment(this.date.value).format('MM');
+    this.year = moment(this.date.value).format('YYYY');
+
+    console.log(this.month,this.year)
   }
 
   naviagToUpload() {

@@ -1755,6 +1755,7 @@ items: MenuItem[] = [
     const genId = "C" + this.contractEmpBasicDetails.value.apln_slno;
     this.contractorEmployee.apln_slno =
       this.contractEmpBasicDetails.value.apln_slno;
+    // set employee form value from gen id
     this.contractorEmployee.gen_id = genId;
     this.contractorEmployee.biometric_no =
       this.contractEmpBasicDetails.value.apln_slno;

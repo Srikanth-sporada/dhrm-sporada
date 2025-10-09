@@ -4,6 +4,7 @@ import {UntypedFormGroup,UntypedFormControl, UntypedFormBuilder, FormBuilder, Fo
 import { ActivatedRoute, NavigationEnd, Route, Router, RouteReuseStrategy, RouterModule } from '@angular/router';
 import { ApiService } from 'src/app/home/api.service';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-evaluaton-due',
   templateUrl: './evaluaton-due.component.html',
@@ -22,19 +23,10 @@ export class EvaluatonDueComponent implements OnInit {
   line:any;
   name:any;
   dept:any;
-  skillsummary:any
-  constructor(private fb : UntypedFormBuilder, private http: HttpClient, private service: ApiService, private active: ActivatedRoute, private router: Router,public loader:LoaderserviceService) {
-
-    // this.router.routeReuseStrategy.shouldReuseRoute = function () {
-    //   return false;
-    // };
-    // this.someSubscription = this.router.events.subscribe((event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     // Here is the dashing line comes in the picture.
-    //     // You need to tell the router that, you didn't visit or load the page previously, so mark the navigated flag to false as below.
-    //     this.router.navigated = false;
-    //   }
-    // });
+  skillsummary:any;
+  all:any;
+  userDetails:any;
+  constructor(private fb : UntypedFormBuilder, private http: HttpClient, private service: ApiService, private active: ActivatedRoute, private router: Router,public loader:LoaderserviceService, private messageService:MessageService) {
 
     this.form = this.fb.group({
       status: ['0-60'],
@@ -46,6 +38,12 @@ export class EvaluatonDueComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    // user information
+    let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.service.getskillsummry().subscribe((response:any)=>{
       if(response.status='success'){
         this.skillsummary=response.data
@@ -59,6 +57,9 @@ export class EvaluatonDueComponent implements OnInit {
         this.skillsummary.push(sum_skill)
         console.log(this.skillsummary)
       }
+    }, (error) => {
+      console.log(error);
+      this.messageService.add({severity:'error',summary:error.message})
     })
     this.filter()
     this.service.dept_line_report({plantcode: sessionStorage.getItem('plantcode')})
@@ -68,6 +69,10 @@ export class EvaluatonDueComponent implements OnInit {
         {
           console.log(response);
           this.department = response[1]
+        },
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
         }
       }
     )
@@ -85,7 +90,11 @@ export class EvaluatonDueComponent implements OnInit {
       this.service.evaluationDueSupervisor(form)
       .subscribe(
         {
-          next: (response)=>{console.log(response); this.filterinfo = response}
+          next: (response)=>{console.log(response); this.filterinfo = response},
+          error:  (error) => {
+            console.log(error);
+            this.messageService.add({severity:'error',summary:error.message})
+          }
         }
       ) 
     }
@@ -94,7 +103,11 @@ export class EvaluatonDueComponent implements OnInit {
       this.service.evaluationDueSupervisor(form)
       .subscribe(
         {
-          next: (response)=>{console.log(response); this.filterinfo = response}
+          next: (response)=>{console.log(response); this.filterinfo = response},
+          error:  (error) => {
+            console.log(error);
+            this.messageService.add({severity:'error',summary:error.message})
+          }
         }
       ) 
     }
@@ -112,7 +125,11 @@ export class EvaluatonDueComponent implements OnInit {
           next:(response:any)=>{console.log(response);
            this.changeline = response[0]
            console.log(this.changeline)
-          }
+          },
+          error:  (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
       })
     }
 

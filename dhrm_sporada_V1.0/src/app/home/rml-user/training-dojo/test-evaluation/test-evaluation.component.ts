@@ -44,6 +44,7 @@ export class TestEvaluationComponent implements OnInit {
   filterTrainee: Observable<any[]>;
 
   ngOnInit(): void {
+    // user information
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);

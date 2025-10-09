@@ -57,7 +57,7 @@ export class TraineeApplicationComponent implements OnInit {
   ngOnInit(): void {
     // getting compoany code
     this.getcompanycode();
-    this.messageService.add({severity: 'info',summary: 'Test Notification',})
+    // this.messageService.add({severity: 'info',summary: 'Test Notification',})
   }
 
   // setting cookie with mobile number

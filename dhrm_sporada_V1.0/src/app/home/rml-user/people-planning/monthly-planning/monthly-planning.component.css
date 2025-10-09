@@ -2,11 +2,11 @@
 {
     display: block;
 }
-table
+/* table
 {
     border-collapse: collapse;
     width: 100%;
-}
+} */
 mat-divider
 {
     margin: 10px;

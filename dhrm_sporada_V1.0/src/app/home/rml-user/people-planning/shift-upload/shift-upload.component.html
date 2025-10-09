@@ -1,5 +1,57 @@
-<div class="container">
-    <div class="db1">
+<div class="mx-2">
+         <!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>today</mat-icon> Shift Upload<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">Download and Upload Shift</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+   <!-- actions  -->
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+    <!-- action header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <!-- actions divison -->
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+
+     <!-- to date -->
+     <div class="w-full sm:w-1/3">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Excel File</label> <br>
+     <input type="file" (change)="onFileChange($event)" #fileInput class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+     </div>
+       <!-- download template -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-download"
+        styleClass="rounded-[1.5rem] mt-2"
+        (onClick)="download()"
+        label="Download Template"  
+      >
+     </p-button> 
+     </div>
+       <!-- upload -->
+     <div class="mt-8 ml-3">
+      <p-button 
+        icon="pi pi-upload"
+        label="Upload"
+        styleClass="rounded-[1.5rem] mt-2 "
+        (onClick)="upload()"  
+      >
+     </p-button> 
+     </div>
+     </div>
+  </div>
+    <!-- <div class="db1">
         <button class="download-btn" (click)="download()">
             Download Template
         </button>
@@ -10,5 +62,5 @@
         <button class="upload-btn" (click)="upload()">
             Upload
         </button>
-    </div>
+    </div> -->
 </div>

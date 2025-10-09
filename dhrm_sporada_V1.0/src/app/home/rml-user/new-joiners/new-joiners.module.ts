@@ -55,6 +55,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
     declarations: [	
         HrApprovalComponent,
@@ -115,6 +116,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
           TabViewModule,
           InputTextareaModule,
           MultiSelectModule,
+          ConfirmDialogModule,
       ],
       providers:
       [AuthGuard]

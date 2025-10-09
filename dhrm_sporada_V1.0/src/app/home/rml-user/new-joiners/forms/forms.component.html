@@ -83,6 +83,7 @@
   <div class="row">
     <div class="col-sm-6">
       <div class="btn1">
+        <p-confirmDialog ></p-confirmDialog>
         <button
           pButton
           [label]="submit"
@@ -91,7 +92,7 @@
           style="margin-bottom: auto"
           class="mx-4"
           [disabled]="message"
-          (click)="allSave()"
+          (click)="allSave($event)"
         >
         </button>
         <button

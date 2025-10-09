@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import { UntypedFormBuilder, Validators } from "@angular/forms";
-import { environment } from "src/environments/environment.prod";
 import { ApiService } from "src/app/home/api.service";
 import { Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { error } from 'console';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-supervisor-evaluation-form',
   templateUrl: './supervisor-evaluation-form.component.html',
@@ -18,6 +13,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
   peval_no: any;
   plant: any;
   Abser_Point: any = [];
+
   Sup_id: any;
   dept_no: any;
   emp_det: any = [];
@@ -29,7 +25,8 @@ export class SupervisorEvaluationFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private service: ApiService,
-    private router: Router  
+    private router: Router ,
+    private messageService:MessageService
   ) { }
 
   // ngOnInit(): void {
@@ -94,6 +91,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
     },
     (error) => {
       console.error('Error Fetching Skill Abservent Points', error);
+      this.messageService.add({severity:'error',summary:error.message})
     }
   );
 
@@ -113,8 +111,9 @@ export class SupervisorEvaluationFormComponent implements OnInit {
         });
       }
     },
-    (error) => {
-      console.error('Error Fetching Old Abservent', error);
+     (error) => {
+      console.error(error);
+      this.messageService.add({severity:'error',summary:error.message})
     }
   );
 
@@ -124,8 +123,9 @@ export class SupervisorEvaluationFormComponent implements OnInit {
       console.log('employee details', response);
       this.emp_det = response[0];
     },
-    (error) => {
-      console.error('Error Fetching Skill Abservent Employee', error);
+     (error) => {
+      console.error(error);
+      this.messageService.add({severity:'error',summary:error.message})
     }
   );
 }
@@ -177,14 +177,18 @@ export class SupervisorEvaluationFormComponent implements OnInit {
         next: (res: any) => {
           console.log('response submit', res);
           if(res.message === 'Exsists') {
-            alert('Abservation Already Submitted');
+            // alert('Abservation Already Submitted');
+            this.messageService.add({severity:'info',summary:'Abservation Already Submitted'})
             this.router.navigate(['/rml/skill-developement/Supervisor_Evaluation']);
           }
           else if(res.message === 'success') {
-            alert('Abservation Has Been Saved Successfully');
+            // alert('Abservation Has Been Saved Successfully');
+            this.messageService.add({severity:'info',summary:'Abservation Has Been Saved Successfully'})
             this.router.navigate(['/rml/skill-developement/Supervisor_Evaluation']);
           } else {
-            alert("There was an issue saving the questions. Please try again.");
+            // alert("There was an issue saving the questions. Please try again.");
+            this.messageService.add({severity:'warn',summary:'There was an issue saving the questions. Please try again.'})
+            
           }
         }
       })

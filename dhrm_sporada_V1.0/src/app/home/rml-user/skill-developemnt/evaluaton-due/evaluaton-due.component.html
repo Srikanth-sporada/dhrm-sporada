@@ -1,110 +1,190 @@
-<div class = "container">
-    <div  style = "margin-top: 40px;">  
-       
-        <h1><b>Skill Development Summary (Active Employee)</b></h1>
-      <br><br>
-      <div class="skillsummary">
-        <table class="table table-bordered table-striped table-hover">
-          <thead >
-            <tr >
-              <th style="background-color: darkblue;">Sl NO</th>
-              <th style="background-color: darkblue;">Ageing</th>
-              <th style="background-color: darkblue;">Skill Level 1</th>
-              <th style="background-color: darkblue;">Skill Level 2</th>
-              <th style="background-color: darkblue;">Skill Level 3</th>
-              <th style="background-color: darkblue;">Skill Level 4</th>
+<!-- header -->
+<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
+>
+  <div class="flex items-start justify-start flex-col">
+    <h1
+      class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+    >
+      <mat-icon>assignment_turned_in</mat-icon> Skill Development Summary (Active Employee)
+      <hr />
+    </h1>
+    <p class="mt-1 text-gray-400">View Skill Development Summary (Active Employee)</p>
+  </div>
+  <!-- user details -->
+  <h1
+    class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+  >
+    {{ userDetails }}
+  </h1>
+</div>
+
+    <!-- score details table -->
+      <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+        <table id="table" class="table-auto !w-full">
+          <!-- table head -->
+          <thead class="sticky top-0">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Ageing</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 1</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 2</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 3</th>
+              <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Skill Level 4</th>
             </tr>
           </thead>
+          <!-- table body -->
           <tbody>
-            <tr *ngFor="let item of skillsummary;let i=index">
-              <td >{{item.diff_range.split('_')[1]!='SUM'?i+1:''}}</td>
-              <td>{{item.diff_range.split('_')[1]}}</td>
-              <td>{{item.skill_1}}</td>
-              <td>{{item.skill_2}}</td>
-              <td>{{item.skill_3}}</td>
-              <td>{{item.skill_4}}</td>
+            <tr *ngFor="let item of skillsummary;let i=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.diff_range.split('_')[1]!='SUM'?i+1:''}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.diff_range.split('_')[1]}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.skill_1}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.skill_2}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.skill_3}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.skill_4}}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="form-container1">
-        <div class="row">
-          <div class="col-sm-3">
-            <b><p>Name :</p></b>
-            <input type="text" class="input2"  [(ngModel)]="name"/>
+
+      <!-- filters -->
+      <div>
+        <div
+          class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
+        >
+          <!-- filter header -->
+          <div class="relative">
+            <h1
+              class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
+            >
+              Filters <mat-icon>filter_alt</mat-icon>
+            </h1>
           </div>
-          <div class="col-sm-3">
-            <b><p>Department Name</p></b>
-            <mat-select class="input2" [(ngModel)]="dept" (selectionChange)="getLineName($event)">
-              <mat-option value="" selected >--SELECT--</mat-option>
-              <mat-option
-                *ngFor="let i of department"
-                [value]="i.dept_name"
-                >{{ i.dept_name }}</mat-option
-              >
-            </mat-select>
-          </div>
-          <div class="col-sm-3">
-            <b><p>Line Name</p></b>
-            <mat-select class="input2" [(ngModel)]="line" >
-              <mat-option value="" selected >--SELECT--</mat-option>
-              <mat-option
-                *ngFor="let i of changeline"
-                [value]="i.line_name"
-                >{{ i.line_name}}</mat-option
-              >
-            </mat-select>
+
+          <div>
+            <!-- row one -->
+            <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+              <!-- gen id -->
+              <div class="w-full p-fluid">
+                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+                  >Gen ID</label
+                >
+                <br />
+                <input
+                  type="text"
+                  pInputText
+                  styleClass="w-full !font-poppins"
+                  [(ngModel)]="name"
+                  placeholder="Enter Gen ID"
+                />
+              </div>
+              <!-- department -->
+              <div class="font-poppins w-full">
+                <label
+                  for="status"
+                  class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+                  >Department</label
+                >
+                <br />
+                <p-dropdown
+                  [options]="department"
+                  (onChange)="getLineName($event)"
+                  optionLabel="dept_name"
+                  [(ngModel)]="dept"
+                  optionValue="dept_name"
+                  styleClass="w-full"
+                  placeholder="Select Department"
+                ></p-dropdown>
+              </div>
+              <!-- line -->
+              <div class="font-poppins w-full">
+                <label
+                  for="status"
+                  class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+                  >Line</label
+                >
+                <br />
+                <p-dropdown
+                  [options]="changeline"
+                  [(ngModel)]="line" 
+                  optionLabel="line_name"
+                  optionValue="line_name"
+                  styleClass="w-full"
+                  placeholder="Select Line"
+                ></p-dropdown>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
-      <ng-template #show>
-        <div class = "table-wrapper">
-          <table class="table table-bordered table-striped table-hover">
-            <table id="table">
-                <thead>
-                <tr>
-                    <!-- <th div class="aligncommand">Date</th> -->
-                    <th div class="aligncommand">Sl.No</th>
-                    <th div class="aligncommand">Gen ID</th>
-                    <th div class="aligncommand">Name</th>
-                    <th div class="aligncommand">Skill Level</th>
-                    <th div class="aligncommand">DOJ</th>         
-                    <th div class="aligncommand">Dept Name</th>
-                    <th div class="aligncommand">Line Name</th>
-                    <th div class="aligncommand">Reporting To</th>
-                    <th div class="aligncommand">Aging</th>
-                    <th div class="aligncommand">First Evaluation</th>
-                    <th div class="aligncommand">Second Evaluation</th>
-                    <th div class="aligncommand">Third Evaluation</th>
-                    <th div class="aligncommand">Fourth Evaluation</th>
 
+
+      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
+      <ng-template #show>
+
+        <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[100vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
+          <table id="table" class="table-auto !w-full">
+               <!-- table head -->
+                <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <!-- <th div class="aligncommand">Date</th> -->
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>         
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reporting To</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Aging</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">First Evaluation</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Second Evaluation</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Third Evaluation</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Fourth Evaluation</th>
                     </tr>
-                    </thead>
+                </thead>
+                <!-- table body -->
                     <tbody>
-                      <tr *ngFor="let i of filterinfo|filter:name|deptfilter:dept|linefilter:line;let j=index">
+                      <tr *ngFor="let i of filterinfo|filter:name|deptfilter:dept|linefilter:line;let j=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <!-- <td>{{ i.doj.split('T')[0] | date: 'dd-MM-yyyy' }}</td> -->
-                          <td>{{j+1}}</td>
-                          <td>{{i.gen_id}}</td>
-                          <td>{{ i.fullname }}</td>
-                          <td>{{ i.levels }}</td>
-                          <td>{{i.doj}}</td>
-                          <td>{{ i.dept_name }}</td>
-                          <td>{{ i.line_name }}</td>
-                          
-                          <td>{{ i.Emp_Name }}</td>
-                          
-                          <td>{{ i.diff }}</td>
-                          <td>{{ (i.skillLevel >= 1 &&i.skillLevel <= 4) ?tick:ex }}</td>
-                          <td>{{ (i.skillLevel >= 2 &&i.skillLevel <= 4) ?tick:ex }}</td>
-                          <td>{{ (i.skillLevel >= 3 &&i.skillLevel <= 4) ?tick:ex }}</td>
-                          <td>{{ (i.skillLevel >= 4 &&i.skillLevel <= 4) ?tick:ex }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{j+1}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.gen_id}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.levels }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.doj}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.dept_name }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.line_name }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md">{{ i.Emp_Name }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.diff }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">
+                            <div *ngIf="(i.skillLevel >= 1 &&i.skillLevel <= 4) then check else cross">
+                            </div>
+                          </td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">
+                            <div *ngIf="(i.skillLevel >= 2 &&i.skillLevel <= 4) then check else cross">
+                            </div>
+                          </td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">
+                            <div *ngIf="(i.skillLevel >= 3 &&i.skillLevel <= 4) then check else cross">
+                            </div>
+                          </td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">
+                            <div *ngIf="(i.skillLevel >= 4 &&i.skillLevel <= 4) then check else cross">
+                            </div>
+                          </td>
 
                         </tr>
-                      </tbody>
-                  </table>
-                </table>
-          </div></ng-template>
-      </div>
-  </div>
+                    </tbody>
+            </table>
+          </div>
+      </ng-template>
+
+      <!-- check icon ng template -->
+      <ng-template #check>
+         <i class="pi pi-check-circle text-green-500"></i>
+      </ng-template>
+
+       <!-- cross icon ng template -->
+      <ng-template #cross>
+         <i class="pi pi-times-circle text-red-500"></i>
+      </ng-template>

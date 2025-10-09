@@ -1,58 +1,78 @@
-<div>
-    <div style="margin-top: 4%;">
-        <h1 style=" margin-left: 2%;"><b>Skill Evaluation - Supervisor Abservant</b></h1>
+<!-- header -->
+<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
+>
+  <div class="flex items-start justify-start flex-col">
+    <h1
+      class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+    >
+      <mat-icon>assignment_turned_in</mat-icon> Skill Evaluation - Supervisor Abservant
+      <hr />
+    </h1>
+    <p class="mt-1 text-gray-400">View Skill Evaluation - Supervisor Abservant</p>
+  </div>
+  <!-- user details -->
+  <h1
+    class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+  >
+    {{ userDetails }}
+  </h1>
+</div>
 
-        <div class="col">
-            <div class="download">
-                <button mat-fab style=" margin-left: auto; " aria-label="Example icon button with a delete icon" (click)="exportexcel()">
-                    <mat-icon>download</mat-icon>
+<div>
+    <div>
+            <div class="flex items-end justify-end">
+                <button 
+                   (click)="exportexcel()"
+                   pButton
+                   class="mr-3"
+                   label="Download"
+                   icon="pi pi-download">
                 </button>
             </div>
-        </div>
-        <br><br><app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+           <br>
+        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+
         <ng-template #show>
-            <div class="table-wrapper" style="width: 98%; margin: 0 auto;">
+            <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
                 <!-- <table class="table table-bordered table-striped table-hover"> -->
-                <table id="table" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th div class="aligncommand" style="width: 3%;">Sl.No</th>
-                            <th div class="aligncommand" style="width: 10%;">Date</th>
-                            <th div class="aligncommand" style="width: 10%;">Dept</th>
-                            <th div class="aligncommand" style="width: 10%;">Name</th>
-                            <th div class="aligncommand" style="width: 15%;">Oprn</th>
-                            <th div class="aligncommand" style="width: 15%;">Current Skill Level</th>
-                            <th div class="aligncommand" style="width: 15%;">Propesed Skill Level</th>
-                            <th div class="aligncommand" style="width: 5%;">Status</th>
-                            <th div class="aligncommand" style="width: 10%;">Test Result</th>
-                            <th div class="aligncommand" style="width: 5%;">Action</th>
+                <table id="table" class="table-auto !w-full">
+                    <!-- table head -->
+                    <thead class="sticky top-0">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operation</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Current Skill Level</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Propesed Skill Level</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Result</th>
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
                         </tr>
                     </thead>
+                    <!-- table body -->
                     <tbody>
-                        <tr *ngFor="let i of filterinfo; let index = index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ i.Date }}</td>
-                            <td>{{ i.dept_name }}</td>
-                            <td>{{ i.fullname }}</td>
-                            <td>{{ i.oprn_desc }}</td>
-                            <td>{{ i.Level_No }}</td>
-                           <td>{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
-                            <td>{{ i.Sup_Eval_Status }}</td>
-                            <td>
-                                <div>
+                        <tr *ngFor="let i of filterinfo; let index = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ index + 1 }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Date }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{ i.oprn_desc }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Level_No }}</td>
+                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Sup_Eval_Status }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
                                     <a [routerLink]="['/rml/skill-developement/answer-paper', i.Peval_slno]">
                                         {{ i.Test_Result }}
+                                        <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
                                     </a>
-                                </div>
                             </td>
-                            <td>
-                                <div>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center">
                                     <button type="button"
-                                        [routerLink]="['/rml/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]"
-                                        style="background-color: darkblue; color: white;">
-                                        <mat-icon>edit</mat-icon>
+                                        [routerLink]="['/rml/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]">
+                                        <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
                                     </button>
-                                </div>
                             </td>
                         </tr>
                     </tbody>

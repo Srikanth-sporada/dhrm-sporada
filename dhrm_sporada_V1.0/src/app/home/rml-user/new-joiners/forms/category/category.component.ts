@@ -26,7 +26,7 @@ export class CategoryComponent implements OnInit {
   Role_id = new FormControl("", Validators.required);
   line_Id = new FormControl("",Validators.required);
   line_data:any
-  Bodhi_training = new FormControl("YES", Validators.required);
+  Bodhi_training = new FormControl("", Validators.required);
   plant_Code: any = sessionStorage.getItem('plantcode');
   categories: any[];
   mob: any;

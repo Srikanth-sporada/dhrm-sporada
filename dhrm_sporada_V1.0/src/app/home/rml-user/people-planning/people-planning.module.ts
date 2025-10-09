@@ -16,8 +16,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { PeoplePlanningReportComponent } from './people-planning-report/people-planning-report.component';
 import {UploadPlanningComponent} from './upload-planning/upload-planning.component';
 import { ShiftUploadComponent } from './shift-upload/shift-upload.component'
-
-
+import { CalendarModule } from 'primeng/calendar';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     MonthlyPlanningComponent,
@@ -35,9 +36,10 @@ import { ShiftUploadComponent } from './shift-upload/shift-upload.component'
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule
-
-    
+    MatDividerModule,
+    CalendarModule,
+    ButtonModule,
+    DropdownModule,
   ]
 })
 export class PeoplePlanningModule { }

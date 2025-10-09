@@ -6,7 +6,7 @@ import { threadId } from "worker_threads";
 import { ApiService } from "src/app/home/api.service";
 import { log } from "console";
 import { Input } from "@angular/core";
-import { MessageService } from "primeng/api";
+import { MessageService,ConfirmationService } from "primeng/api";
 
 @Component({
   selector: "app-forms",
@@ -63,6 +63,7 @@ export class FormsComponent implements OnInit, OnDestroy {
     private router: Router,
     private active: ActivatedRoute,
     private messageService:MessageService,
+    private confirmationService:ConfirmationService,
   ) {}
 
   ngOnDestroy(): void {
@@ -213,7 +214,7 @@ console.log('data.category',data.category);
     else this.message = true;
   }
 
-  allSave() {
+  allSave(event:Event) {
     if (
       this.message_from_category == true &&
       this.message_from_basic == true &&
@@ -251,14 +252,26 @@ console.log('data.category',data.category);
       console.log('type.ishr',typeof(this.ishr));
       
       if (this.ishr !== 'true' ){
-        this.messageService.add({severity:'info',summary: "Your application " + this.apln_no +"has been submitted. \n Contact HR for more information"});
+        // this.messageService.add({severity:'info',summary: "Your application " + this.apln_no +"has been submitted. \n Contact HR for more information"});
 
         // window.alert(
         //   "Your application " +
         //     this.apln_no +
         //     " has been submitted. \n Contact HR for more information"
         // );
-        this.router.navigate(["/"]);
+
+        // confirmation service
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: "Your application " + this.apln_no + " has been submitted. \n Contact HR for more information",
+            header: 'Confirmation',
+            rejectVisible:false,
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.router.navigate(["/"]);
+            }
+        });
+        // this.router.navigate(["/"]);
       }
 
       if (this.ishr === 'true' ) {

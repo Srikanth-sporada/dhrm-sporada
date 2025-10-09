@@ -40,8 +40,12 @@ export class SkillViewComponent implements OnInit {
       this.plantSkill = response.skill;
       console.log(this.plantSkill)
     } else {
-      alert(response.message);
+      // alert(response.message);
+      this.messageService.add({severity:'info',summary:response.message})
     }
+  }, (error) => {
+    console.log(error);
+    this.messageService.add({severity:'error',summary:error.message})
   })
   }
 
@@ -57,9 +61,13 @@ export class SkillViewComponent implements OnInit {
           this.showskillMatrix = true;
         } else {
           this.showskillMatrix = false;
-          alert(response.message);
+          // alert(response.message);
+          this.messageService.add({severity:'info',summary:response.message})
         }
-      });
+      },(error) => {
+    console.log(error);
+    this.messageService.add({severity:'error',summary:error.message})
+  });
   }
   getUrl(file_name:any){
     return this.url + "/skill_dev/" + file_name;
@@ -67,7 +75,7 @@ export class SkillViewComponent implements OnInit {
 
   getOprationData() {
     if (this.oprnId=='') {
-      return alert("please select the Opeartion");
+      return this.messageService.add({severity:'warn', summary:'Select Operation'})
     }
     this.apiService
       .getoperationsByOperation(this.oprnId)
@@ -77,8 +85,11 @@ export class SkillViewComponent implements OnInit {
           this.showOprationData = true;
         } else {
           this.showOprationData = false;
-          alert(response.message);
+          this.messageService.add({severity:'info',summary:response.message})
         }
-      });
+      }, (error) => {
+    console.log(error);
+    this.messageService.add({severity:'error',summary:error.message})
+  });
   }
 }

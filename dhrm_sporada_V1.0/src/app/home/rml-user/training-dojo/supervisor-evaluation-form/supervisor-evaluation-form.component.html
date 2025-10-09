@@ -1,45 +1,45 @@
 <div class="body form-group">
-
-    <div style="display: flex; flex-wrap: wrap; gap: 30px; margin: 20px 2%;">
+   <div class="!shadow-md !my-4 !rounded-md h-auto pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 mx-2">
+    <div style="display: flex; flex-wrap: wrap; gap: 30px;" class="mt-3">
         <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Employee Name:</label>
-            <span style="color: blue;">{{ emp_det?.fullname }}</span>
+            <label class="text-blue-600 font-semibold">Employee Name:</label>
+            <span>{{ emp_det?.fullname }}</span>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Department Name:</label>
-            <span style="color: blue;">{{ emp_det?.dept_name }}</span>
+            <label class="text-blue-600 font-semibold">Department Name:</label>
+            <span>{{ emp_det?.dept_name }}</span>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Line Name:</label>
-            <span style="color: blue;">{{ emp_det?.Line_Name }}</span>
+            <label class="text-blue-600 font-semibold">Line Name:</label>
+            <span>{{ emp_det?.Line_Name }}</span>
         </div>
 
     </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 30px; margin: 20px 2%;">
+    <div style="display: flex; flex-wrap: wrap; gap: 30px;">
 
          <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Operation Name:</label>
-            <span style="color: blue;">{{ emp_det?.oprn_desc }}</span>
+            <label class="text-blue-600 font-semibold">Operation Name:</label>
+            <span>{{ emp_det?.oprn_desc }}</span>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Current Skill Level:</label>
-            <span style="margin-bottom: 1%; color: blue;">{{ emp_det?.Level_No }}</span>
+            <label class="text-blue-600 font-semibold">Current Skill Level:</label>
+            <span style="margin-bottom: 1%;">{{ emp_det?.Level_No }}</span>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Proposed Skill Level:</label>
-            <span style="margin-bottom: 1%; color: blue;">{{ emp_det?.Level_No + 1 }}</span>
+            <label class="text-blue-600 font-semibold">Proposed Skill Level:</label>
+            <span style="margin-bottom: 1%;">{{ emp_det?.Level_No + 1 }}</span>
         </div>
     </div>
 
     <div
-        style="display: flex; justify-content: space-between; align-items: center; margin-top: 2%; margin-right: 10%; margin-left: 2%;">
+        style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <label style="font-weight: 500; white-space: nowrap;">Recommended For Skill Upgrade:</label>
+            <label style="white-space: nowrap;" class="text-blue-600 font-semibold">Recommended For Skill Upgrade:</label>
             <select style="font-size: 14px; width: 75px; height: 34px; border-radius: 0px; border-color: black;" [(ngModel)]="recom" name="recommendation">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -47,56 +47,61 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 10px;">
-            <button mat-raised-button color="primary" (click)="submit()">Submit</button>
-            <button mat-raised-button color="warn" style="margin-left: 2%;" onclick="history.back()">Back</button>
+            <button pButton label="Submit" icon="pi pi-send" (click)="submit()"></button>
+            <button pButton label="Back" icon="pi pi-arrow-circle-left" style="margin-left: 2%;" onclick="history.back()"></button>
         </div>
     </div>
-
-    <div class="body form-group">
+   </div>
+    <!-- evaluation form -->
+    <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
         <form>
-            <table class="table" style="width: 95%; margin-top: 2%; margin-left: 2%; margin-right: 2%;">
-                <thead style="background-color: #D3D3D3;">
-                    <tr>
-                        <th style="width: 3%; border: 1px solid #000; text-align: center;">Sl.No</th>
-                        <th style="width: 40%; border: 1px solid #000; text-align: center;">Abservent Point</th>
-                        <th style="width: 10%; border: 1px solid #000; padding: 0;">
-                            <div style="border-bottom: 1px solid #000; text-align: center; padding: 4px;">Rating</div>
-                            <div style="display: flex; height: 80%;">
+            <table id="table" class="table-auto !w-full">
+                <!-- table head -->
+                <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Slno</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Abservent Point</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Rating</div>
+                            <!-- <div style="display: flex;" class="items-center justify-center">
                                 <div
-                                    style="width: 50%; border-right: 1px solid #000; text-align: center; font-weight: bold; padding: 4px;">
+                                    class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                                     Good
                                 </div>
-                                <div style="width: 50%; text-align: center; font-weight: bold; padding: 4px;">
+                                <div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                                     Average
                                 </div>
-                            </div>
+                            </div> -->
                         </th>
-                        <th style="width: 20%; border: 1px solid #000; text-align: center;">Remarks</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Remarks</th>
                     </tr>
                 </thead>
+                <!-- table body -->
                 <tbody>
-                    <tr *ngFor="let q of Abser_Point; let i = index" style="height: 40px;">
-                        <td style="border: 1px solid #000;">{{ i + 1 }}</td>
-                        <td style="border: 1px solid #000;">
+                    <tr *ngFor="let q of Abser_Point; let i = index"  class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">
                             <textarea
-                                style="resize: none; outline: none; border-color: white; width: 100%; height: 100px; background-color: white;"
-                                disabled="true">{{ q.Abservent_Point }}</textarea>
+                               pInputTextarea
+                                disabled="true">
+                                {{ q.Abservent_Point }}
+                            </textarea>
                         </td>
-                        <td style="border: 1px solid #000; padding: 4px; text-align: center; vertical-align: middle;">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">
                             <div
-                                style="display: flex; justify-content: center; align-items: center; height: 100%; gap: 30px;">
+                                style="display: flex; justify-content: center; align-items: center;" class="gap-3">
                                 <label style="display: flex; align-items: center; gap: 5px;">
-                                    <input type="radio" name="rating_{{ i }}" value="Good" [(ngModel)]="ratings[i]" [checked]="ratings[i] === 'Good'"> Good
+                                    <input type="radio" name="rating_{{ i }}" value="Good" [(ngModel)]="ratings[i]" [checked]="ratings[i] === 'Good'" pInputText> Good
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 5px;">
-                                    <input type="radio" name="rating_{{ i }}" value="Average" [(ngModel)]="ratings[i]" [checked]="ratings[i] === 'Average'"> Average
+                                    <input type="radio" name="rating_{{ i }}" value="Average" [(ngModel)]="ratings[i]" [checked]="ratings[i] === 'Average'" pInputText> Average
                                 </label>
                             </div>
                         </td>
-                        <td style="border: 1px solid #000;">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">
                             <textarea
-                                style="resize: none; outline: none; border-color: white; width: 100%; height: 80px; background-color: white;"
                                 [(ngModel)]="remarks[i]"
+                                pInputTextarea
                                 name="remark{{ i }}"
                                 (change)="RemarkChange($event, i)"
                                 ></textarea>

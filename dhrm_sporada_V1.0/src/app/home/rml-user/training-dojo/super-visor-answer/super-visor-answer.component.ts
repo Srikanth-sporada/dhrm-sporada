@@ -6,7 +6,7 @@ import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from "src/app/loaderservice.service";
 import * as XLSX from "xlsx";
 import { HttpClient } from "@angular/common/http";
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-super-visor-answer',
   templateUrl: './super-visor-answer.component.html',
@@ -20,6 +20,8 @@ export class SuperVisorAnswerComponent implements OnInit {
   searchText: any;
   plant: any;
   dept: any;
+  all:any;
+  userDetails:any;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -28,7 +30,8 @@ export class SuperVisorAnswerComponent implements OnInit {
     private active: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    public loader: LoaderserviceService
+    public loader: LoaderserviceService, 
+    private messageService:MessageService
   ) {
     this.form = this.fb.group({
       status: ["1"],
@@ -41,16 +44,22 @@ export class SuperVisorAnswerComponent implements OnInit {
 
   ngOnInit(): void {
 
+     // user information
+    let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     this.plant = sessionStorage.getItem('plantcode');
     this.dept = sessionStorage.getItem('dept_slno');
 
     console.log('plant & Dept', this.plant, this.dept);
-    this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
-      next: (response) => {
-        console.log('supervisor Data', response);
-        this.filterinfo = response;
-      },
-    });
+    // this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
+    //   next: (response) => {
+    //     console.log('supervisor Data', response);
+    //     this.filterinfo = response;
+    //   },
+    // });
   }
 
   exportexcel() {
@@ -59,6 +68,7 @@ export class SuperVisorAnswerComponent implements OnInit {
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Table");
       XLSX.writeFile(wb, "Supervisor Abservation.xlsx");
+      this.messageService.add({severity:'info',summary:'Data Downloaded!'})
     }
 
 }
