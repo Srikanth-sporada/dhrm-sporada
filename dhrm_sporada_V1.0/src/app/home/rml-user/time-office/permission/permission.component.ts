@@ -5,9 +5,11 @@ import {ToastComponent} from 'src/app/new-contractor-mod/toast/toast.component'
 import {ClamAPIService} from 'src/app/new-contractor-mod/clam-api.service'
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmDialogComponent} from 'src/app/new-contractor-mod/confirm-dialog/confirm-dialog.component'
-import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component'
+import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component';
+import { MessageService } from 'primeng/api';
 
 import { from } from 'rxjs';
+import * as moment from 'moment';
 @Component({
   selector: 'app-od',
   templateUrl: './permission.component.html',
@@ -65,41 +67,46 @@ export class PermissionComponent implements OnInit {
   first: boolean = false;
   second: boolean = false;
   duration: number = 0;
-halfCheck:boolean= true
-
+  halfCheck:boolean= true
   isadmin:any=sessionStorage.getItem('isadmin')=='true'?true:false;
   user:any=sessionStorage.getItem('ars')=='ars'?true:false;
   userEmpcode:string |null = sessionStorage.getItem('user_name');
   plant: any = sessionStorage.getItem("plantcode");
   gen_id: any = sessionStorage.getItem("gen_id");
   url=environment.path+'/'
-emp_permissionList:any
+  emp_permissionList:any
   maxDate :any
   leaveSubmit: boolean=true
   emp_LeaveList: any;
   // optr_leave_balance: any;
   selectedTabIndex: number; 
-
+  all:any;
+  userDetails:any;
   // const previousDay = new Date(currentDate);
   // previousDay.setDate(previousDay.getDate() - 1);
   constructor(private dialog: MatDialog,
-    private OpApi:ClamAPIService) { 
+    private OpApi:ClamAPIService,private messageService:MessageService) { 
 
 this.odGgenid = this.gen_id
 
     }
 
   ngOnInit(): void {
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.fullname.toUpperCase()+`(${this.all.gen_id})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
+
     console.log(this.plant);
     this.plant= sessionStorage.getItem("plantcode");
     
 
-if(this.plant ==='1200'){
-this.selectedTabIndex=2
-}else{
-  this.selectedTabIndex=0
-}
-
+    if(this.plant ==='1200'){
+    this.selectedTabIndex=2
+    }else{
+      this.selectedTabIndex=0
+    }
     this.get_Mst_Permission()
     this.get_trn_emp_permission()
     this.get_leave_details()
@@ -109,13 +116,13 @@ this.selectedTabIndex=2
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     // Format the date to YYYY-MM-DD
-    this.maxDate = yesterday.toISOString().split('T')[0];
+    this.maxDate = new Date(yesterday)
   }
 
   get_Mst_Permission(){
-    this.OpApi.getMstPermission(this.plant).subscribe(res =>{
+    this.OpApi.getMstPermission(this.plant).subscribe( (res:any) =>{
       this.permission=res
-      this.odPermission=this.permission[0].Permission_Hrs
+      this.odPermission=this.permission[0]?.Permission_Hrs
       // console.log(this.odPermission)
     })
   }
@@ -163,7 +170,7 @@ verify_Data(){
 
   permission_verify() {
 
-    if (!this.odGgenid || this.odGgenid.trim() === '' ) {
+    if (!this.odGgenid || this.odGgenid == '' ) {
        this.openAlertDialog("Gen Id cannot be empty", 'error');
        return;
      } 
@@ -172,13 +179,15 @@ verify_Data(){
    //     return;
    //   } 
      
-     else if (!this.odDate || this.odDate.trim() === '') {
+     else if (!this.odDate || this.odDate === '') {
        this.openAlertDialog("Please select the date", 'error');
        return;
      }
    //console.log('this.odGgenid,this.odDate,this.plant',this.odGgenid,this.odDate,this.plant)
    
-   this.OpApi.verifyOptrPermission(this.odGgenid,this.odDate,this.plant).subscribe(res=>{
+  //  formatted OD Date
+  const formattedOdDate = moment(this.odDate).format('YYYY-MM-DD')
+   this.OpApi.verifyOptrPermission(this.odGgenid,formattedOdDate,this.plant).subscribe(res=>{
    //console.log(res)
    this.oDdata = res
    this.FP_list= this.oDdata.FP_list.recordsets[0]

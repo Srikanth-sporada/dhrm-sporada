@@ -20,6 +20,8 @@ import { ApiService } from "src/app/home/api.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ForgottopunchpopupComponent } from "./forgottopunchpopup/forgottopunchpopup.component";
 import * as moment from "moment";
+import { MessageService } from "primeng/api";
+
 interface MyEvent extends CalendarEvent {
   in_time: string;
   out_time: string;
@@ -65,19 +67,36 @@ export class CalenderComponent implements OnInit {
   out_time = "5:00pm";
   a: any = "IN_OUT_TIME";
   date: string | null;
+  all:any;
+  userDetails:any;
   constructor(
     private http: HttpClient,
     private service: ApiService,
-    private dailog: MatDialog
+    private dailog: MatDialog,
+    private messageService:MessageService,
   ) {}
 
   ngOnInit(): void {
+    let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.fullname.toUpperCase()+`(${this.all.gen_id})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
+
     this.getDates();
+
     this.service.getlockDate().subscribe((res: any) => {
       this.lockdate = res.date;
+    }, (error) => {
+      console.log(error);
+      this.messageService.add({severity:'error',summary:error.message})
     });
+
     this.service.getbackdate().subscribe((res: any) => {
       this.backdate = res.data.fp_workmen;
+    },(error) => {
+      console.log(error);
+      this.messageService.add({severity:'error',summary:error.message})
     });
   }
 
@@ -149,7 +168,11 @@ export class CalenderComponent implements OnInit {
           if (element) {
             element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
           }
-        },
+        }, 
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
       });
   }
 
@@ -173,67 +196,67 @@ export class CalenderComponent implements OnInit {
         switch (this.attData[i].present) {
           case "Present": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-green";
+              day.cssClass = "bg-green-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Absent": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-red";
+             day.cssClass = "bg-red-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Comp Off": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-purple";
+              day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Holiday": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-dg";
+              day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Leave": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-leave";
+             day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Factory Holiday": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-blue";
+              day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "half": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-yellow";
+              day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "weekoff": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-dg";
+             day.cssClass = "bg-gray-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "onduty": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-magenta";
+              day.cssClass = "bg-purple-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "permision": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-per";
+               day.cssClass = "bg-purple-200 shadow-md m-1 rounded-md";
             }
             break;
           }
           case "Comp_Off_Holiday": {
             if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-orange";
+               day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
             }
             break;
           }

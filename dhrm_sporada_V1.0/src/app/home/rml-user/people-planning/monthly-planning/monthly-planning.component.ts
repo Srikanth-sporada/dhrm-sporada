@@ -93,8 +93,12 @@ export class MonthlyPlanningComponent implements OnInit {
       if(response.status='success'){
         this.data=response.data
       }else{
-        alert(response.message)
+        // alert(response.message)
+        this.messageService.add({severity:'warn',summary:response.message});
       }
+    }, (error) => {
+      console.log(error);
+      this.messageService.add({severity:'error',summary:error.message})
     })
   }
 

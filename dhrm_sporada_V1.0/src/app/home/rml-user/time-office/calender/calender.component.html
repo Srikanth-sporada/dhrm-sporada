@@ -1,36 +1,103 @@
-<div class="mx-5">
-  <div class="row">
-    <div class="col" style="margin-top: 10px; margin-left: 10px">
+<div class="mx-3">
+   <!--  header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>calendar_today</mat-icon> Employee Attedance <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View Employee Attedance Information</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+   <!-- actions -->
+   <div>
+    <!-- actions -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- action header -->
+      <div class="flex item-center justify-between">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>call_to_action</mat-icon>
+        </h1>
+      </div>
+     <div>
+     <!-- action row one -->
+      <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+     <!-- prev btn -->
+     <div class="mt-2">
       <button
+        pButton 
+        icon="pi pi-arrow-circle-left"
+        label="Previous"
+        class=" mt-2 bg-orange-200 !outline-none !border-none text-orange-600"
         (click)="getDates()"
-        mat-mini-fab
-        color="warn"
-        mwlCalendarPreviousView
+         mwlCalendarPreviousView
         [view]="view"
-        [(viewDate)]="viewDate"
-        style="margin-right: 5px"
+        [(viewDate)]="viewDate"  
       >
-        <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-      <button
+     </button> 
+     </div>
+     <!-- next btn -->
+     <div class="mt-2 ml-2">
+      <button 
+       pButton
+        icon="pi pi-arrow-circle-right"
+        iconPos="right"
+        label="Next"
+        class=" mt-2 bg-purple-200 !outline-none !border-none text-purple-600"
         (click)="getDates()"
-        mat-mini-fab
-        color="warn"
         mwlCalendarNextView
         [view]="view"
-        [(viewDate)]="viewDate"
+        [(viewDate)]="viewDate"  
       >
-        <mat-icon>arrow_forward_ios</mat-icon>
-      </button>
+     </button> 
+     </div>
+
+     </div>
+     </div>
+     <!-- legends division -->
+    <div class="py-2 !shadow-md !mt-2 !rounded-md  h-full !font-poppins sm:h-min border border-gray-400 flex items-center justify-around flex-col sm:flex-row">
+      <div class="flex items-center justify-evenly gap-4 flex-col sm:flex-row">
+        <div class="bg-green-200 text-green-600 present py-1 px-2 rounded-lg text-center">
+          Present
+        </div>
+        <div class="bg-orange-200 text-orange-600 halfday py-1 px-2 rounded-lg text-center">
+          Leave | Half Day | Comp-Off
+        </div>
+        <div class="bg-red-200 text-red-600 absent py-1 px-2 rounded-lg text-center">
+          Absent
+        </div>
+        <div class="bg-gray-200 text-gray-600 sunday py-1 px-2 rounded-lg text-center">
+          Sunday | WeekOff
+        </div>
+        <div class="bg-purple-200 text-purple-600 weekoff py-1 px-2 rounded-lg text-center">
+         OnDuty | Permission
+        </div>
+        <div class="bg-blue-200 text-blue-600 holiday py-1 px-2 rounded-lg text-center">
+          Holiday | Factory Holiday | Comp-off Holiday
+        </div>
+      </div>
     </div>
-    <div class="cal">
-      <p style="font-size: x-large; font-weight: bold; color: rgb(53, 56, 240)">
-        {{ viewDate | calendarDate : view + "ViewTitle" : "en" }}
-      </p>
-    </div>
+  </div>
+   </div>
+   <!-- attedance calander -->
+     <div [ngSwitch]="view" class="mx-2 mb-4">
+      <mwl-calendar-month-view
+      (dayClicked)="dayClicked($event.day)"
+        *ngSwitchCase="CalendarView.Month"
+        [viewDate]="viewDate"
+        [events]="events"
+        (beforeViewRender)="beforeMonthViewRender($event)"
+        [cellTemplate]="IN_OUT_TIME"
+      >
+      </mwl-calendar-month-view>
   </div>
 </div>
 
+<!-- attedance details template -->
 <ng-template #IN_OUT_TIME let-day="day" let-locale="locale">
   <div
     class="container pt-1"
@@ -44,14 +111,48 @@
         day.date | calendarDate : "monthViewDayNumber" : locale
       }}</span>
     </div>
+    <!-- time details cell -->
     <div
       class="font"
       *ngIf="day.date.getMonth() == month.getMonth() && day.date < today"
     >
-      <b> IN :</b> {{ day.events[0]?.in_time  }} |
-      <b> OUT :</b> {{ day.events[0]?.out_time  }}<br />
-      <b>SHIFT:&nbsp;</b>{{ day.events[0]?.shift_desc }} |&nbsp;<b >Present:</b>  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,4) }}<br />
-     <b >LC :</b> {{ day.events[0]?.late_comeing }} |&nbsp;<b > EG : </b> {{ day.events[0]?.early_going }}   |<b>EH : </b > {{ day.events[0]?.excess_hrs }} &nbsp; 
+    <div class="flex items-center justify-around w-full">
+      <div>
+        <span class="text-green-600 font-semibold">IN: {{ day.events[0]?.in_time  }}</span>
+      </div>
+      |
+      <div>
+          <span class="text-red-600 font-semibold">OUT: {{ day.events[0]?.out_time  }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-around w-full">
+      <div>
+        <span class="text-orange-600 font-semibold">SHIFT:{{ day.events[0]?.shift_desc }}</span>
+      </div>
+      |
+      <div>
+          <span class="text-purple-600 font-semibold">Present:  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,5) }}</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-around w-full">
+      <div>
+        <span class="text-yellow-600 font-semibold">LC: {{ day.events[0]?.late_comeing }}</span>
+      </div>
+      |
+      <div>
+        <span class="text-purple-600 font-semibold">EH: {{ day.events[0]?.excess_hrs }}</span>
+      </div>
+      |
+      <div>
+          <span class="text-emerald-600 font-semibold">EG: {{ day.events[0]?.early_going }} </span>
+      </div>
+      
+    </div>
+    <!-- <b> IN :</b> {{ day.events[0]?.in_time  }} |
+    <b> OUT :</b> {{ day.events[0]?.out_time  }}<br />
+    <b>SHIFT:&nbsp;</b>{{ day.events[0]?.shift_desc }} |&nbsp;<b >Present:</b>  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,5) }}<br />
+   <b >LC :</b> {{ day.events[0]?.late_comeing }} |&nbsp;<b > EG : </b> {{ day.events[0]?.early_going }}   |<b>EH : </b > {{ day.events[0]?.excess_hrs }} &nbsp;  -->
+
     </div>
   </div>
 </ng-template>
@@ -64,68 +165,6 @@
     }}</span>
   </div>
 </ng-template>
-<div class="cal_container">
-  <div [ngSwitch]="view" class="calender">
-    <mwl-calendar-month-view
-    (dayClicked)="dayClicked($event.day)"
-      *ngSwitchCase="CalendarView.Month"
-      [viewDate]="viewDate"
-      [events]="events"
-      (beforeViewRender)="beforeMonthViewRender($event)"
-      [cellTemplate]="IN_OUT_TIME"
-    >
-    </mwl-calendar-month-view>
-  </div>
-  <div class="legends">
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #06af03"></div>
-      <div>Present</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #f4fb07"></div>
-      <div>LC/EG</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #0742fb"></div>
-      <div>Leave</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #7bfb03"></div>
-      <div>Permision</div>
-    </div>
-    <div class="legend">
-      <div
-        style="width: 50px; height: 20px; background-color: rgb(240, 202, 202)"
-      ></div>
-      <div>Not Present</div>
-    </div>
-    <div class="legend">
-      <div
-        style="width: 50px; height: 20px; background-color: rgb(192, 200, 235)"
-      ></div>
-      <div>Comp-off</div>
-    </div>
-    <div class="legend">
-      <div
-        style="
-          width: 50px;
-          height: 20px;
-          background-color: rgba(107, 107, 107, 0.692);
-        "
-      ></div>
-      <div>Week Off</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #a103fb"></div>
-      <div>On-Duty</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: #164aab"></div>
-      <div>Holiday</div>
-    </div>
-    <div class="legend">
-      <div style="width: 50px; height: 20px; background-color: rgb(168, 143, 98)"></div>
-      <div>Comp-Off Holiday</div>
-    </div>
-  </div>
-</div>
+
+
+

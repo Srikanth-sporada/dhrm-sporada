@@ -25,7 +25,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {NgxMatTimepickerModule} from "ngx-mat-timepicker";
 import { ExcessHourDeatilsEmpComponent } from './excess-hour-deatils-emp/excess-hour-deatils-emp.component';
 import { FormsModule } from '@angular/forms';
-
+import {CalendarModule as CalanderModule} from 'primeng/calendar'
 
 
 @NgModule({
@@ -59,7 +59,8 @@ import { FormsModule } from '@angular/forms';
     MatStepperModule,
     MatIconModule,
     NgxMatTimepickerModule,
-    FormsModule
+    FormsModule,
+    CalanderModule,
     
 ]
 })

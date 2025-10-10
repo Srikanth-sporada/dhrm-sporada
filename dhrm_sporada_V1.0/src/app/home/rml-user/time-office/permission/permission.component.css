@@ -44,11 +44,11 @@
   }
 
 
-
+/* 
   th{
     background-color: darkblue;
     color: azure;
-  }
+  } */
   
 .row{
   overflow: none;
@@ -67,14 +67,14 @@
   height: 100%;
   overflow: none;
 }
-td {
+/* td {
   font-weight: 500;
   font-size: smaller;
 }
 th {
   font-weight: 500;
   font-size: small;
-}
+} */
 
   .mat-button.mat-yellow,
   .mat-raised-button.mat-yellow:hover {
@@ -111,7 +111,7 @@ th {
     color: white;
     background-color: rgb(160, 168, 162);
   }
-  
+/*   
   thead {
     background-color: darkblue;
     color: azure;
@@ -119,7 +119,7 @@ th {
   }
   tbody {
     text-align: center;
-  }
+  } */
   
   .table-smaller {
     font-size: 13px; /* Adjust the font size as needed */

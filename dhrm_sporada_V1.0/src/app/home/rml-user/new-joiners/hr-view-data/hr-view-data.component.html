@@ -517,16 +517,20 @@
 
 <!-- action btn -->
 <div style="float: right; margin-right: 10px;">
-    <button mat-raised-button *ngIf="apln_status != 'SUBMITTED' " class="btn-secondary btn-xlg mr-3"
-        style="margin-bottom:auto;" (click)="goback()"> Go back</button>
-    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED'  " class="btn-secondary btn-xlg mr-3 "
-        style="margin-bottom:auto;"(click)="goback()"> Go back</button>
-    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
-        (click)="approved()" style="margin-bottom:auto;" class="btn-primary btn-xlg mr-3">Approve</button>
-    <button mat-raised-button *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
-        (click)="openDailog()" style="margin-bottom:auto;" class="btn-danger btn-xlg mr-3">Reject</button>
-    <button mat-raised-button class="btn-info" *ngIf="this.apln_status == 'APPROVED' " (click)="printid()"><span
-            style="font-size: 14px;">PRINT ID CARD</span></button>
+    <!-- back -->
+    <button pButton label="Back" *ngIf="apln_status != 'SUBMITTED' " class="btn-secondary btn-xlg mr-3"
+        style="margin-bottom:auto;" (click)="goback()"></button>
+        <!-- back btn -->
+    <button pButton label="Back" *ngIf="apln_status == 'SUBMITTED'  " class="btn-secondary btn-xlg mr-3 "
+        style="margin-bottom:auto;"(click)="goback()"></button>
+        <!-- approve btn -->
+    <button pButton label="Approve" *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
+        (click)="approved()" style="margin-bottom:auto;" class="btn-primary btn-xlg mr-3"></button>
+        <!-- reject -->
+    <button pButton label="Reject" *ngIf="apln_status == 'SUBMITTED' && action == 'approval' " type="submit"
+        (click)="openDailog()" style="margin-bottom:auto;" class="btn-danger btn-xlg mr-3"></button>
+    <button pButton label="Print ID" class="btn-info" *ngIf="this.apln_status == 'APPROVED' " (click)="printid()"><span
+            style="font-size: 14px;"></span></button>
     <br><br>
 </div>
 <br>

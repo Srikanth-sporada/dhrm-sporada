@@ -12,7 +12,7 @@ export class DateRangeFilterPipe implements PipeTransform {
     toDate = new Date(toDate)
 
     if (!items) {
-      return [];
+      return items;
     }
 
     if (!fromDate || !toDate) {

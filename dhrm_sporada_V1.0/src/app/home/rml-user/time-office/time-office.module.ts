@@ -27,10 +27,15 @@ import { OverTimeComponent } from "./over-time/over-time.component";
 import { CompOffComponent } from "./comp-off/comp-off.component";
 import { NgbToast } from "@ng-bootstrap/ng-bootstrap";
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 import { ForgottopunchpopupComponent } from "./calender/forgottopunchpopup/forgottopunchpopup.component";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatTabsModule } from '@angular/material/tabs';
+import { ButtonModule } from "primeng/button";
+import { DropdownModule } from "primeng/dropdown";
+import { CalendarModule as CalanderModule } from "primeng/calendar";
+import { InputTextModule } from "primeng/inputtext";
+import { TabViewModule } from 'primeng/tabview';
+
 @NgModule({
   declarations: [
     CalenderComponent,
@@ -67,7 +72,12 @@ import { MatTabsModule } from '@angular/material/tabs';
     NgxMatTimepickerModule,
     FormsModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ButtonModule,
+    InputTextModule,
+    CalanderModule,
+    DropdownModule,
+    TabViewModule,
   ],
 })
 export class TimeOfficeModule {}

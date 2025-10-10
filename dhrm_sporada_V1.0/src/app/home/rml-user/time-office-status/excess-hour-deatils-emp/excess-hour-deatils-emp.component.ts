@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { ApiService } from 'src/app/home/api.service';
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-excess-hour-deatils-emp',
   templateUrl: './excess-hour-deatils-emp.component.html',
@@ -18,13 +18,20 @@ export class ExcessHourDeatilsEmpComponent implements OnInit {
   plant: any = sessionStorage.getItem("plantcode");
   item :any= sessionStorage.getItem("all");
   apprenticeType:any
-  
+  all:any;
+  userDetails:any;
 
 
-  constructor(private apiService:ApiService) { }
+  constructor(private apiService:ApiService, private messageService:MessageService) { }
 
   ngOnInit() {
-    this.date=moment().format('yyyy-MM')
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.fullname.toUpperCase()+`(${this.all.gen_id})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
+    // this.date=moment().format('yyyy-MM')
+    this.date = new Date();
     
     var dataObject = JSON.parse(this.item);
 
@@ -42,16 +49,23 @@ export class ExcessHourDeatilsEmpComponent implements OnInit {
     }
     this.month=`${this.date}-01`
     this.month=moment(this.month).format('MMMM')
-    let date=this.date.split('-')
-    this.apiService.getApprovedHoursforEmp(date[1],date[0],type).subscribe((response:any)=>{
+    // let date=this.date.split('-');
+    // formatting date obj to month and year
+    let month = moment(this.date).format('MM');
+    let year = moment(this.date).format('YYYY')
+    this.apiService.getApprovedHoursforEmp(month,year,type).subscribe((response:any)=>{
       console.log(response)
         if(response.status='success'){
           this.approved_hours=response.data.approved_hrs
           this.comp_off_data=response.data.comp_off
           this.ot=response.data.ot==null?0:response.data.ot
         }else{
-          alert(response.message)
+          // alert(response.message)
+          this.messageService.add({severity:'warn',summary:response.message})
         }
+    }, (error) => {
+      console.log(error);
+      this.messageService.add({severity:'error',summary:error.message})
     })
   }
 

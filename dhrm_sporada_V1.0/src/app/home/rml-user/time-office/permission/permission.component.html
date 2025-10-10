@@ -1,244 +1,277 @@
-<div class="test">
-    <!-- <h2>Permission / Leave</h2> -->
-    <h2>Permission/Leave</h2>
+<div class="mx-2">
+    <!--  header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>work_history</mat-icon> Permission | Leave<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">Apply Permission | Leave</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
 
-    <mat-tab-group [selectedIndex]="selectedTabIndex">
-        <mat-tab label=" Apply Permission" [disabled]="plant==='1200'" >
-        <div class="form">
-       
-          <mat-form-field appearance="outline">
-            <mat-label>Date</mat-label>
-            <input type="date" matInput [(ngModel)]="odDate" [max]="maxDate" (ngModelChange)="checkVerify()"/>
-          </mat-form-field>
-  
-          <!-- <mat-form-field appearance="outline" class="example-full-width"> -->
-            <!-- <mat-label>Reason</mat-label>
-            <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkVerify()" placeholder="OD Reason"></textarea>
-          </mat-form-field> -->
-  
-          <button
-            mat-raised-button
-            color="yellow"
-            style="margin: 10px 20px; height: 40px"
-            (click)="permission_verify()"
-          >
-            Verify
-          </button>
-        </div>
-  
-        <div *ngIf="show_od_temp" class="form">
-          <!-- <mat-form-field appearance="outline">
-            <mat-label>Reason</mat-label>
-            <mat-select [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()">
-              <mat-option value="">Select Reason</mat-option>
-              <mat-option *ngFor="let item of reasonList" [value]="item.reason">{{item.reason}}</mat-option>
-            </mat-select>
-          </mat-form-field> -->
-  
-     <mat-form-field appearance="outline" class="example-full-width">
-            <mat-label>Reason</mat-label>
-            <textarea matInput [(ngModel)]="odReason" (ngModelChange)="checkODSubmit()" placeholder="Reason(Min 10 Characters)"></textarea>
-          </mat-form-field>
-     <mat-form-field appearance="outline" class="example-full-width">
-            <mat-label>Max Hours Permission</mat-label>
-            <input matInput [(ngModel)]="odPermission" [disabled]="true"(ngModelChange)="checkODSubmit()" >
-          </mat-form-field>
-  
-          <button mat-raised-button color="success" [disabled]="odSubmit"  style="margin: 10px 20px; height: 40px" (click)="oDSubmit()">
-            Submit
-          </button>
-        </div>
-  
-        <!-- <div class="view" *ngIf="trn_list && trn_list.length > 0"> -->
-          <div class="view" *ngIf="ODList && ODList.length > 0">
-            <h3>On Duty</h3>
-            <table
-              id="fpdata"
-              class="table table-bordered table-striped table-hover my-5"
-            >
-              <thead>
-                <tr>
-                  <th>Attn Date</th>
-                  <th>Swipe Id</th>
-                  <!-- <th>In Punch</th>
-                  <th>Out Punch</th> -->
-                  <th>Reason</th>
-                  <th>status </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <tr *ngFor="let item of ODList" >
-                 
-                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
-                  <td>{{item.Gen_id}}</td>
-                  <!-- <td>{{item.in_time}}</td>
-                  <td>{{item.out_time}}</td> -->
-                  <td>{{item.reason}}</td>
-                  <td>{{item.approved_status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  <!-- primeng tabview panel -->
 
-          <div class="view" *ngIf="trnPermission && trnPermission.length > 0">
-            <h3>Permission Table</h3>
-            <table
-              id="fpdata"
-              class="table table-bordered table-striped table-hover my-5"
-            >
-              <thead>
-                <tr>
-                  <th>Attn Date</th>
-                  <th>Swipe Id</th>
-                  <th>Applied_on</th>
-                  <th>Reason</th>
-                  <th>Approver 1</th>
-                  <th>Approver 1 Status</th>
-                  <th>Approver 2</th>
-                  <th>Approver 2 Status</th>
-                  <!-- <th>status </th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <tr *ngFor="let item of trnPermission" >
-                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
-                  <td>{{item.Gen_id}}</td>
-                  <td>{{item.applied_on | date:'dd-MM-yyyy'}}</td>
-                  <td>{{item.reason}}</td>
-                  <td>{{item.Approver_1_Name}}</td>
-                  <td>{{item.L1_Approval_Status}}</td>
-                  <td>{{item.Approver_2_Name}}</td>
-                  <td>{{item.L2_Approval_Status}}</td>
-                  <!-- <td>{{ item.Process_Status === 'N'? 'Under Process' :'Approved' }}</td> -->
-                </tr>
-              </tbody>
-            </table>
-          </div>
-    
-    
-          <div class="view" *ngIf="FP_list && FP_list.length > 0">
-            <h3>Forget to punch</h3>
-            <table
-              id="fpdata"
-              class="table table-bordered table-striped table-hover my-5"
-            >
-              <thead>
-                <tr>
-                  <th>Attn Date</th>
-                  <th>Swipe Id</th>
-                  <th>In Punch</th>
-                  <th>Out Punch</th>
-                  <th>Reason</th>
-                  <th>status </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <tr *ngFor="let item of FP_list">
-                  <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
-                  <td>{{item.biometric_no}}</td>
-                  <td>{{item.in_time}}</td>
-                  <td>{{item.out_time}}</td>
-                  <td>{{item.reason}}</td>
-                  <td>{{item.approved_status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-         
-  
-        <div class="view">
-          <h3>Attendance table</h3>
-          <table
-            id="fpdata"
-            class="table table-bordered table-striped table-hover my-5"
-          >
-            <thead>
-              <tr>
-                <th>Attn Date</th>
-                <th>Swipe Id</th>
-                <th>Shift</th>
-                <th>In Punch</th>
-                <th>Out Punch</th>
-                <th>Present </th>
-                <th>Excees hrs</th>
-                <th>Late Coming </th>
-                <th>Early Going</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-              <tr *ngFor="let item of trn_list">
-                <td>{{item.att_date.split('T')[0]  | date :"dd-MM-yyyy"}}</td>
-                <td>{{item.biometric_no}}</td>
-                <td>{{item.shift_desc}}</td>
-                <td>{{item.in_time}}</td>
-                <td>{{item.out_time }}</td>
-                <td>{{item.present_type}}</td>
-                <td>{{item.expect_othr}}</td>
-                <td>{{item.late_comeing}}</td>
-                <td>{{item.early_going}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      
-  
-  
-  
-      </mat-tab>
+   <p-tabView>
+     <!-- Apply Permission  -->
+    <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-check-circle icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Apply Permission</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+                 <!-- permission date select -->
+                    <div>
+                      <!-- actions -->
+                    <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+                      <!-- action header -->
+                        <div class="flex item-center justify-between">
+                          <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                            Actions <mat-icon>call_to_action</mat-icon>
+                          </h1>
+                        </div>
+                      <div>
+                      <!-- action row one -->
+                        <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+                          <!-- date-->
+                        <div class="">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
+                        <p-calendar
+                        [showIcon]="true"
+                        dateFormat="yy-mm-dd"
+                        styleClass="w-full"
+                        [(ngModel)]="odDate" 
+                        [maxDate]="maxDate"
+                        (onSelect)="checkVerify()">
 
+                        </p-calendar>
+                        </div>
+                      <!-- search btn -->
+                      <div class="mt-8 ml-3">
+                        <p-button 
+                          icon="pi pi-check-circle"
+                          styleClass="rounded-[1.5rem] mt-2"
+                          (onClick)="permission_verify()"
+                          label="Verify"  
+                        >
+                      </p-button> 
+                      </div>
+                      </div>
+                      </div>
+                      </div>
+                    </div>
+              <!-- onduty table *ngIf="ODList && ODList.length > 0"-->
+                <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2" *ngIf="ODList && ODList.length > 0">
+                  <h1 class="text-blue-600 font-semibold text-2xl my-2 font-poppins">On Duty</h1>
+                  <table
+                    id="fpdata"
+                    class="table-auto !w-full"
+                  >
+                    <thead class="sticky top-0">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                        <!-- <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th> -->
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      <tr *ngFor="let item of ODList" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.Gen_id}}</td>
+                        <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time}}</td> -->
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.approved_status}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- permission table *ngIf="trnPermission && trnPermission.length > 0"-->
+                <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mt-3 mx-2" *ngIf="trnPermission && trnPermission.length > 0">
+                  <h1 class="text-blue-600 font-semibold text-2xl my-2 font-poppins">Permission Table</h1>
+                  <table
+                    id="fpdata"
+                    class="table-auto !w-full"
+                  >
+                    <thead class="sticky top-0">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Applied On</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1 Status</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 2</th>
+                        <th class="!text-white rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Approver 2 Status</th>
+                        <!-- <th>status </th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of trnPermission" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.Gen_id}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.applied_on | date:'dd-MM-yyyy'}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md ">{{item.reason}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{item.Approver_1_Name}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md ">{{item.L1_Approval_Status}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md ">{{item.Approver_2_Name}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md ">{{item.L2_Approval_Status}}</td>
+                        <!-- <td>{{ item.Process_Status === 'N'? 'Under Process' :'Approved' }}</td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            <!-- forget to punch -->
+                <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mt-3 mx-2" >
+                  <h1 class="text-blue-600 font-semibold text-2xl my-2 font-poppins">Forget to Punch</h1>
+                  <table
+                    id="fpdata"
+                     class="table-auto !w-full"
+                  >
+                    <thead  class="sticky top-0">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attn Date</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of FP_list"  class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0] | date :"dd-MM-yyyy"}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.biometric_no}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{item.reason}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{item.approved_status}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              <!-- attedance table -->
+              <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mt-3 mx-2">
+                <h1 class="text-blue-600 font-semibold text-2xl my-2 font-poppins">Attendance table</h1>
+                <table
+                  id="fpdata"
+                  class="table-auto !w-full"
+                >
+                  <thead class="sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Shift</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present </th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Excees hrs</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late Coming </th>
+                      <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Early Going</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of trn_list" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0]  | date :"dd-MM-yyyy"}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.biometric_no}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.shift_desc}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.in_time}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.out_time }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.present_type}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.expect_othr}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.late_comeing}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.early_going}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ng-template>
+    </p-tabPanel>
 
-   
-        <mat-tab label="Permission Status"  [disabled]="plant==='1200'" >
+    <!-- permission status -->
+     <p-tabPanel>
+          <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-history icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Permission Status</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+              <div class="h-[90svh] lg:h-[95vh] xl:h-[95vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+                  <table id="fpdata" class="table-auto w-full">
+                    <!-- table head -->
+                  <thead class="table-auto !w-full">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attn Date</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Applied_on</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1 Status</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 1 Approved On</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Approver 2</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 2 Status</th>
+                      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approver 2 Approved On</th>
+                      <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <!-- table body -->
+                  <tbody>
+                    <tr *ngFor="let item of emp_permissionList" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.Gen_id}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.applied_on | date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md ">{{item.reason}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md ">{{item.Approver_1_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md ">{{item.Approver_2_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
+                      <!-- action btn -->
+                      <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
+                        <button 
+                        pButton
+                        (click)="permission_cancel_Popup(item)"
+                        [disabled]="item.L2_Approval_Status === 'Cancelled' "></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+                
+            </ng-template>
+     </p-tabPanel>
 
-          <table
-          id="fpdata"
-          class="table table-bordered table-striped table-hover my-5"
-        >
-        <thead>
-          <tr>
-            <th>Swipe Id</th>
-            <th>Attn Date</th>
-            <th>Applied_on</th>
-            <th>Reason</th>
-            <th class="text-center">Approver 1</th>
-            <th class="text-center">Approver 1 Status</th>
-            <th class="text-center">Approver 1 Approved On</th>
-            <th class="text-center" >Approver 2</th>
-            <th class="text-center">Approver 2 Status</th>
-            <th class="text-center">Approver 2 Approved On</th>
-            <th>Permission Cancel </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-          <tr *ngFor="let item of emp_permissionList" >
-            <td>{{item.Gen_id}}</td>
-            <td>{{item.att_date.split('T')[0] | date :"dd-MM-yyyy" }}</td>
-            <td>{{item.applied_on | date:'dd-MM-yyyy'}}</td>
-            <td>{{item.reason}}</td>
-            <td>{{item.Approver_1_name}}</td>
-            <td>{{item.L1_Approval_Status}}</td>
-            <td>{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
-            <td>{{item.Approver_2_name}}</td>
-            <td>{{item.L2_Approval_Status}}</td>
-            <td>{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
-            <td><button mat-raised-button color="warn" style="margin: 10px 20px; height: 40px"
-              (click)="permission_cancel_Popup(item)"
-              [disabled]="item.L2_Approval_Status === 'Cancelled' ">
-        Cancel
-      </button></td>
-
-          </tr>
-        </tbody>
-        </table>
-        </mat-tab>
-
- <mat-tab label="Apply Leave" >
-  <div class="flex-container">
+     <!-- apply leave -->
+      <p-tabPanel>
+         <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-check-circle icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Apply Leave</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+              <div class="flex-container">
     <div class="form1">
       <mat-form-field appearance="outline">
         <mat-label>Leave Type</mat-label>
@@ -351,74 +384,75 @@
           <td class="text-center">Approver 2</td>
           <td class="text-center">{{ optr_leave_details?.a2_gen_id }}</td>
           <td class="text-center">{{ optr_leave_details?.a2_Emp_name }}</td>
-        
         </tr>
-       
       </table>
-
-
-
-
-
     </div>
-  </div>
+              </div>
+            </ng-template>
+      </p-tabPanel>
 
-</mat-tab> 
- <mat-tab label="Leave status" >
-  <table
-          id="fpdata"
-          class="table table-bordered table-striped table-hover my-5  table-smaller"
-        >
-        <thead>
-          <tr>
-            <th class="text-center">Req_Id</th>
-            <th class="text-center">Gen Id</th>
-            <th class="text-center">Leave Type</th>
-            <th class="text-center">From Date</th>
-            <th class="text-center">To Date</th>
-            <th class="text-center">Duration</th>
-            
-            <th class="text-center">Reason</th>
-            <th class="text-center">Approver 1</th>
-            <th class="text-center">Approver 1 Status</th>
-            <th class="text-center">Approver 1 Approved On</th>
-            <th class="text-center" >Approver 2</th>
-            <th class="text-center">Approver 2 Status</th>
-            <th class="text-center">Approver 2 Approved On</th>
-            <th class="text-center">Leave Cancel</th>
-         
-          </tr>
-        </thead>
-        <tbody>
-          
-          <tr class="text-center" *ngFor="let item of emp_LeaveList" >
-            <td class="text-center">{{item.slno}}</td>
-            <td class="text-center">{{item.Gen_id}}</td>
-            <td class="text-center">{{item.Leave_Type}}</td>
-            <td class="text-center">{{item.from_date | date:'dd-MM-yyyy'}}</td>
-            <td class="text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
-            <td class="text-center">{{item.duration}}</td>
-           
-            <td class="text-center">{{item.reason}}</td>
-            <td class="text-center">{{item.Approver_1_name}}</td>
-            <td class="text-center">{{item.L1_Approval_Status}}</td>
-            <td class="text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
-            <td class="text-center">{{item.Approver_2_name}}</td>
-            <td class="text-center">{{item.L2_Approval_Status}}</td>
-            <td class="text-center">{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
-            <td class="text-center">
-              <button mat-raised-button color="warn" style="margin: 10px 20px; height: 40px"
-            (click)="leave_cancel_Popup(item)"
-            [disabled]="item.Leave_Cancel_status === 'Cancelled' || item.Leave_Cancel_status === 'Rejected'">
-      Cancel
-    </button>
-          </td>
-           
-          </tr>
-        </tbody>
-        </table>
-        
-</mat-tab>  
-
-    </mat-tab-group>
+      <!-- leave status -->
+       <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-history icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Leave Status</span>
+                    </div>
+            </ng-template>
+             <!-- content -->
+            <ng-template pTemplate="content">
+              <div class="h-[90svh] lg:h-[95vh] xl:h-[95vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+                <table id="fpdata" class="table-auto w-full">
+                  <!-- table head -->
+                  <thead class="table-auto !w-full">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Req_Id</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Leave Type</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">From Date</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">To Date</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Duration</th>
+                    
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1 Status</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1 Approved On</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center" >Approver 2</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 2 Status</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 2 Approved On</th>
+                      <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Leave Cancel</th>
+                    </tr>
+                  </thead>
+                  <!-- table body -->
+                  <tbody>  
+                    <tr *ngFor="let item of emp_LeaveList" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.slno}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.Gen_id}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Leave_Type}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.from_date | date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.duration}}</td>
+                    
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Approver_1_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Approver_2_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center flex items-vcenter justify-center">
+                        <button 
+                      (click)="leave_cancel_Popup(item)"
+                      [disabled]="item.Leave_Cancel_status === 'Cancelled' || item.Leave_Cancel_status === 'Rejected' || item.L2_Approval_Status ==  'Approved' " pButton label="Cancel" icon="pi pi-times"></button>
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+                </div>
+            </ng-template>
+       </p-tabPanel>
+   </p-tabView>
+   
 </div>
