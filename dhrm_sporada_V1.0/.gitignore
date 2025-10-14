@@ -3,6 +3,6 @@ node_modules/
 .angular/
 .idea/
 dist/
-src/environments/environment.prod.ts
+# src/environments/environment.prod.ts
 *.zip
 
