@@ -149,10 +149,9 @@ generate_link(){
 
 	if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
 	{
-			this.flagged = false
-			this.emit.emit(this.message)	
+			this.flagged = false;
+			this.emit.emit(this.message);	
 	}
-
 },
 		error:(err)=>{console.error(err)}
 	})

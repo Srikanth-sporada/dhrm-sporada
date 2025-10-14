@@ -7,13 +7,23 @@ import * as XLSX from "xlsx";
 import { environment } from "src/environments/environment.prod";
 import * as moment from 'moment'
 import { MessageService } from "primeng/api";
-
+import { Input } from "@angular/core";
+import { Location } from "@angular/common";
+import { FormService } from "../form.service";
+import { RejectComponent } from "../hr-view-data/reject/reject.component";
+import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: "app-onboard-form",
   templateUrl: "./onboard-form.component.html",
   styleUrls: ["./onboard-form.component.css"],
 })
 export class OnboardFormComponent implements OnInit {
+  @Input() applicationNumber:any = 'number';
+  @Input() applicationStatus:any= 'status';
+  @Input() applicationData:any= [];
+  @Input() disbleApproveBtn:any;
+  disableApproveBtn:any;
+  applicationStatusForBtn = 'PENDING'
   lockDate:any;
   form: any;
   ifsc_code: any;
@@ -69,13 +79,20 @@ export class OnboardFormComponent implements OnInit {
   dolMinDate:any
   dolMaxDate:any = new Date().toISOString().split('T')[0]
   payrollArea:any = []
+  dojoTrainingOptions:any =  [
+    { label: 'YES', value: 'YES' },
+    { label: 'NO', value: 'NO' }
+  ]
   constructor(
     private fb: UntypedFormBuilder,
+     private formservice: FormService,
     private http: HttpClient,
     private router: Router,
     private active: ActivatedRoute,
     private service: ApiService,
-    private messageService:MessageService
+    private messageService:MessageService,
+    private location:Location,
+     private dailog:MatDialog,
   ) {
     this.form = this.fb.group({
       ifsc_code: ["", Validators.required],
@@ -97,7 +114,12 @@ export class OnboardFormComponent implements OnInit {
       wcontract: ["",Validators.required],
       trainee_id: [""],
       designation: [""],
-      payrollArea:[''],
+      payrollArea:['', Validators.required],
+      costCenter: ['', Validators.required],
+      legacyNumberOne: [''],
+      legacyNumberTwo: [''],
+      // dojo training
+      dojoTraining: [''],
       plantcode: [sessionStorage.getItem("plantcode")],
       apln_slno: [""],
       category: ["",Validators.required],
@@ -106,10 +128,10 @@ export class OnboardFormComponent implements OnInit {
   values: any;
 
   ngOnInit(): void {
-    
+    console.log('DATA FROM APPLICATION', this.applicationNumber)
     this.form.get("bnum").setValue(this.active.snapshot.paramMap.get("id"));
     this.form.controls["bio_id"].setValue(false);
-    this.service.getonboard({apln_slno: this.active.snapshot.paramMap.get("id"),readonly: this.readonly,})
+    this.service.getonboard({apln_slno: this.active.snapshot.paramMap.get("id") || this.applicationNumber,readonly: this.readonly,})
       .subscribe(
         (response: any) => {
         // console.log('1');
@@ -118,7 +140,7 @@ export class OnboardFormComponent implements OnInit {
 
         // get payroll area for trainee
          this.getPayrollArea(response[0][0]?.plant_code);
-        console.log('Plant code',response[0][0]?.plant_code)
+        // console.log('Plant code',response[0][0]?.plant_code)
           this.setAge(response[0][0].birthdate);
           this.obj = response;
        //   console.log(response[0][0].doj);
@@ -138,6 +160,9 @@ export class OnboardFormComponent implements OnInit {
           // this.oprn = this.oprn.map((a: any) => a.oprn_desc);
           // this.cat = this.category.map((a: any) => a.categorynm);
         //  console.log(this.obj[0]);
+
+        // api call for geting roles data for 2nd approver
+          this.getRolesFor2ndApporver();
           this.created_dt= response[0][0].created_dt
           this.form.controls["ifsc_code"].setValue(this.basic[0]?.ifsc_code=='null'?'':this.basic[0]?.ifsc_code);
           this.form.controls["account_number"].setValue(
@@ -147,19 +172,49 @@ export class OnboardFormComponent implements OnInit {
           this.form.controls["apln_slno"].setValue(this.basic[0]?.apln_slno);
           this.fullname = this.basic[0]?.fullname;
           this.trainee_id = this.basic[0]?.trainee_idno;
-
+          //  this.form.controls["grade"].setValue(this.basic[0]?.emp_grade);
+            this.form.controls["department"].setValue(this.basic[0]?.dept_slno);
+            // if (this.readonly == true) {
+            //   this.getLineName(this.form.get("department").value);
+            //   this.getline_Role(this.form.get("department").value);
+            // }
+            this.form.controls["line"].setValue(this.basic[0]?.line_code?.toString());
+            this.form.controls["bnum"].setValue(this.basic[0]?.biometric_no);
+            this.form.controls["bio_id"].setValue(true);
+            this.form.controls["uan"].setValue(this.basic[0]?.uan_number);
+            this.form.controls["Role_Id"].setValue(this.basic[0]?.Role_Id);
+            this.form.controls["trainee_id"].setValue(this.basic[0]?.gen_id);
+            this.form.controls["reportingto"].setValue(this.basic[0]?.reporting_to);
+            // payroll area
+            this.form.controls["payrollArea"].setValue(this.basic[0]?.payrollArea);
+            // dojo training new extra fields
+            this.form.controls['dojoTraining']
+            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); // setting server response opposite value
+            this.form.controls['costCenter'].setValue(this.basic[0]?.cost_center);
+            this.form.controls['legacyNumberOne'].setValue(this.basic[0]?.legacy_no1);
+            this.form.controls['legacyNumberTwo'].setValue(this.basic[0]?.legacy_no2);
+            // mapping operation values to form value
+             this.form.controls["process_trained"].setValue(this.oprn.map((operation:any) => {
+               return operation.oprn_desc
+             }));
+            // 
+            this.form.controls["wcontract"].setValue("DIRECT");
+            this.form.controls["doj"].setValue(this.basic[0]?.doj);
+           
+          // before trainee onboard
           if (this.readonly == false) {
             this.form.controls["grade"].disable();
-            this.form.controls["active_status"].disable();
+            // this.form.controls["active_status"].disable();
             this.form.controls["category"].setValue(
               this.basic[0]?.apprentice_type
             );
             if(this.basic[0]?.apprentice_type==null){
                 // console.log('')
-            }else{
-              this.gen_id(this.basic[0]?.apprentice_type)
-            // this.form.controls["category"].disable();
             }
+            // else{
+            //   this.gen_id(this.basic[0]?.apprentice_type)
+            // // this.form.controls["category"].disable();
+            // }
             
           }
 
@@ -170,38 +225,39 @@ export class OnboardFormComponent implements OnInit {
             this.calMin_Max_DOL(this.lockDate)
             if(this.DOJ<this.lockDate){
               //this.minDate=this.lockDate
-              this.minDateCal=     moment(this.lockDate).format('yyyy-MM-DD')
+              this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD')
             }
           })
-
+// before trainee appointed
           if (this.readonly == true) {
+            this.getRolesFor2ndApporver()
             this.form.controls["grade"].setValue(this.basic[0]?.emp_grade);
             this.form.controls["department"].setValue(this.basic[0]?.dept_slno);
             // if (this.readonly == true) {
             //   this.getLineName(this.form.get("department").value);
             //   this.getline_Role(this.form.get("department").value);
             // }
-            this.form.controls["line"].setValue(this.basic[0]?.line_code);
-            this.form.controls["process_trained"].setValue(
-              this.oprn[0]?.oprn_desc
-            );
+            this.form.controls["line"].setValue(this.basic[0]?.line_code?.toString());
+            this.form.controls["process_trained"].setValue(this.oprn[0]?.oprn_desc);
             this.form.controls["bnum"].setValue(this.basic[0]?.biometric_no);
             this.form.controls["bio_id"].setValue(true);
             this.form.controls["uan"].setValue(this.basic[0]?.uan_number);
             this.form.controls["Role_Id"].setValue(this.basic[0]?.Role_Id);
             this.form.controls["trainee_id"].setValue(this.basic[0]?.gen_id);
-            this.form.controls["reportingto"].setValue(
-              this.basic[0]?.reporting_to
-            );
-            // payroll area
+            this.form.controls["reportingto"].setValue(this.basic[0]?.reporting_to);
+              // payroll area
             this.form.controls["payrollArea"].setValue(
               this.basic[0]?.payrollArea
             );
+            // dojo training new extra fields
+            this.form.controls['dojoTraining']
+            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); // setting server response opposite value
+            this.form.controls['costCenter'].setValue(this.basic[0]?.cost_center);
+            this.form.controls['legacyNumberOne'].setValue(this.basic[0]?.legacy_no1);
+            this.form.controls['legacyNumberTwo'].setValue(this.basic[0]?.legacy_no2);
+
             this.form.controls["wcontract"].setValue("DIRECT");
             this.form.controls["doj"].setValue(this.basic[0]?.doj);
-            this.form.controls["active_status"].setValue(
-              this.readonly ? "ACTIVE" : "INACTIVE"
-            );
             if (this.form.controls["active_status"].value == "ACTIVE") {
               this.form.controls["rfr"].disable();
               this.form.controls["dol"].disable();
@@ -249,12 +305,17 @@ export class OnboardFormComponent implements OnInit {
     console.log(this.minDate,this.today)   
   }
 
+  // goBack
+  goBack(){
+    this.location.back();
+  }
+
   // get payroll area by plant code
   getPayrollArea(plantcode:any){
     this.service.getPayrollAreaByPlantcode(plantcode).subscribe({
       next: (response:any) => {
-        if(response.message){
-          this.messageService.add({severity:'info',summary:response.message})
+        if(response?.message){
+          this.messageService.add({severity:'info',summary:response?.message})
         }
         this.payrollArea = response;
         console.log(response);
@@ -314,13 +375,12 @@ export class OnboardFormComponent implements OnInit {
     else this.true = false;
   }
 
-  submit() {
+  // onboard form submit
+  submit(isFirstApprover:any) {
   //   if(this.form.controls["doj"].value<this.lockDate && this.readonly == false){
   //     this.messageService.add({severity:'warn',summary:'`DOJ should be within current payroll period'})
   //     return
   //   }
-
- 
 
   //  if(this.form.controls["doj"].value>this.today  && this.readonly == false ){
   //   this.messageService.add({severity:'warn',summary:'DOJ is cannot be future date'})
@@ -337,13 +397,20 @@ export class OnboardFormComponent implements OnInit {
       this.form.get("grade").enable();
       this.form.get('category').enable();
       this.form.controls["doj"].setValue(moment(this.form.value.doj).format('YYYY-MM-DD'));
+      // setting dojo training value to actual value
+      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
       // logging onboard form data
       console.log('ONBOARD DATA',this.form.value);
+      // trainee onboard api call
       this.service.onboard_form(this.form.value).subscribe({
         next: (response: any) => {
         //  console.log(response);
           if (response) {
-            this.messageService.add({severity:'info',summary:response})
+            if(isFirstApprover){
+              this.messageService.add({severity:'info',summary:'Application Send For Approval'});
+            }else{
+             this.messageService.add({severity:'info',summary:response})
+            }
             if (this.setting == 1) {
               this.form.controls["trainee_id"].setValue();
               this.service
@@ -359,7 +426,11 @@ export class OnboardFormComponent implements OnInit {
                   error:(err) => this.messageService.add({severity:'error',summary:err.message})
                 });
             }
-            this.router.navigate(["/rml/new_joiners/onboard"]);
+            if(isFirstApprover){
+              this.router.navigate(["/rml/new_joiners/trainee-application-status"])
+            }else{
+              this.router.navigate(["/rml/new_joiners/onboard"]);
+            }
           }
         },
         error: (err) => {
@@ -532,5 +603,75 @@ export class OnboardFormComponent implements OnInit {
       this.form.controls["category"].value,
     ]);
     window.open(url.toString(), "_blank");
+  }
+
+  // send for approval by hr function
+  sendForApprovalByHR(){
+    const submitData = {
+      mobile:this.applicationData.mobile_no1,
+      company:this.applicationData.company_code,
+    }
+    // console.log(this.applicationData)
+    // dojo training handling api
+    this.formservice.DojoTrainingProcess({
+      cat: this.form.value.category,
+      mob: this.applicationData.mobile_no1,
+      cont: this.applicationData.cont_id,
+      Bodhi_training: this.form.value.dojoTraining,
+      dept_Id: this.form.value.department,
+      Role_id: this.form.value.Role_Id,
+    }).subscribe({
+      next: (response:any) => {
+       console.log('category submitted',response);
+      // HR APPROVAL API CALL
+       this.formservice.submitted(submitData);
+      // onboard form submit api call 
+      this.submit(true)
+      },
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.response})
+      }
+     })
+  }
+
+  // final hr rejection api
+  openDailog(){
+    const rejectDailog=this.dailog.open(RejectComponent,{disableClose:false,
+    width:'600px',
+    })
+    rejectDailog.afterClosed().subscribe( data =>{
+      if(data){
+        this.rejected(data)
+      }
+    })
+  }
+
+  rejected(data:any) {
+    const rejectData = {
+      mobile: this.applicationData?.mobile_no1   || '',
+      company:this.applicationData?.company_code || '',
+      reason:data
+    }
+    this.formservice.rejected(rejectData);
+    this.messageService.add({severity:'info',summary:'Application has been rejected'})
+    // window.alert("Application has been rejected");
+    this.router.navigate(["rml/new_joiners/hr-approval"]);
+  }
+
+  // get Roles for 2nd approver
+  getRolesFor2ndApporver(){
+    // api call for geting roles data for 2nd approver
+         if(this.disbleApproveBtn || this.basic[0].apln_status == 'APPOINTED'){
+          this.service.getRoleName({dept_slno: this.basic[0].dept_slno}).subscribe({
+            next: (response:any) => {
+              this.Role = response[0];
+            },
+            error: (error) => {
+              console.log(error);
+              this.messageService.add({severity:'error',summary:error.message})
+            }
+          })
+    }
   }
 }

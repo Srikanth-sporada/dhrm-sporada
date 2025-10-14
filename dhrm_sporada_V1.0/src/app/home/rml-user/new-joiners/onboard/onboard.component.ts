@@ -21,7 +21,8 @@ export class OnboardComponent implements OnInit {
   userDetails:any;
   statusOption = [
     {value:'APPOINTED',label:'APPOINTED'},
-    {value:'TRAINING COMPLETED',label:'TRAINING COMPLETED'}
+    {value:'IN TRAINING',label:'IN TRAINING'},
+    {value:'TRAINING COMPLETED',label:'TRAINING COMPLETED'},
   ]
   someSubscription:any
   filterinfo:any = [

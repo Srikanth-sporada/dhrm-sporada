@@ -117,7 +117,7 @@ export class TraineeApplicationComponent implements OnInit {
                   ]);
                 },
               });
-          } else if (this.errmsg.status == "incomplete") {
+          } else if (this.errmsg.status == "PENDING") {
             this.service
               .getHr({ username: "newuser", user: "emp2" })
               .subscribe({

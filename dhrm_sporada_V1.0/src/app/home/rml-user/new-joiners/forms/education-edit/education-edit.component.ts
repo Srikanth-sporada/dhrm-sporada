@@ -141,24 +141,21 @@ eduData = [
   }  
   submit(){
     this.sendData()
-    if(this.eduData[0].school == '' || this.eduData[0].percentage == '' || this.eduData[0].year == '' || this.eduData[0].passed == '' || this.eduData[0].department == '' || this.eduData[0].certificatenumber == '' || this.eduData[0].certificatedate == '')
-    {
-        this.flag = true
-    }
-    else
-    {
-      console.log('education', this.eduData);
-
-      console.log("good");
-
-      this.formservice.submitedu()
+    // if(this.eduData[0].school == '' || this.eduData[0].percentage == '' || this.eduData[0].year == '' || this.eduData[0].passed == '' || this.eduData[0].department == '' || this.eduData[0].certificatenumber == '' || this.eduData[0].certificatedate == '')
+    // {
+    //     this.flag = true
+    // }
+    // else
+    // {
+    //   console.log('education', this.eduData);
+    //   console.log("good");
+    // }
+ this.formservice.submitedu()
       this.state = true
       setTimeout(() => {
           this.state = false
       }, 2000);
-    }
-
-    }
+}
 
 sendData(){
   this.formservice.edu = this.eduData

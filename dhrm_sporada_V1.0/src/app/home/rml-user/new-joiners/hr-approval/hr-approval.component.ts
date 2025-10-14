@@ -25,10 +25,10 @@ export class HrApprovalComponent implements OnInit {
   from:any
     // status options
   statusOption=[
-  { value: "NEW INCOMPLETE", label: "NEW INCOMPLETE" },
+  // { value: "NEW INCOMPLETE", label: "NEW INCOMPLETE" },
   { value: "pending", label: "PENDING" },
   { value: "submitted", label: "SUBMITTED" },
-  { value: "approved", label: "APPROVED" },
+  // { value: "approved", label: "APPROVED" },
   { value: "Rejected", label: "REJECTED" },
   { value: "appointed", label: "APPOINTED" },
   { value: "relieved", label: "RELIEVED" }

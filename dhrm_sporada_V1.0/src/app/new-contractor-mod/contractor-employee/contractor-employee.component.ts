@@ -402,7 +402,10 @@ items: MenuItem[] = [
           disabled: false,
         },
       ],
-      payrollArea: ['',Validators.required]
+      payrollArea: ['',Validators.required],
+      costCenter: ['',Validators.required],
+      legacyNumberOne: [''],
+      legacyNumberTwo:[''],
     });
     // contract employee payscal
     this.contractEmpPayscaleDetails = this.fb.group({
@@ -1408,7 +1411,7 @@ items: MenuItem[] = [
     this.contractEmpOtherDetails.controls["village"].setValue(
       data.village_name
     );
-
+// contract employee HR Details
     this.contractEmpDetails.controls["empId"].setValue(data.gen_id);
     this.contractEmpDetails.controls["bioMiD"].setValue(data.biometric_no);
     this.contractEmpDetails.controls["DorInD"].setValue(data.Category_Name );
@@ -1418,6 +1421,11 @@ items: MenuItem[] = [
     this.contractEmpDetails.controls["Role"].setValue(data.Role_Id);
     this.contractEmpDetails.controls["reToPerson"].setValue(data.reporting_to); 
     this.contractEmpDetails.controls["DOJ"].setValue(data.doj);
+    // new fields
+    this.contractEmpDetails.controls['payrollArea'].setValue(data?.payrollArea);
+    this.contractEmpDetails.controls['costCenter'].setValue(data?.cost_center);
+    this.contractEmpDetails.controls['legacyNumberOne'].setValue(data?.legacy_no1);
+    this.contractEmpDetails.controls['legacyNumberTwo'].setValue(data?.legacy_no2);
 
     this.contractEmpReleavingDetails.controls["DOE"]?.setValue(data.dol);
     // this.contractEmpReleavingDetails.controls['DOE']?.setValue(dolValue)
@@ -1573,11 +1581,15 @@ items: MenuItem[] = [
 
       this.contractorEmployee.workcontract =
         this.contractEmpDetails.value.DorInD;
-        // payroll area mapping for contract employee
-      this.contractorEmployee.payrollArea = this.contractEmpDetails.value.payrollArea
+        // contract empoyee HR APPROVER details
       this.contractorEmployee.dept_slno = this.contractEmpDetails.value.dept;
       this.contractorEmployee.line_code = this.contractEmpDetails.value.line;
       this.contractorEmployee.Role_ID = this.contractEmpDetails.value.Role;
+      // new fields
+      this.contractorEmployee.payrollArea = this.contractEmpDetails.value.payrollArea;
+      this.contractorEmployee.costCenter = this.contractEmpDetails.value.costCenter;
+      this.contractorEmployee.legacyNumberOne = this.contractEmpDetails.value.legacyNumberOne;
+      this.contractorEmployee.legacyNumberTwo = this.contractEmpDetails.value.legacyNumberTwo;
       this.contractorEmployee.reporting_to =
         this.contractEmpDetails.value.reToPerson;
       this.contractorEmployee.doj = this.formatDate(
@@ -1753,8 +1765,14 @@ items: MenuItem[] = [
     console.log("ApproveByHrAppr");
     // gen id generation for contract employee
     const genId = "C" + this.contractEmpBasicDetails.value.apln_slno;
-    this.contractorEmployee.apln_slno =
-      this.contractEmpBasicDetails.value.apln_slno;
+    
+    // new extra fields
+      this.contractorEmployee.payrollArea = this.contractEmpDetails.value.payrollArea;
+      this.contractorEmployee.costCenter = this.contractEmpDetails.value.costCenter;
+      this.contractorEmployee.legacyNumberOne = this.contractEmpDetails.value.legacyNumberOne;
+      this.contractorEmployee.legacyNumberTwo = this.contractEmpDetails.value.legacyNumberTwo;
+
+      this.contractorEmployee.apln_slno = this.contractEmpBasicDetails.value.apln_slno;
     // set employee form value from gen id
     this.contractorEmployee.gen_id = genId;
     this.contractorEmployee.biometric_no =

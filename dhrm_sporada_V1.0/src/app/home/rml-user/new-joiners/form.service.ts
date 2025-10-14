@@ -167,9 +167,11 @@ submitted(uniqueId: any){
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)
   .subscribe({
     next: (response) =>{ 
-      console.log(response);
+      console.log("HR SUBMITTED",response);
     },
-    error: (error) => console.log(error)
+    error: (error) => {
+      console.log(error);
+    }
     ,
   })
 }
@@ -260,12 +262,23 @@ submitCategory(Bodhi_training: any, dept_Id: any, Role_id: any) {
     Role_id: Role_id
   });
 }
+DojoTrainingProcess(trainingData:any){
+  return this.http.post(this.url + '/hrOperation/submitCategory', trainingData);
+}
 //  .subscribe(reponse=>{
 //   })
 //}
 submitCategory1(Bodhi_training:any,dept_Id:any,Role_id:any){
- return this.http.post(this.url+`/hrOperation/submitCategory1`,{cat:this.category,mob:this.mobile,cont:this.cont_id ,Bodhi_training:Bodhi_training,dept_Id:dept_Id,Role_id:Role_id })
- .subscribe(reponse=>{
+ return this.http.post(this.url+`/hrOperation/submitCategory1`,
+  {
+    cat:this.category,
+    mob:this.mobile,
+    cont:this.cont_id,
+    Bodhi_training:Bodhi_training,
+    dept_Id:dept_Id,
+    Role_id:Role_id 
+  })
+ .subscribe( (reponse) =>{
   })
 }
 

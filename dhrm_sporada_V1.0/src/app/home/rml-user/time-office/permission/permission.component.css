@@ -146,3 +146,7 @@ th {
     justify-content: flex-start;
     gap: 20px;
   }
+
+::ng-deep .mat-checkbox-background {
+    background-color: #2563eb !important;
+}

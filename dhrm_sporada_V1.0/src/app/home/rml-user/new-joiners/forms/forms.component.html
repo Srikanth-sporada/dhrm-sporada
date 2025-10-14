@@ -19,8 +19,9 @@
     >
       {{ userDetails }}
     </h1>
+     <img *ngIf="ishr == 'undefined'" src="assets/rane.png" class="img" />
   </div>
-  <img *ngIf="ishr == 'undefined'" src="assets/rane.png" class="img" />
+  <!-- <img *ngIf="ishr == 'undefined'" src="assets/rane.png" class="img" /> -->
   <!-- basic details form -->
   <ng-container *ngIf="Load">
     <app-basic
@@ -76,25 +77,48 @@
   </ng-container>
   <hr />
   <!-- trainee category -->
-  <app-category (emit)="category_event($event)"></app-category>
+  <app-category (emit)="category_event($event)" *ngIf="showCategory"></app-category>
+
+  <!-- new joiner onboard form -->
+   <app-onboard-form 
+     [applicationNumber]="details[0].apln_slno"
+     [applicationStatus]="details[0].apln_status"
+     [applicationData]="details[0]" 
+     *ngIf="showOnboard">
+
+   </app-onboard-form>
 
   <p *ngIf="apln_status=='REJECTED'" style="margin-left: 15px;color: red;">Application Rejection Reason:<span style="color: black;">{{details[0].remarks_rejd}}</span></p>
 
-  <div class="row">
+  <!-- show only if apprentice type is CL -->
+  <div class="row" *ngIf="ishr== 'undefined' || showCategory ? true : false">
     <div class="col-sm-6">
       <div class="btn1">
         <p-confirmDialog ></p-confirmDialog>
+        <!-- send for approval btn show if only for CL supervison application -->
         <button
           pButton
-          [label]="submit"
+          *ngIf="ishr !== 'undefined'"
+          label="Send For Approval"
           icon="pi pi-send"
           type="submit"
           style="margin-bottom: auto"
           class="mx-4"
-          [disabled]="message"
           (click)="allSave($event)"
         >
         </button>
+        <!-- trainee submit btn -->
+          <button
+          pButton
+          *ngIf="ishr == 'undefined'"
+          label="Sumbit"
+          icon="pi pi-send"
+          type="submit"
+          style="margin-bottom: auto"
+          class="mx-4"
+          (click)="submitTraineeApplication($event)"
+        >
+         </button>
         <button
           pButton
           label="Back"
@@ -112,7 +136,7 @@
        label="Print ID"
        label="pi pi-id-card"
        class="bg-purple-600 border-none outline-none"
-        *ngIf="this.status.status == 'APPROVED'"
+        *ngIf="this.status.status == 'APPOINTED'"
         [routerLink]="[
           '/idcard',
           this.status.status,

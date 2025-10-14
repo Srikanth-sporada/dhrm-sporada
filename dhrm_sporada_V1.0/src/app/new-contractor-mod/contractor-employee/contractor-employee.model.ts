@@ -1,7 +1,11 @@
 export class ContractorEmployee{
     apln_slno:number
     plant_code:string
+    // new fields
     payrollArea:any
+    costCenter:any
+    legacyNumberOne:any
+    legacyNumberTwo:any
     Contractor_ID:string
     fullname:string
     fathername:string
@@ -14,7 +18,7 @@ export class ContractorEmployee{
     religion:string
     approved_dt:string
     photoName:string
-Caste:any
+    Caste:any
     permanent_address:string
     city:string
     state_name:string

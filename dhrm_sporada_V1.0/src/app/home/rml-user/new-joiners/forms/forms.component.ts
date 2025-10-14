@@ -39,7 +39,7 @@ export class FormsComponent implements OnInit, OnDestroy {
   flag: any = true;
   apln_status: any = "";
   flag_submit_all: any = this.formservice.flag_submit_all;
-  message: any = true;
+  message: any = false;
   message_from_basic: any;
   message_from_bank: any;
   message_from_edu: any;
@@ -56,6 +56,9 @@ export class FormsComponent implements OnInit, OnDestroy {
   Load: any = false;
   all:any;
   userDetails:any;
+  // show onboard form
+  showOnboard:Boolean = true;
+  showCategory:Boolean = false;
   constructor(
     private formservice: FormService,
     private service: ApiService,
@@ -82,11 +85,26 @@ export class FormsComponent implements OnInit, OnDestroy {
     this.formservice.getdatabasic(this.uniqueId).subscribe((data: any) => {
       this.details = data;
       this.Load = true;
+      
+      this.ishr = sessionStorage.getItem("ishr") || '' ;
 
-      this.ishr = sessionStorage.getItem("ishr")|| '' ;
-
+      /** 
+       * @var showOnboard setting if application is filled by supervisor false
+       * @var details[0] has trainee application data
+       * @var showCategory if application is filled by supervisor true to show category
+       * **/
+      if(this.details[0]?.apprentice_type == 'CL' && this.details[0]?.cont_id){
+         this.showOnboard = false;
+         this.showCategory = true;
+      }
+      /**
+       *  @var showOnboard 
+       * 1. setting false if trainee fills tha application
+       * @var ishr if ishr is undefined the application is trainee
+       * **/
       if (this.ishr == "undefined"){
         this.submit = "SUBMIT" 
+        this.showOnboard = false;
         this.message_from_category=false} 
       else {
         this.message_from_category=true
@@ -107,6 +125,7 @@ export class FormsComponent implements OnInit, OnDestroy {
         this.flag = true;
       else this.flag = false;
     });
+    console.log('MESSAGE',this.message)
   }
 
   category_event(data:any){
@@ -125,10 +144,13 @@ console.log('data.category',data.category);
       this.message_from_edu == false &&
       this.message_from_fam == false &&
       this.message_from_emer == false &&
-      this.message_from_choose == false && this.dept_Id  && this.Role_id && this.Bodhi_training
-    )
+      this.dept_Id  && this.Role_id && this.Bodhi_training
+    ){
       this.message = false;
-    else this.message = true;
+    }
+    else {
+      this.message = true;
+    }
   }
   
   eventchanger_basic(data: any) {
@@ -280,7 +302,7 @@ console.log('data.category',data.category);
         
         // this.formservice.submitCategory(this.Bodhi_training,this.dept_Id,this.Role_id)
 
-        this.formservice.submitCategory(this.Bodhi_training,this.dept_Id,this.Role_id) .subscribe((res:any)=>{
+        this.formservice.submitCategory(this.Bodhi_training,this.dept_Id,this.Role_id).subscribe((res:any)=>{
           console.log('Data saved successfully');
           this.submitted();
       
@@ -302,36 +324,6 @@ console.log('data.category',data.category);
             // alert(`An unexpected error occurred. Status code: ${error.status}`);
           }
         })
-
-
-        // subscribe(
-        //   (response:any) => {
-        //     console.log('Data saved successfully');
-        //     // this.resetForms();
-         
-
-        //     this.uniqueId.mobile = this.active.snapshot.paramMap.get("mobile_no1");
-        //     this.uniqueId.company = this.active.snapshot.paramMap.get("company");
-      
-        //     console.log("ishr :", this.ishr, "ishrappr :", this.ishrappr);
-      
-        //     this.submitted();
-      
-        //     setTimeout(() => {
-        //       this.mainalert();
-        //     }, 1000);
-        //   },
-        //   (error:any) => {
-        //     console.error('Error saving data', error);
-        //     if (error.status === 400) {
-        //       console.log(error);
-              
-        //       alert(error.error.message);
-        //     } else {
-        //       alert(`An unexpected error occurred. Status code: ${error.status}`);
-        //     }
-        //   }
-        // );
       } 
 
 
@@ -372,7 +364,7 @@ console.log('data.category',data.category);
     this.ishr = sessionStorage.getItem("ishr");
 
     this.uniqueId.mobile = this.active.snapshot.paramMap.get("mobile_no1");
-    this.uniqueId.company = this.active.snapshot.paramMap.get("company");
+    this.uniqueId.company = this.details[0]?.company_code;
 
     console.log(this.uniqueId);
     if (this.ishr == "true" && this.apln_status == "PENDING") {
@@ -405,4 +397,57 @@ console.log('data.category',data.category);
     this.uniqueId.mobile = this.active.snapshot.paramMap.get("mobile_no1");
     this.status.status = this.active.snapshot.paramMap.get("apln_status");
   }
+
+  // trainee submit function
+  submitTraineeApplication(event:Event){
+     this.formservice.submitbank();
+      console.log(this.formservice.bank);
+
+      this.formservice.submitbasic();
+      console.log(this.formservice.basic);
+
+      this.formservice.submitedu();
+      console.log(this.formservice.edu);
+
+      this.formservice.submitemer();
+      console.log(this.formservice.emer);
+
+      this.formservice.submitfamily();
+      console.log(this.formservice.fam);
+
+      this.formservice.submitother();
+      console.log(this.formservice.other);
+
+      this.formservice.submitprev();
+      console.log(this.formservice.prev);
+
+      this.formservice.sumbitlang();
+     
+      console.log('this.ishr',this.ishr);
+      console.log('type.ishr',typeof(this.ishr));
+      
+      if (this.ishr !== 'true' ){
+        // this.messageService.add({severity:'info',summary: "Your application " + this.apln_no +"has been submitted. \n Contact HR for more information"});
+
+        // window.alert(
+        //   "Your application " +
+        //     this.apln_no +
+        //     " has been submitted. \n Contact HR for more information"
+        // );
+
+        // confirmation service
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: "Your application " + this.apln_no + " has been submitted. \n Contact HR for more information",
+            header: 'Confirmation',
+            rejectVisible:false,
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.router.navigate(["/"]);
+            }
+        });
+        // this.router.navigate(["/"]);
+      }
+  }
+
 }

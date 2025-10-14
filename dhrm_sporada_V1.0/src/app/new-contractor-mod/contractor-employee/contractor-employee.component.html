@@ -234,7 +234,7 @@
               </form>
             </mat-step>
         <!-- Address Details -->
-          <mat-step   *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' " required label="Address Details" active [stepControl]="contractEmpOtherDetails" >
+          <mat-step   *ngIf = "ishr == 'true' || isadmin == 'true' || issupervisor=='true' || ishrappr=='true' " required label="Address Details" active [stepControl]="contractEmpOtherDetails" >
           <!-- <mat-step   required label="Address Details" active [stepControl]="contractEmpOtherDetails" > -->
           <form [formGroup]="contractEmpOtherDetails">
                 <!-- first row -->
@@ -291,6 +291,21 @@
                 </div>
                 <!--second row -->
                 <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- permanent Address -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">location_on</mat-icon>
+                    Permanent Address
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      placeholder="Enter Permanent Address"
+                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="address"
+                    />
+                  </div>
                    <!-- pincode -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -343,23 +358,14 @@
                     />
                   </div>
                 </div>
-                <!-- third row -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                  <!-- permanent Address -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">location_on</mat-icon>
-                    Permanent Address
-                    </label><br />
-                  <input
-                      pInputText
-                      type="text"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter Permanent Address"
-                      [readonly]="status=== 'SUBMITTED' || status === 'APPOINTED'" formControlName="address"
-                    />
+                <!-- same address checkbox -->
+                  <div class="w-full mx-2 mt-2">
+                    <mat-checkbox formControlName="addressCheckBox" (change)="copyPermanentAddress($event)"  class="example-margin !font-poppins">
+                      Same As Permanent Address
+                    </mat-checkbox>
                   </div>
+                <!-- third row -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-2">
                   <!-- temporary address -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
@@ -394,15 +400,6 @@
                         [useGrouping]="false" 
                       ></p-inputNumber>
                   </div>
-                </div>
-                <!-- same address checkbox -->
-                  <div class="w-full mx-2 mt-2">
-                    <mat-checkbox formControlName="addressCheckBox" (change)="copyPermanentAddress($event)"  class="example-margin !font-poppins">
-                      Same As Permanent Address
-                    </mat-checkbox>
-                  </div>
-                <!-- row four -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-2">
                   <!-- city -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
@@ -436,6 +433,10 @@
                       [readOnly]="true"
                     />
                   </div>
+                </div>
+                
+                <!-- row five -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
                   <!-- blood group -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -451,9 +452,6 @@
                     placeholder="Select Blood Group">
                   </p-dropdown>
                   </div>
-                </div>
-                <!-- row five -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
                    <!-- PF UAN Number -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -488,7 +486,10 @@
                       formControlName="ESI_No"
                     />
                   </div>
-                  <!-- transport facility -->
+                </div>
+                <!-- row six -->
+                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- transport facility -->
                   <div class="w-full mx-2">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
                     <mat-icon class="text-2xl text-blue-600 h-0 w-0">commute</mat-icon>
@@ -499,9 +500,6 @@
                     <mat-radio-button value="No" class="ml-4">No</mat-radio-button>
                   </mat-radio-group>
                   </div>
-                </div>
-                <!-- row six -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
                    <!-- transporter -->
                   <div class="w-full mx-2" *ngIf="contractEmpOtherDetails.get('Van_Eligible').value === 'Yes'">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -749,6 +747,57 @@
                   </p-dropdown>
                   </div>
                 </div>
+                 <!-- row four -->
+                <div class="flex items-center justify-start flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                   <!-- cost center -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">adjust</mat-icon>
+                  Cost Center
+                  </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="costCenter"
+                      placeholder="Enter Cost Center"
+                      [maxLength]="12" 
+                    />
+                  </div>
+                   <!-- legacy number one -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+                     Legacy Number One
+                    </label><br />
+                  <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      formControlName="legacyNumberOne"
+                      [maxLength]="12"
+                      placeholder="Enter Legacy Number One"
+                      />
+                  </div>
+                  <!-- Legacy Number Two -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_2</mat-icon>
+                   Legacy Number Two
+                  </label><br />
+                 <input
+                      pInputText
+                      type="text"
+                      styleClass="w-full"
+                      id="name"
+                      [maxLength]="12"
+                      formControlName="legacyNumberTwo"
+                      placeholder="Enter Legacy Number Two"
+                      />
+                  </div>
+                </div>
           <!-- action buttons -->
               <div style="display: flex; justify-content: space-around ;padding-top:3em">
                 <!-- reset -->
@@ -781,7 +830,7 @@
                 </button>
                 <!-- submit approval -->
                 <button 
-                 *ngIf="ishr== 'true' && showedit " 
+                 *ngIf="ishr== 'true' && showedit" 
                  (click)="submitEmployeeDetails()"  
                  [disabled]="status === 'RELIEVED' || status === 'APPOINTED'"
                  class="!bg-blue-600 !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"

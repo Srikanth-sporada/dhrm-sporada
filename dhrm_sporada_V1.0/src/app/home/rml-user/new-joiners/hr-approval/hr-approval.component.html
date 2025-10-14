@@ -99,8 +99,8 @@
               class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
             >
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.created_dt.split("T")[0] | date : "dd-MM-yyyy" }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.fullname }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.fathername }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.fullname }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md ">{{ i.fathername }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.birthdate | date : "dd-MM-yyyy" }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno }}</td>
@@ -119,7 +119,7 @@
                     ]"
                     *ngIf="i.apln_status == 'SUBMITTED'"
                   >
-                    <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
+                    <mat-icon class="text-blue-600 text-[20px]">published_with_changes</mat-icon>
                   </button>
                   <span *ngIf="i.apln_status !== 'SUBMITTED'">-</span>
                 </div>

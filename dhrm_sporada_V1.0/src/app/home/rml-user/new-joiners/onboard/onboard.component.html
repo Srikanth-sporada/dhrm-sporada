@@ -104,6 +104,7 @@
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Date</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'TRAINING COMPLETED'">Application No</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'APPOINTED'">Gen ID</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'IN TRAINING'">Gen ID</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0">Father Name</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
@@ -111,11 +112,12 @@
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Contact</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">ID</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Status</th>
                   <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
                 </tr>
               </thead>
               <!-- table body for appointed  | dateRangeFilter : from : to : 'doj'-->
-              <tbody *ngIf="this.form.get('select').value == 'APPOINTED'">
+              <tbody *ngIf="this.form.get('select').value == 'APPOINTED' || this.form.get('select').value == 'IN TRAINING'">
                 <tr
                   *ngFor="
                     let i of filterinfo
@@ -131,7 +133,7 @@
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPROVED'">
                     {{ i.created_dt.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.gen_id == null ? "-" : i.gen_id }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.gen_id == null ? "-" : i.gen_id }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md">{{ i.fathername }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.apprentice_type }}</td>
@@ -140,6 +142,7 @@
                   <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno }}</td>
                   <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td> -->
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status }}</td>
+                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.test_status == 'in_training' ? 'IN TRAINING' : i.test_status}}</td>
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
                     <div>
                       <button
@@ -162,7 +165,6 @@
                 <tr
                   *ngFor="
                     let i of filterinfo
-                      | dateRangeFilter : from : to : 'created_dt'
                       | filter : searchText
                       let idx = index
                   "
@@ -183,6 +185,7 @@
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.trainee_idno }}</td>
                   <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td> -->
+                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.test_status }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status }}</td>
                   <!-- action buttons -->
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
@@ -194,7 +197,7 @@
                           i.apln_status
                         ]"
                       >
-                        <mat-icon class="text-blue-600 text-[20px]">published_with_changes</mat-icon>
+                        <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
                       </button>
                     </div>
                   </td>

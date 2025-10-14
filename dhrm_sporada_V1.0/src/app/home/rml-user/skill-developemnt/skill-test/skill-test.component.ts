@@ -3,6 +3,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/home/api.service';
 import { Router } from '@angular/router';
 import { environment } from "src/environments/environment.prod";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-skill-test',
@@ -28,11 +29,40 @@ export class SkillTestComponent implements OnInit {
   paperData: any = [];
   photo: any;
   photoLink: any= environment.path;
-
+  all:any;
+  userDetails:any;
   // Flag to control the display of the self-learning button
   showSelfLearningButton: boolean = false;
+ skillLevelOptions = [
+  {
+    label: 'Level 2',
+    value: '2',
+    ngIf: 'selectedOperation && (getSkillLevel(0) || selectedSkill?.oprn_trained == null || selectedSkill?.oprn_trained === undefined)'
+  },
+  {
+    label: 'Level 2',
+    value: '2',
+    ngIf: 'selectedOperation && getSkillLevel(1)'
+  },
+  {
+    label: 'Level 3',
+    value: '3',
+    ngIf: 'selectedOperation && getSkillLevel(2)'
+  },
+  {
+    label: 'Level 4',
+    value: '4',
+    ngIf: 'selectedOperation && getSkillLevel(3)'
+  },
+  {
+    label: 'No options',
+    value: null,
+    ngIf: 'selectedOperation && getSkillLevel(4)',
+    disabled: true
+  }
+];
 
-  constructor(private service: ApiService, private fb: UntypedFormBuilder, private router: Router) {
+  constructor(private service: ApiService, private fb: UntypedFormBuilder, private router: Router, private messageService:MessageService) {
     this.form = this.fb.group({
       genid: [sessionStorage.getItem('user_name')],
       new_skill: [''],
@@ -41,6 +71,12 @@ export class SkillTestComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // user information
+     let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.fullname.toUpperCase()+`(${this.all.gen_id})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     // Initialize session variables
     this.username = sessionStorage.getItem('emp_name');
     this.department = sessionStorage.getItem('dept_name');
@@ -113,7 +149,7 @@ export class SkillTestComponent implements OnInit {
     console.log('Selected Operation Value:', this.selectedOperation);
 
     // Find the selected operation from the operationsData
-    this.selectedSkill = this.operationsData.find((item) => {
+    this.selectedSkill = this.operationsData.find((item:any) => {
       return item.oprn_desc === this.selectedOperation;  // Compare based on operation description
     });
 

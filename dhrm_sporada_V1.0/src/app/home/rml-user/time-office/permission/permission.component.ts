@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import {ConfirmDialogComponent} from 'src/app/new-contractor-mod/confirm-dialog/confirm-dialog.component'
 import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component';
 import { MessageService } from 'primeng/api';
-
 import { from } from 'rxjs';
 import * as moment from 'moment';
 @Component({
@@ -590,11 +589,11 @@ this.second=false
         this.openAlertDialog("Please select Leave Type", 'error');
         return;
       }
-   else if (!this.fromdate || this.fromdate.trim() === '') {
+   else if (!this.fromdate || this.fromdate === '') {
         this.openAlertDialog("Please select the  from date", 'error');
         return;
       }
-      else if (!this.todate || this.todate.trim() === '') {
+      else if (!this.todate || this.todate === '') {
         this.openAlertDialog("Please select the To date", 'error');
         return;
       }

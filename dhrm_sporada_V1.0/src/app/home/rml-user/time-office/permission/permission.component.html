@@ -271,123 +271,169 @@
             </ng-template>
              <!-- content -->
             <ng-template pTemplate="content">
-              <div class="flex-container">
-    <div class="form1">
-      <mat-form-field appearance="outline">
-        <mat-label>Leave Type</mat-label>
-        <mat-select [(ngModel)]="leave_type" name="selectedOption"  (ngModelChange)="checkleaveVerify()"  >
-          <mat-option *ngFor="let option of optr_leave_eligibilty" [value]="option">
-            {{ option.Leave_Type }}
-          </mat-option>
-       
-        </mat-select>
-      </mat-form-field>
+              <!-- permission date select -->
+                    <div>
+                      <!-- actions -->
+                    <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+                      <!-- action header -->
+                        <div class="flex item-center justify-between">
+                          <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+                            Actions <mat-icon>call_to_action</mat-icon>
+                          </h1>
+                        </div>
+                      <div>
+                      <!-- action row one -->
+                        <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+                          <!-- leave type -->
+                        <div class="w-full">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Leave Type</label> <br>
+                        <p-dropdown
+                         [options]="optr_leave_eligibilty"
+                         optionLabel="Leave_Type"
+                          [(ngModel)]="leave_type" 
+                          name="selectedOption"
+                          styleClass="w-full"
+                          (ngModelChange)="checkleaveVerify()"
+                        >
+                        </p-dropdown>
+                        </div>
+                          <!-- from date -->
+                        <div class="w-full">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+                        <p-calendar
+                        [showIcon]="true"
+                        dateFormat="yy-mm-dd"
+                        styleClass="w-full"
+                        [(ngModel)]="fromdate" 
+                        (onSelect)="updateDuration()">
+                        </p-calendar>
+                        </div>
+                          <!-- To Date -->
+                        <div class="w-full">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+                        <p-calendar
+                        [showIcon]="true"
+                        dateFormat="yy-mm-dd"
+                        styleClass="w-full"
+                        [(ngModel)]="todate" 
+                        (onSelect)="updateDuration()">
 
-
-      <div class="from" >
-        <mat-form-field appearance="outline"  style="padding-right: 2em;">
-          <mat-label>From Date</mat-label>
-          <input type="date" matInput [(ngModel)]="fromdate" (change)="updateDuration()"  />
-        </mat-form-field>
-        <mat-checkbox [(ngModel)]="first_half" (change)="updateDuration();toggleCheckbox('first')" [disabled]="first" [hidden]="halfCheck">1st Half</mat-checkbox>
-        
-       
-      </div>
-      <div class="from">
-
-  
-        <mat-form-field style="padding-right: 2em;" appearance="outline">
-          <mat-label>To Date</mat-label>
-          <input type="date" matInput [(ngModel)]="todate"  (change)="updateDuration()"  />
-        </mat-form-field>
-        <mat-checkbox [(ngModel)]="second_half" (change)="updateDuration();toggleCheckbox('second')"[disabled]="second" [hidden]="halfCheck" >2nd Half</mat-checkbox>
-
-      </div>
-   
-
-      <p>Duration : {{ duration }} DAY(S)</p>
-
-      <div class="form">
-       
-
-        <mat-form-field appearance="outline" class="example-full-width">
-          <mat-label>Reason</mat-label>
-          <textarea matInput [(ngModel)]="leave_Reason" (ngModelChange)="checkleaveSubmit()" placeholder="Reason(Min 10 Characters)"></textarea>
-        </mat-form-field>
-    
-        <button mat-raised-button color="success" [disabled]="leaveSubmit"  style="margin: 10px 20px; height: 40px" (click)="leave_submit()">
-          Submit
-        </button>
-      </div>
-    </div>
-  
- 
-
-    <div class="leave-details">
-      <table   class="table table-bordered table-striped table-hover my-5 table-smaller">
-     
-        <tr>
-          <th class="text-center">Leave Type</th>
-          <th class="text-center">Eligibility</th>
-          <th class="text-center">Availed</th>
-          <th class="text-center">Balance</th>
-        </tr>
-        <tr>
-          <td class="text-center">CL</td>
-          <td class="text-center">{{ optr_leave_balance?.Elgbl_CL }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Availd_CL }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Balnc_CL }}</td>
-        </tr>
-        <tr>
-          <td class="text-center">PL</td>
-          <td class="text-center">{{ optr_leave_balance?.Elgbl_PL }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Availd_PL }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Balnc_PL }}</td>
-        </tr>
-        <tr>
-          <td class="text-center">ESI Leave</td>
-          <td class="text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Availd_ESI_Leave }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Balnc_ESI_Leave }}</td>
-        </tr>
-        <tr>
-          <td class="text-center">Advance Leave</td>
-          <td class="text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Availd_Adv_Leave }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Balnc_Adv_Leave }}</td>
-        </tr>
-      
-        <tr>
-          <td class="text-center">Sick Leave</td>
-          <td class="text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave }}</td>
-          <td class="text-center">{{ optr_leave_balance?.Availd_Sick_Leave }}</td> 
-          <td class="text-center">{{ optr_leave_balance?.Balnc_Sick_Leave }}</td>
-        </tr>
-     
-      
-      </table>
-      <table   class="table table-bordered table-striped table-hover my-5 table-smaller">
-        
-        <tr>
-          <th class="text-center">Approver  Details</th>
-          <th class="text-center">Gen ID</th>
-          <th class="text-center">Name of Approver</th>
-        </tr>
-        <tr>
-          
-          <td class="text-center">Approver 1</td>
-          <td class="text-center">{{ optr_leave_details?.a1_gen_id }}</td>
-          <td class="text-center">{{ optr_leave_details?.a1_Emp_name }}</td>
-         
-        </tr>
-        <tr>
-          <td class="text-center">Approver 2</td>
-          <td class="text-center">{{ optr_leave_details?.a2_gen_id }}</td>
-          <td class="text-center">{{ optr_leave_details?.a2_Emp_name }}</td>
-        </tr>
-      </table>
-    </div>
-              </div>
+                        </p-calendar>
+                        </div>
+                       </div>
+                       <!-- action row two -->
+                        <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+                          <!-- reason -->
+                        <div class="w-full p-fluid">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
+                        <input
+                          pInputText
+                          styleClass="w-full"
+                          [minlength]="10"
+                          [(ngModel)]="leave_Reason" 
+                          placeholder="Reason (Min 10 Characters)"
+                          (ngModelChange)="checkleaveSubmit()"
+                        >
+                        </div>
+                          <!-- day -->
+                        <div class="w-full" [hidden]="halfCheck">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Day</label> 
+                          <br>
+                           <mat-checkbox [(ngModel)]="first_half" (change)="updateDuration();toggleCheckbox('first')" [disabled]="first" class="ml-3">1st Half</mat-checkbox>
+                           <mat-checkbox [(ngModel)]="second_half" (change)="updateDuration();toggleCheckbox('second')"[disabled]="second" class="ml-3">2nd Half</mat-checkbox>
+                        </div>
+                           <!-- Duration-->
+                        <div class="w-full p-fluid">
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Duration</label> <br>
+                        <input
+                          pInputText
+                          disabled
+                          styleClass="w-full"
+                          [value]="duration + ' Days'"
+                        >
+                        </div>
+                      <!-- submit btn -->
+                      <div class="mt-8 ml-3">
+                        <p-button 
+                          icon="pi pi-check-circle"
+                          [disabled]="leaveSubmit"
+                          styleClass="rounded-[1.5rem] mt-2"
+                          (onClick)="leave_submit()"
+                          label="Submit"  
+                        >
+                      </p-button> 
+                      </div>
+                       </div>
+                      </div>
+                      </div>
+                    </div>
+                    <!-- leave details table -->
+                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                      <table class="table-auto !w-full">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Leave Type</th>
+                          <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Eligibility</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Availed</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Balance</th>
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">CL</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_CL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_CL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_CL }}</td>
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">PL</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_PL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_PL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_PL }}</td>
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">ESI Leave</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_ESI_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_ESI_Leave }}</td>
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Advance Leave</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_Adv_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_Adv_Leave }}</td>
+                        </tr>
+                      
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Sick Leave</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_Sick_Leave }}</td> 
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_Sick_Leave }}</td>
+                        </tr>
+                    
+                      
+                      </table>
+                    </div>
+                    <!-- approver details -->
+                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                      <table class="table-auto !w-full">
+                        
+                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Approver  Details</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Name of Approver</th>
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">Approver 1</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ optr_leave_details?.a1_gen_id }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_details?.a1_Emp_name }}</td>
+                        
+                        </tr>
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">Approver 2</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ optr_leave_details?.a2_gen_id }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_details?.a2_Emp_name }}</td>
+                        </tr>
+                      </table>
+                    </div>
             </ng-template>
       </p-tabPanel>
 

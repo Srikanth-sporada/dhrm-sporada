@@ -43,8 +43,9 @@ export class HrViewDataComponent implements OnInit {
   url_form11_file: any;
   url_formh2_file: any;
   url_natx_file: any;
+  // trainee details for onboard form
   apln_status: any;
-
+  applicationNumber:any;
   constructor(
     private http: HttpClient,
     public location: Location,
@@ -89,7 +90,7 @@ export class HrViewDataComponent implements OnInit {
       else this.is_vaccinated = "YES";
 
       this.url_appointmentorder_file =
-        this.url + "uploads/" + this.basic[0].other_files8;
+        this.url + "uploads/" + this.basic[0]?.other_files8;
       this.url_declaration_file =
         this.url + "uploads/" + this.basic[0].other_files9;
       this.url_medicalfitness_file =
@@ -154,7 +155,9 @@ export class HrViewDataComponent implements OnInit {
       next: (response) => {
         console.log("basic", response);
         this.basic = response;
+        // setting trainee details for onboard
         this.apln_status = this.basic[0]?.apln_status;
+        this.applicationNumber = this.basic[0]?.apln_slno;
       },
       error: (error) => this.messageService.add({severity:'error',summary:error.message}),
     });

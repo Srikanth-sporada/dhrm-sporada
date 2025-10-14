@@ -452,7 +452,6 @@ export class ApiService {
   }
   onboard_form(form: any) {
     console.log(form);
-
     return this.http.post(this.url + "/hrOperation/onboard_form", form);
   }
   getfiledrop(form: any) {

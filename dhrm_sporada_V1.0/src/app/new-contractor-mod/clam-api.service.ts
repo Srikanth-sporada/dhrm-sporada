@@ -311,20 +311,18 @@ export class ClamAPIService {
     const queryParams = new URLSearchParams({ id }).toString();
     return this.http.put(`${this.url}/clam/clemphr?${queryParams}`, data)
   }
+
   edit_cl_Emp_ByHR(data: any, id: any) {
     console.log(data)
     const queryParams = new URLSearchParams({ id }).toString();
     return this.http.put(`${this.url}/clam/cleedithr?${queryParams}`, data)
   }
 
-
   app_cl_Emp_By_HRappr(data: any, id: any) {
     console.log(data)
     const queryParams = new URLSearchParams({ id }).toString();
     return this.http.put(`${this.url}/clam/clemphrappr?${queryParams}`, data)
   }
-
-
 
   edit_cl_Emp(data: any, id: any) {
     const queryParams = new URLSearchParams({ id }).toString();

@@ -1,281 +1,308 @@
-<div style="width: 100%; height: 100%; margin: 0 auto; display: flex; flex-direction: column;">
-    <mat-tab-group>
-        <mat-tab label="Employee Details" class="employee-tab">
-            <!-- Employee Skill Section -->
-            <div
-                style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 10px; margin-top: 30px;">
+<div class="mx-2">
+    <!--  header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>widgets</mat-icon>Skill Test<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Attend Skill Test</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+<!-- prime ng abl view -->
+    <p-tabView>
+        <!-- employee details -->
+       <p-tabPanel>
+          <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-info-circle icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Employee Details</span>
+                    </div>
+            </ng-template>
+            <!-- content -->
+              <ng-template pTemplate="content">
+                  <!-- Employee Skill Section -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 10px; margin-top: 30px;">
 
-                <!-- Left side content -->
-                <div style="flex: 1; text-align: left; width: 100%;">
-                    <h1 class="underline-blue"
-                        style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
-                        <b>Employee Skill Status</b>
-                    </h1>
+                        <!-- Left side content -->
+                        <div style="flex: 1; text-align: left; width: 100%;">
+                            <h1 class="font-poppins"
+                                style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
+                                <b>Employee Skill Status</b>
+                            </h1>
 
 
-                    <!-- Employee Info Section -->
-                    <div style="display: flex; margin-top: 20px;">
-                        <!-- Left side: Image -->
-                        <div style="flex: 1; text-align: center; padding-right: 20px;">
-                            <img [src]="this.photo" alt="Avatar"
-                                style="width: 150px; height: 150px; border-radius: 5%; display: inline-block;">
+                            <!-- Employee Info Section -->
+                            <div style="display: flex; margin-top: 20px;">
+                                <!-- Left side: Image -->
+                                <div style="flex: 1; text-align: center; padding-right: 20px;">
+                                    <img [src]="this.photo" alt="Avatar"
+                                        style="width: 150px; height: 150px; border-radius: 50%; display: inline-block;" class="object-cover">
+                                </div>
+
+                                <!-- Right side: Employee Info -->
+                                <div style="flex: 2; text-align: left;">
+                                    <table style="width: 80%; padding-left: 20px;" class="font-poppins">
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 8px;">
+                                                <b class="font-poppins text-blue-600">Name</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;" >
+                                                {{ username }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
+                                                <b class="font-poppins text-blue-600">Emp ID</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                                {{ genid }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
+                                                <b class="font-poppins text-blue-600">Category</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                                {{ category }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
+                                                <b class="font-poppins text-blue-600">Department</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                                {{ department }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
+                                                <b class="font-poppins text-blue-600">Line</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                                {{ skillTestData?.line_name }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
+                                                <b class="font-poppins text-blue-600">Active Status</b>
+                                            </td>
+                                            <td
+                                                style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
+                                                {{ skillTestData?.activestat }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Right side: Employee Info -->
-                        <div style="flex: 2; text-align: left;">
-                            <table style="width: 80%; padding-left: 20px;">
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 8px;">
-                                        <b>Name</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ username }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                        <b>Emp ID</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ genid }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                        <b>Category</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ category }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                        <b>Department</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ department }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                        <b>Line</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ skillTestData?.line_name }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td
-                                        style="line-height: 15px; text-align: left; background-color: white; padding-right: 10px; padding-top: 16px;">
-                                        <b>Active Status</b>
-                                    </td>
-                                    <td
-                                        style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                        {{ skillTestData?.activestat }}
-                                    </td>
-                                </tr>
+                        <!-- Center divider (red line) -->
+                        <div style="width: 2px; background-color: black; height: 250px;"></div>
+
+                        <!-- Right side content -->
+                        <div style="flex: 1; text-align: left; width: 100%;">
+                            <h1 class="font-poppins"
+                                style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
+                                <b>Skill Test</b>
+                            </h1>
+                            <div
+                                style="height: max-content; min-width:40%; border: 5px; border-radius: 20px; text-align: left; margin-right: 10%; padding: 20px;">
+                                <form [formGroup]="form">
+                                    <div style="margin-left: 20px;">
+                                        <!-- operations -->
+                                        <div class="col">
+                                            <label>Operation</label>
+                                            <br />
+                                            <p-dropdown
+                                            [options]="droplist"
+                                            styleClass="w-full"
+                                            formControlName="new_skill"
+                                            [(ngModel)]="selectedOperation"
+                                            (ngModelChange)="onOperationChange()"
+                                            optionLabel="oprn_desc"
+                                            optionValue="oprn_desc"
+                                            ></p-dropdown>
+                                        </div>
+                                        <br />
+                                        <!-- skill level -->
+                                        <div *ngIf="selectedOperation">
+                                            <div class="col">
+                                                <label>Skill Level</label>
+                                                <br />
+                                                <p-dropdown
+                                                [options]="skillLevelOptions"
+                                                optionValue="value"
+                                                optionLabel="label"
+                                                styleClass="w-full"
+                                                formControlName="new_skill_level"
+                                                ></p-dropdown>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Conditionally show the "Start Test" button only when an operation is selected -->
+                                        <!-- <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                            <button
+                                                *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value && showSelfLearningButton"
+                                                (click)="loadSelfLearningFile()"
+                                                style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 3%;">
+                                                Self Learning <img src="assets/circle1.png" style="color: white;">
+                                            </button>
+
+                                            <button *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value"
+                                                (click)="startSkillTest()"
+                                                style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-right: 3%;">
+                                                Start Test
+                                            </button>
+                                        </div> -->
+
+                                        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                            <!-- Self Learning Button Wrapper -->
+                                            <div style="width: 50%;">
+                                                <button
+                                                    *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value && showSelfLearningButton"
+                                                    (click)="loadSelfLearningFile()"
+                                                    pButton
+                                                    label="self Learning"
+                                                    icon="pi pi-play">
+                                                  
+                                                </button>
+                                            </div>
+
+                                            <!-- Start Test Button Wrapper -->
+                                            <div style="width: 50%; text-align: right;">
+                                                <button
+                                                    pButton
+                                                    label="Start Test"
+                                                    icon="pi pi-play"
+                                                    iconPos="right"
+                                                    *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value"
+                                                    (click)="startSkillTest()"
+                                                   ></button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                 <!-- Matrix Table -->
+                        <div class="matrix">
+                            <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
+                                <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
+                                    <th style="text-align: center; height: 30px; border: 2px solid white;" class="cell">Sl.no</th>
+                                    <th class="cell">Operations</th>
+                                    <th class="cell">Level-1</th>
+                                    <th class="cell">Level-2</th>
+                                    <th class="cell">Level-3</th>
+                                    <th class="cell">Level-4</th>
+                                </thead>
+                                <tbody style="background-color: whitesmoke;">
+                                    <tr *ngFor="let item of operationsData; let i = index">
+                                        <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell">{{ i + 1
+                                            }}</td>
+                                        <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
+                                        <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="cell"></td>
+                                        <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="cell"></td>
+                                        <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="cell"></td>
+                                        <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="cell"></td>
+                                    </tr>
+
+                                </tbody>
                             </table>
                         </div>
+              </ng-template>
+       </p-tabPanel>
+
+       <!-- employee answer sheet -->
+        <p-tabPanel>
+            <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-sync icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span>Skill Upgrade Results</span>
                     </div>
-                </div>
+            </ng-template>
+             <!-- content -->
+              <ng-template pTemplate="content">
+                 <!-- Answer Sheet Table -->
+                    <div style="width: 95%; margin: 20px auto; margin-top: 40px;">
+                        <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
+                            <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
+                                <th style="text-align: center; height: 30px; border: 2px solid white; width: 5%;" class="cell">
+                                    Sl.no</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Date</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 40%;">Operation</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Level</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Score</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Test Result</th>
+                                <th class="cell" style="border: 2px solid white; height: 30px; width: 15%;">Supervisor Abservent
+                                </th>
+                            </thead>
+                            <tbody style="background-color: whitesmoke;">
+                                <tr *ngFor="let item of paperData; let i = index">
+                                    <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell"> {{ i +
+                                        1 }} </td>
+                                    <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.Date }}</td>
+                                    <td style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
+                                    <td style="border: 2px solid white; height: 40px; text-align: center;">{{ item.Level_No }}
+                                    </td>
+                                    <td style="border: 2px solid white; height: 40px; text-align: center;">{{
+                                        item.Test_Percentage }}</td>
+                                    <td style="border: 2px solid white; height: 40px; text-align: center;">
+                                        <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
+                                            <a [routerLink]="['/rml/skill-developement/answer-paper', item.Peval_slno]">
+                                                {{ item.Test_Result }}
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #noLink>
+                                            {{ item.Test_Result }}
+                                        </ng-template>
+                                    </td>
 
-                <!-- Center divider (red line) -->
-                <div style="width: 2px; background-color: black; height: 250px;"></div>
+                                    <td style="border: 2px solid white; height: 40px; text-align: center;">
+                                        <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
+                                            <a [routerLink]="['/rml/skill-developement/Abserv-point', item.Peval_slno]">
+                                                {{ item.Sup_Eval_Status }}
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #notApproved>
+                                            <ng-container *ngIf="item.Sup_Eval_Status === 'PENDING'; else notPending">
+                                                {{ 'PENDING' }}
+                                            </ng-container>
+                                            <ng-template #notPending>
+                                                <span>{{ item.Sup_Eval_Status || 'Unknown' }}</span>
+                                            </ng-template>
+                                        </ng-template>
+                                    </td>                            
 
-                <!-- Right side content -->
-                <div style="flex: 1; text-align: left; width: 100%;">
-                    <h1 class="underline-blue"
-                        style="font-size: 24px; margin: 0; white-space: nowrap; text-align: center; overflow: hidden;">
-                        <b>Skill Test</b>
-                    </h1>
-                    <div
-                        style="height: max-content; min-width:40%; border: 5px; border-radius: 20px; text-align: left; margin-right: 10%; padding: 20px;">
-                        <form [formGroup]="form">
-                            <div style="margin-left: 20px;">
-                                <div class="col">
-                                    <label>Operation</label><br />
-                                    <select formControlName="new_skill" class="form-control"
-                                        style="font-size: 14px; width: 100%; height: 34px; border-radius: 0px; border-color: black;"
-                                        [(ngModel)]="selectedOperation" (ngModelChange)="onOperationChange()">
-                                        <option value="">select</option>
-                                        <option *ngFor="let operation of droplist" [value]="operation.oprn_desc">
-                                            {{ operation.oprn_desc }}
-                                        </option>
-                                    </select>
-
-                                </div>
-                                <br />
-
-                                <div *ngIf="selectedOperation">
-                                    <div class="col">
-                                        <label>Skill Level</label><br />
-                                        <select formControlName="new_skill_level" class="form-control"
-                                            style="font-size: 14px; width: 100%; height: 34px; border-radius: 0px; border-color: black;">
-                                            <option value="">Select</option>
-                                            <option
-                                                *ngIf="selectedOperation && (getSkillLevel(0) || selectedSkill?.oprn_trained == null || selectedSkill?.oprn_trained === undefined)"
-                                                value="2">
-                                                Level 2
-                                            </option>
-                                            <option *ngIf="selectedOperation && getSkillLevel(1)" value="2">Level 2
-                                            </option>
-                                            <option *ngIf="selectedOperation && getSkillLevel(2)" value="3">Level 3
-                                            </option>
-                                            <option *ngIf="selectedOperation && getSkillLevel(3)" value="4">Level 4
-                                            </option>
-                                            <option *ngIf="selectedOperation && getSkillLevel(4)" disabled>No options
-                                            </option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-
-                                <!-- Conditionally show the "Start Test" button only when an operation is selected -->
-                                <!-- <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                                    <button
-                                        *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value && showSelfLearningButton"
-                                        (click)="loadSelfLearningFile()"
-                                        style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 3%;">
-                                        Self Learning <img src="assets/circle1.png" style="color: white;">
-                                    </button>
-
-                                    <button *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value"
-                                        (click)="startSkillTest()"
-                                        style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-right: 3%;">
-                                        Start Test
-                                    </button>
-                                </div> -->
-
-                                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                                    <!-- Self Learning Button Wrapper -->
-                                    <div style="width: 50%;">
-                                        <button
-                                            *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value && showSelfLearningButton"
-                                            (click)="loadSelfLearningFile()"
-                                            style="background-color: purple; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-left: 4%;">
-                                            Self Learning <img src="assets/circle1.png"
-                                                style="margin-left: 8px; width: 20px; height: 20px;">
-                                        </button>
-                                    </div>
-
-                                    <!-- Start Test Button Wrapper -->
-                                    <div style="width: 50%; text-align: right;">
-                                        <button
-                                            *ngIf="form.get('new_skill')?.value && form.get('new_skill_level')?.value"
-                                            (click)="startSkillTest()"
-                                            style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-right: 3%;">
-                                            Start Test
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-
-            <!-- Matrix Table -->
-            <div class="matrix">
-                <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
-                    <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
-                        <th style="text-align: center; height: 30px; border: 2px solid white;" class="cell">Sl.no</th>
-                        <th class="cell">Operations</th>
-                        <th class="cell">Level-1</th>
-                        <th class="cell">Level-2</th>
-                        <th class="cell">Level-3</th>
-                        <th class="cell">Level-4</th>
-                    </thead>
-                    <tbody style="background-color: whitesmoke;">
-                        <tr *ngFor="let item of operationsData; let i = index">
-                            <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell">{{ i + 1
-                                }}</td>
-                            <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
-                            <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="cell"></td>
-                            <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="cell"></td>
-                            <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="cell"></td>
-                            <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="cell"></td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </mat-tab>
-
-        <!-- Employee Answer Sheet Tab -->
-        <mat-tab label="Skill Upgrade Results" class="company-tab">
-            <div style="flex: 1; text-align: left; width: 100%;">
-                <h1 style="font-size: 24px; margin: 0; white-space: nowrap; text-align: left; overflow: hidden;">
-                    <b>Answer Sheet</b>
-                </h1>
-            </div>
-
-            <!-- Answer Sheet Table -->
-            <div style="width: 95%; margin: 20px auto; margin-top: 40px;">
-                <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
-                    <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
-                        <th style="text-align: center; height: 30px; border: 2px solid white; width: 5%;" class="cell">
-                            Sl.no</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Date</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 40%;">Operation</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Level</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Score</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Test Result</th>
-                        <th class="cell" style="border: 2px solid white; height: 30px; width: 15%;">Supervisor Abservent
-                        </th>
-                    </thead>
-                    <tbody style="background-color: whitesmoke;">
-                        <tr *ngFor="let item of paperData; let i = index">
-                            <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell"> {{ i +
-                                1 }} </td>
-                            <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.Date }}</td>
-                            <td style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
-                            <td style="border: 2px solid white; height: 40px; text-align: center;">{{ item.Level_No }}
-                            </td>
-                            <td style="border: 2px solid white; height: 40px; text-align: center;">{{
-                                item.Test_Percentage }}</td>
-                            <td style="border: 2px solid white; height: 40px; text-align: center;">
-                                <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
-                                    <a [routerLink]="['/rml/skill-developement/answer-paper', item.Peval_slno]">
-                                        {{ item.Test_Result }}
-                                    </a>
-                                </ng-container>
-                                <ng-template #noLink>
-                                    {{ item.Test_Result }}
-                                </ng-template>
-                            </td>
-
-                            <td style="border: 2px solid white; height: 40px; text-align: center;">
-                                <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
-                                    <a [routerLink]="['/rml/skill-developement/Abserv-point', item.Peval_slno]">
-                                        {{ item.Sup_Eval_Status }}
-                                    </a>
-                                </ng-container>
-                                <ng-template #notApproved>
-                                    <ng-container *ngIf="item.Sup_Eval_Status === 'PENDING'; else notPending">
-                                        {{ 'PENDING' }}
-                                    </ng-container>
-                                    <ng-template #notPending>
-                                        <span>{{ item.Sup_Eval_Status || 'Unknown' }}</span>
-                                    </ng-template>
-                                </ng-template>
-                            </td>                            
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
+              </ng-template>
+        </p-tabPanel>
+    </p-tabView>
 </div>
+
