@@ -1,80 +1,174 @@
-<div class="container">
-  <p style="text-align: center;font-size:xx-large;">Production Data Upload</p>
-  <div  class="sub-container">
-    <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file"/>
-    <button mat-raised-button color="yellow" style="margin-right: 20px">
-      <a
+<div>
+ <!-- header -->
+    <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+      <div class="flex items-start justify-start flex-col">
+        <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+        <mat-icon>date_range</mat-icon>Production Data Upload <hr/>
+      </h1>
+      <p class="mt-1 text-gray-400">View and Upload Production Data</p>
+      </div>
+      <!-- user details -->
+          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+            {{userDetails}}
+          </h1>
+    </div>
+  
+     <!-- filters -->
+    <div>
+    <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+      <!-- filter header -->
+        <div class="relative">
+          <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+            Filters <mat-icon>filter_alt</mat-icon>
+          </h1>
+        <!-- download btn-->
+          <p-button 
+          icon="pi pi-download" 
+          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
+          (click)="exportexcel()"></p-button>
+        </div>
+      <!-- trainee application filter first row -->
+      <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
+        <!-- choose file -->
+        <div class="font-poppins">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Excel File</label> <br>
+           <input 
+            type="file" 
+            (change)="fileUpload($event)" 
+            accept=".xlsx" 
+            [(ngModel)]="file"
+            class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"/>
+        </div>
+        <!-- template -->
+      <div class=" mt-8 ml-3">
+        <a
         [href]="url + 'sop/Production Actual.xlsx'"
         style="text-decoration: none"
-        >Download Template</a
-      >
-    </button>
-    <button mat-raised-button color="yellow" style="margin-right: 20px" (click)="verify()" [disabled]="file==''">
-      Verify
-    </button>
-    <button mat-raised-button color="success" [disabled]="save" (click)="upload()">Save</button>
-  </div>
+        >
+        <button 
+          pButton
+          icon="pi pi-download"
+          class="rounded-[1.5rem] mt-2"
+          label="Template"  
+        >
+      </button> 
+        </a>
+      </div>
+        <!-- Verify -->
+      <div class=" mt-8 ml-3">
+        <button 
+          pButton
+          (click)="verify()" 
+          [disabled]="file==''"
+          icon="pi pi-verified"
+          class="rounded-[1.5rem] mt-2"
+          label="Verify"  
+        >
+        </button> 
+      </div>
+       <!-- save -->
+      <div class=" mt-8 ml-3">
+        <button 
+          pButton
+           [disabled]="save" 
+           (click)="upload()"
+          icon="pi pi-save"
+          class="rounded-[1.5rem] mt-2"
+          label="Save"  
+        >
+        </button> 
+      </div>
+      </div>
+      <!-- filters second row -->
+        <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+           <!-- from date -->
+        <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+          <p-calendar 
+            [(ngModel)]="from"
+            dateFormat="dd-mm-yy"
+            styleClass="w-full !font-poppins"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+      <!-- to date -->
+        <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+          <p-calendar 
+            [(ngModel)]="to"
+            dateFormat="d-mm-yy"
+            styleClass="w-full !font-poppins"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+        <!-- plant -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+            <p-dropdown 
+              [options]="plantlist"
+              [(ngModel)]="plant"
+              optionLabel="plant_name"
+              optionValue="plant_code"
+              styleClass="w-full" 
+              placeholder="Select Plant" ></p-dropdown>
+        </div>
+        <!-- material code -->
+      <div class="w-full p-fluid">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Search</label> <br>
+        <input 
+        type="text" 
+        pInputText
+        styleClass="w-full !font-poppins" 
+        [(ngModel)]="code" />
+        
+      </div>
+      <!-- search btn -->
+      <div class="mt-8 ml-3">
+        <p-button 
+          icon="pi pi-search"
+          styleClass="rounded-[1.5rem] mt-2"
+          (click)="getData()"
+          label="Search"  
+        >
+      </p-button> 
+      </div>
+      </div>
+    </div>
+    </div>
+   
 </div>
 <div>
-  <div style="margin:0 5%;" class="filters">
-    <div class="dates">
-      <mat-form-field appearance="outline" >
-        <mat-label>from</mat-label>
-        <input matInput type="date" [(ngModel)]="from" >
-      </mat-form-field>
-      <mat-form-field appearance="outline" >
-        <mat-label>to</mat-label>
-        <input matInput type="date" [(ngModel)]="to" >
-      </mat-form-field>
-      <button mat-raised-button color="primary" style="height: 40px;margin-top: 10px;" (click)="getData()">Search</button>
-    </div>
-    <div>
-    <mat-form-field appearance="outline" style="margin-right: 15px;">
-      <mat-label>Search By  Plant</mat-label>
-      <mat-select [(ngModel)]="plant" >
-        <mat-option value="" selected>All</mat-option>
-        <mat-option *ngFor="let plant of plantlist" [value]="plant.plant_code">{{
-          plant.plant_code
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline" >
-      <mat-label>Search By Material Code</mat-label>
-      <input matInput type="text" [(ngModel)]="code" >
-    </mat-form-field>
-    <button mat-fab  style="margin-left: 15px;" (click)="exportexcel()"><mat-icon>download</mat-icon></button>
-  </div>
-  </div>
- 
-  <div class="table_container">
-    <table class="table table-bordered table-striped table-hover" id="table">
-      <thead class="header" >
-        <tr>
-          <td>slno</td>
-          <td>Plant Code</td>
-          <td>Storage Location</td>
-          <td>Division</td>
-          <td>Segment</td>
-          <td>Material Code</td>
-          <td>Material Description</td>
-          <td>Quantity</td>
-          <td>Manual Time[Min]</td>
-          <td>Output Hrs</td>
+  <!-- production actual table -->
+  <div class="h-[90svh] lg:h-[64vh] xl:h-[64vh] sm:h-[65vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+    <table class="table-auto !w-full" id="table">
+      <!-- table head -->
+      <thead class="sticky top-0" >
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant Code</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Storage Location</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Division</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Segment</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Material Code</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Material Description</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Quantity</td>
+          <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Manual Time[Min]</td>
+          <td class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Output Hrs</td>
         </tr>
-       
       </thead>
+      <!-- table body -->
       <tbody>
-        <tr *ngFor="let item of productin_data|prodDataFlter:plant:code;let i=index">
-          <td>{{i+1}}</td>
-          <td>{{item.plant}}</td>
-          <td>{{item.storage_location}}</td>
-          <td>{{item.division}}</td>
-          <td>{{item.dist_channel}}</td>
-          <td>{{item.mat_code}}</td>
-          <td>{{item.mat_desc}}</td>
-          <td>{{item.qty}}</td>
-          <td>{{item.pmpd}}</td>
-          <td>{{item.output_hrs}}</td>
+        <tr *ngFor="let item of productin_data|prodDataFlter:plant:code;let i=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.plant}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.storage_location}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.division}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.dist_channel}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md ">{{item.mat_code}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{item.mat_desc}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.qty}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.pmpd}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.output_hrs}}</td>
         </tr>
       </tbody>
     </table>

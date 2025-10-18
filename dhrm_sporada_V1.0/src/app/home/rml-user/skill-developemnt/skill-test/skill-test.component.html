@@ -207,25 +207,28 @@
                     </div>
 
                  <!-- Matrix Table -->
-                        <div class="matrix">
-                            <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
-                                <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
-                                    <th style="text-align: center; height: 30px; border: 2px solid white;" class="cell">Sl.no</th>
-                                    <th class="cell">Operations</th>
-                                    <th class="cell">Level-1</th>
-                                    <th class="cell">Level-2</th>
-                                    <th class="cell">Level-3</th>
-                                    <th class="cell">Level-4</th>
+                        <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                            <table id="table" class="table-auto !w-full">
+                                <!-- table head -->
+                                <thead class="sticky top-0">
+                                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
+                                    <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
+                                    </tr>
                                 </thead>
-                                <tbody style="background-color: whitesmoke;">
-                                    <tr *ngFor="let item of operationsData; let i = index">
-                                        <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell">{{ i + 1
-                                            }}</td>
-                                        <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
-                                        <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="cell"></td>
-                                        <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="cell"></td>
-                                        <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="cell"></td>
-                                        <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="cell"></td>
+                                <!-- table body -->
+                                <tbody>
+                                    <tr *ngFor="let item of operationsData; let i = index"  class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+                                        <td class="!px-2 !py-4 !rounded-s-md">{{ item.oprn_desc }}</td>
+                                        <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                        <td [ngClass]="{ 'blue': item.oprn_trained == 2 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                        <td [ngClass]="{ 'green': item.oprn_trained == 3 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
+                                        <td [ngClass]="{ 'darkgreen': item.oprn_trained == 4 }" class="!px-2 !py-4 !rounded-s-md text-center"></td>
                                     </tr>
 
                                 </tbody>
@@ -247,30 +250,31 @@
              <!-- content -->
               <ng-template pTemplate="content">
                  <!-- Answer Sheet Table -->
-                    <div style="width: 95%; margin: 20px auto; margin-top: 40px;">
-                        <table id="table" class="customtable" style="width: 95%; border-collapse: collapse;">
-                            <thead class="table_header" style="background-color: #2F58CD !important; color: white !important;">
-                                <th style="text-align: center; height: 30px; border: 2px solid white; width: 5%;" class="cell">
-                                    Sl.no</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Date</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 40%;">Operation</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Level</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Score</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 10%;">Test Result</th>
-                                <th class="cell" style="border: 2px solid white; height: 30px; width: 15%;">Supervisor Abservent
-                                </th>
+                    <div sclass="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                        <table id="table" class="table-auto !w-full">
+                            <!-- table head -->
+                            <thead class="sticky top-0">
+                                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operation</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Score</th>
+                                    <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Result</th>
+                                    <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Supervisor Abservent
+                                    </th>
+                                </tr>
                             </thead>
-                            <tbody style="background-color: whitesmoke;">
-                                <tr *ngFor="let item of paperData; let i = index">
-                                    <td style="text-align: center; border: 2px solid white; height: 40px;" class="cell"> {{ i +
-                                        1 }} </td>
-                                    <td class="cell" style="border: 2px solid white; height: 40px;">{{ item.Date }}</td>
-                                    <td style="border: 2px solid white; height: 40px;">{{ item.oprn_desc }}</td>
-                                    <td style="border: 2px solid white; height: 40px; text-align: center;">{{ item.Level_No }}
+                            <!-- table body -->
+                            <tbody>
+                                <tr *ngFor="let item of paperData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                    <td sclass="!px-2 !py-4 !rounded-s-md text-center">{{ i +1 }}</td>
+                                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Date }}</td>
+                                    <td class="!px-2 !py-4 !rounded-s-md">{{ item.oprn_desc }}</td>
+                                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Level_No }}
                                     </td>
-                                    <td style="border: 2px solid white; height: 40px; text-align: center;">{{
-                                        item.Test_Percentage }}</td>
-                                    <td style="border: 2px solid white; height: 40px; text-align: center;">
+                                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Test_Percentage }}</td>
+                                    <td class="!px-2 !py-4 !rounded-s-md text-center">
                                         <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
                                             <a [routerLink]="['/rml/skill-developement/answer-paper', item.Peval_slno]">
                                                 {{ item.Test_Result }}
@@ -281,7 +285,7 @@
                                         </ng-template>
                                     </td>
 
-                                    <td style="border: 2px solid white; height: 40px; text-align: center;">
+                                    <td class="!px-2 !py-4 !rounded-s-md text-center">
                                         <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
                                             <a [routerLink]="['/rml/skill-developement/Abserv-point', item.Peval_slno]">
                                                 {{ item.Sup_Eval_Status }}
@@ -296,7 +300,6 @@
                                             </ng-template>
                                         </ng-template>
                                     </td>                            
-
                                 </tr>
                             </tbody>
                         </table>

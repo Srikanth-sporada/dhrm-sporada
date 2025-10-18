@@ -418,22 +418,22 @@
     <tbody>
       <tr *ngFor="let oprn of curr_oprn; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
         <td class="!px-2 !py-4 text-center">{{ i + 1 }}</td>
-        <td class="!px-2 !py-4 text-center">{{ oprn.oprn_desc }}</td>
+        <td class="!px-2 !py-4">{{ oprn.oprn_desc }}</td>
         <td
           [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
-          class="!px-2 !py-4 text-center"
+          class="!px-2 !py-4"
         ></td>
         <td
           [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
-          class="!px-2 !py-4 text-center"
+          class="!px-2 !py-4"
         ></td>
         <td
           [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
-          class="!px-2 !py-4 text-center"
+          class="!px-2 !py-4"
         ></td>
         <td
           [ngClass]="{ darkgreen: oprn.oprn_trained == 4 ? true : false }"
-          class="!px-2 !py-4 text-center"
+          class="!px-2 !py-4"
         ></td>
       </tr>
     </tbody>

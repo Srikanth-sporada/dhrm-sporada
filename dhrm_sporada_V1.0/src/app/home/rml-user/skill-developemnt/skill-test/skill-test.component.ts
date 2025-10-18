@@ -87,6 +87,7 @@ export class SkillTestComponent implements OnInit {
 
     // If genid exists, call the service to fetch skill test data
     if (this.genid) {
+      // get skill tes api call
       this.service.getSkillTest(this.aplnNo).subscribe(
         (response: any) => {
           console.log('response', response);
@@ -117,21 +118,27 @@ export class SkillTestComponent implements OnInit {
               },
               (error) => {
                 console.error('Error fetching skill operations data', error);
+                this.messageService.add({severity:'error',summary:error.message});
               }
             );
           } else {
             console.error('line_code is missing or skillTestData is empty');
+            this.messageService.add({severity:'warn',summary:'line_code is missing or skillTestData is empty'})
           }
         },
         (error) => {
           console.error('Error fetching skill test data', error);
+          this.messageService.add({severity:'error',summary:error.message});
         }
       );
     } else {
       console.error('genid is missing from session storage');
+      this.messageService.add({severity:'error',summary:'Gen ID is missin from session storage'});
+
     }
 
     if (this.genid){
+      // answersheet api call
       this.service.answersheet(this.genid).subscribe(
         (response2: any) => {
           console.log('response2', response2);
@@ -139,6 +146,10 @@ export class SkillTestComponent implements OnInit {
           this.paperData = response2;
 
           console.log('paperdata', this.paperData);
+        },
+        (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message});
         }
       )
     }
@@ -159,6 +170,7 @@ export class SkillTestComponent implements OnInit {
     console.log('Selected Skill:', this.selectedSkill);
 
     if (this.selectedOperation) {
+      // skill video api call
       this.service.getskillvideo(this.selectedOperation, this.plant).subscribe(
         (response: any) => {
           console.log('Skill Video Response:', response);
@@ -173,7 +185,9 @@ export class SkillTestComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching skill video:', error);
-          this.showSelfLearningButton = false;  
+          this.messageService.add({severity:'erro',summary:error.message});
+          this.showSelfLearningButton = false; 
+          this.messageService.add({severity:'error',summary:error.message});
         }
       );
     }
@@ -184,21 +198,24 @@ export class SkillTestComponent implements OnInit {
     const skillLevel = this.form.get('new_skill_level')?.value;
     
     if (operation && skillLevel) {
+      // skill video api call
       this.service.getskillvideo(operation, this.plant).subscribe(
         (response: any) => {
           if (response && response.length > 0 && response[0].oprn_file) {
             const filePath = response[0].oprn_file; 
             const fullFileUrl = this.photoLink + "/oprn_file/" + filePath;
-            
             window.open(fullFileUrl, '_blank');
           }
         },
         (error) => {
           console.error('Error loading file for self learning:', error);
+          this.messageService.add({severity:'erro',summary:error.message});
         }
       );
     } else {
-      alert('Please select a valid operation and skill level.');
+      // alert('Please select a valid operation and skill level.');
+      this.messageService.add({severity:'warn',summary:'Please Select a Valid Operation and Skill Level'});
+
     }
   }
 
@@ -208,7 +225,8 @@ export class SkillTestComponent implements OnInit {
     const newSkillLevel = this.form.get('new_skill_level')?.value;
 
     if (!newSkill || !newSkillLevel) {
-      alert('Please select skill and level.');
+      // alert('Please select skill and level.');
+      this.messageService.add({severity:'warn',summary:'Please select skill and level.'});
       return;
     }
 
@@ -216,24 +234,30 @@ export class SkillTestComponent implements OnInit {
       (res: any) => {
         console.log(res)
         if(res && res.message === 'Active') {
+          // get skill test questions
           this.service.getSkillTestQuestions(this.plant, newSkillLevel, newSkill, this.genid).subscribe(
             (response: any) => {
               if (response && response.data && response.data.length > 0 && response.message === 'success') {
                 // ✅ Navigate only if questions exist
                 this.router.navigate(['/rml/skill-developement/skill-test', newSkill, newSkillLevel]);
               } else if (response && response.message === 'Already') {
-                alert('Test Already Completed For This Level. Supervisor Abservent Is Pending!')
+                // alert('Test Already Completed For This Level. Supervisor Abservent Is Pending!');
+                this.messageService.add({severity:'warn',summary:'Test Already Completed For This Level. Supervisor Abservent Is Pending!'});
+
               } else {
-                alert('Skill Test Question Paper Is Not Available, Contact HR');
+                // alert('Skill Test Question Paper Is Not Available, Contact HR');
+                this.messageService.add({severity:'warn',summary:'Skill Test Question Paper Is Not Available, Contact HR'});
               }
             },
             (error) => {
               console.error('Error checking skill test questions:', error);
-              alert('Error fetching questions. Please try again later.');
+              // alert('Error fetching questions. Please try again later.');
+              this.messageService.add({severity:'warn',summary:'Error fetching questions. Please try again later.'});
             }
           );
         } else {
-          alert(`Your Reporting Person ${res.data} Already Resigned. Contact HR`);
+          // alert(`Your Reporting Person ${res.data} Already Resigned. Contact HR`);
+           this.messageService.add({severity:'warn',summary:`Your Reporting Person ${res.data} Already Resigned. Contact HR`});
         }
       }
     )

@@ -55,12 +55,12 @@
             <!-- trainee id -->
             <div class="w-full p-fluid">
             <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
-                Trainee ID | Gen ID
+              Gen ID
             </label> <br>
             <input 
             type="text" 
             pInputText
-            styleClass="w-full !font-poppins" 
+            class="w-full !font-poppins !bg-gray-100" 
             formControlName="trainee_id"
             [readonly]="true" />
             
@@ -73,7 +73,7 @@
             <input 
             type="text" 
             pInputText
-            styleClass="w-full !font-poppins" 
+            class="w-full !font-poppins bg-gray-100" 
             formControlName="bnum"
             [readonly]="true" />
             
@@ -88,6 +88,17 @@
                     optionValue="categorynm"
                     styleClass="w-full" 
                     placeholder="Select Category" ></p-dropdown>
+            </div>
+            <!-- Contractors -->
+            <div class="font-poppins w-full" *ngIf="contractorsList.includes(form.value.category) || basic[0].cont_id !== null">
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Contractor</label> <br>
+                <p-dropdown 
+                    [options]="contractorData"
+                    formControlName="cont_id"
+                    optionLabel="Cont_company_name"
+                    optionValue="con_id"
+                    styleClass="w-full" 
+                    placeholder="Select Contractor" ></p-dropdown>
             </div>
             </div>
             <!--  row three -->

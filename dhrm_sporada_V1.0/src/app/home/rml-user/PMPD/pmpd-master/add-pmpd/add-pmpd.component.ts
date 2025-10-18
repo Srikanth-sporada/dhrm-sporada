@@ -9,6 +9,7 @@ import {FormBuilder,Validator, Validators} from "@angular/forms"
 import { ApiService } from 'src/app/home/api.service';
 import * as moment from 'moment';
 import { stringify } from 'querystring';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-add-pmpd',
   templateUrl: './add-pmpd.component.html',
@@ -36,7 +37,8 @@ export class AddPmpdComponent implements OnInit {
 
   constructor(public dailogRef:MatDialogRef<AddPmpdComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
-    private fb:FormBuilder,public api:ApiService
+    private fb:FormBuilder,public api:ApiService,
+    private messageService:MessageService
     ) { }
 
   ngOnInit() { 
@@ -44,6 +46,9 @@ export class AddPmpdComponent implements OnInit {
       (response:any)=>{
         console.log(response)
         this.plant=response
+      },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
       }
     )
     if(this.data.type=='edit'){
@@ -92,11 +97,15 @@ export class AddPmpdComponent implements OnInit {
     this.api.verify_pmpd_data([this.pmpdData.value]).subscribe((response:any)=>{
       console.log(response)
       if(response.status=='failed'){
-        alert(response.message)
+        // alert(response.message)
+        this.messageService.add({severity:'info',summary:response.message})
       }else if(response.status='Successful'){
         this.data_verified=true
       }
-    })
+    },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      })
   }
 
   upload_data():any{
@@ -104,23 +113,34 @@ export class AddPmpdComponent implements OnInit {
     let data = [{...this.pmpdData.value,effective_date:date}]
     this.api.upload_pmpd_data({data:data,user:sessionStorage.getItem('user_name')}).subscribe((response:any)=>{
        if(response.status=='Successfull'){
-          alert("Data uploaded successfully")
+          // alert("Data uploaded successfully")
+        this.messageService.add({severity:'info',summary:'Data uploaded successfully'})
+
         this.dailogRef.close()
        }else{
-        alert('someting went wrong please check with IT admin')
+        // alert('someting went wrong please check with IT admin')
+         this.messageService.add({severity:'info',summary:'someting went wrong please check with IT admin'})
        }
-    })
+    },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      })
   }
 
   updateData():any{
     this.api.update_pmpd_data({data:this.pmpdData.getRawValue(),user:sessionStorage.getItem('user_name')}).subscribe((res:any)=>{
       if(res.status=='succesfull'){
         this.dailogRef.close()
-        alert(res.message)
+        // alert(res.message)
+        this.messageService.add({severity:'info',summary:res.message})
       }else{
-        alert('Something Went Wrong Please Try again or contact admin')
+        // alert('Something Went Wrong Please Try again or contact admin');
+        this.messageService.add({severity:'info',summary:'someting went wrong please check with IT admin'})
       }
-    })
+    },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      })
   }
 
 }

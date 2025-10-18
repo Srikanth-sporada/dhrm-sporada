@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import { environment } from "../../../../../environments/environment.prod";
 import { ApiService } from "src/app/home/api.service";
 import * as moment from "moment";
-
+import { MessageService } from "primeng/api";
 @Component({
   selector: "app-prod-actual",
   templateUrl: "./prod-actual.component.html",
@@ -21,28 +21,45 @@ export class ProdActualComponent implements OnInit {
   code:any='';
   from:any=moment().startOf('month').format('YYYY-MM-DD');
   to:any=moment().format('YYYY-MM-DD');
-  constructor(private apiService: ApiService) {}
+  all:any;
+  userDetails:any;
+  constructor(private apiService: ApiService, private mesasgeService:MessageService) {}
 
   ngOnInit() {
+    let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
     const plantCode = sessionStorage.getItem("plantcode");
     this.apiService.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
       },
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.log(error);
+        this.mesasgeService.add({severity:'error',summary:error.message})
+      },
     });
     this.getData();
   }
 
   getData() {
     let date = this.date.split("-");
-    this.apiService.getProdData(this.from, this.to).subscribe((response: any) => {
+    let formattedFromDate = moment(this.from).format('YYYY-MM-DD');
+    let formattedToDate =  moment(this.to).format('YYYY-MM-DD')
+    this.apiService.getProdData(formattedFromDate,formattedToDate).subscribe((response: any) => {
       if ((response.status = "success")) {
         this.productin_data = response.data;
       } else {
-        alert(response.message);
+        // alert(response.message);
+        this.mesasgeService.add({severity:'info',summary:response.message})
       }
-    });
+    },(error) => {
+        console.log(error);
+        this.mesasgeService.add({severity:'error',summary:error.message})
+      });
+    
   }
 
   fileUpload(event: any) {
@@ -64,10 +81,10 @@ export class ProdActualComponent implements OnInit {
         console.log("failed");
         this.file = "";
         this.data = [];
-        alert(response.message);
+       this.mesasgeService.add({severity:'info',summary:response.message})
       } else if (response.status == "success") {
         this.save = false;
-        alert("Data Verified Successfully");
+       this.mesasgeService.add({severity:'info',summary:'Data verified Successfully'})
       }
     });
   }
@@ -80,7 +97,7 @@ export class ProdActualComponent implements OnInit {
     };
     console.log(this.data)
     this.apiService.uploadProdData(data).subscribe((response: any) => {
-      alert(response.message);
+      this.mesasgeService.add({severity:'info',summary:response.message})
       this.file = "";
       this.save = true;
     });
@@ -92,5 +109,6 @@ export class ProdActualComponent implements OnInit {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Table");
     XLSX.writeFile(wb, "Production Data.xlsx");
+    this.mesasgeService.add({severity:'info',summary:'Data Exported Successfully!'})
   }
 }

@@ -334,13 +334,10 @@ export class ApiService {
   deletemodule(formvalue: any) {
     return this.http.put(this.url + "/training/deletemodule", formvalue);
   }
-  getQuestions(form: any) {
+  getQuestions(testData: any) {
     return this.http.get(
       this.url +
-      "/training/getQuestions?module=" +
-      encodeURIComponent(form.module) +
-      "&username=" +
-      form.username
+      "/training/getQuestions?module=1." + testData.module.module_name +"&username=" + testData.username
     );
   }
   getQuestions_tnr(form: any) {
@@ -351,22 +348,22 @@ export class ApiService {
     return this.http.get(this.url + "/training/getSkillQsPaper?operation=" + form.module + "&plant=" + form.plant + "&level=" + form.level);
   }
 
-  getTest(form: any) {
+  getTest(data: any) {
     return this.http.get(
       this.url +
       "/training/getTest?username=" +
-      form.username +
-      "&module=" +
-      encodeURIComponent(form.module)
+      data.username +
+      "&module=1." +
+      encodeURIComponent(data.module.module_name)
     );
   }
-  Qualified(form: any) {
+  Qualified(data: any) {
     return this.http.get(
       this.url +
       "/training/Qualified?username=" +
-      form.username +
-      "&module=" +
-      encodeURIComponent(form.module)
+      data.username +
+      "&module=1." +
+      encodeURIComponent(data.module.module_name)
     );
   }
   pretest(formvalue: any) {

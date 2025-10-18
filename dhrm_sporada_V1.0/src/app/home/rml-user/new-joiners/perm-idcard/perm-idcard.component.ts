@@ -27,6 +27,7 @@ export class PermIdcardComponent implements OnInit {
   plant: any;
   cat: any;
   validdate: any;
+  plantName:string;
   // todate = this.fromdate.setDate(this.fromdate.getDate() + 10)
 
   constructor(
@@ -70,6 +71,7 @@ export class PermIdcardComponent implements OnInit {
         this.formvalues = response;
         this.getDate()
         this.plant = this.formvalues[0].plant_sign;
+         this.plantName = response[0].plant_name
         this.form.controls["permanent"].setValue(
           this.formvalues[0]?.permanent_address
         );

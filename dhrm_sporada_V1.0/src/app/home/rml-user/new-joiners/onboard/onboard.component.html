@@ -128,10 +128,10 @@
                 >
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ idx + 1 }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPOINTED'">
-                    {{ i.doj.split("T")[0] | date : "dd-MM-yyyy" }}
+                    {{ i.doj?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPROVED'">
-                    {{ i.created_dt.split("T")[0] | date : "dd-MM-yyyy" }}
+                    {{ i.created_dt?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.gen_id == null ? "-" : i.gen_id }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
@@ -172,10 +172,10 @@
                 >
                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{ idx + 1 }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPOINTED'">
-                    {{ i.doj.split("T")[0] | date : "dd-MM-yyyy" }}
+                    {{ i.doj?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPROVED'">
-                    {{ i.created_dt.split("T")[0] | date : "dd-MM-yyyy" }}
+                    {{ i.created_dt?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.apln_slno }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>

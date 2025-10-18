@@ -126,16 +126,16 @@
             <!-- <tr *ngFor="let data of optr_Data.filter(filterLeaves); let i = index;"> -->
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Gen_id }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.fullname }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Leave_Type }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.fullname }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Leave_Type }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.from_date | date : "dd-MM-yyyy" }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.to_date | date : "dd-MM-yyyy" }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.duration }}</td>
             <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.first_half }}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.second_half }}</td> -->
 
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.reason }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_1_name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.reason }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Approver_1_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L1_Approval_Status }}</td>
             <!-- actions -->
             <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center gap-3">
@@ -152,7 +152,7 @@
                 [disabled]="data.L1_Approval_Status !== l1_status">
             </button>
             </td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_2_name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Approver_2_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L2_Approval_Status }}</td>
             <!-- <td     (click)="l2_Approver(data)">
                         <button  mat-raised-button id="green" color="primary" 
@@ -216,15 +216,15 @@
 
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Gen_id }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.fullname }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Leave_Type }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.fullname }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Leave_Type }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.from_date | date : "dd-MM-yyyy" }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.to_date | date : "dd-MM-yyyy" }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.duration }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.reason }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_1_name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.reason }}</td>
+            <td class="!px-2 !py-4 !rounded-s-m">{{ data.Approver_1_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L1_Approval_Status }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approver_2_name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Approver_2_name }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.L2_Approval_Status }}</td>
             <!-- action buttons -->
             <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center gap-3" *ngIf="ishrappr === 'true'">

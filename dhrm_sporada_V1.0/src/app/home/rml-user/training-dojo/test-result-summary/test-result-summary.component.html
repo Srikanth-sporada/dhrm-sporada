@@ -117,13 +117,14 @@
                *ngFor="let i of data; let a = index">
                 <td class="px-2 py-4 text-center">{{ a + 1 }}</td>
                 <td class="px-2 py-4 text-center text-blue-600 font-semibold">{{ i.apln_slno }}</td>
-                <td class="px-2 py-4 text-center">
+                <td class="px-2 py-4">
                   <a
                     [routerLink]="[
                       '/rml/training_dojo/trainee-score-card',
                       i.trainee_idno,
                       i.fullname
                     ]"
+                    class="text-blue-600 font-semibold"
                     >{{ i.fullname }}</a
                   >
                 </td>

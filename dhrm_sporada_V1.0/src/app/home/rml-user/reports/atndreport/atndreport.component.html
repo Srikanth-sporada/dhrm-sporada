@@ -175,9 +175,9 @@
       <tr *ngFor="let item of atndData|categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
         <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.fullname }}</td>
-        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.apprentice_type}}</td>
-        <td class="!px-2 !py-4 text-center">
+        <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type}}</td>
+        <td class="!px-2 !py-4 text-center" >
           <span [ngClass]="{
             'bg-green-200 text-green-600 present': item['1'] == 'P',
             'bg-yellow-200 text-yellow-600 halfday': item['1'] =='HD',
@@ -187,7 +187,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['1'] == 'WO',
             white:item['1'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["1"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["1"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -200,7 +200,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['2'] == 'WO',
             white:item['2'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["2"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["2"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -213,7 +213,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['3'] == 'WO',
             white:item['3'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["3"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["3"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -226,7 +226,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['4'] == 'WO',
             white:item['4'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["4"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["4"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -239,7 +239,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['5'] == 'WO',
             white:item['5'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["5"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["5"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -252,7 +252,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['6'] == 'WO',
             white:item['6'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["6"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["6"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -265,7 +265,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['7'] == 'WO',
             white:item['7'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["7"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["7"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -278,7 +278,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['8'] == 'WO',
             white:item['8'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["8"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["8"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -291,7 +291,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['9'] == 'WO',
             white:item['9'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["9"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["9"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -304,7 +304,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['10'] == 'WO',
             white:item['10'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["10"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["10"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -317,7 +317,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['11'] == 'WO',
             white:item['11'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["11"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["11"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -330,7 +330,7 @@
             'bg-purple-200 text-purple-600 weekoff': item['12'] == 'WO',
             white:item['12'] == null
             
-          }" class="px-2 py-1 rounded-xl text-center">{{ item["12"] }}</span>
+          }" class="px-2 py-1 rounded-sm text-center">{{ item["12"] }}</span>
         </td>
         <td class="!px-2 !py-4 text-center"
         >
@@ -342,7 +342,7 @@
             'bg-gray-200 text-gray-600 sunday':item['13']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['13'] == 'WO',
             white:item['13'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["13"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["13"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -354,7 +354,7 @@
             'bg-gray-200 text-gray-600 sunday':item['14']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['14'] == 'WO',
             white:item['14'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["14"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["14"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -366,7 +366,7 @@
             'bg-gray-200 text-gray-600 sunday':item['15']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['15'] == 'WO',
             white:item['15'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["15"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["15"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -378,7 +378,7 @@
             'bg-gray-200 text-gray-600 sunday':item['16']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['16'] == 'WO',
             white:item['16'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["16"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["16"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -390,7 +390,7 @@
             'bg-gray-200 text-gray-600 sunday':item['17']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['17'] == 'WO',
             white:item['17'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["17"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["17"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -402,7 +402,7 @@
             'bg-gray-200 text-gray-600 sunday':item['18']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['18'] == 'WO',
             white:item['18'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["18"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["18"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -414,7 +414,7 @@
             'bg-gray-200 text-gray-600 sunday':item['19']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['19'] == 'WO',
             white:item['19'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["19"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["19"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -426,7 +426,7 @@
             'bg-gray-200 text-gray-600 sunday':item['20']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['20'] == 'WO',
             white:item['20'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["20"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["20"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -438,7 +438,7 @@
             'bg-gray-200 text-gray-600 sunday':item['21']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['21'] == 'WO',
             white:item['21'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["21"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["21"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -450,7 +450,7 @@
             'bg-gray-200 text-gray-600 sunday':item['22']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['22'] == 'WO',
             white:item['22'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["22"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["22"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -462,7 +462,7 @@
             'bg-gray-200 text-gray-600 sunday':item['23']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['23'] == 'WO',
             white:item['23'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["23"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["23"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -474,7 +474,7 @@
             'bg-gray-200 text-gray-600 sunday':item['24']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['24'] == 'WO',
             white:item['24'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["24"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["24"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -486,7 +486,7 @@
             'bg-gray-200 text-gray-600 sunday':item['25']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['25'] == 'WO',
             white:item['25'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["25"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["25"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -498,7 +498,7 @@
             'bg-gray-200 text-gray-600 sunday':item['26']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['26'] == 'WO',
             white:item['26'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["26"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["26"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
           >
@@ -510,7 +510,7 @@
             'bg-gray-200 text-gray-600 sunday':item['27']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['27'] == 'WO',
             white:item['27'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["27"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["27"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
             *ngIf="noOfDays >= 28"
@@ -523,7 +523,7 @@
             'bg-gray-200 text-gray-600 sunday':item['28']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['28'] == 'WO',
             white:item['28'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["28"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["28"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
             *ngIf="noOfDays >= 29"
@@ -536,7 +536,7 @@
             'bg-gray-200 text-gray-600 sunday':item['29']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['29'] == 'WO',
             white:item['29'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["29"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["29"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
             *ngIf="noOfDays >= 30"
@@ -549,7 +549,7 @@
             'bg-gray-200 text-gray-600 sunday':item['30']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['30'] == 'WO',
             white:item['30'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["30"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["30"] }}</span>
           </td>
           <td class="!px-2 !py-4 text-center"
             *ngIf="noOfDays >= 31"
@@ -562,7 +562,7 @@
             'bg-gray-200 text-gray-600 sunday':item['31']=='S',
             'bg-purple-200 text-purple-600 weekoff': item['31'] == 'WO',
             white:item['31'] == null
-            }" class="px-2 py-1 rounded-xl text-center">{{ item["31"] }}</span>
+            }" class="px-2 py-1 rounded-sm text-center">{{ item["31"] }}</span>
           </td>
       </tr>
     </tbody>

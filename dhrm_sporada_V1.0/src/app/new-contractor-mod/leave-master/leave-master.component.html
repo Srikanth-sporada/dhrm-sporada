@@ -31,7 +31,7 @@
      <!-- first row -->
      <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
      <!-- gen id -->
-       <div class="">
+       <div class="w-full p-fluid sm:w-1/4">
       <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
       <input 
         type="text" 
@@ -98,7 +98,7 @@
                     <!-- <tr  *ngFor="let data of apnt_list | GenFilter:selectedGenId  ; let i=index"> -->
                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{i+1}}</td>
                     <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.fullname }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md ">{{data.fullname }}</td>
                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Calendar_Year }}</td>
                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.CL }}</td>
                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.PL }}</td>

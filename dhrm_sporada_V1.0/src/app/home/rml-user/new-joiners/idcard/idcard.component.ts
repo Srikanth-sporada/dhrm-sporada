@@ -24,6 +24,7 @@ export class IdcardComponent implements OnInit {
   toodate:any
   todate = new Date(this.fromdate.getTime() + (10000 * 60 * 60 * 24));
   plant: any;
+  plantName:string;
   // todate = this.fromdate.setDate(this.fromdate.getDate() + 10)
 
     constructor(private active: ActivatedRoute, private http: HttpClient,private fb: UntypedFormBuilder, private service : ApiService ) { 
@@ -77,12 +78,13 @@ export class IdcardComponent implements OnInit {
 
     this.service.getDataForId(this.uniqueId)
     .subscribe({
-      next:(response)=>
+      next:(response:any)=>
       {
         console.log(response); 
         this.formvalues = response
 
         this.plant = this.formvalues[0].plant_sign
+        this.plantName = response[0].plant_name
         this.form.controls['permanent'].setValue(this.formvalues[0]?.permanent_address)
         this.form.controls['company_address'].setValue(this.formvalues[0]?.addr)
 

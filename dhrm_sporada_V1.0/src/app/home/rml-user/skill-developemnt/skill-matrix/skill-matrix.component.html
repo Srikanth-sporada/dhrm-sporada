@@ -140,10 +140,10 @@
                 <tr *ngFor="let i of filterinfo | filter : searchText; let idx = index"       class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ idx + 1 }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.gen_id}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.fullname }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.dept_name }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Line_Name }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Emp_Name }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.Line_Name }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.Emp_Name }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.DOJ }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Ageing }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Last_Eval_Date }}</td>

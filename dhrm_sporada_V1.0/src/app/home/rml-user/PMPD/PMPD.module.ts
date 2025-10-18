@@ -16,7 +16,11 @@ import {MatRadioModule} from '@angular/material/radio';
 import { CodePipe } from './code.pipe';
 import { ProdActualComponent } from "./prod-actual/prod-actual.component";
 import {ProdDataFlterPipe} from './prod-actual/prodDataFlter.pipe'
-
+import { SpeedDialModule } from "primeng/speeddial";
+import { InputTextModule } from "primeng/inputtext";
+import { DropdownModule } from "primeng/dropdown";
+import { ButtonModule } from "primeng/button";
+import { CalendarModule } from "primeng/calendar";
 @NgModule({
   imports: [
     CommonModule,
@@ -31,10 +35,18 @@ import {ProdDataFlterPipe} from './prod-actual/prodDataFlter.pipe'
     MatFormFieldModule,
     MatNativeDateModule,
     MatRadioModule,
-   
-   
+    DropdownModule,
+    SpeedDialModule,
+    InputTextModule,
+    ButtonModule,
+    CalendarModule
   ],
-  declarations: [PmpdMasterComponent, AddPmpdComponent, BulkUploadComponent,CodePipe,ProdActualComponent, ProdDataFlterPipe
+  declarations: [
+    PmpdMasterComponent, 
+    AddPmpdComponent, 
+    BulkUploadComponent,
+    CodePipe,ProdActualComponent, 
+    ProdDataFlterPipe
   ],
   
 })

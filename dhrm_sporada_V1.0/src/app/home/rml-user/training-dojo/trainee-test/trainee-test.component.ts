@@ -5,8 +5,8 @@ import { ApiService } from 'src/app/home/api.service';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from 'src/environments/environment.prod';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MessageService } from 'primeng/api';
 
-import { log } from 'console';
 
 @Component({
   selector: 'app-trainee-test',
@@ -41,12 +41,17 @@ export class TraineeTestComponent implements OnInit {
 
   username = {'username': this.active.snapshot.paramMap.get('username')}
 
-  choices = ['A','B','C','D']
+  choices = [
+    {label:'A',value:'A'},
+    {label:'B',value:'B'},
+    {label:'C',value:'C'},
+    {label:'D',value:'D'}]
   flag: boolean = true
   offline: string = ''
   imgUrl: any;
   selectedAnswers: string[] = [];
-  constructor(private fb: UntypedFormBuilder, private service: ApiService, private active: ActivatedRoute, private router:Router,public loader:LoaderserviceService, private modal : NgbModal) {
+  userDetails:any;
+  constructor(private fb: UntypedFormBuilder, private service: ApiService, private active: ActivatedRoute, private router:Router,public loader:LoaderserviceService, private modal : NgbModal, private messageService:MessageService) {
 
 
     this.form = fb.group({
@@ -76,20 +81,26 @@ export class TraineeTestComponent implements OnInit {
 
   ngOnInit(): void {
 
-    var a:any = sessionStorage.getItem('token')
+    var a:any = sessionStorage.getItem('token');
+    // conveting token into js object
     var x = atob(a.split('.')[1])
     this.x = JSON.parse(x)
-    
+    console.log(this.x);
+   // user information
+      this.userDetails = this.x?.fullname.toUpperCase()+`(${this.x?.gen_id})`+'-'+ this.x?.trainee_idno
+  
     this.answers[0].apln_slno = this.x.apln_slno
     console.log(this.answers, this.x.apln_slno);
     
-
     console.log(this.form.value);
     console.log(this.username)
     this.service.getModules(this.username)
     .subscribe({
-      next: (response)=>{console.log(response); this.modules = response},
-      error: (error)=>console.log(error)
+      next: (response) => {console.log(response); this.modules = response},
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:'error.messa'});
+      }
     })
   }
 
@@ -99,17 +110,23 @@ Qualified(event:any)
 
     this.service.getTest(this.form.value)
     .subscribe({
-      next: (response:any)=>{console.log(response);
+      next: (response:any) => {console.log(response);
         this.form.controls['test'].setValue(response.test)
-  }})
-  console.log('qualified evene', event.target.value);  
+      },
+      error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+      }
+})
+  console.log('qualified event', event.value);  
 
-  this.answers[0].module = this.form.controls['module'].value
-  this.ind = event.target.value.split('.')[0]
-  this.answers[0].priorityval = this.modules[this.ind-1].priorityval
-  var category = this.modules[this.ind-1].category
-  console.log('category', this.modules[this.ind-1])
-
+  this.answers[0].module = this.form.controls['module'].value.module_name
+  this.ind = this.modules.findIndex((module:any) => module.module_name == event.value.module_name);
+  console.log('MODULE INDEX:', this.ind)
+  this.answers[0].priorityval = event.value.priorityval
+  var category = event.value.category
+  console.log('QUAlIFIED DATA:', this.answers[0],category)
+  console.log(this.form.value)
 
   this.service.Qualified(this.form.value)
   .subscribe({
@@ -184,19 +201,22 @@ getQuestions(message:any, category:any)
 submit()
 {
   this.answers[0].curr_total = this.mark
-  this.answers[0].pf = this.modules[this.ind-1].pass_criteria <= this.mark ? 'p' : 'f'
-  this.answers[0].percent = Math.round( ((this.mark) / (this.modules[this.ind-1].total_marks)) * 100)
-  this.answers[0].min_percent = this.modules[this.ind-1].pass_percent
+  this.answers[0].pf = this.modules[this.ind].pass_criteria <= this.mark ? 'p' : 'f'
+  this.answers[0].percent = Math.round( ((this.mark) / (this.modules[this.ind].total_marks)) * 100)
+  this.answers[0].min_percent = this.modules[this.ind].pass_percent
   console.log("all asnwers", this.answers)
   console.log('mark', this.mark)
-  console.log('module', (this.modules[this.ind-1].total_marks))
+  console.log('module', (this.modules[this.ind].total_marks))
   console.log(this.count.size == this.questions.length)
 
   if(this.count.size == this.questions.length)
   {
     if(this.form.controls['test'].value == 'pre-test')
     {
-      console.log(this.answers)
+      console.log(this.answers);
+      // setting 1. for module split in backend
+      this.answers[0].module = `1.${this.answers[0].module}`
+      console.log('module:',this.answers)
       this.service.pretest(this.answers)
       .subscribe({
         next : (response:any)=> {console.log(response)
@@ -205,13 +225,22 @@ submit()
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
             this.router.onSameUrlNavigation = 'reload'
             this.router.navigate(['/trainee-test', this.username.username], { relativeTo: this.active })  
+          }else if(response.message == 'failure'){
+            console.log(response.message);
+            this.messageService.add({severity:'warn',summary:'Something Went Wrong!'})
           }
-          }    
+          },
+        error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }  
       })
     }
     else if(this.form.controls['test'].value == 'post-test')
     {
-      console.log(this.answers)
+      console.log(this.answers);
+      // setting 1. for module split in backend
+      this.answers[0].module = `1.${this.answers[0].module}`
       this.service.posttest(this.answers)
       .subscribe({
         next : (response:any)=> {console.log(response)
@@ -220,28 +249,36 @@ submit()
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
             this.router.onSameUrlNavigation = 'reload'
             this.router.navigate(['/trainee-test', this.username.username], { relativeTo: this.active })  
+          }else if(response.message == 'failure'){
+            console.log("something went wrong");
+            this.messageService.add({severity:'warn',summary:'Something Went wrong!'});
           }
-        }
+        },
+         error: (error) => {
+          console.log(error);
+          this.messageService.add({severity:'error',summary:error.message})
+        } 
       })
     }
   }
   else
-    alert('Please answer all the questions above.')
+    // alert('Please answer all the questions above.');
+   this.messageService.add({severity:'warn',summary:'Please Answer All the Questions Above!'})
 }
 
 load_answers(event:any, i:any,qslno :any, correct_answer:any)
 {
   this.count.add(i)
 
-  console.log(event.target.value ,':', correct_answer)
+  console.log(event.value ,':', correct_answer)
 
-  if(correct_answer == event.target.value)
+  if(correct_answer == event.value)
     this.mark = this.mark + 1
 
-  else if(correct_answer != event.target.value && this.answers[i]?.score == 1)
+  else if(correct_answer != event.value && this.answers[i]?.score == 1)
     this.mark = this.mark -1
   
-  var temp_obj = {'slno' : qslno, 'result': event.target.value, 'score' :  correct_answer == event.target.value ? this.score[1]: this.score[0] }
+  var temp_obj = {'slno' : qslno, 'result': event.value, 'score' :  correct_answer == event.value ? this.score[1]: this.score[0] }
   this.answers[i] = temp_obj
 }
 }

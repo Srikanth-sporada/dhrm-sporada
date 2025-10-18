@@ -3,7 +3,7 @@ import { MatDialog,MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog
 import * as XLSX from 'xlsx'
 import { ApiService } from 'src/app/home/api.service';
 import { environment } from '../../../../../../environments/environment.prod';
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-bulk-upload',
@@ -16,7 +16,7 @@ export class BulkUploadComponent implements OnInit {
   fileloaded = false
   data_verified:any=false;
   
-  constructor(private api:ApiService,public dailogref:MatDialogRef<BulkUploadComponent>,@Inject(MAT_DIALOG_DATA) public data1:any,) { 
+  constructor(private api:ApiService,public dailogref:MatDialogRef<BulkUploadComponent>,@Inject(MAT_DIALOG_DATA) public data1:any,private messageService:MessageService) { 
   }
 
   ngOnInit() {
@@ -40,14 +40,18 @@ export class BulkUploadComponent implements OnInit {
   verify_data():void{
     console.log(this.data)
     if(this.data.length==0){
-      alert(`No data in File Please check`)
+      // alert(`No data in File Please check`)
+      this.messageService.add({severity:'warn',summary:'No Data in File Please Check!'})
     }else{
       this.api.verify_pmpd_data(this.data).subscribe((response:any)=>{
         if(response.status=='failed'){
-          alert(response.message)
+         this.messageService.add({severity:'warn',summary:response.message})
         }else if(response.status='Successful'){
           this.data_verified=true
         }
+      }, (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
       })
     }
     
@@ -56,12 +60,16 @@ export class BulkUploadComponent implements OnInit {
   upload_data():any{
     this.api.upload_pmpd_data({data:this.data,user:sessionStorage.getItem('user_name')}).subscribe((response:any)=>{
        if(response.status=='Successfull'){
-          alert("Data uploaded successfully")
+          // alert("Data uploaded successfully")
+          this.messageService.add({severity:'info',summary:'Data Uploaded Successfully!'})
           this.dailogref.close()
        }else{
-        alert('someting went wrong please check with IT admin')
+         this.messageService.add({severity:'warn',summary:'Something Went Wrong!'})
        }
-    })
+    },(error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      })
   }
 
 

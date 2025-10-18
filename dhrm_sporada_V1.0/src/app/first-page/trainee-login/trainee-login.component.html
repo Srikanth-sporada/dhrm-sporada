@@ -2,8 +2,8 @@
 <form [formGroup]="traineeLoginForm" (ngSubmit)="submitForm()">
   <!--  mobile number -->
   <div class="flex-auto mb-3">
-    <span class="font-bold block mb-2">Temporary ID</span>
-    <input pInputText placeholder="Enter Temporary ID" class="w-full" formControlName="username"/>
+    <span class="font-bold block mb-2">Trainee ID</span>
+    <input pInputText placeholder="Enter Trainee ID" class="w-full" formControlName="username"/>
   </div>
   <!-- password -->
   <div class="flex-auto mb-3">
@@ -29,8 +29,8 @@
   <div
     class="px-2 font-poppins font-semibold flex items-center justify-center my-6"
   >
-    <p-button
-      label="LogIn"
+    <p-button 
+      label="Log In"
       icon="pi pi-sign-in"
       [fluid]="true"
       iconPos="right"

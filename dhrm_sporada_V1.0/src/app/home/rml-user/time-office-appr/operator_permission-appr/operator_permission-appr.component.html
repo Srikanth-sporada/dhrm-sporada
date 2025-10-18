@@ -101,13 +101,13 @@
                     <tr *ngFor="let data of optr_Data | leaveFilte1: genId:a1_status; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center !text-blue-600 !font-semibold">{{data.Gen_id}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
+                     <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_Before }}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.applied_on |date :"dd-MM-yyyy" }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.reason }}</td>
+                     <td class="!px-2 !py-4 !rounded-s-md">{{data.reason }}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Present_After }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Approver_1_name }}</td>
+                     <td class="!px-2 !py-4 !rounded-s-md">{{data.Approver_1_name }}</td>
                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.L1_Approval_Status }}</td>
                      <!-- approver one -->
                      <td class="!px-2 !py-4 !rounded-s-md text-center"  >
@@ -164,15 +164,15 @@
                     >
                      <td class="!px-2 !py-4 text-center">{{ i + 1 }}</td>
                      <td class="!px-2 !py-4 text-center text-blue-600 font-semibold">{{data.Gen_id}}</td>
-                     <td class="!px-2 !py-4 text-center">{{data.fullname}}</td>
+                     <td class="!px-2 !py-4">{{data.fullname}}</td>
                      <td class="!px-2 !py-4 text-center">{{data.att_date |date :"dd-MM-yyyy"}}</td>
                      <td class="!px-2 !py-4 text-center">{{data.Present_Before }}</td>
                      <td class="!px-2 !py-4 text-center">{{data.Mid_Day_Permission_min || 120 }} Min</td>
                      <td class="!px-2 !py-4 text-center">{{data.applied_on |date :"dd-MM-yyyy" }}</td>
-                     <td class="!px-2 !py-4 text-center">{{data.reason }}</td>
+                     <td class="!px-2 !py-4">{{data.reason }}</td>
                      <!-- <td class="!px-2 !py-4 text-center">{{data.Present_After }}</td> -->
                   
-                     <td class="!px-2 !py-4 text-center">{{data.Approver_1_name }}</td>
+                     <td class="!px-2 !py-4">{{data.Approver_1_name }}</td>
                      <td class="!px-2 !py-4 text-center">{{data.L1_Approval_Status }}</td>
                      <!-- <td class="!px-2 !py-4 text-center"  *ngIf="isRA === true  " >
                         <button  mat-raised-button id="green" color="primary" 

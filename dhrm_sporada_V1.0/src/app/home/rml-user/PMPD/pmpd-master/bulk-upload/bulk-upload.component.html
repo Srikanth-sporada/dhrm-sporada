@@ -1,24 +1,32 @@
-<div>
-  <div style="display: flex; align-items: center; justify-content: center">
-    <input type="file" (change)="fileUpload($event)" accept=".xlsx" />
+<div> 
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <input type="file" (change)="fileUpload($event)" accept=".xlsx" class="block  text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400" />
+
+     <a [href]="url + 'sop/pmpd master upload.xlsx'" style="text-decoration: none;">
     <button
-      mat-raised-button
-      color="yellow"
-      style="margin-right: 20px"
+      pButton
+      label="Template"
+      icon="pi pi-download"
+      class="rounded-2xl ml-2"
     >
-    <a [href]="url + 'sop/pmpd master upload.xlsx'" style="text-decoration: none;">Download Template</a>
     </button>
+    </a>
     <button
-      mat-raised-button
-      color="yellow"
-      style="margin-right: 20px"
+      pButton
+      label="Verify"
+      icon="pi pi-verified"
+      class="rounded-xl ml-2 w-full"
       (click)="verify_data()"
       [disabled]="!fileloaded"
     >
-      Verify
     </button>
-    <button mat-raised-button color="success" [disabled]="!data_verified" (click)="upload_data()">
-      Save
+    <button 
+    [disabled]="!data_verified" 
+    (click)="upload_data()"
+    label="Save"
+    pButton
+    class="rounded-xl ml-2 w-full"
+    icon="pi pi-save">
     </button>
   </div>
 </div>

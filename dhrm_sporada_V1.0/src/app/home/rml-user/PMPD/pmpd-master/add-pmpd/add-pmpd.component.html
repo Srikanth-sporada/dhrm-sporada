@@ -1,6 +1,17 @@
-<div >
-  <h2>Add PMPD</h2>
-  <form [formGroup]="pmpdData" >
+<div>
+   <!-- modal header -->
+    <div>
+      <div class="bg-blue-600 flex items-center justify-center py-4">
+        <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+          <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+            <mat-icon class="h-0 w-0 text-2xl opacity-100">{{!isEdit ? 'add_circle' : 'edit'}}</mat-icon>
+          </div>
+          <h4 class="text-2xl text-white">{{!isEdit ? 'Add PMPD' : 'Update PMPD'}}</h4>
+        </div>
+      </div>
+    </div>
+    <br>
+  <form [formGroup]="pmpdData" class="mx-3">
     <div class="form-main">
       <div class="form-column">
         <mat-form-field appearance="outline" >
@@ -53,7 +64,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Choose a date</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="effective_date">
-          <mat-hint>DD/MM/YYYY</mat-hint>
+          <!-- <mat-hint class="mb-3">DD/MM/YYYY</mat-hint> -->
           <mat-datepicker-toggle matSuffix  [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -66,11 +77,11 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="buttons">
-        <button mat-raised-button color="danger" (click)="this.dailogRef.close()">Cancel</button>
-        <button mat-raised-button color="yellow" *ngIf='!isEdit' [disabled]="pmpdData.status=='INVALID'" (click)="verifydata()">Verify</button>
-        <button mat-raised-button color='success' *ngIf='!isEdit' type="submit" [disabled]="!data_verified" (click)="upload_data()">Save</button>
-        <button mat-raised-button color='success' *ngIf='isEdit' type="submit" [disabled]="updatebutton" (click)="updateData()">Update</button>
+    <div class="flex justify-end gap-4 py-3">
+        <button class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md" (click)="this.dailogRef.close()">Cancel</button>
+        <button class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600" *ngIf='!isEdit' [disabled]="pmpdData.status=='INVALID'" (click)="verifydata()">Verify</button>
+        <button class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600" *ngIf='!isEdit' type="submit" [disabled]="!data_verified" (click)="upload_data()">Save</button>
+        <button class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white" *ngIf='isEdit' type="submit" [disabled]="updatebutton" (click)="updateData()">Update</button>
     </div>
         
   </form>
