@@ -111,7 +111,7 @@ export class TransferFormComponent implements OnInit {
           if(response.status == 'success')
           {
             this.messageService.add({severity:'info',summary: response.message})
-            this.router.navigate(['/rml/new_joiners/dept_transfer'])
+            this.router.navigate(['/rdhrm/new_joiners/dept_transfer'])
           }
           },  error: (err) => {
             console.log(err);

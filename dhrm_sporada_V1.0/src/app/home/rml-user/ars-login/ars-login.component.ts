@@ -80,7 +80,7 @@ export class ArsLoginComponent implements OnInit {
 
 
   goPlaces() {
-      this.router.navigate(['../rml']);
+      this.router.navigate(['../rdhrm']);
   }
 
 }

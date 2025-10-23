@@ -43,7 +43,7 @@ export class AbserSheetComponent implements OnInit {
   }
 
   navigateBack() {
-    this.router.navigate(['/rml/skill-developement/skill-test']);
+    this.router.navigate(['/rdhrm/skill-developement/skill-test']);
   }
 
 }

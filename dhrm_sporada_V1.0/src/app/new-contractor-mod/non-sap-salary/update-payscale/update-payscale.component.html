@@ -112,7 +112,7 @@
                              <button  
                              *ngIf="data.Salary_Status ==='OPEN'"
                               class="bg-yellow-500 px-2 py-1 rounded-2xl !text-white"
-                            [routerLink]="['/rml/contra/updt_payscale',data.apln_slno,data.cont_id,data.gen_id,data.apln_status,data.Salary_Status]"                          
+                            [routerLink]="['/rdhrm/contra/updt_payscale',data.apln_slno,data.cont_id,data.gen_id,data.apln_status,data.Salary_Status]"                          
                            > Update
                             <!-- <mat-icon>add_circle</mat-icon> -->
                           </button>
@@ -120,7 +120,7 @@
                              <button  
                              *ngIf="data.Salary_Status !=='OPEN'"
                             class="bg-blue-600 px-2 py-1 rounded-2xl !text-white"
-                             [routerLink]="['/rml/contra/rev_payscale',data.apln_slno,data.cont_id,data.gen_id,data.apln_status,data.PayScale_ID]"
+                             [routerLink]="['/rdhrm/contra/rev_payscale',data.apln_slno,data.cont_id,data.gen_id,data.apln_status,data.PayScale_ID]"
                            > Revise
                             <!-- <mat-icon>add_circle</mat-icon> -->
                           </button>

@@ -75,12 +75,12 @@ export class PmpdMasterComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  openDialog() {
     const dialogRef = this.dialog.open(AddPmpdComponent, {
       data: { type: "add" },
-      panelClass:'p-0',
       hasBackdrop: true,
     });
+   
     dialogRef.afterClosed().subscribe((data) => {
       this.getData();
     });

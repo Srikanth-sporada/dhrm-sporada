@@ -276,7 +276,7 @@
                                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Test_Percentage }}</td>
                                     <td class="!px-2 !py-4 !rounded-s-md text-center">
                                         <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
-                                            <a [routerLink]="['/rml/skill-developement/answer-paper', item.Peval_slno]">
+                                            <a [routerLink]="['/rdhrm/skill-developement/answer-paper', item.Peval_slno]">
                                                 {{ item.Test_Result }}
                                             </a>
                                         </ng-container>
@@ -287,7 +287,7 @@
 
                                     <td class="!px-2 !py-4 !rounded-s-md text-center">
                                         <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
-                                            <a [routerLink]="['/rml/skill-developement/Abserv-point', item.Peval_slno]">
+                                            <a [routerLink]="['/rdhrm/skill-developement/Abserv-point', item.Peval_slno]">
                                                 {{ item.Sup_Eval_Status }}
                                             </a>
                                         </ng-container>

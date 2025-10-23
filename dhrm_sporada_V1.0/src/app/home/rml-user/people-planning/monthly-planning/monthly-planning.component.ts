@@ -80,7 +80,7 @@ export class MonthlyPlanningComponent implements OnInit {
   }
 
   naviagToUpload() {
-    this.router.navigate(['/rml','people-planning','upload'])
+    this.router.navigate(['/rdhrm','people-planning','upload'])
   }
 
   getData(){

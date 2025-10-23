@@ -72,6 +72,6 @@ export class WorkmenLoginComponent implements OnInit {
   }
 
   goPlaces() {
-      this.router.navigate(['../rml']);
+      this.router.navigate(['../rdhrm']);
   }
 }

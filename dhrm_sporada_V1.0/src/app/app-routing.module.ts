@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
   },
   {
-    path: "rml",
+    path: "rdhrm",
     loadChildren: () => import('./home/rml-user/rml-user.module').then(m => m.RmlUserModule)
   },
   {

@@ -100,10 +100,10 @@ export class SkillPaperComponent implements OnInit {
           if (response.message === 'success') {
             // Redirect to the skill test page
             alert('Test Submitted Successfully, View Result In Answer Sheet');
-            this.router.navigate(['/rml/skill-developement/skill-test']);
+            this.router.navigate(['/rdhrm/skill-developement/skill-test']);
           } else if (response.message === 'failure') {
             alert('Submission Failed Try Later');
-            this.router.navigate(['/rml/skill-developement/skill-test']);
+            this.router.navigate(['/rdhrm/skill-developement/skill-test']);
           }
         },
         (error: any) => {

@@ -1,7 +1,7 @@
 DHRM ROUTES CHANGE GUIDE
 --------------------------
 
-note: find by exact match in vs-code
+note: find by match case & match whole word in vs-code and in replace select preserve case and exclude node_modules
 
 find in vs-code /rml/ replace /YOUR_ROUTE_NAME/ *.component.html
 

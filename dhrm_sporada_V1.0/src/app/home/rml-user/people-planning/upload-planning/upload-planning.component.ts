@@ -123,7 +123,7 @@ export class UploadPlanningComponent implements OnInit {
     this.apiService.people_planning_save(data).subscribe((response:any)=>{
       if(response.status='success'){
         alert(`Data Uploaded successfully for month ${this.month}-${this.year}`)
-        this.router.navigate(['/rml','people-planning','monthly'])
+        this.router.navigate(['/rdhrm','people-planning','monthly'])
       }else{
         alert('Update failed please Contack Admin')
       }

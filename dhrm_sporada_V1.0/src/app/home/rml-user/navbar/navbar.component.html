@@ -38,7 +38,7 @@
             <mat-nav-list  class="!mx-1 text-gray-600">
               <a
                 mat-list-item
-                routerLink="/rml/hrs"
+                routerLink="/rdhrm/hrs"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-md"
                 *ngIf="
@@ -53,7 +53,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/corp_hrs"
+                routerLink="/rdhrm/corp_hrs"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -68,7 +68,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/dashboard"
+                routerLink="/rdhrm/dashboard"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -86,7 +86,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/planvsactual"
+                routerLink="/rdhrm/planvsactual"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -103,7 +103,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/ocm"
+                routerLink="/rdhrm/ocm"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -120,7 +120,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/Cnt"
+                routerLink="/rdhrm/Cnt"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -146,12 +146,12 @@
             [(expanded)]="isMasterExpanded"
           >
             <mat-expansion-panel-header 
-             routerLink="/rml/masters"
+             routerLink="/rdhrm/masters"
              routerLinkActive="!text-blue-600 !font-semibold border-2 border-blue-600 bg-[var(--transparent)]"
              class="py-4 text-gray-600 font-semibold"
             >
               <mat-icon class="icon-pad" 
-                [ngClass]="router.url == '/rml/masters' || isMasterExpanded ? 'text-blue-600' : 'text-gray-600'"
+                [ngClass]="router.url == '/rdhrm/masters' || isMasterExpanded ? 'text-blue-600' : 'text-gray-600'"
               > ballot </mat-icon>
               Masters
             </mat-expansion-panel-header>
@@ -176,7 +176,7 @@
               <div *ngIf="ishr == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/new_joiners/trainee-application-status"
+                  routerLink="/rdhrm/new_joiners/trainee-application-status"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -187,7 +187,7 @@
               <div *ngIf="ishrappr == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/new_joiners/hr-approval"
+                  routerLink="/rdhrm/new_joiners/hr-approval"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -197,7 +197,7 @@
               <div *ngIf="ishr == 'true' || ishrappr == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/new_joiners/onboard"
+                  routerLink="/rdhrm/new_joiners/onboard"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -208,7 +208,7 @@
               <div *ngIf="ishr == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/new_joiners/dept_transfer"
+                  routerLink="/rdhrm/new_joiners/dept_transfer"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -220,7 +220,7 @@
               <div *ngIf="ishr == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/new_joiners/Rejoin-process"
+                  routerLink="/rdhrm/new_joiners/Rejoin-process"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -264,7 +264,7 @@
                   ishrappr == 'true' ||
                   isadmin == 'true'
                 "
-                routerLink="/rml/contra/conemp"
+                routerLink="/rdhrm/contra/conemp"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -274,7 +274,7 @@
               <a
                 mat-list-item
                 *ngIf="isadmin == 'true'"
-                routerLink="/rml/contra/newCon"
+                routerLink="/rdhrm/contra/newCon"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -307,7 +307,7 @@
               <a
                 mat-list-item
                 *ngIf="isadmin == 'true'"
-                routerLink="/rml/contra/payroll"
+                routerLink="/rdhrm/contra/payroll"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -317,7 +317,7 @@
               <a
                 mat-list-item
                 *ngIf="isadmin == 'true' || isFin == 'true' || isFin"
-                routerLink="/rml/contra/sal_header"
+                routerLink="/rdhrm/contra/sal_header"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -333,7 +333,7 @@
                   ishr == 'true' ||
                   ishrappr == 'true'
                 "
-                routerLink="/rml/contra/payscale"
+                routerLink="/rdhrm/contra/payscale"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -345,7 +345,7 @@
                 *ngIf="
                   (ishr == 'true' && ishrappr == 'false') || isadmin == 'true'
                 "
-                routerLink="/rml/contra/upt_payscale"
+                routerLink="/rdhrm/contra/upt_payscale"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -356,7 +356,7 @@
               <a
                 mat-list-item
                 *ngIf="ishrappr == 'true' || isadmin == 'true'"
-                routerLink="/rml/contra/apprl_salary"
+                routerLink="/rdhrm/contra/apprl_salary"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -368,7 +368,7 @@
                 *ngIf="
                   ishr == 'true' || isadmin == 'true' || ishrappr == 'true'
                 "
-                routerLink="/rml/contra/ont_salary"
+                routerLink="/rdhrm/contra/ont_salary"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -384,7 +384,7 @@
                   isadmin == 'true' ||
                   isFin
                 "
-                routerLink="/rml/contra/Emp_Sal_Master"
+                routerLink="/rdhrm/contra/Emp_Sal_Master"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -399,13 +399,13 @@
                   isadmin == 'true' ||
                   isFin
                 "
-                routerLink="/rml/contra/CL_Sal_Master"
+                routerLink="/rdhrm/contra/CL_Sal_Master"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">list_alt</mat-icon>CL Salary Report
               </a>
-              <!-- <a mat-list-item  *ngIf=" (ishr == 'true' && ishrappr == 'false' )|| isadmin == 'true' "  routerLink="/rml/contra/bulk_rev_payscale" style="color: white">
+              <!-- <a mat-list-item  *ngIf=" (ishr == 'true' && ishrappr == 'false' )|| isadmin == 'true' "  routerLink="/rdhrm/contra/bulk_rev_payscale" style="color: white">
                       <mat-icon class="icon-pad">visibility</mat-icon>One Time Ear & Ded
                     </a>
                      -->
@@ -414,17 +414,17 @@
                         <mat-icon class="icon-pad">visibility</mat-icon>Revise Salary
                       </mat-expansion-panel-header>
                       <mat-nav-list dense>
-                        <a mat-list-item routerLink="/rml/contra/rev_payscale" style="color: white">
+                        <a mat-list-item routerLink="/rdhrm/contra/rev_payscale" style="color: white">
                           <mat-icon class="icon-pad">visibility</mat-icon>Single salary Revise
                         </a>
-                        <a mat-list-item routerLink="/rml/contra/bulk_rev_payscale" style="color: white">
+                        <a mat-list-item routerLink="/rdhrm/contra/bulk_rev_payscale" style="color: white">
                           <mat-icon class="icon-pad">visibility</mat-icon>Bulk Salary Revise
                         </a>
                       </mat-nav-list>
                     </mat-expansion-panel>
 
                 <a mat-list-item  *ngIf="ishr == 'true' || isadmin == 'true' "
-                routerLink="/rml/contra/ont_salary" style="color: white">
+                routerLink="/rdhrm/contra/ont_salary" style="color: white">
                     <mat-icon class="icon-pad">visibility</mat-icon>One Time Salary </a>
                  -->
             </mat-nav-list>
@@ -449,7 +449,7 @@
               <a
                 *ngIf="isadmin == 'true'"
                 mat-list-item
-                routerLink="/rml/training_dojo/training-modules"
+                routerLink="/rdhrm/training_dojo/training-modules"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 >
                 <mat-icon class="icon-pad">file_copy</mat-icon>Training
@@ -457,7 +457,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/training_dojo/question-bank"
+                routerLink="/rdhrm/training_dojo/question-bank"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -467,7 +467,7 @@
 
               <a
                 mat-list-item
-                routerLink="/rml/training_dojo/skill-question"
+                routerLink="/rdhrm/training_dojo/skill-question"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -477,7 +477,7 @@
 
               <a
                 mat-list-item
-                routerLink="/rml/training_dojo/test-evaluation"
+                routerLink="/rdhrm/training_dojo/test-evaluation"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -486,7 +486,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/training_dojo/test-result-summary"
+                routerLink="/rdhrm/training_dojo/test-result-summary"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -496,7 +496,7 @@
               <div *ngIf="isadmin == 'true' || istrainer == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/training_dojo/Supervisor_Question"
+                  routerLink="/rdhrm/training_dojo/Supervisor_Question"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
 
@@ -508,7 +508,7 @@
               <div *ngIf="istrainee == 'true'">
                 <a
                   mat-list-item
-                  routerLink="/rml/training_dojo/trainee-score-card"
+                  routerLink="/rdhrm/training_dojo/trainee-score-card"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
 
@@ -538,7 +538,7 @@
             <mat-nav-list  class="!mx-1 text-gray-600">
               <a
                 mat-list-item
-                routerLink="/rml/time_office/calender"
+                routerLink="/rdhrm/time_office/calender"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -547,14 +547,14 @@
               >
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office/attendance"
+                routerLink="/rdhrm/time_office/attendance"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">event_note</mat-icon>Attendance</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time_office/forget_punch"
+                routerLink="/rdhrm/time_office/forget_punch"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
@@ -562,7 +562,7 @@
               > -->
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office/shift_change"
+                routerLink="/rdhrm/time_office/shift_change"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">track_changes</mat-icon>Shift
@@ -570,7 +570,7 @@
               > -->
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office/over-time"
+                routerLink="/rdhrm/time_office/over-time"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Over Time</a
@@ -578,7 +578,7 @@
               <a
                 *ngIf="this.isOperator"
                 mat-list-item
-                routerLink="/rml/time_office/comp-off"
+                routerLink="/rdhrm/time_office/comp-off"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -586,7 +586,7 @@
               >
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office/leave"
+                routerLink="/rdhrm/time_office/leave"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">villa</mat-icon>Leave</a
@@ -595,7 +595,7 @@
               <a
                 
                 mat-list-item
-                routerLink="/rml/time_office/per_leave"
+                routerLink="/rdhrm/time_office/per_leave"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -623,7 +623,7 @@
             <mat-nav-list  class="!mx-1 text-gray-600">
               <a
                 mat-list-item
-                routerLink="/rml/skill-developement/skill-test"
+                routerLink="/rdhrm/skill-developement/skill-test"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 
@@ -651,7 +651,7 @@
             <mat-nav-list  class="!mx-1 text-gray-600">
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office-status/forgot-punch-status"
+                routerLink="/rdhrm/time_office-status/forgot-punch-status"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
@@ -659,7 +659,7 @@
               > -->
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office-status/shift-change-status"
+                routerLink="/rdhrm/time_office-status/shift-change-status"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">track_changes</mat-icon>Shift
@@ -667,7 +667,7 @@
               > -->
               <a
                 mat-list-item
-                routerLink="/rml/time_office-status/excess-hrs"
+                routerLink="/rdhrm/time_office-status/excess-hrs"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -675,21 +675,21 @@
               >
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time_office-status/comp-off-status"
+                routerLink="/rdhrm/time_office-status/comp-off-status"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time_office-status/leave-status"
+                routerLink="/rdhrm/time_office-status/leave-status"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">villa</mat-icon>Leave</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time_office-status/od-status"
+                routerLink="/rdhrm/time_office-status/od-status"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
@@ -715,7 +715,7 @@
             <mat-nav-list class="!mx-1 text-gray-600">
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/shift-change-appr"
+                routerLink="/rdhrm/time-office-appr/shift-change-appr"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">track_changes</mat-icon>Shift
@@ -725,7 +725,7 @@
               <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/time-office-appr/ot-compoff"
+                routerLink="/rdhrm/time-office-appr/ot-compoff"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -734,7 +734,7 @@
               <!-- <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/time-office-appr/night-coff"
+                routerLink="/rdhrm/time-office-appr/night-coff"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Night Shift Comp-Off</a
@@ -742,7 +742,7 @@
               <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/reports/atndReport"
+                routerLink="/rdhrm/reports/atndReport"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -752,7 +752,7 @@
               <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/time-office-appr/calender"
+                routerLink="/rdhrm/time-office-appr/calender"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -762,7 +762,7 @@
               <!-- <a
                 *ngIf="ishrappr == 'true'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/otapproveph"
+                routerLink="/rdhrm/time-office-appr/otapproveph"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>PHR OT
@@ -772,35 +772,35 @@
               <!-- <a
                 *ngIf="ishr == 'true'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/compoffhr"
+                routerLink="/rdhrm/time-office-appr/compoffhr"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">av_timer</mat-icon>Comp-Off - HR</a
               > -->
               <!-- <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/comp-off-appr"
+                routerLink="/rdhrm/time-office-appr/comp-off-appr"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/leave-appr"
+                routerLink="/rdhrm/time-office-appr/leave-appr"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">villa</mat-icon>Leave</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/od-appr"
+                routerLink="/rdhrm/time-office-appr/od-appr"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
               > -->
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/missing-punch"
+                routerLink="/rdhrm/time-office-appr/missing-punch"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true'"
@@ -808,7 +808,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/mid-day-permission"
+                routerLink="/rdhrm/time-office-appr/mid-day-permission"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -818,7 +818,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/otapprmapping"
+                routerLink="/rdhrm/time-office-appr/otapprmapping"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true'"
@@ -826,14 +826,14 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/deptReport"
+                routerLink="/rdhrm/time-office-appr/deptReport"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon>supervisor_account</mat-icon>Dept Muster Report</a
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/weekoff"
+                routerLink="/rdhrm/time-office-appr/weekoff"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -843,7 +843,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/trn/shft_cancel"
+                routerLink="/rdhrm/trn/shft_cancel"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> cancel_presentation</mat-icon>Shift Cancel
@@ -851,7 +851,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/trn/shft_change"
+                routerLink="/rdhrm/trn/shft_change"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="isadmin == 'true' || ishr == 'true'"
@@ -860,7 +860,7 @@
               <a
                 *ngIf="isadmin == 'true'"
                 mat-list-item
-                routerLink="/rml/trn/trnsf_post"
+                routerLink="/rdhrm/trn/trnsf_post"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Transfer Post</a
@@ -870,7 +870,7 @@
                   ishr == 'true' || ishrappr == 'true' || isadmin == 'true'
                 "
                 mat-list-item
-                routerLink="/rml/contra/mst_leave"
+                routerLink="/rdhrm/contra/mst_leave"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -883,7 +883,7 @@
                   (ishr == 'true' || ishrappr == 'true' || isadmin == 'true')
                 "
                 mat-list-item
-                routerLink="/rml/time-office-appr/five-days-mapping"
+                routerLink="/rdhrm/time-office-appr/five-days-mapping"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -893,7 +893,7 @@
 
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/route"
+                routerLink="/rdhrm/time-office-appr/route"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -903,7 +903,7 @@
               >
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/van-mapping"
+                routerLink="/rdhrm/time-office-appr/van-mapping"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -914,7 +914,7 @@
 
               <a
                 mat-list-item
-                routerLink="/rml/time-office-appr/van-delay-regularization"
+                routerLink="/rdhrm/time-office-appr/van-delay-regularization"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
@@ -948,7 +948,7 @@
               <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/time-office-appr/forgot-punch-appr"
+                routerLink="/rdhrm/time-office-appr/forgot-punch-appr"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -959,7 +959,7 @@
               <a
                 *ngIf="isRA"
                 mat-list-item
-                routerLink="/rml/time-office-appr/excesshrAppr"
+                routerLink="/rdhrm/time-office-appr/excesshrAppr"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -970,7 +970,7 @@
               <a
                 *ngIf="isOtAppr == true"
                 mat-list-item
-                routerLink="/rml/time-office-appr/otapprove"
+                routerLink="/rdhrm/time-office-appr/otapprove"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -980,7 +980,7 @@
               <a
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/optr-appr-exec"
+                routerLink="/rdhrm/time-office-appr/optr-appr-exec"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Permission Approval</a
@@ -988,7 +988,7 @@
               <a
                 *ngIf="ishrappr === 'true'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/optr-appr-hrmng"
+                routerLink="/rdhrm/time-office-appr/optr-appr-hrmng"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon> Permission Approval</a
@@ -996,7 +996,7 @@
               <a
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/optr-leave-exec"
+                routerLink="/rdhrm/time-office-appr/optr-leave-exec"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
@@ -1004,7 +1004,7 @@
               <a
                 *ngIf="ishrappr === 'true'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/optr-leave-hrmng"
+                routerLink="/rdhrm/time-office-appr/optr-leave-hrmng"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
@@ -1012,7 +1012,7 @@
               <a
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
-                routerLink="/rml/time-office-appr/optr-Coff-exec"
+                routerLink="/rdhrm/time-office-appr/optr-Coff-exec"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Coff Approval</a
@@ -1022,7 +1022,7 @@
                   ishrappr === 'true' || isadmin === 'true' || Is_CHR === 'true'
                 "
                 mat-list-item
-                routerLink="/rml/time-office-appr/Rejoin_Approval"
+                routerLink="/rdhrm/time-office-appr/Rejoin_Approval"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 ><mat-icon> assignment_ind</mat-icon> Rejoin Approval</a
@@ -1053,7 +1053,7 @@
               >
                 <a
                   mat-list-item
-                  [routerLink]="['/rml/skill-developement/trainer-evaluation']"
+                  [routerLink]="['/rdhrm/skill-developement/trainer-evaluation']"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1072,7 +1072,7 @@
               >
                 <a
                   mat-list-item
-                  routerLink="/rml/skill-developement/Operations"
+                  routerLink="/rdhrm/skill-developement/Operations"
                  routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1091,7 +1091,7 @@
               >
                 <a
                   mat-list-item
-                  [routerLink]="['/rml/skill-developement/Skill-Matrix']"
+                  [routerLink]="['/rdhrm/skill-developement/Skill-Matrix']"
                  routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1110,7 +1110,7 @@
               >
                 <a
                   mat-list-item
-                  [routerLink]="['/rml/skill-developement/skill-view']"
+                  [routerLink]="['/rdhrm/skill-developement/skill-view']"
                  routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1125,7 +1125,7 @@
               >
                 <a
                   mat-list-item
-                  [routerLink]="['/rml/skill-developement/evaluation-due']"
+                  [routerLink]="['/rdhrm/skill-developement/evaluation-due']"
                  routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1137,7 +1137,7 @@
                 <a
                   mat-list-item
                   [routerLink]="[
-                    '/rml/skill-developement/Supervisor_Evaluation'
+                    '/rdhrm/skill-developement/Supervisor_Evaluation'
                   ]"
                  routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
@@ -1155,7 +1155,7 @@
                   istrainer == 'true'
                 "
                 mat-list-item
-                routerLink="/rml/reports/Skill-Matrix-Report"
+                routerLink="/rdhrm/reports/Skill-Matrix-Report"
                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
               >
@@ -1183,7 +1183,7 @@
             <mat-nav-list class="!mx-1 text-gray-600">
               <a
                 mat-list-item
-                routerLink="/rml/people-planning/monthly"
+                routerLink="/rdhrm/people-planning/monthly"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
@@ -1193,7 +1193,7 @@
 
               <a
                 mat-list-item
-                routerLink="/rml/people-planning/shift"
+                routerLink="/rdhrm/people-planning/shift"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
@@ -1202,7 +1202,7 @@
               >
               <!-- <a
                 mat-list-item
-                routerLink="/rml/people-planning/actualxplanned"
+                routerLink="/rdhrm/people-planning/actualxplanned"
                 style="color: white"
               >
                 <mat-icon class="icon-pad">event</mat-icon>Actual VS planned</a
@@ -1284,7 +1284,7 @@
               >
                 <a
                   mat-list-item
-                  routerLink="/rml/reports/rawpunch"
+                  routerLink="/rdhrm/reports/rawpunch"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1293,7 +1293,7 @@
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/reports/arsreports"
+                  routerLink="/rdhrm/reports/arsreports"
                    routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1301,7 +1301,7 @@
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/reports/atndReport"
+                  routerLink="/rdhrm/reports/atndReport"
                    routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1310,7 +1310,7 @@
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/reports/trainee-apln-report"
+                  routerLink="/rdhrm/reports/trainee-apln-report"
                    routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1320,7 +1320,7 @@
 
                 <a
                   mat-list-item
-                  routerLink="/rml/contra/emp_rec2"
+                  routerLink="/rdhrm/contra/emp_rec2"
                    routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1335,7 +1335,7 @@
                     isFin
                   "
                   mat-list-item
-                  routerLink="/rml/reports/cntRpt"
+                  routerLink="/rdhrm/reports/cntRpt"
                    routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
@@ -1345,7 +1345,7 @@
 
                 <!-- <a
                   mat-list-item
-                  routerLink="/rml/reports/evaluation-due-report"
+                  routerLink="/rdhrm/reports/evaluation-due-report"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">date_range</mat-icon>Evaluation
@@ -1368,7 +1368,7 @@
               <mat-nav-list dense>
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/forgot-punch-down"
+                  routerLink="/rdhrm/time-office-down/forgot-punch-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget
@@ -1376,7 +1376,7 @@
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/shift-change-down"
+                  routerLink="/rdhrm/time-office-down/shift-change-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">track_changes</mat-icon>Shift
@@ -1384,28 +1384,28 @@
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/over-time-down"
+                  routerLink="/rdhrm/time-office-down/over-time-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">more_time</mat-icon>Over Time</a
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/comp-off-down"
+                  routerLink="/rdhrm/time-office-down/comp-off-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/leave-down"
+                  routerLink="/rdhrm/time-office-down/leave-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">villa</mat-icon>Leave</a
                 >
                 <a
                   mat-list-item
-                  routerLink="/rml/time-office-down/od-down"
+                  routerLink="/rdhrm/time-office-down/od-down"
                   style="color: white"
                 >
                   <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
@@ -1575,7 +1575,7 @@
           <mat-icon class="text-blue-600">notes</mat-icon>
       </button>
       <!-- dhrm dashboard image -->
-      <div *ngIf="router.url === '/rml'" class="h-full ml-2 overflow-hidden">
+      <div *ngIf="router.url === '/rdhrm'" class="h-full ml-2 overflow-hidden">
         <img src="assets/HR2.jpg" alt="dhrm-image" class="h-full rounded-sm object-cover" />
       </div>
       <!-- Add Content Here -->
