@@ -1,0 +1,14 @@
+DHRM ROUTES CHANGE GUIDE
+--------------------------
+
+note: find by exact match in vs-code
+
+find in vs-code /rml/ replace /YOUR_ROUTE_NAME/ *.component.html
+
+then find rml replace YOUR_ROUTE_NAME *.component.ts
+
+then replace '../rml' to '../YOUR_ROUTE_NAME' home.routing.module then app.routing.module then executive,trainer,workmen login component
+
+replace in line no 1578 in navbar.component.html file '/rml' to '/YOUR_ROUTE_NAME'
+
+find and replace '/rml' in *.component.ts then replace only router.navigate(['/rml']) to '/YOUR_ROUTE_NAME'
