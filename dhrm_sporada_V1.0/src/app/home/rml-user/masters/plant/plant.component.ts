@@ -3,7 +3,6 @@ import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { log } from 'console';
 import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from "src/environments/environment.prod";
@@ -33,6 +32,7 @@ export class PlantComponent implements OnInit {
   editing_flag: any;
   sign:any = null
   inx: any;
+  selectedCompany:any;
   // material modal template ref
   @ViewChild('content', {read: TemplateRef}) addPlantTemplateRef: TemplateRef<unknown> | undefined;
     // Speed Dial items
@@ -74,7 +74,17 @@ export class PlantComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.service.getplant().
+   this.getPlantData();
+   this.getCompanyData();
+  }
+
+  /** 
+   * @description get the plant dat from API
+   * @property {dummy} has the plant data
+   * @property {plantData} has copy of plant data for filter purpose
+   * */ 
+  getPlantData() {
+       this.service.getplant().
     subscribe({
       next: (response)=>{
         this.dummy = response;
@@ -82,6 +92,15 @@ export class PlantComponent implements OnInit {
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     })
+  }
+ /** 
+   * @description get the company data for dropdown
+   * @property {companyList} has the company data
+   * @property {companyData} has copy of company data for filter purpose
+   * 1. company data array has the extra data for filter purpose {All}
+   * */ 
+  getCompanyData() {
+    
     this.service.getCompanyCode()
     .subscribe({
       next: (response)=>{
@@ -93,8 +112,10 @@ export class PlantComponent implements OnInit {
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     })
   }
-
-  // open material modal function for add plant
+  /**
+   * 
+   * @param content Material UI Modal ref
+   */
   open(content:any)
   {
     this.sign = null
@@ -120,9 +141,14 @@ export class PlantComponent implements OnInit {
       }else if(response.message == 'inserted'){
         this.service.getplant().
         subscribe({
-          next: (response)=>{this.dummy = response},
+          next: (response) => {
+            this.dummy = response;
+            // filter function call
+            this.filterPlantByCompany();
+          },
           error: (err) => this.messageService.add({severity:'error',summary:err.message})
         })
+       
         this.form.reset()
         this.messageService.add({severity:'info',summary:'Plant Added Successfully!'})
       }else if(response.message == 'failure'){
@@ -179,7 +205,11 @@ export class PlantComponent implements OnInit {
       }else if(response.message == 'updated'){
         this.service.getplant().
         subscribe({
-          next: (response)=>{this.dummy = response},
+          next: (response) => {
+            this.dummy = response;
+             // filter function call
+            this.filterPlantByCompany();
+          },
           error: (err) => this.messageService.add({severity:'error',summary:err.message})
         })
         this.messageService.add({severity:'info',summary:'Plant Updated.'})
@@ -296,14 +326,18 @@ signUpload(event:any){
   }
 }
 
-// filter by company
-filterPlantByCompany(event:any){
-  const companyCode = event.value;
-  if(companyCode == 'all'){
+/**
+ * 
+ * @property {selectedCompany} has  @type {string} user selected company code
+ * @property {FilteredPlantDataByCompany} has filtered data
+ * @property {plantData} has copy data of the plant
+ */
+filterPlantByCompany(){
+  if(this.selectedCompany == 'all'){
     this.dummy = this.plantData;
   }else{
     const FilteredPlantDataByCompany = this.plantData.filter((plant:any) => {
-    if(plant.company_code == companyCode){
+    if(plant.company_code == this.selectedCompany){
        return plant;
     }
   })
@@ -315,7 +349,12 @@ filterPlantByCompany(event:any){
   }
   }
 }
-// filter by personal area
+/**
+ * 
+ * @param event change event to get personal area
+ * @property {filteredDataBypersonalArea} filtered plant data
+ * @property {plantData} has copy data of plant
+ */
 filterPlantByPersonalArea(event:any){
   const personalArea = event.value;
   const filteredDataBypersonalArea = this.plantData.filter((plant:any) => {
@@ -330,7 +369,11 @@ filterPlantByPersonalArea(event:any){
     this.messageService.add({severity:'info', summary:"Data Not Found!"})
   }
 }
-// search plat by code | shortname | plant name
+/**
+ * 
+ * @param event input event to get user input
+ * @property {userSearchedPlant} has filtered plant
+ */
 searchPlantByCodeOrName(event:any){
   const searchTerm = event.target.value.toLowerCase();
   const userSearchedPlant = this.plantData.filter((plant:any) => {

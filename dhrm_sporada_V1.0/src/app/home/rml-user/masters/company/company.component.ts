@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import { ToastService } from 'angular-toastify';
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
-import { log } from 'console';
+
 
 const material = [
   MatSidenav,
@@ -37,6 +37,7 @@ export class CompanyComponent implements OnInit {
   all:any;
   // reference variable for company data
   companyData:any = [];
+  status = [{label:'Active',value:'Active'},{label:'In-Active',value:''}]
   editing_flag: any;
   // add company template reference
    @ViewChild('content', {read: TemplateRef}) addCompanyTemplateRef: TemplateRef<unknown> | undefined;
@@ -82,6 +83,17 @@ export class CompanyComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
+    
+    this.getCompanyList();
+  }
+
+  /**
+   * @function
+   * Get the company list
+   * response stored in @var dummy
+   */
+
+  getCompanyList(){
     this.service.companyshow().
       subscribe({
         next: (response) => { 
@@ -93,6 +105,11 @@ export class CompanyComponent implements OnInit {
       })
   }
 
+  /**
+   * 
+   * @param content material UI modal refernence
+   * @description opens the Material Modal UI
+   */
   open(content: any) {
     this.form.reset();
     this.editing_flag = false
@@ -118,18 +135,14 @@ export class CompanyComponent implements OnInit {
         next: (response: any) => {
           console.log(response);
           if(response.message == 'success'){
-            this.messageService.add({severity:'success', summary:'Company Added Successfully.'})
+            this.messageService.add({severity:'info', summary:'Company Added Successfully.'})
           }
           if (response.message == 'already') {
            this.messageService.add({severity:'warn', summary:'Company with same code already exists'})
           }
           else {
-            this.service.companyshow().
-              subscribe({
-                next: (response) => { this.dummy = response },
-                error: (err) => this.messageService.add({severity:'error', summary:err.message})
-              })
-            this.form.reset()
+            this.getCompanyList() // to get update data
+            this.form.reset() // form reset
             console.log(this.form.value)
           }
         },
@@ -143,6 +156,10 @@ export class CompanyComponent implements OnInit {
     this.modalService.open(content, { centered: true })
   }
 
+  /**
+   * 
+   * @param a user selected data array index
+   */
   edit(a: any) {
     console.log("-----------", a)
 
@@ -158,13 +175,21 @@ export class CompanyComponent implements OnInit {
     this.date_format()
     this.form.controls['modified_on'].setValue(this.date)
     this.form.controls['modified_by'].setValue(sessionStorage.getItem('emp_name'))
+    this.updateCompanyDetails(this.form.value);
+  }
 
-    this.service.companyedit(this.form.value)
+  /**
+   * 
+   * @param updateData updated company data
+   * @returns {void}
+   */
+  updateCompanyDetails(updateData:any):void{
+     this.service.companyedit(updateData)
       .subscribe({
         next: (response: any) => {
           console.log(response);
           if(response.message == 'success'){
-            this.messageService.add({severity:'success', summary:'Company Updated Successfully.'})
+            this.messageService.add({severity:'info', summary:'Company Updated Successfully.'})
           }
           if (response.message == 'already') {
             this.messageService.add({severity:'warn', summary:'Company with same code already exists'})
@@ -173,17 +198,18 @@ export class CompanyComponent implements OnInit {
             this.form.controls['created_on'].setValue(this.dummy[this.form.controls['sno'].value].created_on)
             this.form.controls['created_by'].setValue(this.dummy[this.form.controls['sno'].value].created_by)
 
-            this.service.companyshow().
-              subscribe({
-                next: (response) => { this.dummy = response },
-                error: (err) => this.messageService.add({severity:'error', summary:err.message})
-              })
+            this.getCompanyList()
           }
         },
         error: (err) => this.messageService.add({severity:'error', summary:err.message})
       })
   }
-// delete company function
+
+/**
+ * 
+ * @param event click eevnt to get the target element for Prime NG confimation service
+ * @param a index of user selected data to delete data
+ */
   deleteCompany(event:Event,a: any) {
       this.confirmationService.confirm({
         target: event.target as EventTarget,
@@ -196,14 +222,19 @@ export class CompanyComponent implements OnInit {
       })
   }
 
-  // delete company api call
+  /**
+   * 
+   * @param a index of user selected data
+   * @property {dummy} has the company data
+   * 1. splice the deleted inde form the array
+   */
   deleteCompanyAPICall(a:any){
          this.service.companydel(this.dummy[a])
       .subscribe({
         next: (response: any) => {
           console.log(response);
           if (response.message == 'success')
-            this.messageService.add({severity:'success', summary:'Company Deleted Successfully.'})
+            this.messageService.add({severity:'info', summary:'Company Deleted Successfully.'})
             this.dummy.splice(a, 1)
         },
         error: (err) => this.messageService.add({severity:'error', summary:err.message})
@@ -247,17 +278,28 @@ export class CompanyComponent implements OnInit {
     this.form.reset()
   }
 
-  // formatting api company response date [26/20/2025] to [20-Jan-2025]
-  formatApiDate(date:string){
+  /** 
+   * 1. formatting api company response date [26/20/2025] to [20-Jan-2025] 
+   * @param date @type {string} date to format
+   * @return {formattedDate} @type {string}
+   * 
+  */
+  formatApiDate(date:string):string{
     const splittedDate = date.split('/');
     const organizedDate = `${splittedDate[1]+'/'+splittedDate[0]+'/'+splittedDate[2]}`
     const jsDate = new Date(organizedDate)
     const formattedDate = formatDate(jsDate,'dd-MMM-YYYY',this.locale)
     return formattedDate;
   }
- // company status filter  
+
+ /**
+  * 
+  * @param event change event has the userselected status value
+  * @property {companyData} has the copy of the company data
+  * @var filteredData has filtered company data 
+  */ 
   filterCompanyByStatus(event:any){
-    const status = event.target.value;
+    const status = event.value;
     const filteredData = this.companyData.filter((company:any) => {
       if(company.status == status){
         return company
@@ -273,7 +315,13 @@ export class CompanyComponent implements OnInit {
    console.log(filteredData)
   }
 
-  // search company filter
+  /**
+   * 
+   * @param event input event has user entered value
+   * @var searchTerm has user entered value
+   * @var filteredData has filtered data
+   * @property {companyData} has company data.
+   */
   searchByCompanyOrCode(event:any){
      const searchTerm = event.target.value;
     const filteredData = this.companyData.filter((company:any) => {

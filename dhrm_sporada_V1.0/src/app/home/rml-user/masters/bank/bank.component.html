@@ -84,7 +84,7 @@
 
 <div class="mx-2">
   <!-- BANK master filter -->
-  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-2 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
      <!-- filter header -->
      <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
@@ -100,17 +100,18 @@
         </p-speedDial>
      </div>
      <!-- BANK master filter divison -->
-     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2 xl:w-[35%] md:w-[50%]">
+     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
         <!-- bank search  filter -->
-       <div class="font-poppins w-full">
+       <div class="font-poppins w-full sm:w-1/3 p-fluid">
           <label for="search" class="text-gray-400 font-poppins font-semibold mt-3 mb-1">Search</label> <br>
           <input 
             type="text" 
-            class="w-full px-2 py-3 bg-transparent rounded-md -mb-2 border border-gray-400 placeholder:font-poppins placeholder:text-[1.25rem] text-[1.25rem] focus:outline focus:outline-blue-600 focus:outline-[3px]"
+            pInputText
             name="search"
+            class="w-full"
             id="search"
             (input)="searchBankByName($event)"
-            placeholder="🔍︎ search Bank"
+            placeholder="🔍︎ Search Bank"
           >
        </div>
       </div>

@@ -1,6 +1,6 @@
 {
-  "name": "dhrm-web-main",
-  "version": "0.0.0",
+  "name": "rane-dhrm-sporada",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",

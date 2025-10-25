@@ -63,6 +63,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
+import { CostCenterComponent } from "./masters/cost-center/cost-center.component";
 @NgModule({
   declarations: [
     CompanyComponent,
@@ -94,7 +95,9 @@ import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.compon
     DeclaredCompOffComponent,
     BillProcessedDateComponent,
     IndirectHeadCountMasterComponent,
+    // new components
     PayrollAreaComponent,
+    CostCenterComponent,
     MonthFilterPipe,
     DeptFilterPipe,
     IN_PlantFilterPipe,

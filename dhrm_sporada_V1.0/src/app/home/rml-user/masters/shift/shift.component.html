@@ -268,6 +268,9 @@
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                                 Shift Type
                             </th>
+                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                Shift Group
+                            </th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                                 Security Shift
                             </th>
@@ -301,7 +304,10 @@
                                 <span class="px-2 py-1 bg-orange-100 rounded-md">{{i.Max_Time | formatTime}}</span>
                             </td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.coff_eligible_hours}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.type}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.type}}
+                            </td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.shift_group}}
+                            </td>
                             <td 
                               [ngClass]="i.security_shift == 'Y' ? 'text-green-600' : 'text-red-600'"
                               class="font-semibold !px-2 !py-4 !rounded-s-md text-center">

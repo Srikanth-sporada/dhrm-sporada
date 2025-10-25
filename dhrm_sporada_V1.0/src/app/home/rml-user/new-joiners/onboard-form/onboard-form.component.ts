@@ -77,7 +77,7 @@ export class OnboardFormComponent implements OnInit {
   created_dt:any;
   minlockdate:any;
   dolMinDate:any
-  dolMaxDate:any = new Date().toISOString().split('T')[0]
+  dolMaxDate:any = new Date();
   payrollArea:any = []
   dojoTrainingOptions:any =  [
     { label: 'YES', value: 'YES' },
@@ -241,9 +241,10 @@ export class OnboardFormComponent implements OnInit {
             this.lockDate=response.date.split('T')[0]
          //   console.log(this.lockDate)
             this.dolMinDate = this.lockDate > this.DOJ? moment(this.lockDate).format('yyyy-MM-DD') :this.DOJ
+            this.dolMinDate = new Date(this.dolMinDate)
             this.calMin_Max_DOL(this.lockDate)
-            if(this.DOJ<this.lockDate){
-              //this.minDate=this.lockDate
+            if(this.DOJ < this.lockDate){
+              // this.minDate = this.lockDate
               this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD')
             }
           })
@@ -323,7 +324,7 @@ export class OnboardFormComponent implements OnInit {
       this.form.controls["dol"].setValidators(Validators.required);
       this.form.controls["rfr"].setValidators(Validators.required);
     } 
-    console.log(this.minDate,this.today)   
+    console.log(this.minDate,this.today , "CAL DATE")   
   }
 
   // goBack
@@ -349,11 +350,11 @@ export class OnboardFormComponent implements OnInit {
     this.service.getbackdate().subscribe((response:any)=>{
       if (response.status=='success'){
       //  console.log(response.data.doj_limit)
-        this.backdate=response.data.doj_limit
+        this.backdate = response.data.doj_limit
         this.today= new Date()
       //  console.log('created_dt',created_dt);
       //  console.log('doj limit', moment().subtract(this.backdate, 'days').format('yyyy-MM-DD') );
-     const backdate1 = moment().subtract(this.backdate, 'days').format('YYYY-MM-DD');
+     const backdate1 = moment().subtract(this.backdate - 1, 'days').format('YYYY-MM-DD');
 
      this.minDate = moment(created_dt).isAfter(backdate1) ? created_dt : backdate1;
      this.minDate = new Date(this.minDate)
@@ -368,8 +369,9 @@ export class OnboardFormComponent implements OnInit {
 
   setDOJ(doj:any){
   //  console.log('3');
-    this.DOJ=doj
-    this.dolMinDate =doj
+    this.DOJ = doj
+    this.dolMinDate = doj
+    this.dolMinDate = new Date(this.dolMinDate)
     // this.calMin_Max_DOL()
   }
   
@@ -381,12 +383,16 @@ export class OnboardFormComponent implements OnInit {
       // console.log('lockDate > this.DOJ',lockDate);
       
       this.dolMinDate = lockDate
+
+      this.dolMinDate = new Date(this.dolMinDate)
     }
    else if(lockDate < this.DOJ){
     // console.log('lockDate < this.DOJ',this.DOJ);
       this.dolMinDate = this.DOJ
+      this.dolMinDate = new Date(this.dolMinDate)
     }
 
+    console.log('MAX DOL',this.dolMinDate)
   }
 
   get pc() {

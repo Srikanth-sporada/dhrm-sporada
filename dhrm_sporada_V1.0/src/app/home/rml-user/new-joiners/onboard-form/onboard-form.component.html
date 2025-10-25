@@ -209,6 +209,8 @@
                 formControlName="dol"
                 [disabled]="!readonly"
                 dateFormat="yy-mm-dd"
+                [minDate]="dolMinDate"
+                [maxDate]="dolMaxDate"
                 styleClass="w-full !font-poppins"
                 [showIcon]="true" >
             </p-calendar>

@@ -81,8 +81,8 @@
 
   <!-- new joiner onboard form -->
    <app-onboard-form 
-     [applicationNumber]="details[0].apln_slno"
-     [applicationStatus]="details[0].apln_status"
+     [applicationNumber]="details[0]?.apln_slno"
+     [applicationStatus]="details[0]?.apln_status"
      [applicationData]="details[0]" 
      *ngIf="showOnboard">
 

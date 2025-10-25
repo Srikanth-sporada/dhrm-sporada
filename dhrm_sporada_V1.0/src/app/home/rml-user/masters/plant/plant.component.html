@@ -213,7 +213,7 @@
 <!-- plant master container -->
 <div class="mx-2">
     <!--plant master filters -->
-  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-2 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
     <!-- filter header -->
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
@@ -237,8 +237,9 @@
             [options]="companyData"
             optionLabel="company_name"
             optionValue="company_code"
-            styleClass="w-full py-1"
-            (onChange)="filterPlantByCompany($event)"  
+            styleClass="w-full"
+            [(ngModel)]="selectedCompany"
+            (onChange)="filterPlantByCompany()"  
             placeholder="Select Company" ></p-dropdown>
 
        </div>
@@ -249,20 +250,20 @@
             [options]="plantData"
             optionLabel="personal_area"
             optionValue="personal_area"
-            styleClass="w-full py-1"
+            styleClass="w-full"
             (onChange)="filterPlantByPersonalArea($event)"  
             placeholder="Select Personal Area"></p-dropdown>
        </div>
        <!-- plant search  filter -->
-       <div class="font-poppins w-full">
+       <div class="font-poppins w-full p-fluid">
           <label for="search" class="text-gray-400 font-poppins font-semibold mt-3 mb-1">Search</label> <br>
           <input 
             type="text" 
-            class="w-full px-2 py-3 bg-transparent rounded-md -mb-2 border border-gray-400 placeholder:font-poppins placeholder:text-[1.25rem] text-[1.25rem] focus:outline focus:outline-blue-600 focus:outline-[3px]"
+            pInputText
             name="search" 
             id="search"
             (input)="searchPlantByCodeOrName($event)"
-            placeholder="🔍︎ plant | Code | ShortName"
+            placeholder="🔍︎ Plant | Code | ShortName"
           >
        </div>
      </div>

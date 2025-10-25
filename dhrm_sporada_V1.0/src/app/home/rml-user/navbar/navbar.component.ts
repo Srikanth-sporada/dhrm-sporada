@@ -41,6 +41,7 @@ export class NavbarComponent implements OnInit {
   isFh: any;
   a: any;
   plant: any;
+  // GET HR api call data
   username: any = {
     username: sessionStorage.getItem("user_name"),
     user: sessionStorage.getItem("user"),
@@ -172,7 +173,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getitems() {
-    const item = sessionStorage.getItem("all");
+    const item = sessionStorage?.getItem("all");
     if (item !== null) {
       this.all = JSON.parse(item);
     }

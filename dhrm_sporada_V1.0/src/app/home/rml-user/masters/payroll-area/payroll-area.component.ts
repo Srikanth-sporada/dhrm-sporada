@@ -8,23 +8,24 @@
  * @selector app-payroll-area
  * @templateUrl ./payroll-area.component.html
  * @styleUrls ./payroll-area.component.css
- * @function getPayrollArea 
- * @function updatePayrollArea 
- * @function searchPayrollArea
- * @function filterPayrollAreaByPlant
- * @function deletePayrollArea
- * @function deletePayrollAreaAPICall
- * @function addNewPayrollArea
- * @function patchUpdateValue
+ * @method getPayrollArea 
+ * @method updatePayrollArea 
+ * @method searchPayrollArea
+ * @method filterPayrollAreaByPlant
+ * @method deletePayrollArea
+ * @method deletePayrollAreaAPICall
+ * @method addNewPayrollArea
+ * @method patchUpdateValue
  */
 
 import { Component, OnInit,ViewChild,TemplateRef} from '@angular/core';
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from "src/environments/environment.prod";
+import { PayrollArea } from '../types/payrollArea.type';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -43,7 +44,7 @@ export class PayrollAreaComponent implements OnInit {
    * payrollAreaForm - Form group for payroll area data
    * @type {any}
    */
-  payrollAreaForm:any
+  payrollAreaForm:any;
   file:any
   new:any
   company:any
@@ -52,8 +53,8 @@ export class PayrollAreaComponent implements OnInit {
   uploadUrl = environment.path+'/plantupload'
   plantList: any = []
   plantData:any=[];
-  payrollAreaList:any = [];
-  payrollAreaCopy:any = [];
+  payrollAreaList:PayrollArea[] = [];
+  payrollAreaCopy:PayrollArea[] = [];
   companyData:any = []
   /**
    * editing_flag - Flag to indicate if the form is in edit mode
@@ -107,7 +108,7 @@ export class PayrollAreaComponent implements OnInit {
               },
               command: () => {
                 this.exportexcel();
-                this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
+                this.messageService.add({ severity: 'info', summary: 'Data Exported.' });
               }
             }
   ];
@@ -125,8 +126,8 @@ export class PayrollAreaComponent implements OnInit {
       StartDay:['',Validators.required],
       EndDay:['',Validators.required],
       Grace_minutes: ['',Validators.required],
-      InsertBy:[],
-      UpdateBy:[],
+      InsertBy:[''],
+      UpdateBy:[''],
     })
   }
 
@@ -139,10 +140,10 @@ export class PayrollAreaComponent implements OnInit {
     // get plant data
     this.service.getplant().
     subscribe({
-      next: (response)=>{
+      next: (response) => {
         this.plantList = response;
         this.plantList.push({plant_code:'all',plant_name:'All'})
-        this.plantData= response;
+        this.plantData = response;
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     });
@@ -199,17 +200,17 @@ export class PayrollAreaComponent implements OnInit {
     this.payrollAreaForm.controls['PayrollArea'].setValue(this.payrollAreaForm.value.PayrollArea.toUpperCase());
 
     console.log(this.payrollAreaForm.value);
-    // this.service.addNewPayrollArea(this.payrollAreaForm.value).subscribe({
-    //   next: (response:any) => {
-    //     console.log(response);
-    //     this.messageService.add({severity:'info',summary:response.message})
-    //     this.getPayrollArea();
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //     this.messageService.add({severity:'error',summary:error.message})
-    //   }
-    // })
+    this.service.addNewPayrollArea(this.payrollAreaForm.value).subscribe({
+      next: (response:any) => {
+        console.log(response);
+        this.messageService.add({severity:'info',summary:response.message})
+        this.getPayrollArea();
+      },
+      error: (error) => {
+        console.log(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
+    })
   }
 
   getValue(event:any){

@@ -6,6 +6,7 @@ import { relativeTimeThreshold } from "moment";
 import { report } from "process";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
+import { PayrollArea } from "./rml-user/masters/types/payrollArea.type";
 // import { ProductModel } from './models/product.model';
 
 @Injectable({
@@ -105,6 +106,9 @@ export class ApiService {
     return this.http.get(this.url + `/master/getplantcode?plant=${plant}`);
   }
 
+  getPlantByCompanyCode(compantCode:any) {
+    return this.http.get(this.url + `/master/get_plant_code?plant=${compantCode}`)
+  }
   getLineName(form: any) {
     return this.http.get(
       this.url + `/master/getLineName?dept_slno=${form.dept_slno}`
