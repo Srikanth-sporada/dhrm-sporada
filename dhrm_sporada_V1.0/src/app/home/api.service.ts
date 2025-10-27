@@ -411,7 +411,7 @@ export class ApiService {
     return this.http.post(this.url + "/training/offlineUpload", formvalue);
   }
   testSummary(form: any) {
-    return this.http.get(this.url + "/training/testSummary?start=" + form.start + "&end=" + form.end + "&plantcode=" + form.plantcode);
+    return this.http.get(this.url + "/training/testSummary?start=" + form.start + "&end=" + form.end + "&plantcode=" + form.plantcode + '&test_status=' + form.test_status + '&reporting_authority=' + form.reporting_authority);
   }
   traineeScorecard(formvalue: any) {
     return this.http.get(this.url + "/training/traineeScorecard?trainee_idno=" + formvalue.trainee_idno);

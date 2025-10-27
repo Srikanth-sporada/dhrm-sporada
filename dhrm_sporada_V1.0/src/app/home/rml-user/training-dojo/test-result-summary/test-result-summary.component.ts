@@ -18,7 +18,10 @@ export class TestResultSummaryComponent implements OnInit {
 d:any = this.getCurrentDate()
 all:any;
 userDetails:any;
-
+testStatus:any = 'in_training';
+isreportingAuth:any;
+empslno:any = null;
+statusList = [{label:'IN-TRAINING',value:'in_training'},{label:'TRAINING COMPLETED',value:'completed'}];
 getCurrentDate() {
   const date = new Date();
   const year = date.getFullYear();
@@ -30,7 +33,7 @@ getCurrentDate() {
 date :any = {
   "start": '2020-01-01',
   "end": this.d,
-  "plantcode": sessionStorage.getItem('plantcode') 
+  "plantcode": sessionStorage.getItem('plantcode'),
 }
 currentDate:any = new Date()
 
@@ -51,9 +54,17 @@ form:any
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
+      this.isreportingAuth = this.all?.Is_ReportingAuth;
+
+      console.log('RA:', this.isreportingAuth)
+    // checking if the user is reporting auth
+    if(this.isreportingAuth){
+      this.empslno = this.all?.empl_slno;
     }
-    this.service.testSummary(this.date).
+    console.log(this.empslno, this.date)
+    }
+    this.service.testSummary({...this.date,test_status:this.testStatus,reporting_authority:this.empslno}).
     subscribe({
       next: (response)=>{console.log(response); this.data = response } ,
       error: (error) => {
@@ -70,7 +81,12 @@ form:any
   save()
   {
     console.log(this.date)
-    this.service.testSummary({start: moment(this.date.start).format('YYYY-MM-DD'),end: moment(this.date.end).format('YYYY-MM-DD'),plantcode:sessionStorage.getItem('plantcode')}).
+    this.service.testSummary({
+      start: moment(this.date.start).format('YYYY-MM-DD'),
+      end: moment(this.date.end).format('YYYY-MM-DD'),
+      plantcode:sessionStorage.getItem('plantcode'),
+      test_status:this.testStatus,
+      reporting_authority:this.empslno}).
     subscribe({
       next: (response)=>{console.log(response); this.data = response } ,
       error: (error) => {
@@ -78,6 +94,8 @@ form:any
         this.messageService.add({severity:'error',summary:error.message})
       }
     })
+
+    console.log(this.empslno)
   }
 
   exportexcel()

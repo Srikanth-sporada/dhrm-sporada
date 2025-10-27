@@ -127,9 +127,9 @@
           </div>
           <br />
           <!-- aadhaar number -->
-          <p>
+          <span class="font-semibold text-blue-600">
             Aadhar Number<span class="star-color">*</span>
-          </p>
+          </span>
           <div class="row">
             <!-- aadhar -->
             <div class="col-sm-2">
@@ -173,6 +173,18 @@
                 (ngModelChange)="sendData()"
                 (ngModelChange)="check_aadhar($event, 'a3')"
                 type="text"
+              />
+            </div>
+            <!-- email -->
+            <div class="col-sm-5">
+              <label class="form-header" for="title"
+                  >Email<span class="star-color">*</span></label
+                >
+              <input
+                type="email"
+                formControlName="email"
+                class="form-control"
+                placeholder="Enter Your Email"
               />
             </div>
           </div>

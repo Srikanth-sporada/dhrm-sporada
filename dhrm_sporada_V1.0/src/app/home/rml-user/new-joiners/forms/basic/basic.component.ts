@@ -34,7 +34,6 @@ export class BasicComponent implements OnInit {
     @Input() basic: any = [];
     @Output() emit = new EventEmitter<any>()
     message = { 'basic': false }
-
     Title: any = ['Mr.', 'Miss.', 'Mrs.']
     Gender: any = ['Male', 'Female'];
     nation: any = ['India','Mexican'];
@@ -74,7 +73,7 @@ export class BasicComponent implements OnInit {
         this.form = this.fb.group({
             permanent: new FormControl('', Validators.required),
             present: new FormControl('', Validators.required),
-            title: ['', Validators.required],
+            title: ['Select Title', Validators.required],
             fname: ['', Validators.required],
             lname: ['', Validators.required],
             ftname: ['', Validators.required],
@@ -89,6 +88,8 @@ export class BasicComponent implements OnInit {
             aadhar1: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
             aadhar2: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
             aadhar3: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+            // new field
+            email: ['',[Validators.required,Validators.email]],
             nation: ['', Validators.required],
             city: [''],
             st: [''],
@@ -190,11 +191,13 @@ export class BasicComponent implements OnInit {
                 if (this.basic[0]?.title == null)
                     this.form.controls['pd'].setValue('No')
 
-                this.form.controls['title'].setValue(this.basic[0].title)
+                this.form.controls['title'].setValue(this.basic[0]?.title)
                 this.form.controls['fname'].setValue(this.basic[0]?.first_name)
                 this.form.controls['lname'].setValue(this.basic[0]?.last_name)
                 this.form.controls['ftname'].setValue(this.basic[0]?.fathername)
                 this.form.controls['bd'].setValue(this.basic[0]?.birthdate)
+                // new fields
+                this.form.controls['email'].setValue(this.basic[0]?.email)
                 this.form.controls['permanent'].setValue(this.basic[0]?.permanent_address)
                 this.form.controls['present'].setValue(this.basic[0]?.present_address)
                 console.log(this.basic[0]?.pincode , this.basic[0]?.pres_pincode);

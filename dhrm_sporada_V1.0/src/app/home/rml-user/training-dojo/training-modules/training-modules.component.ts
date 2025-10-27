@@ -17,7 +17,8 @@ export class TrainingModulesComponent implements OnInit {
   form:any
   sample : any = environment.path
   all:any;
-  category:any =[]
+  category:any =[];
+  status:any = 'ONLINE';
   userDetails:any;
   dummy: any = [
     {
@@ -77,7 +78,7 @@ export class TrainingModulesComponent implements OnInit {
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
     var username = {'username': sessionStorage.getItem('plantcode')}
-    this.service.getModules(username).
+    this.service.getModulesQa(this.all?.User_Name,this.all?.plant_code).
     subscribe({
       next: (response)=>{
         this.dummy = response;
@@ -204,6 +205,17 @@ exportexcel(): void
 reset()
 {
   this.form.reset()
+}
+
+filterModulesByCategory(){
+  const filteredModuleData = this.moduleData.filter((module:any) => module.category == this.status);
+
+  if(filteredModuleData.length){
+    this.dummy = filteredModuleData;
+  }else{
+    this.dummy = this.moduleData;
+    this.messageService.add({severity:'info',summary:'No Modules Found!'})
+  }
 }
 
 }

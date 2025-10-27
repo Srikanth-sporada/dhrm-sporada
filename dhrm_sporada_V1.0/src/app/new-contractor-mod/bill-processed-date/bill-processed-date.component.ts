@@ -102,6 +102,12 @@ updateSelectedDate() {
     console.log(selectedLockMonth)
     if (selectedLockMonth){
       const lockMonth = new Date(selectedLockMonth);
+      const startOfSelectedMonth = moment(lockMonth);
+
+      const sDate = startOfSelectedMonth.clone().subtract(this.selecetedPayrollArea.StartDay,'days');
+      const eDate = startOfSelectedMonth.clone().add(this.selecetedPayrollArea.EndDay,'days');
+
+      console.log({startOfSelectedMonth,sDate,eDate},'NEW PA DATES')
       console.log("lock month:",lockMonth);
 
       this.minStartDate = new Date(new Date(selectedLockMonth)

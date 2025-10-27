@@ -151,7 +151,6 @@ export class NavbarComponent implements OnInit {
         } else {
           sessionStorage.setItem("istrainee", "true");
         }
-
         sessionStorage.setItem("isadmin", this.ishrappr[0]?.is_admin);
         sessionStorage.setItem("istou", this.ishrappr[0]?.Is_TOU);
         sessionStorage.setItem("plantcode", this.ishrappr[0]?.plant_code);

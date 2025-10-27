@@ -432,7 +432,7 @@
         </div>
 
         <!-- Training Menu -->
-        <div *ngIf="istrainer == 'true'">
+        <div *ngIf="istrainer == 'true' || isRA ">
           <mat-expansion-panel
             [class.mat-elevation-z0]="true"
             dense
@@ -460,6 +460,7 @@
                 routerLink="/rdhrm/training_dojo/question-bank"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
+                *ngIf="istrainer == 'true'"
               >
                 <mat-icon class="icon-pad">question_mark</mat-icon>Question
                 Bank</a
@@ -470,6 +471,7 @@
                 routerLink="/rdhrm/training_dojo/skill-question"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
+                *ngIf="istrainer == 'true'"
               >
                 <mat-icon class="icon-pad">question_mark</mat-icon> Skill
                 Question Bank</a
@@ -480,6 +482,7 @@
                 routerLink="/rdhrm/training_dojo/test-evaluation"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
+                *ngIf="istrainer == 'true'"
               >
                 <mat-icon class="icon-pad">how_to_vote</mat-icon>Test
                 Evaluation</a
@@ -489,9 +492,11 @@
                 routerLink="/rdhrm/training_dojo/test-result-summary"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
+                *ngIf="istrainer == 'true' || isRA"
               >
                 <mat-icon class="icon-pad">cloud_done</mat-icon>Test Result
-                Summary</a
+                Summary
+                </a
               >
               <div *ngIf="isadmin == 'true' || istrainer == 'true'">
                 <a

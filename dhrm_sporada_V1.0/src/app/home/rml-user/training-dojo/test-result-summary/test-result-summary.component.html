@@ -50,13 +50,23 @@
         [showIcon]="true" >
      </p-calendar>
      </div>
+     <!-- test status -->
+      <div class="w-full">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Status</label> <br>
+      <p-dropdown
+      [options]="statusList"
+      optionLabel="label"
+      styleClass="w-full"
+      optionValue="value"
+      [(ngModel)]="testStatus">
+      </p-dropdown>
+     </div>
        <!-- search brn -->
      <div class="mt-8 ml-3">
       <p-button 
         icon="pi pi-search"
         styleClass="rounded-[1.5rem] mt-2"
         (onClick)="save()"
-        label="Search"  
       >
      </p-button> 
      </div>
@@ -87,7 +97,10 @@
                   SNo
                 </th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                  Application No
+                  Application
+                </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                  Gen ID
                 </th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                   Trainee Name
@@ -97,7 +110,7 @@
                 </th>
                 <!-- <t class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 Pre-Training Score
-          </th> -->
+                </th> -->
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                   Training Score(%)
                 </th>
@@ -117,6 +130,7 @@
                *ngFor="let i of data; let a = index">
                 <td class="px-2 py-4 text-center">{{ a + 1 }}</td>
                 <td class="px-2 py-4 text-center text-blue-600 font-semibold">{{ i.apln_slno }}</td>
+                <td class="px-2 py-4 text-center text-blue-600 font-semibold">{{ i?.gen_id }}</td>
                 <td class="px-2 py-4">
                   <a
                     [routerLink]="[

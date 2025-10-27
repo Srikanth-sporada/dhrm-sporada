@@ -9,7 +9,7 @@ export class TrainerGuard implements CanActivate {
   constructor(private location: Location,private messageService:MessageService) {}
 
   canActivate(): boolean {
-    if(!(sessionStorage.getItem('istrainer') == 'true') && !(sessionStorage.getItem('issupervisor') == 'flase'))
+    if(!(sessionStorage.getItem('istrainer') == 'true') && !(sessionStorage.getItem('issupervisor') == 'false'))
     {
       this.messageService.add({ severity: 'warn', summary: 'Access Denied'});
       setTimeout(() => this.location.back(),2000)
