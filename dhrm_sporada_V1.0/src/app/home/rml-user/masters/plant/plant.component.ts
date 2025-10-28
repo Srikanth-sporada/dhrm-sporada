@@ -32,7 +32,7 @@ export class PlantComponent implements OnInit {
   editing_flag: any;
   sign:any = null
   inx: any;
-  selectedCompany:any;
+  selectedCompany:any = 'all';
   // material modal template ref
   @ViewChild('content', {read: TemplateRef}) addPlantTemplateRef: TemplateRef<unknown> | undefined;
     // Speed Dial items
@@ -69,7 +69,6 @@ export class PlantComponent implements OnInit {
       personal_area : ['', Validators.required],
       payroll_area:['', Validators.required],
       company_code:['', Validators.required]
-     
     })
    }
 
@@ -100,14 +99,13 @@ export class PlantComponent implements OnInit {
    * 1. company data array has the extra data for filter purpose {All}
    * */ 
   getCompanyData() {
-    
     this.service.getCompanyCode()
     .subscribe({
       next: (response)=>{
         console.log(response)
         this.companylist = response;
         this.companyData = response;
-        this.companyData.push({company_code:'all',company_name:'All'});
+        this.companyData.unshift({company_code:'all',company_name:'All'});
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     })
@@ -124,9 +122,13 @@ export class PlantComponent implements OnInit {
     this.form.get('company_code').enable()
     console.log("opening")
     this.modalService.open(content, {centered: true})
-  }
-
-  // add plant function
+  }  
+  /**
+   * @memberof PlantComponent
+   * @property {any} form has plant data
+   * 1. plant_sign file name is updated using plant_code_sign.filename
+   * 
+   */
   save()
   {
     this.form.controls['plant_sign'].setValue(this.form.controls['plant_code'].value+'_sign.'+this.new)
@@ -143,7 +145,7 @@ export class PlantComponent implements OnInit {
         subscribe({
           next: (response) => {
             this.dummy = response;
-            // filter function call
+            
             this.filterPlantByCompany();
           },
           error: (err) => this.messageService.add({severity:'error',summary:err.message})

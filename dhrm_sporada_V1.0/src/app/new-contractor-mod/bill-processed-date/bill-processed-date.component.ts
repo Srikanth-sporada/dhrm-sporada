@@ -99,38 +99,72 @@ ngOnInit(): void {
 //  on month selected area selected caluculate start,end day for selected month
 updateSelectedDate() {
     const selectedLockMonth = this.billForm.get('lock_month')?.value;
-    console.log(selectedLockMonth)
+    console.log('SELECTED LOCK MONTH: ' + selectedLockMonth)
     if (selectedLockMonth){
       const lockMonth = new Date(selectedLockMonth);
-      const startOfSelectedMonth = moment(lockMonth);
+      /**
+       * @function new startDate and end date calculation
+       */
+      // const startOfSelectedMonth = moment(selectedLockMonth);
+      // console.log('START OF MONTH ' + startOfSelectedMonth)
+      // const sDate = startOfSelectedMonth.clone().subtract(this.selecetedPayrollArea.StartDay,'days').format('YYYY-MM-DD');
+      // const eDate = startOfSelectedMonth.clone().add(this.selecetedPayrollArea.EndDay,'days').format('YYYY-MM-DD');
+      // console.log({startOfSelectedMonth,sDate,eDate},'NEW PA DATES');
 
-      const sDate = startOfSelectedMonth.clone().subtract(this.selecetedPayrollArea.StartDay,'days');
-      const eDate = startOfSelectedMonth.clone().add(this.selecetedPayrollArea.EndDay,'days');
-
-      console.log({startOfSelectedMonth,sDate,eDate},'NEW PA DATES')
       console.log("lock month:",lockMonth);
+      /**
+       * 1. here for start month js object gives 0 - 11 for getmonth()
+       */
+      let billStartMonth = lockMonth.getMonth();
+      let billEndMonth = lockMonth.getMonth() + 1;
+      let currentYear = new Date().getFullYear();
+      /**
+       * 1.checking december month if december month changing month number 13 to 1 janunary
+       */
+      if(billEndMonth == 13 || billStartMonth == 0){
+        if(billEndMonth == 13){
+         billEndMonth = 1; //setting to january month
+         currentYear = currentYear + 1;
+        }
+        /**
+         * checking if startMonth is 0 setting to 12 for december month and current year - 1
+         *  */ 
+        if(billStartMonth == 0){
+         billStartMonth = 12;
+         currentYear = currentYear - 1;
+        } 
+      }
+    /**
+     * 1. construct bill process start date and end date;
+     * 2. currentYear - billStartMonth - payrollStartDay
+     */
+      let billProcessStartDate = `${currentYear}-${billStartMonth}-${this.selecetedPayrollArea.StartDay}`;
+      let billProcessEndDate = `${currentYear}-${billEndMonth}-${this.selecetedPayrollArea.EndDay}`
 
-      this.minStartDate = new Date(new Date(selectedLockMonth)
-      .setDate(lockMonth.getDate() - 30));
-      this.maxStartDate = new Date(new Date(selectedLockMonth)
-      .setDate(lockMonth.getDate() + 30));
-      // console.log(this.maxStartDate,this.minStartDate);
-
-      // calculated processed bill start date
+      console.log('Start Month', billStartMonth, 'End Month ' , billEndMonth , 'Current Year' , currentYear,{billProcessStartDate,billProcessEndDate})
+      /**
+       * @var selectedLockMonth JS date object
+       * @property {processedBillStartDate} @type {Date}
+       * @property {processedBillEndDate} @type {Date}
+       * @property {selectedPayrollArea} @type {Object} has payroll area data
+       * @var lockMonth @type {Date}
+       */
+       // calculated processed bill start date
       this.processedBillStartDate = new Date(new Date(selectedLockMonth)
       .setDate(lockMonth.getDate() + this.selecetedPayrollArea.StartDay - 1));
-      // calculated processed bill end date
-      this.processedBillEndDate = new Date(new Date(selectedLockMonth)
+
+       // calculated processed bill end date
+       this.processedBillEndDate = new Date(new Date(selectedLockMonth)
       .setDate(this.processedBillStartDate.getDate() + this.selecetedPayrollArea.EndDay));
-     
-      // updating calculated processed bill date in bill form
+
+      /**
+       * @property {billForm} has procesed bill data
+       * @function patchValue update calculated start & end date YYYY-MM-DD format
+       */
       this.billForm.patchValue({
         process_start_date: moment(this.processedBillStartDate).format('YYYY-MM-DD'),
         process_end_date: moment(this.processedBillEndDate).format('YYYY-MM-DD'),
       });
-      // this.billForm.value.process_start_date = moment(this.processedBillStartDate).format('YYYY-MM-DD');
-      // this.billForm.value.process_end_date = moment(this.processedBillEndDate).format('YYYY-MM-DD');
-
       console.log('Start Date' ,moment(this.processedBillStartDate).format('DD-MM-YYYY'))
       console.log('End Date' ,moment(this.processedBillEndDate).format('DD-MM-YYYY'));
       console.log(this.billForm.value)
@@ -362,22 +396,22 @@ onSubmit(){
     // formData.process_start_date = this.formatDate(this.billForm.value.process_start_date)
     // formData.process_end_date = this.formatDate(this.billForm.value.process_end_date)
     // formData.lock_date = this.formatDate(this.billForm.value.lock_date)
-    this.api.add_Bill_date(formData,this.userEmpcode).subscribe(res =>{
-      this.hideForm()
-      this.openAlertDialog(`${res}`,'check')
-      this.get_Bill_data()
-      this.reset()
-      },(error) => {
-        if (error.status === 400) {
-          console.log(error)
-          this.openAlertDialog(`${error.error}`,'error');
-          this.showForm()
-        }
-         else {
-          this.openAlertDialog('Error in connection','error');
-          this.showForm()
-        }
-    })
+    // this.api.add_Bill_date(formData,this.userEmpcode).subscribe(res =>{
+    //   this.hideForm()
+    //   this.openAlertDialog(`${res}`,'check')
+    //   this.get_Bill_data()
+    //   this.reset()
+    //   },(error) => {
+    //     if (error.status === 400) {
+    //       console.log(error)
+    //       this.openAlertDialog(`${error.error}`,'error');
+    //       this.showForm()
+    //     }
+    //      else {
+    //       this.openAlertDialog('Error in connection','error');
+    //       this.showForm()
+    //     }
+    // })
 }
 }
 

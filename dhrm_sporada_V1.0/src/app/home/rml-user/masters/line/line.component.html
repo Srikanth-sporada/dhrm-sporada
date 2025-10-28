@@ -144,7 +144,8 @@
             <label for="status" class="text-gray-400 font-poppins font-semibold mt-3 mb-1">Department</label> <br>
             <p-dropdown
             [options]="departmentData"
-            (onChange)="filterLineByDepartment($event)" 
+            [(ngModel)]="selectedDepartment"
+            (onChange)="filterLineByDepartment()" 
             optionLabel="dept_name"
             optionValue="dept_name"
             [filter]="true"
@@ -159,12 +160,12 @@
   <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
   <!-- line table -->
   <ng-template #show>
-    <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+    <div class="h-[90svh] lg:h-[65vh] xl:h-[63vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
         <table id="table" class="table-auto !w-full">
           <!-- line table head -->
           <thead class="sticky top-0">
             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">S.No</th>
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Code</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
@@ -183,7 +184,7 @@
              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
             >
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.plant_name }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.module_code }}</td>
               <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ i.Line_code}}</td>

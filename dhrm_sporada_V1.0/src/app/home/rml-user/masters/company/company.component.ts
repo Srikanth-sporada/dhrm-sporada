@@ -12,7 +12,6 @@ import * as XLSX from 'xlsx';
 import { ToastService } from 'angular-toastify';
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
 
-
 const material = [
   MatSidenav,
   MatTableModule
@@ -26,7 +25,7 @@ const material = [
 })
 export class CompanyComponent implements OnInit {
   closeResult: string;
-  form: any
+  form:any;
   sample: any = environment.path
   year: any
   month: any
@@ -117,19 +116,36 @@ export class CompanyComponent implements OnInit {
     this.modalService.open(content, { centered: true })
   }
 
+  /**
+   * 1. format date to current date YYYY-MM-DD
+   * @property {year}
+   * @property {month}
+   * @property {year}
+   * @property {date} has current date YYYY-MM-DD
+   */
   date_format() {
     this.year = new Date().getFullYear();
     this.month = new Date().getMonth() + 1;
     this.day = new Date().getDate();
     this.date = this.year + '-' + this.month + '-' + this.day
   }
-// add new company function
+
+/**
+ * @property {form}
+ * @property {service} has @function companyadd @type {Observable} to add new company
+ * @property {messageService} primeng notification service
+ * @function getCompanyList refresh the data
+ * 1. add company data
+ * 2. update created_on value using @property {date}
+ * 3. update created_by using @global session storage data 
+ */
   save() {
     this.date_format()
     this.form.controls['created_on'].setValue(this.date)
     console.log(this.month)
+    this.form.controls['created_by'].setValue(sessionStorage.getItem('emp_name'));
 
-    this.form.controls['created_by'].setValue(sessionStorage.getItem('emp_name'))
+    /** add new company api call */
     this.service.companyadd(this.form.value)
       .subscribe({
         next: (response: any) => {
@@ -169,7 +185,12 @@ export class CompanyComponent implements OnInit {
     this.form.controls['company_name'].setValue(this.dummy[a].company_name)
     console.log(this.editing_flag)
   }
-// update company details function
+
+  /**
+   * @description used to update company modifided-by and modified on
+   * @property {form} @type {any}
+   * @function data_format
+   */
   editSave() {
 
     this.date_format()
@@ -294,7 +315,7 @@ export class CompanyComponent implements OnInit {
 
  /**
   * 
-  * @param event change event has the userselected status value
+  * @param event change event has the user selected status value
   * @property {companyData} has the copy of the company data
   * @var filteredData has filtered company data 
   */ 

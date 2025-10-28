@@ -33,7 +33,8 @@ export class LineComponent implements OnInit {
   plantname: any;
   dept: any
   all_details: any
-  selectedPlant = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
+  selectedDepartment:any = 'All'
   departmentData:any=[]
   lineData:any= []
   temp_a: any;
@@ -78,20 +79,8 @@ export class LineComponent implements OnInit {
 
   // ng lifecycle
   ngOnInit(): void {
-    // get all plants
-    this.getplantcode()
-    this.service.getline().
-      subscribe({
-        next: (response) => {
-          console.log(response);
-          this.line = response;
-          this.lineData=response;
-          // filter line by plant
-          this.filterLineByPlant()
-        },
-        error:(err) => this.messageService.add({severity:'error',summary:err.message})
-      });
-    // get all departments
+    this.getplantcode();
+    this.getLineData();
     this.getDepartment();
   }
 
@@ -138,12 +127,25 @@ export class LineComponent implements OnInit {
         next: (response) => { 
           console.log(response); 
           this.plantname = response
-          this.plantname.push({plant_name:'All',plant_code:''})
+          this.plantname.unshift({plant_name:'All',plant_code:'all'})
          },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
   }
 
+  getLineData(){
+    this.service.getline().
+      subscribe({
+        next: (response) => {
+          console.log(response);
+          this.line = response;
+          this.lineData=response;
+          /** filter line function */
+          this.filterLineByPlant();
+        },
+        error:(err) => this.messageService.add({severity:'error',summary:err.message})
+      });
+  }
   // get all information about plant
   getall(event: any) {
     console.log(event.value)
@@ -229,14 +231,8 @@ export class LineComponent implements OnInit {
             const index2 = this.dept.findIndex((obj: any) => obj.dept_slno === this.form.get('dept_name').value);
             this.form.get('dept_name').setValue(this.dept[index2].dept_name)
             this.messageService.add({severity:'info',summary:'Line Added'})
-            this.service.getline().
-              subscribe({
-                next: (response) => {
-                  console.log(response); 
-                  this.line = response;
-                },
-                error:(err) => this.messageService.add({severity:'error',summary:err.message})
-              })
+            /** refresh data */
+            this.getLineData()
             this.form.reset()
           }else{
             this.messageService.add({severity:'error',summary:'Cannot Add Line!'})
@@ -265,8 +261,10 @@ export class LineComponent implements OnInit {
             const index2 = this.dept.findIndex((obj: any) => obj.dept_slno === this.form.get('dept_name').value);
             this.form.get('dept_name').setValue(this.dept[index2].dept_name)
             this.form.get('dept_name')
-            this.line[this.temp_a] = this.form.value
-            this.messageService.add({severity:'info',summary:'Line Updated'})
+            this.line[this.temp_a] = this.form.value;
+            /** filter plant function */
+            this.filterLineByPlant();
+            this.messageService.add({severity:'info',summary:'Line Updated'});
           }else{
             this.messageService.add({severity:'error',summary:'Cannot Update Line!'})
           }
@@ -311,7 +309,7 @@ export class LineComponent implements OnInit {
     this.service.getdepartment().subscribe({
       next:(response:any) => {
         this.departmentData = this.removeDuplicateValues(response);
-        this.departmentData.push({dept_name:'All'})
+        this.departmentData.unshift({dept_name:'All'})
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     })
@@ -319,7 +317,7 @@ export class LineComponent implements OnInit {
 
   // filter line by plant
   filterLineByPlant(){
-   if(this.selectedPlant == ''){
+   if(this.selectedPlant == 'all'){
      this.line = this.lineData;
    }else{
     const filteredLineDataByPlant = this.lineData.filter((line:any) => {
@@ -337,14 +335,13 @@ export class LineComponent implements OnInit {
 
   // filter line by department
 
-  filterLineByDepartment(event:any){
-    const department = event.value;
-    if(department == 'All'){
+  filterLineByDepartment(){
+    if(this.selectedDepartment == 'All'){
      this.line = this.lineData;
     }else{
        const filteredLineDataByDepartment = this.lineData.filter((line:any) => {
       if(this.selectedPlant){
-        if(line.dept_name == department && line.plant_code == this.selectedPlant){
+        if(line.dept_name == this.selectedDepartment && line.plant_code == this.selectedPlant){
           return line;
         }
       }
@@ -354,7 +351,7 @@ export class LineComponent implements OnInit {
       this.line = filteredLineDataByDepartment;
     }else{
       this.line = this.lineData;
-      this.messageService.add({severity:'info',summary:`Line Not Found For Plant:${this.selectedPlant}`})
+      this.messageService.add({severity:'info',summary:`Line Not Found For Plant: ${this.selectedPlant}`})
     }
     }
   }

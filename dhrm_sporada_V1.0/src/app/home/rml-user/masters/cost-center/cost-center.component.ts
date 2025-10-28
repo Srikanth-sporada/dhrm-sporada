@@ -45,61 +45,10 @@ export class CostCenterComponent implements OnInit {
    * @type {any}
    */
   costCenterForm:any;
-  costCenterList:any = [
-  {
-    company_code: '5000',
-    plant_name: 'Alpha Plant',
-    dept_name: 'Manufacturing',
-    cost_center: 'MNF-001',
-    InsertBy: 'admin',
-    InsertDate: new Date('2025-10-01'),
-    UpdateBy: 'jdoe',
-    UpdateDate: new Date('2025-10-15'),
-  },
-  {
-    company_code: '1000',
-    plant_name: 'Beta Facility',
-    dept_name: 'Logistics',
-    cost_center: 'LOG-204',
-    InsertBy: 'sri',
-    InsertDate: new Date('2025-09-20'),
-    UpdateBy: '',
-    UpdateDate: null,
-  },
-  {
-    company_code: '1000',
-    plant_name: 'Gamma Works',
-    dept_name: 'R&D',
-    cost_center: 'RND-310',
-    InsertBy: '',
-    InsertDate: new Date('2025-08-12'),
-    UpdateBy: 'admin',
-    UpdateDate: new Date('2025-09-01'),
-  },
-  {
-    company_code: '1000',
-    plant_name: 'Delta Hub',
-    dept_name: 'Quality Control',
-    cost_center: 'QC-118',
-    InsertBy: 'mkapoor',
-    InsertDate: new Date('2025-07-05'),
-    UpdateBy: 'mkapoor',
-    UpdateDate: new Date('2025-07-20'),
-  },
-  {
-    company_code: '1000',
-    plant_name: 'Epsilon Yard',
-    dept_name: 'Maintenance',
-    cost_center: 'MTN-450',
-    InsertBy: '',
-    InsertDate: new Date('2025-06-10'),
-    UpdateBy: '',
-    UpdateDate: null,
-  }
-];
-;
+  costCenterList:any = [];
   costCenterCopy:any = this.costCenterList;
   companyList:any = [];
+  selectedCompany:any = 'all';
   plantList: any = [];
   plantData:any=[]; 
   departmentList:any[];
@@ -210,6 +159,8 @@ export class CostCenterComponent implements OnInit {
         console.log(response);
         this.costCenterList = response;
         this.costCenterCopy = response;
+        /** company filter function */
+        this.filterCostCenterByCompany();
       },
       error: (error) => {
         this.messageService.add({severity:'error',summary:error.message})
@@ -411,13 +362,12 @@ export class CostCenterComponent implements OnInit {
    * @param {Event} event - The event containing the plant code to filter by
    * @returns {void}
    **/
-  filterCostCenterByCompany(event:any): void{
-    const companyCode = event.value;
-    if(companyCode == 'all'){
+  filterCostCenterByCompany(): void{
+    if(this.selectedCompany == 'all'){
       this.costCenterList = this.costCenterCopy;
     }else{
       const filteredcostCenterData = this.costCenterCopy.filter((costCenter:any) => {
-      if(costCenter.company_code == companyCode){
+      if(costCenter.company_code == this.selectedCompany){
         return costCenter;
       }
     })
@@ -472,6 +422,7 @@ export class CostCenterComponent implements OnInit {
     this.service.getCompanyCode().subscribe({
       next: (response:any) => {
         this.companyList = response;
+        this.companyList.unshift({company_code:'all',company_name:'All'})
       },
       error: (error) => this.messageService.add({severity:'error',summary:error.message})
     })

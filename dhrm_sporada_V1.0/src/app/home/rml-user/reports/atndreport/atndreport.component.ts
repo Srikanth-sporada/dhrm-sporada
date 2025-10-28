@@ -20,7 +20,7 @@ export class AtndreportComponent implements OnInit {
   atndData: any[];
   categories: any[];
   cat: any = "All";
-  selectedLine: any='All';
+  selectedLine: any='All'; 
   lines: any;
   all:any;
   userDetails:any;

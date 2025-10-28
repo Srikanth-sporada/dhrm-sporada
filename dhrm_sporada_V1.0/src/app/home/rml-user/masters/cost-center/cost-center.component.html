@@ -151,7 +151,8 @@
             optionLabel="company_name"
             optionValue="company_code"
             styleClass="w-full"
-            (onChange)="filterCostCenterByCompany($event)"  
+            (onChange)="filterCostCenterByCompany()"
+            [(ngModel)]="selectedCompany"  
             placeholder="Select Company" >
           </p-dropdown>
        </div>
@@ -174,7 +175,7 @@
   <app-loader *ngIf="loader.isLoding | async;else costCenterTable"></app-loader>
 <!-- plant master table divison -->
   <ng-template #costCenterTable>
-    <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+    <div class="h-[90svh] lg:h-[65vh] xl:h-[63vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
         <table id="table" class="table-auto !w-full">
           <!-- plant table header -->
           <thead class="sticky top-0">

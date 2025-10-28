@@ -30,10 +30,10 @@ export class DeptComponent implements OnInit {
   array:any = []
   department: any = []
   Dept_header: any = []
-  departmentData:any= []
-  selectedPlant:any = sessionStorage.getItem('plantcode');
+  departmentData:any =  [];
+  selectedPlant:any = 'all';
   isAdmin:any = sessionStorage.getItem('isadmin')
-  selectedDepartment:any
+  selectedDepartment:any= 'all';
   editing_flag: any;
   index: any = -1
   // material modal template ref
@@ -74,9 +74,32 @@ export class DeptComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.selectedPlant)
-    this.getplantcode()
-    this.service.getdepartment().
+    this.getplantcode();
+    this.getDepartment();
+    this.getDepartmentHeader();
+  }
+
+  /**
+   * @memberof DeptComponent
+   */
+  getplantcode(){
+    var company = {'company_name': sessionStorage.getItem('companycode')}
+    this.service.plantcodelist(company)
+    .subscribe({
+      next: (response) =>{ console.log(response);
+         this.plantname = response;
+         this.plantname.unshift({plant_name:'All',plant_code:'all'})
+        // for(var o in this.plantname)
+        // this.array.push(this.plantname[o].plant_name)
+       },
+      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+    });
+  }
+  /**
+   * @memberof DeptComponent
+   */
+  getDepartment(){
+     this.service.getdepartment().
     subscribe({
       next: (response)=>{
         this.department = response;
@@ -85,31 +108,24 @@ export class DeptComponent implements OnInit {
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     })
+  }
+/**
+ * @memberof DeptComponent
+ */
+getDepartmentHeader(){
     this.service.getdepartment_header().
     subscribe({
       next: (response) => { 
         this.Dept_header = response;
-        this.Dept_header.push({Dh_Id:'all',Department_Header:'All'})
+        this.Dept_header.unshift({Dh_Id:'all',Department_Header:'All'})
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     })
   }
-
-  // get plant code api call
-  getplantcode(){
-    var company = {'company_name': sessionStorage.getItem('companycode')}
-    this.service.plantcodelist(company)
-    .subscribe({
-      next: (response) =>{ console.log(response);
-         this.plantname = response;
-         this.plantname.push({plant_name:'All',plant_code:'all'})
-        // for(var o in this.plantname)
-        // this.array.push(this.plantname[o].plant_name)
-       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
-    });
-  }
-
+  /**
+   * 
+   * @param content 
+   */
   open(content:any)
   {
     this.form.reset()
@@ -139,12 +155,7 @@ export class DeptComponent implements OnInit {
         const index = this.plantname.findIndex((obj:any) => obj.plant_code === this.form.get('plant_name').value);
         this.form.get('plant_name').setValue(this.plantname[index].plant_name)
         console.log(index);
-        
-        this.service.getdepartment().
-        subscribe({
-          next: (response)=>{this.department = response},
-          error: (err) => this.messageService.add({severity:'error',summary:err.message})
-        })
+        this.getDepartment();
         this.form.reset()
       }},
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
@@ -198,17 +209,7 @@ export class DeptComponent implements OnInit {
       }
     else
       {
-        // if(this.index == -1)
-        // this.form.controls['plant_name'].setValue(this.department[this.temp_a].plant_name)
-        // else
-        // this.form.controls['plant_name'].setValue(this.plantname[this.index].plant_name)
-
-        this.service.getdepartment().
-        subscribe({
-          next: (response)=>{this.department = response},
-          error:(err) => this.messageService.add({severity:'error',summary:err.message})
-        })
-
+        this.getDepartment();
       }}
     })
   }

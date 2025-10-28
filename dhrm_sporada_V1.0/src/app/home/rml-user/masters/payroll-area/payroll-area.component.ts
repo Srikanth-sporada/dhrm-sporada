@@ -56,6 +56,7 @@ export class PayrollAreaComponent implements OnInit {
   payrollAreaList:PayrollArea[] = [];
   payrollAreaCopy:PayrollArea[] = [];
   companyData:any = []
+  selectedPlant:any = 'all';
   /**
    * editing_flag - Flag to indicate if the form is in edit mode
    * @type {boolean}
@@ -142,7 +143,7 @@ export class PayrollAreaComponent implements OnInit {
     subscribe({
       next: (response) => {
         this.plantList = response;
-        this.plantList.push({plant_code:'all',plant_name:'All'})
+        this.plantList.unshift({plant_code:'all',plant_name:'All'})
         this.plantData = response;
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
@@ -175,6 +176,8 @@ export class PayrollAreaComponent implements OnInit {
         console.log(response);
         this.payrollAreaList = response;
         this.payrollAreaCopy = response;
+         /** plant filter function */
+        this.filterPayrollAreaByPlant();
       },
       error: (error) => {
         this.messageService.add({severity:'error',summary:error.message})
@@ -371,17 +374,15 @@ export class PayrollAreaComponent implements OnInit {
    * 2. If the plant code is 'all', shows all payroll areas
    * 3. Otherwise, filters payroll areas by the specified plant code
    * 4. If no matching payroll areas are found, shows an info message
-   *
-   * @param {Event} event - The event containing the plant code to filter by
+   * @property {any} selectedPlant
    * @returns {void}
    **/
-  filterPayrollAreaByPlant(event:any): void{
-    const plantCode = event.value;
-    if(plantCode == 'all'){
+  filterPayrollAreaByPlant(): void{
+    if(this.selectedPlant == 'all'){
       this.payrollAreaList = this.payrollAreaCopy;
     }else{
       const filteredPayrollAreaData = this.payrollAreaCopy.filter((payrollArea:any) => {
-      if(payrollArea.PlantCode == plantCode){
+      if(payrollArea.PlantCode == this.selectedPlant){
         return payrollArea;
       }
     })
