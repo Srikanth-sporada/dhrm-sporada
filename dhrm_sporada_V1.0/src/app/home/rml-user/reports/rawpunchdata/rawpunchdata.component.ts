@@ -69,7 +69,7 @@ export class RawpunchdataComponent implements OnInit {
   datechange(){
     
     let from = this.from
-    from.setDate(from.getDate()+31);
+    // from.setDate(from.getDate()+31);
     let year = from.getFullYear();
     let month = from.getMonth()+1;
     let day = from.getDate();

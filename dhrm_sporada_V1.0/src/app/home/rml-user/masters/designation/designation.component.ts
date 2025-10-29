@@ -31,7 +31,7 @@ export class DesignationComponent implements OnInit {
   array: any = []
   index: any = -1
   designation: any = []
-  selectedPlant:any = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
   designationData:any=[]
   editing_flag: any;
   // material modal template ref
@@ -69,13 +69,19 @@ export class DesignationComponent implements OnInit {
   }
   // ng lifecycle 
   ngOnInit(): void {
-    this.getplantcode()
-    this.service.getdesignation().
+    this.getplantcode();
+    this.getDesignation();
+  }
+
+  /** get designation api call */
+  getDesignation() {
+     this.service.getdesignation().
       subscribe({
         next: (response) => { 
           console.log(response);
           this.designation = response;
           this.designationData = response;
+          /** filter function */
           this.filterDesignationByPlant();
         },
         error:(err) => this.messageService.add({severity:'error',summary:err.message})
@@ -114,7 +120,7 @@ export class DesignationComponent implements OnInit {
         next: (response) => {
           console.log(response);
           this.plantname = response;
-          this.plantname.push({plant_name:'All',plant_code:''});
+          this.plantname.unshift({plant_name:'All',plant_code:'all'});
         },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
@@ -156,15 +162,8 @@ export class DesignationComponent implements OnInit {
             console.log(response);
           const index = this.plantname.findIndex((obj: any) => obj.plant_code === this.form.get('plant_name').value);
           this.form.get('plant_code').setValue(this.form.get('plant_name').value)
-          this.form.get('plant_name').setValue(this.plantname[index].plant_name)
-          this.service.getdesignation().
-            subscribe({
-              next: (response) => { 
-                console.log(response);
-                 this.designation = response 
-                },
-              error:(err) => this.messageService.add({severity:'error',summary:err.message})
-            })
+          this.form.get('plant_name').setValue(this.plantname[index].plant_name);
+          this.getDesignation();
           this.form.reset()
           this.messageService.add({severity:'info',summary:'Designation Added.'})
           }else{
@@ -186,15 +185,8 @@ export class DesignationComponent implements OnInit {
             const index = this.plantname.findIndex((obj: any) => obj.plant_code === this.form.get('plant_name').value);
             this.form.get('plant_code').setValue(this.form.get('plant_name').value)
             this.form.get('plant_name').setValue(this.plantname[index].plant_name)
-            this.service.getdesignation().
-              subscribe({
-                next: (response) => { 
-                   console.log(response);
-                   this.designation = response 
-                },
-                error:(err) => this.messageService.add({severity:'error',summary:err.message})
-              })
-              this.messageService.add({severity:'info',summary:'Designation Updated!'})
+            this.getDesignation(); 
+            this.messageService.add({severity:'info',summary:'Designation Updated!'})
           }else{
             this.messageService.add({severity:'error',summary:'Cannot Update Designation!'})
           }
@@ -235,7 +227,7 @@ export class DesignationComponent implements OnInit {
 
   // filterDesignation by plant
   filterDesignationByPlant(){
-   if(this.selectedPlant == ''){
+   if(this.selectedPlant == 'all'){
       this.designation = this.designationData;
    }else{
      const filteredDeptDataByPlant=this.designationData.filter((designation:any) => {

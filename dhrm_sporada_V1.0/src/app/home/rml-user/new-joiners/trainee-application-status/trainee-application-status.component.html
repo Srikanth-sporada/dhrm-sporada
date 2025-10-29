@@ -143,13 +143,13 @@
             <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
               <button
                 *ngIf="i.apln_status == 'PENDING' || i.apln_status == 'REJECTED' || i.apln_status == 'NEW INCOMPLETE'"
-                [routerLink]="['/rdhrm/new_joiners/forms', i.mobile_no1, i.apln_status, i.sno]" 
+                [routerLink]="['/rhrm/new_joiners/forms', i.mobile_no1, i.apln_status, i.sno]" 
                 title="Edit the trainee">
                 <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
               </button>
               <button
                 *ngIf="i.apln_status != 'PENDING' && i.apln_status != 'REJECTED' && i.apln_status != 'NEW INCOMPLETE'"
-                [routerLink]="['/rdhrm/new_joiners/hr-view', i.mobile_no1, i.apln_status, i.sno, 'status']">
+                [routerLink]="['/rhrm/new_joiners/hr-view', i.mobile_no1, i.apln_status, i.sno, 'status']">
                 <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
               </button>
               <button *ngIf="i.apln_status !== 'APPOINTED' && i.apln_status !== 'RELIEVED'" 

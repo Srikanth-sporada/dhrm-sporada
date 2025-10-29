@@ -66,11 +66,11 @@ export class ExcesshrApproveComponent implements OnInit {
     });
   }
 
-  getMaxHours(type: string): number {
+  getMaxHours(type: any) {
 
     if (type === 'W' || type === 'N' || type === 'F') {
    
-      return 12;
+      return type.expect_othr; // 12 default value
     } else if (type === 'R') {
 
       return this.max_hrs;
@@ -87,7 +87,7 @@ export class ExcesshrApproveComponent implements OnInit {
       emp_id: item.cemp_id,
       date: item.att_date,
       hours: item.approvedHr,
-      flag: "I",
+      flag: "I", // default flag COFF || OT flag O
       approved_by: sessionStorage.getItem("user_name"),
       reason: item.reason,
       shift_id:item.shift,

@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 
 
     goPlaces() {
-        this.router.navigate(['../rdhrm']);
+        this.router.navigate(['../rhrm']);
     }
 
     // }

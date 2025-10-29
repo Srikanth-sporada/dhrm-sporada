@@ -63,14 +63,14 @@
                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Sup_Eval_Status }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
-                                    <a [routerLink]="['/rdhrm/skill-developement/answer-paper', i.Peval_slno]">
+                                    <a [routerLink]="['/rhrm/skill-developement/answer-paper', i.Peval_slno]">
                                         {{ i.Test_Result }}
                                         <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
                                     </a>
                             </td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">
                                     <button type="button"
-                                        [routerLink]="['/rdhrm/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]">
+                                        [routerLink]="['/rhrm/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]">
                                         <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
                                     </button>
                             </td>

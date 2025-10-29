@@ -171,7 +171,7 @@ updateSelectedDate() {
     }
 }
 
-// get plant code
+/** get plant code api call */
   getplantcode(){
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
@@ -189,7 +189,12 @@ updateSelectedDate() {
       error: (error) => this.messageService.add({severity:'error',summary:error.message}),
     });
   }
-  // get payroll area
+  /** get payroll area by plant api call */
+
+  /**
+   * @param {*} plantcode
+   * @memberof BillProcessedDateComponent
+   */
   getPayrollArea(plantcode:any){
     this.service.getPayrollAreaByPlantcode(plantcode).subscribe({
       next: (response) => {
@@ -246,7 +251,7 @@ formatDate(inputDate: Date): String {
     const formattedDate = parsedDate.format('YYYY-MM-DD');
     return formattedDate;
 }
-
+/** get bill data api call */
 get_Bill_data(){
     this.api.get_Bill_date().subscribe(res =>{
       this.bill_data = res

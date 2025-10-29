@@ -141,7 +141,7 @@
                 <button
                   *ngIf="data.Approval_Status === 'APPROVED'"
                   [routerLink]="[
-                    '/rdhrm/contra/view_payscale',
+                    '/rhrm/contra/view_payscale',
                     'view',
                     data.PayScale_ID,
                     data.apln_slno,
@@ -154,7 +154,7 @@
                 <button
                   *ngIf="data.Approval_Status === 'PENDING'"
                   [routerLink]="[
-                    '/rdhrm/contra/appr_payscale',
+                    '/rhrm/contra/appr_payscale',
                     'approve',
                     data.PayScale_ID,
                     data.apln_slno,

@@ -456,9 +456,9 @@ export class OnboardFormComponent implements OnInit {
                 });
             }
             if(isFirstApprover){
-              this.router.navigate(["/rdhrm/new_joiners/trainee-application-status"])
+              this.router.navigate(["/rhrm/new_joiners/trainee-application-status"])
             }else{
-              this.router.navigate(["/rdhrm/new_joiners/onboard"]);
+              this.router.navigate(["/rhrm/new_joiners/onboard"]);
             }
           }
         },
@@ -476,7 +476,7 @@ export class OnboardFormComponent implements OnInit {
           if (response.message == "success") {
             this.messageService.add({severity:'info',summary:'The Employee has been Relieve'})
             // alert("The Employee has been Relieved ");
-            this.router.navigate(["/rdhrm/new_joiners/onboard"]);
+            this.router.navigate(["/rhrm/new_joiners/onboard"]);
           }else if(response.message == "failure"){
             this.messageService.add({severity:'error',summary:`${response.status}`})
             //  alert(`${response.status}`)
@@ -685,7 +685,7 @@ export class OnboardFormComponent implements OnInit {
     this.formservice.rejected(rejectData);
     this.messageService.add({severity:'info',summary:'Application has been rejected'})
     // window.alert("Application has been rejected");
-    this.router.navigate(["rdhrm/new_joiners/hr-approval"]);
+    this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
   // get Roles for 2nd approver

@@ -24,9 +24,10 @@ export class HolidayMasterComponent implements OnInit {
   userEmpcode:string |null = sessionStorage.getItem('user_name');
   showAdd=true ;
   plantname:any
-  selectedPlant:any = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
   factHoliday_data:any
   holidayData:any=[];
+  holidayType = [{label:'National Holiday',value:'N'},{label:'Festival Holiday',value:'F'}];
 // Speed Dial items
     items: MenuItem[] = [
               {
@@ -62,10 +63,11 @@ export class HolidayMasterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.getFactHoliday_data()
-    this.getplantcode()
+   this.getFactHoliday_data();
+    this.getplantcode();
   }
 
+  /** get plant data api call */
   getplantcode(){
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
@@ -74,7 +76,7 @@ export class HolidayMasterComponent implements OnInit {
         this.plantname = response;
         if(this.isadmin == 'true'){
           this.plantname = response;
-          this.plantname.push({plant_name:'All',plant_code:''})
+          this.plantname.unshift({plant_name:'All',plant_code:'all'})
         }else{
           this.plantname = this.plantname.filter( (data:any) => data.plant_code === this.plant_Code)
         }
@@ -122,10 +124,11 @@ formatDate(inputDate: Date): String {
 }
 
 getFactHoliday_data(){
-this.api.get_FactHoliday_data().subscribe(res =>{
+this.api.get_FactHoliday_data().subscribe(res => {
   this.factHoliday_data = res
-  this.holidayData=res;
-  this.filterHolidayByPlant()
+  this.holidayData = res;
+  /** filter function */
+  this.filterHolidayByPlant();
   // console.log(this.factHoliday_data)
 },(error)=>{
   this.messageService.add({severity:'error',summary:error.message})
@@ -171,7 +174,7 @@ deleteHolidayAPICall(formData:any){
  this.api.del_Fct_Holiday(formData,this.userEmpcode).subscribe({
   next: (res) => {
   // this.openAlertDialog(`${res}` ,'check')
-  this.getFactHoliday_data()
+  this.getFactHoliday_data();
   this.hideForm();
   this.messageService.add({severity:'info',summary:`${res}`})
   },
@@ -220,9 +223,9 @@ onSubmit(){
     
 this.api.add_Fct_Holiday(formData,this.userEmpcode).subscribe(res =>{
   this.messageService.add({severity:'info',summary:`${res}`})
-  this.getFactHoliday_data()
-  this.hideForm()
-  this.reset()
+  this.getFactHoliday_data();
+  this.hideForm();
+  this.reset();
   },(error) => {
     if (error.status === 400) {
       console.log(error)
@@ -262,7 +265,7 @@ exportExcel() : void{
 
 // filter holiday by plant
 filterHolidayByPlant(){
- if(this.selectedPlant == ''){
+ if(this.selectedPlant == 'all'){
      this.factHoliday_data = this.holidayData;
  }else{
   const filteredHolidayData = this.holidayData.filter((holiday:any) => {
@@ -278,5 +281,17 @@ filterHolidayByPlant(){
   this.messageService.add({severity:'info',summary:`Holiday Not Found For Plant: ${this.selectedPlant}`})
  }
  }
+}
+
+/** filter holiday fn */
+filterHoliday(event:any){
+  const holidayType = event.value;
+  const filteredHolidayData =  this.holidayData.filter((holiday:any) => holidayType == holiday.type && this.selectedPlant == holiday.plant_code);
+
+  if(filteredHolidayData.length){
+    this.factHoliday_data = filteredHolidayData;
+  }else{
+    this.factHoliday_data = this.holidayData;
+  }
 }
 }

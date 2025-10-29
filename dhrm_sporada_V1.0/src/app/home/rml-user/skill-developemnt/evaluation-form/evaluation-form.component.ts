@@ -122,7 +122,7 @@ export class EvaluationFormComponent implements OnInit {
     this.appr = this.active.snapshot.paramMap.get("nav") == "3" ? true : false;
 
     if (this.active.snapshot.paramMap.get("nav") == "3") {
-      this.nav = "/rdhrm/skill-developement/supervisor-evaluation";
+      this.nav = "/rhrm/skill-developement/supervisor-evaluation";
       this.readable = true;
       this.form.controls["new_skill"].disable();
       this.form.controls["department"].disable();
@@ -135,16 +135,16 @@ export class EvaluationFormComponent implements OnInit {
       this.active.snapshot.paramMap.get("nav") == "3"
     ) {
       this.save = "Save";
-      this.nav = "/rdhrm/skill-developement/trainer-evaluation";
+      this.nav = "/rhrm/skill-developement/trainer-evaluation";
     } else if (this.active.snapshot.paramMap.get("nav") == "2") {
       this.save = "Approve";
-      this.nav = "/rdhrm/skill-developement/supervisor-evaluation";
+      this.nav = "/rhrm/skill-developement/supervisor-evaluation";
       this.readable = true;
       // this.form.controls['new_skill'].disable()
       this.form.controls["department"].disable();
       this.form.controls["line"].disable();
       this.form.controls["process_trained"].disable();
-    } else this.nav = "/rdhrm/skill-developement/evaluation-due";
+    } else this.nav = "/rhrm/skill-developement/evaluation-due";
 
     this.service
       .get_eval_form({
@@ -304,7 +304,7 @@ export class EvaluationFormComponent implements OnInit {
             // alert("Trainee has been Evaluated");
             this.messageService.add({severity:'info',summary:'Trainee has been Evaluated'})
             this.router.navigate([
-              "/rdhrm/skill-developement/trainer-evaluation",
+              "/rhrm/skill-developement/trainer-evaluation",
             ]);
           }
         },
@@ -339,7 +339,7 @@ export class EvaluationFormComponent implements OnInit {
               // alert("Trainee has been Evaluated");
                this.messageService.add({severity:'info',summary:'Trainee has been Evaluated'})
               this.router.navigate([
-                "/rdhrm/skill-developement/supervisor-evaluation",
+                "/rhrm/skill-developement/supervisor-evaluation",
               ]);
             }
           },

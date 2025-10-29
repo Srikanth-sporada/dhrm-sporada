@@ -336,7 +336,7 @@ else{
           Requested_By: this.userEmpcode,
         };
       this.api.reviseWagemaster(data).subscribe((res: any) => {
-        this.router.navigate(["/rdhrm/contra/upt_payscale"]);
+        this.router.navigate(["/rhrm/contra/upt_payscale"]);
         this.openAlertDialog(`${res}`);
       });
 

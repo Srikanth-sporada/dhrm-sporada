@@ -63,7 +63,7 @@ export class ExecutiveLoginComponent implements OnInit {
 
     // This function is used to navigate to the next page
     goPlaces() {
-        this.router.navigate(['../rdhrm']);
+        this.router.navigate(['../rhrm']);
     }
 
 }

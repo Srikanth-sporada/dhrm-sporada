@@ -29,7 +29,7 @@ export class DeclaredCompOffComponent implements OnInit {
   FH_Holiday:any
   holidayType: string = '';
   altHolidayData:any = [];
-  selectedPlant:any = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
  // Speed Dial items
     items: MenuItem[] = [
               {
@@ -65,9 +65,9 @@ export class DeclaredCompOffComponent implements OnInit {
 
  
   ngOnInit(): void {
-    this.getplantcode()
-    this.getAltHoliday_data()
-    this.get_Fh_Holiday()
+    this.getplantcode();
+    this.getAltHoliday_data();
+    this.get_Fh_Holiday();
   }
 
   // check selected holiday is National or festival
@@ -103,7 +103,7 @@ if(holiday.plant_code  == this.plant_Code){
         this.plantname = response;
         if(this.isadmin == 'true'){
           this.plantname = response;
-          this.plantname.push({plant_name:'All',plant_code:''})
+          this.plantname.unshift({plant_name:'All',plant_code:'all'})
         }else{
           this.plantname = this.plantname.filter( (data:any) => data.plant_code === this.plant_Code)
         }
@@ -112,7 +112,7 @@ if(holiday.plant_code  == this.plant_Code){
       error: (error) => this.messageService.add({severity:'error',summary:error.message}),
     });
   }
-
+/** get factory holiday api call */
   get_Fh_Holiday(){
     this.api.get_FactHoliday_data().subscribe({
       next: (response) => {
@@ -154,11 +154,12 @@ formatDate(inputDate: Date): String {
   return formattedDate;
 }
 
-// get alternate holiday data
+/** get alterante holiday data api call */
 getAltHoliday_data(){
   this.api.get_Alt_Holiday_data().subscribe(res =>{
     this.altHoliday_data = res;
     this.altHolidayData = res;
+    /** filter function */
     this.filterAltHolidayByPlant();
     // console.log(this.factHoliday_data)
   },(error)=>{
@@ -270,17 +271,17 @@ update(){
   formData.coff_date = this.formatDate(this.D_OffForm.value.coff_date)
 
   this.api.updt_Alt_Holiday(formData,this.userEmpcode).subscribe(res=>{
-    this.openAlertDialog(`${res}`,'check')
-    this.getAltHoliday_data()
+    this.openAlertDialog(`${res}`,'check');
+    this.getAltHoliday_data();
     this.hideForm()
     this.reset()
     },(error) => {
       if (error.status === 400) {
         console.log(error)
-        this.openAlertDialog(`${error.error}`,'error');
+        this.messageService.add({severity:'warn',summary:error?.error})
       }
        else {
-        this.openAlertDialog('Error in connection','error');
+        this.messageService.add({severity:'error',summary:'Error In connection'})
       }
     })
   
@@ -347,15 +348,11 @@ exportExcel() : void{
 
 // filter alternate holiday by plant
 filterAltHolidayByPlant(){
-  if(this.selectedPlant == ''){
+  if(this.selectedPlant == 'all'){
     this.altHoliday_data = this.altHolidayData;
    
   }else{
-    const filteredAltHoliday = this.altHolidayData.filter((altHoliday:any) => {
-    if(altHoliday.plant == this.selectedPlant){
-      return altHoliday;
-    }
-  });
+    const filteredAltHoliday = this.altHolidayData.filter((altHoliday:any) => altHoliday.plant == this.selectedPlant);
   if(filteredAltHoliday.length){
     this.altHoliday_data = filteredAltHoliday;
   }else{

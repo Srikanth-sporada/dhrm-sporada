@@ -64,7 +64,7 @@
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
           <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Punch ID</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Biometric ID</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
@@ -107,7 +107,7 @@
               />
             </mat-form-field> -->
             <p *ngIf="item.approvedHr > item.expect_othr " style="color:red" >Invalid worked Hours</p>
-            <p *ngIf=" item.approvedHr > getMaxHours(item.type)" style="color:red" >OT  Cannot be Greater Then {{max_hrs}} Hours</p>
+            <p *ngIf=" item.approvedHr > getMaxHours(item)" style="color:red" >OT  Cannot be Greater Then {{max_hrs}} Hours</p>
           </td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">
             <input type='text' pInputText [(ngModel)]="item.reason" />
@@ -119,7 +119,8 @@
             <p *ngIf="item.expired==1" class="text-red-500 font-semibold">Expired</p>
             <button *ngIf="item.expired==0"
               pButton
-              label="Verified"
+              icon="pi pi-check-circle"
+              label="Verify"
               class="rounded-3xl"
               [disabled]="
                 item.approvedHr > item.expect_othr ||

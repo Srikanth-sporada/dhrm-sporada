@@ -65,9 +65,9 @@ export class IndirectHeadCountMasterComponent implements OnInit {
 
   ngOnInit(): void {
     // this.initializeForm();
-    this.getplantcode()
-    this.getRoleData()
-    this.get_Indirect_HC()
+    this.getplantcode();
+    this.getRoleData();
+    this.get_Indirect_HC();
   }
 
 
@@ -99,6 +99,7 @@ export class IndirectHeadCountMasterComponent implements OnInit {
     this.showAdd=true;
   }
 
+  /** get plant data api call */
   getplantcode(){
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
@@ -126,6 +127,7 @@ export class IndirectHeadCountMasterComponent implements OnInit {
     this.getdept_data();
 }
 
+/** get department data api call */
 getdept_data(){
   this.api.getDepList(this.selectedPlant).subscribe({
     next: (resp: any) => {
@@ -153,6 +155,7 @@ onDeptChange(event: any) {
   this.getRoleData();
 }
 
+/** get role data api call */ 
 getRoleData() {
   this.api.get_Indirect_dtls(this.selectedPlant ,this.selectedDept).subscribe({
     next: (response: any) => {
@@ -166,6 +169,7 @@ getRoleData() {
   });
 }
 
+/** get indirect head count api call */
 get_Indirect_HC() {
   this.api.get_indirect_headCount(this.selectedPlant ,this.isadmin).subscribe({
     next: (response: any) => {

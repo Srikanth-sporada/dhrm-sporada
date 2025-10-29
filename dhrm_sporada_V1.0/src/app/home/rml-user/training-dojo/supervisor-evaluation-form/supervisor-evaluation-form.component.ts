@@ -132,7 +132,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
 
 
   back() {
-    this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+    this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
   }
 
 
@@ -179,12 +179,12 @@ export class SupervisorEvaluationFormComponent implements OnInit {
           if(res.message === 'Exsists') {
             // alert('Abservation Already Submitted');
             this.messageService.add({severity:'info',summary:'Abservation Already Submitted'})
-            this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+            this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
           }
           else if(res.message === 'success') {
             // alert('Abservation Has Been Saved Successfully');
             this.messageService.add({severity:'info',summary:'Abservation Has Been Saved Successfully'})
-            this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+            this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
           } else {
             // alert("There was an issue saving the questions. Please try again.");
             this.messageService.add({severity:'warn',summary:'There was an issue saving the questions. Please try again.'})
@@ -292,7 +292,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
 //   }
 
 //   back() {
-//     this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+//     this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
 //   }
 
 //   RemarkChange(event: any, i: number) {
@@ -334,10 +334,10 @@ export class SupervisorEvaluationFormComponent implements OnInit {
 //         console.log('response submit', res);
 //         if (res.message === 'Exsists') {
 //           alert('Abservation Already Submitted');
-//           this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+//           this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
 //         } else if (res.message === 'success') {
 //           alert('Abservation Has Been Saved Successfully');
-//           this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+//           this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
 //         } else {
 //           alert("There was an issue saving the observations. Please try again.");
 //         }

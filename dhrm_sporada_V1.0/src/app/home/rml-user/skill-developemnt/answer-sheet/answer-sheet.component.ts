@@ -57,14 +57,14 @@ export class AnswerSheetComponent implements OnInit {
   }
 
   navigateBack() {
-    this.router.navigate(['/rdhrm/skill-developement/skill-test']);
+    this.router.navigate(['/rhrm/skill-developement/skill-test']);
   }
 
   hrNavigate() {
-    this.router.navigate(['/rdhrm/skill-developement/Supervisor_Evaluation']);
+    this.router.navigate(['/rhrm/skill-developement/Supervisor_Evaluation']);
   }
 
   supNavigate() {
-    this.router.navigate(['/rdhrm/skill-developement/Skill-Matrix']);
+    this.router.navigate(['/rhrm/skill-developement/Skill-Matrix']);
   }
 }

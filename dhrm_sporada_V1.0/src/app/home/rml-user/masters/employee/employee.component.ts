@@ -41,7 +41,7 @@ export class EmployeeComponent implements OnInit {
   sample: any = environment.path
   employee: any = []
   employeeData:any=[]
-  selectedPlant:any = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
   editing_flag: any;
   temp_a: any;
 // material modal template ref
@@ -129,18 +129,24 @@ export class EmployeeComponent implements OnInit {
 
  // angular lifecycle
   ngOnInit(): void {
-    this.getplantcode()
-    this.service.getemployee().
+    this.getplantcode();
+    this.getEmployeeData();
+  }
+
+  /** get employee data */
+  getEmployeeData(){
+     this.service.getemployee().
       subscribe({
         next: (response) => { 
           this.employee = response;
           this.employeeData=response;
+          /** filer function */
           this.filterEmployeeByPlant();
         },
         error:(err) => this.messageService.add({severity:'info',summary:err.message})
       })
   }
-
+  /** get plant data */
   getplantcode() {
     var company = { 'company_name': sessionStorage.getItem('companycode') }
     this.service.plantcodelist(company)
@@ -148,7 +154,7 @@ export class EmployeeComponent implements OnInit {
         next: (response) => {
           console.log(response); 
           this.plantname = response;
-          this.plantname.push({plant_name:'All',plant_code:''})
+          this.plantname.unshift({plant_name:'All',plant_code:'all'})
         },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
@@ -282,13 +288,9 @@ export class EmployeeComponent implements OnInit {
             this.form.get('Department').setValue(this.form.get('dept_name').value)
             this.form.get('Designation').setValue(this.form.get('desig_name').value)
             this.form.get('line_code').setValue(this.form.get('Line_Name').value)
-            this.form.get('dept_name').setValue(this.dept[index2].dept_name)
-
-            this.service.getemployee().
-              subscribe({
-                next: (response) => { this.employee = response; this.employeeData=response; },
-                error:(err) => this.messageService.add({severity:'error',summary:err.message})
-              })
+            this.form.get('dept_name').setValue(this.dept[index2].dept_name);
+            /** refresh */
+            this.getEmployeeData();
             this.form.reset();
             this.messageService.add({severity:'info',summary:'Employee Added.'})
           }
@@ -314,13 +316,9 @@ export class EmployeeComponent implements OnInit {
             this.form.get('Department').setValue(this.form.get('dept_name').value)
             this.form.get('Designation').setValue(this.form.get('desig_name').value)
             this.form.get('line_code').setValue(this.form.get('Line_Name').value)
-            this.form.get('dept_name').setValue(this.dept[index2].dept_name)
-
-            this.service.getemployee().
-              subscribe({
-                next: (response) => { this.employee = response; this.employeeData = response;},
-                error: (err) => this.messageService.add({severity:'error',summary:err.message})
-              })
+            this.form.get('dept_name').setValue(this.dept[index2].dept_name);
+            /** refresh */
+            this.getEmployeeData();
           }else{
             this.messageService.add({severity:'error',summary:'Cannot Update Employee!'})
           }
@@ -374,7 +372,7 @@ export class EmployeeComponent implements OnInit {
  
   // filter meployee by plant
   filterEmployeeByPlant(){
-   if(this.selectedPlant == ''){
+   if(this.selectedPlant == 'all'){
         this.employee = this.employeeData;
    }else{
      const filteredEmployeeDataByPlant = this.employeeData.filter((employee:any) => {

@@ -134,7 +134,7 @@ export class HrViewDataComponent implements OnInit {
       });
       this.messageService.add({severity:'info',summary:'Application has been approved'})
     // window.alert("Application has been approved");
-    this.router.navigate(["rdhrm/new_joiners/hr-approval"]);
+    this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
   rejected() {
@@ -144,7 +144,7 @@ export class HrViewDataComponent implements OnInit {
     this.service.rejected(this.uniqueId);
     this.messageService.add({severity:'info',summary:'Application has been rejected'})
     // window.alert("Application has been rejected");
-    this.router.navigate(["rdhrm/new_joiners/hr-approval"]);
+    this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
   getdatabasic() {

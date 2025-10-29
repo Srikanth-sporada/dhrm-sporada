@@ -342,7 +342,7 @@ console.log('data.category',data.category);
       this.router.navigate([""]);
     } else if (this.ishr == "true") {
       this.alertforapproval();
-      this.router.navigate(["rdhrm/new_joiners/trainee-application-status"]);
+      this.router.navigate(["rhrm/new_joiners/trainee-application-status"]);
     }
   }
 

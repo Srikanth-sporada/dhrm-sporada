@@ -12,7 +12,7 @@ import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
 })
 export class BackdateComponent implements OnInit {
   data:any[];
-  selectedPlant:any='';
+  selectedPlant:any='all';
   plantData:any=[];
   backDateData:any = [];
    // Speed Dial items
@@ -42,29 +42,35 @@ export class BackdateComponent implements OnInit {
   constructor(public loader: LoaderserviceService,private service:ApiService,private dailog:MatDialog,private messageService:MessageService,private confirmationService:ConfirmationService) { }
 
   ngOnInit() {
-    this.getdata();
-    this.service.getplant().subscribe({
-      next:(response:any) =>{
-        this.plantData = response;
-        this.plantData.push({plant_name:'All', plant_code:''});
-      },
-      error:(err) => this.messageService.add({severity:'error',summary:err.message})
-    })
+    this.getPlantData();
+    this.getBackDateData();
   }
 
-  // get shift data api call
-  getdata(){
+/** get back date api call */
+  getBackDateData(){
     this.service.getBackDate().subscribe((response:any)=>{
       if(response.status=='success'){
         console.log(response.data)
-        this.data=response.data;
+        this.data = response.data;
         this.backDateData = response.data;
+        /** filter function */
+        this.filterBackDateByPlant();
       }else{
         this.messageService.add({severity:'info',summary:response.message})
       }
     })
   }
 
+  /** get plant data api call */
+  getPlantData(){
+     this.service.getplant().subscribe({
+      next:(response:any) =>{
+        this.plantData = response;
+        this.plantData.unshift({plant_name:'All', plant_code:'all'});
+      },
+      error:(err) => this.messageService.add({severity:'error',summary:err.message})
+    });
+  }
   // open update back date material model
   openEdit(plantdata:any){
     let dailog=this.dailog.open(BackdatePopupComponent,{
@@ -72,7 +78,7 @@ export class BackdateComponent implements OnInit {
     })
 
     dailog.afterClosed().subscribe(()=>{
-      this.getdata()
+      this.getBackDateData();
     })
   }
 // delete designation
@@ -105,9 +111,9 @@ export class BackdateComponent implements OnInit {
   }
   // filter backdate by plant
   filterBackDateByPlant(){
-     if(this.selectedPlant){
+     if(this.selectedPlant !== 'all'){
       const filteredData = this.backDateData.filter((backdate:any) => {
-       if(this.selectedPlant ==backdate.plant.toString()){
+       if(this.selectedPlant == backdate.plant.toString()){
         return backdate;
        }
      });

@@ -31,7 +31,7 @@ export class OtapproveComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    // this.getData();
+    this.getData();
     this.apiService.getCategories().subscribe((data: any) => {
       this.categories = data;
       this.categories.push({categorynm:"All"})

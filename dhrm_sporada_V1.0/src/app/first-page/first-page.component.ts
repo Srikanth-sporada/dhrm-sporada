@@ -35,20 +35,20 @@ export class FirstPageComponent implements OnInit {
     },
     {
       label: "Trainer Login (BODHI)",
-      link: "/rdhrm/login",
+      link: "/rhrm/login",
       image: "assets/trainer.jpeg",
       sessionKey: "emp",
       style: { marginBottom: "8px" },
     },
     {
       label: "Workmen Login",
-      link: "/rdhrm/ars-login",
+      link: "/rhrm/ars-login",
       image: "assets/Workmen.jpeg",
       sessionKey: "trainee",
     },
     {
       label: "Executive Login",
-      link: "/rdhrm/login",
+      link: "/rhrm/login",
       image: "assets/Executive.jpeg",
       sessionKey: "emp",
     },

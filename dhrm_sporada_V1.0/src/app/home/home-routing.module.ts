@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
-    path: "rdhrm",
+    path: "rhrm",
     loadChildren: () => import('./rml-user/rml-user.module').then(m => m.RmlUserModule),
   }
   ];

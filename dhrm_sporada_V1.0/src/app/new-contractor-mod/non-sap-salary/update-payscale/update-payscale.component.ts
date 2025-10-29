@@ -68,7 +68,7 @@ getContra(){
 //     },
 //   };
 
-//   this.router.navigate(['/rdhrm/contra/updt_payscale/'], navigationExtras);
+//   this.router.navigate(['/rhrm/contra/updt_payscale/'], navigationExtras);
 // }
 
 

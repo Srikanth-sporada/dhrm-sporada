@@ -116,7 +116,7 @@ export class TestEvaluationComponent implements OnInit {
             this.loading = false
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
             this.router.onSameUrlNavigation = 'reload'
-            this.router.navigate(['/rdhrm/training_dojo/test-evaluation'], { relativeTo: this.route })
+            this.router.navigate(['/rhrm/training_dojo/test-evaluation'], { relativeTo: this.route })
             this.form.reset()
           },
           error: (err) => console.log(err)

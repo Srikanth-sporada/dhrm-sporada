@@ -239,7 +239,7 @@ export class SkillTestComponent implements OnInit {
             (response: any) => {
               if (response && response.data && response.data.length > 0 && response.message === 'success') {
                 // ✅ Navigate only if questions exist
-                this.router.navigate(['/rdhrm/skill-developement/skill-test', newSkill, newSkillLevel]);
+                this.router.navigate(['/rhrm/skill-developement/skill-test', newSkill, newSkillLevel]);
               } else if (response && response.message === 'Already') {
                 // alert('Test Already Completed For This Level. Supervisor Abservent Is Pending!');
                 this.messageService.add({severity:'warn',summary:'Test Already Completed For This Level. Supervisor Abservent Is Pending!'});

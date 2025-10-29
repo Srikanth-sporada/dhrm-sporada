@@ -32,7 +32,7 @@ export class ShiftComponent implements OnInit {
   type: any = [{value:'S'},{value:'R'}]
   security_shift: any = [{value:'Y'},{value:'N'}]
   shiftData:any = []
-  selectedPlant:any = sessionStorage.getItem('plantcode')
+  selectedPlant:any = 'all';
   // material modal template ref
     @ViewChild('content', {read: TemplateRef}) addShiftTemplateRef: TemplateRef<unknown> | undefined;
   // Speed Dial items
@@ -76,27 +76,35 @@ export class ShiftComponent implements OnInit {
 
   // ng lifecyclehook
   ngOnInit(): void {
-    this.service.getplant().
-      subscribe({
-        next: (response: any) => {
-          this.plant = response;
-          this.plant.push({plant_name:'All',plant_code:''})
-        },
-        error: (err) => this.messageService.add({severity:'error',summary:err.messaage})
-      })
+    this.getPlantData();
+    this.getShiftData();
+  }
 
+  /** get shift data api call */
+  getShiftData(){
     this.service.getshift().
       subscribe({
         next: (response: any) => {
           this.shift = response;
           this.shiftData = response; 
           console.log(response);
-          this.filterShiftByPlant()
+          /** filter function */
+          this.filterShiftByPlant();
         },
         error:(err) => this.messageService.add({severity:'error',summary:err.message})
       })
   }
-
+  /** get plant data api call */
+  getPlantData(){
+     this.service.getplant().
+      subscribe({
+        next: (response: any) => {
+          this.plant = response;
+          this.plant.unshift({plant_name:'All',plant_code:'all'})
+        },
+        error: (err) => this.messageService.add({severity:'error',summary:err.messaage})
+      })
+  }
   // setting plant decription to form value
   pp(event: any) {
     console.log(event.value)
@@ -284,7 +292,7 @@ export class ShiftComponent implements OnInit {
   }
   // filter shift by plant
   filterShiftByPlant(){
-   if(this.selectedPlant == ''){
+   if(this.selectedPlant == 'all'){
     this.shift = this.shiftData;
    }else{
      const filteredShiftDataByPlant = this.shiftData.filter((shift:any) => {
