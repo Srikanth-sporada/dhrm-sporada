@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/home/api.service';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import * as XLSX from 'xlsx';
 import { MessageService } from 'primeng/api';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-test-result-summary',

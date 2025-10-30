@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../api.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ocm',

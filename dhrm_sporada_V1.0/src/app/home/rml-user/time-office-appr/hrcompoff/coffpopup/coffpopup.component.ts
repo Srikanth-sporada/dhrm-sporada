@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ApiService } from "src/app/home/api.service";
-import * as moment from "moment";
+import moment from "moment";
 
 @Component({
   selector: "app-coffpopup",

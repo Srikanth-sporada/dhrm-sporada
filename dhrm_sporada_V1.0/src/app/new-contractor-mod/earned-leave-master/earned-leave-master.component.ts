@@ -6,7 +6,7 @@ import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/mater
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {El_Obj} from './earned_leave.model'
 import {ClamAPIService} from '../clam-api.service'
-import * as moment from 'moment';
+import moment from 'moment';
 import * as XLSX from'xlsx'
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';

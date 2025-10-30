@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastComponent } from '../../toast/toast.component';
 import { Location } from '@angular/common';
 import * as XLSX from'xlsx'
-import * as moment from 'moment';
+import moment from 'moment';
 import {LoaderserviceService} from '../../../loaderservice.service'
 @Component({
   selector: 'app-bulk-revise-salary',

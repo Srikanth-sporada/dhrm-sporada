@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { time } from "console";
-import * as moment from "moment";
+import moment from "moment";
 import { ApiService } from "src/app/home/api.service";
 import {OtpopupComponent} from './otpopup/otpopup.component'
 import {MatDialog} from '@angular/material/dialog'

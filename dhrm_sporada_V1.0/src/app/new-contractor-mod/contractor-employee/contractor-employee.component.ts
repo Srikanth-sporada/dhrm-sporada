@@ -8,7 +8,7 @@ import { ApiService } from "src/app/home/api.service";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatVerticalStepper } from "@angular/material/stepper";
 import * as XLSX from "xlsx";
-import * as moment from "moment";
+import moment from "moment";
 import { ContractorEmployee } from "./contractor-employee.model";
 import { LoaderserviceService } from "../../loaderservice.service";
 import { ToastComponent } from "../toast/toast.component";

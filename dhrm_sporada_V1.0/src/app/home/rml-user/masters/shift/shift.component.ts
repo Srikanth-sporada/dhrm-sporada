@@ -8,7 +8,7 @@ import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from "src/environments/environment.prod";
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
-import * as moment from 'moment';
+import moment from 'moment';
 
 const material = [
   MatSidenav,

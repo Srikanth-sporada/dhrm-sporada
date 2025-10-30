@@ -19,7 +19,7 @@ import { DatePipe } from "@angular/common";
 import { ApiService } from "src/app/home/api.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ForgottopunchpopupComponent } from "./forgottopunchpopup/forgottopunchpopup.component";
-import * as moment from "moment";
+import moment from "moment";
 import { MessageService } from "primeng/api";
 
 interface MyEvent extends CalendarEvent {

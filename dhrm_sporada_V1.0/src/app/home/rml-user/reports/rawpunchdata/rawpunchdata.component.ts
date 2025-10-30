@@ -3,7 +3,7 @@ import  {LoaderserviceService} from '../../../../loaderservice.service'
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from 'xlsx';
 import { MessageService } from "primeng/api";
-import * as moment from "moment";
+import moment from "moment";
 @Component({
   selector: "app-rawpunchdata",
   templateUrl: "./rawpunchdata.component.html",

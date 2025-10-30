@@ -6,7 +6,7 @@ import {ClamAPIService} from '../clam-api.service'
 import {LoaderserviceService} from '../../loaderservice.service'
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as XLSX from'xlsx';
 import {MessageService,ConfirmationService,MenuItem} from 'primeng/api'
 

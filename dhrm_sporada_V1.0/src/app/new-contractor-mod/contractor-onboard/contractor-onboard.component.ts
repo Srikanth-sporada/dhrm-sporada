@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormArray, FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import {ConBasicDetails} from './contractor-model'
 import { MatVerticalStepper } from '@angular/material/stepper';
 import {ClamAPIService} from '../clam-api.service'

@@ -63,8 +63,10 @@ export class ContAtndComponent implements OnInit,OnChanges  {
     
   }
 
+  /** get contractor attedance details */
   getDailyPresentAbsent(){
-    
+    /** formated date */
+    this.date = moment(this.date).format('YYYY-MM-DD');
     this.apiService.getContAtndData({date:this.date,plant:this.plant}).subscribe((response:any)=>{
       if(response.staus=='success'){
         response.data.datasets[0].backgroundColor='#00DFA2'

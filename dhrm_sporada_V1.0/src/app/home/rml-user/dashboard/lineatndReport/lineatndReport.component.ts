@@ -3,7 +3,7 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from "chart.js";
 import { BaseChartDirective } from "ng2-charts";
 import DataLabelsPlugin from "chartjs-plugin-datalabels";
 import { ApiService } from "../../../api.service";
-import * as moment from 'moment'
+import moment from 'moment'
 
 @Component({
   selector: 'app-lineatndReport',
@@ -63,8 +63,10 @@ export class LineatndReportComponent implements OnInit {
     
   }
 
+  /** get line attedance details */
   getDailyPresentAbsent(){
-    
+    /** formated date */
+    this.date = moment(this.date).format('YYYY-MM-DD');
     this.apiService.getLineAtndDetails({date:this.date,plant:this.plant}).subscribe((response:any)=>{
       if(response.staus=='success'){
         console.log(response)

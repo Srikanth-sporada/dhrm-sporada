@@ -7,7 +7,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {FormBuilder,Validator, Validators} from "@angular/forms"
 import { ApiService } from 'src/app/home/api.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { stringify } from 'querystring';
 import { MessageService } from 'primeng/api';
 @Component({

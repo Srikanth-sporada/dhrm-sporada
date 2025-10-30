@@ -3,7 +3,7 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from "chart.js";
 import { BaseChartDirective } from "ng2-charts";
 import DataLabelsPlugin from "chartjs-plugin-datalabels";
 import { ApiService } from "../../../api.service";
-import * as moment from 'moment'
+import moment from 'moment'
 
 
 @Component({
@@ -63,12 +63,14 @@ export class DaiyatndreportComponent implements OnInit,OnChanges  {
     
   }
 
+  /**  get daily department attedance data */
   getDailyPresentAbsent(){
-    
+    /** formatted date */
+    this.date = moment(this.date).format('YYYY-MM-DD')
     this.apiService.getDeptAtndData({date:this.date,plant:this.plant}).subscribe((response:any)=>{
       if(response.staus=='success'){
-        response.data.datasets[0].backgroundColor='#00DFA2'
-        response.data.datasets[1].backgroundColor='#F15A59'
+        response.data.datasets[0].backgroundColor='#00DFA2';
+        response.data.datasets[1].backgroundColor='#F15A59';
         this.barChartData=response.data
       }
     })

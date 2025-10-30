@@ -4,7 +4,7 @@ import { FormBuilder,Validators,FormGroup} from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {ClamAPIService} from '../clam-api.service'
 import {CanteenObj} from './canteen.model'
-import * as moment from 'moment';
+import moment from 'moment';
 import { HttpResponse } from '@angular/common/http';
 import * as XLSX from'xlsx'
 import {LoaderserviceService} from '../../loaderservice.service'

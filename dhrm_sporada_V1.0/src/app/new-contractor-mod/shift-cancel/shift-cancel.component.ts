@@ -3,7 +3,7 @@ import {LoaderserviceService} from '../../loaderservice.service'
 import {ClamAPIService} from '../clam-api.service'
 import { DatePipe } from '@angular/common';
 import { FormControl,FormBuilder } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';

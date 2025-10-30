@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx";
 import { environment } from "src/environments/environment.prod";
-import * as moment from 'moment'
+import moment from 'moment'
 import { MessageService } from "primeng/api";
 import { Input } from "@angular/core";
 import { Location } from "@angular/common";

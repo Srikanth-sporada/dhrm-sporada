@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ClamAPIService } from '../clam-api.service';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';

@@ -64,7 +64,8 @@ export class CatAtndComponent implements OnInit,OnChanges  {
   }
 
   getDailyPresentAbsent(){
-    
+    /** formatted date */
+    this.date = moment(this.date).format('YYYY-MM-DD')
     this.apiService.getCatAtndData({date:this.date,plant:this.plant}).subscribe((response:any)=>{
       if(response.staus=='success'){
         response.data.datasets[0].backgroundColor='#00DFA2'

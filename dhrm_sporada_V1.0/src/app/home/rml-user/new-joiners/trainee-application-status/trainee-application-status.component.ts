@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import * as XLSX from 'xlsx';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-trainee-application-status',

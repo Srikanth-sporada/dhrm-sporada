@@ -6,7 +6,7 @@ import {ClamAPIService} from 'src/app/new-contractor-mod/clam-api.service'
 import { MatDialog } from '@angular/material/dialog';
 import { NonNullableFormBuilder } from "@angular/forms";
 import { MessageService } from "primeng/api";
-import * as moment from "moment";
+import moment from "moment";
 
 @Component({
   selector: 'app-mid-permission',

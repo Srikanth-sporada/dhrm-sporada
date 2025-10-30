@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/home/api.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ClamAPIService } from '../clam-api.service';
 import {LoaderserviceService} from '../../loaderservice.service'
 import { ToastComponent } from '../toast/toast.component';

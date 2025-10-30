@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastComponent } from '../toast/toast.component';
 // import {DelPopupComponent} from '../del-popup/del-popup.component'
 import * as XLSX from 'xlsx';
-import * as moment from 'moment';
+import moment from 'moment';
 import {RequestDetailsDialogComponent } from '../request-details-dialog/request-details-dialog.component'
 import { MessageService } from 'primeng/api';
 import { error } from 'console';

@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild ,ElementRef, Renderer2} from "@angular/core";
-import * as moment from "moment";
+import moment from "moment";
 import { MatInput } from '@angular/material/input';
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from 'xlsx'

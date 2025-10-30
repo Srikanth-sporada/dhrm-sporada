@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from "moment";
+import moment from "moment";
 // import * as XLSX from "xlsx";
 import * as XLSX from "xlsx-js-style";
 import {ApiService} from 'src/app/home/api.service'

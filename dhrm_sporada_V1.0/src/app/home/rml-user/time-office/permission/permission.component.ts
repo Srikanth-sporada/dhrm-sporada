@@ -8,7 +8,7 @@ import {ConfirmDialogComponent} from 'src/app/new-contractor-mod/confirm-dialog/
 import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component';
 import { MessageService } from 'primeng/api';
 import { from } from 'rxjs';
-import * as moment from 'moment';
+import moment from 'moment';
 @Component({
   selector: 'app-od',
   templateUrl: './permission.component.html',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from "src/app/home/api.service";
-import * as moment from 'moment'
+import moment from 'moment'
 import { elementAt } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 

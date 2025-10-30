@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { isToday } from "date-fns";
-import * as moment from "moment";
+import moment from "moment";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx";
 

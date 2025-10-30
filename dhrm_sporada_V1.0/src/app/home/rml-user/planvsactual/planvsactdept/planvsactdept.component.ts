@@ -3,7 +3,7 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from "chart.js";
 import { BaseChartDirective } from "ng2-charts";
 import DataLabelsPlugin from "chartjs-plugin-datalabels";
 import { ApiService } from "../../../api.service";
-
+import moment from 'moment'
 @Component({
   selector: 'app-planvsactdept',
   templateUrl: './planvsactdept.component.html',
@@ -62,8 +62,10 @@ export class PlanvsactdeptComponent implements OnInit {
     
   }
 
+  /** get plant vs actual department data */
 getPlanVsActDept(){
-    
+    /** formatted date */
+    this.date = moment(this.date).format('YYYY-MM-DD');
     this.apiService.getetplanvsactdept({date:this.date,plant:this.plant,type:this.worktype}).subscribe((response:any)=>{
       if(response.staus=='success'){
         response.data.datasets[0].backgroundColor='#6499E9'

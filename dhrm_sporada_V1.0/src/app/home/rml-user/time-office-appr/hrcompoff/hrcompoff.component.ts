@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/home/api.service';
-import * as moment from 'moment'
+import moment from 'moment'
 import {MatDialog} from '@angular/material/dialog'
 import { CoffpopupComponent } from './coffpopup/coffpopup.component';
 

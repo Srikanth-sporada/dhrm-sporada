@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as XLSX from'xlsx';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ClamAPIService } from '../clam-api.service';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';

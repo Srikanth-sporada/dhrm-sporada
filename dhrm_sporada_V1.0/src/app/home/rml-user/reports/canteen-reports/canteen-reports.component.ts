@@ -7,7 +7,7 @@ import {
 } from "@angular/forms";
 import { DateAdapter } from "@angular/material/core";
 import * as XLSX from "xlsx";
-import * as moment from "moment";
+import moment from "moment";
 import { ClamAPIService } from "../../../../new-contractor-mod/clam-api.service";
 import { ToastComponent } from "../../../../new-contractor-mod/toast/toast.component";
 import { MatDialog } from "@angular/material/dialog";

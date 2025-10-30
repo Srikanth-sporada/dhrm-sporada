@@ -13,7 +13,7 @@ import {LoaderserviceService} from '../../loaderservice.service'
 import { checkServerIdentity } from 'tls';
 import { ToastComponent } from '../toast/toast.component';
 // import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as XLSX from'xlsx'
 // import * as XLSX1 from 'xlsx-style';
 import {MessageService,MenuItem} from 'primeng/api'

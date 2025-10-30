@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import {LoaderserviceService} from '../../../loaderservice.service'
 import { checkServerIdentity } from 'tls';
 import { ToastComponent } from '../../toast/toast.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as XLSX from "xlsx-js-style";
 import { ChangeDetectorRef } from '@angular/core';
 import {

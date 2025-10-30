@@ -10,6 +10,7 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartType } from "chart.js";
 import { BaseChartDirective } from "ng2-charts";
 import DataLabelsPlugin from "chartjs-plugin-datalabels";
 import { ApiService } from "../../../api.service";
+import moment from "moment";
 
 @Component({
   selector: "app-planvssctline",
@@ -82,7 +83,10 @@ export class PlanvssctlineComponent implements OnInit {
     }
   }
 
+  /** get plan vs actual report line wise */
   getPlanvsActLine() {
+    /** formated date */
+    this.date = moment(this.date).format('YYYY-MM-DD')
     this.apiService
       .getplanvsactline({
         date: this.date,

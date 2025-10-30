@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/home/api.service';
 import {ClamAPIService} from '../clam-api.service'
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import {BonusObj} from './bonus.model'
-import * as moment from 'moment';
+import moment from 'moment';
 import * as XLSX from'xlsx'
 
 
