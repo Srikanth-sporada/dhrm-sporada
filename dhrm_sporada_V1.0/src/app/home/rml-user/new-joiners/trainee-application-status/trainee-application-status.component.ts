@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,8 @@ import * as XLSX from 'xlsx';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
+
+
 @Component({
   selector: 'app-trainee-application-status',
   templateUrl: './trainee-application-status.component.html',
@@ -44,7 +46,8 @@ searchTypeOptions =[
   { value: "mobile_no1", label: "MOBILE NUMBER" },
   { value: "aadhar_no", label: "AADHAR NUMBER" }
 ];
-  constructor(private modalService: NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService) {
+
+  constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService) {
     this.form = this.fb.group({
       status: new UntypedFormControl(''),
       fromdate: new UntypedFormControl(''),
@@ -117,7 +120,7 @@ searchTypeOptions =[
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Table');
     XLSX.writeFile(wb, 'table.xlsx');
-    this.messageService.add({severity:'info',summary:'Data Exported!'})
+    this.messageService.add({severity:'info',summary:'Data Exported!'});
   }
 
   // delete trainee application
@@ -127,36 +130,36 @@ delete(item: any) {
     this.service.deleteTrainee(item).subscribe({
       next: (res: any) => {
         console.log('Delete response:', res);
-        this.messageService.add({severity:'info',summary:res.message})
+        this.messageService.add({severity:'info',summary:res.message});
         this.filter(); // Refresh list after deletion
       },
       error: (error) => {
         console.error('Error during deletion:', error);
-        this.messageService.add({severity:'error',summary:'Failed To Delete Trainee.'})
+        this.messageService.add({severity:'error',summary:'Failed To Delete Trainee.'});
         // alert('Failed to delete trainee.');
       },
     });
   }
 
-openDeleteModal(apln_slno: any) {
+openDeleteModal(apln_slno: any, templeteRef:any) {
   this.itemToDelete = apln_slno;
   this.showDeleteModal = true;
-  console.log('modal opened.')
+  this.modalService.open(templeteRef, {centered:true});
+  console.log('modal opened.');
 }
 
 closeDeleteModal() {
   this.showDeleteModal = false;
-  console.log('modal closed.')
+  console.log('modal closed.');
 }
 
 // confirm before delete function
-confirmDelete() {
+confirmDelete():any {
   this.service.deleteTrainee(this.itemToDelete).subscribe({
     next: (res: any) => {
       this.messageService.add({severity:'info',summary:res.message})
       // alert(res.message);
       this.filter(); // refresh data
-      this.showDeleteModal = false;
     },
     error: (err) => {
       console.error(err);
@@ -171,9 +174,10 @@ confirmDelete() {
 filterTraineeApplication(){
   console.log(this.form.value)
   if(this.form.value.colname && this.form.value.colvalue){
-    this.searchfilter()
+    this.searchfilter();
   }else{
-    this.filter()
+    this.filter();
   }
 }
+
 }

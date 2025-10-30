@@ -56,6 +56,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 @NgModule({
     declarations: [	
         HrApprovalComponent,
@@ -85,6 +87,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
       CategoryComponent,
       RejectComponent,
       RejoinProcessComponent,
+      ConfirmationComponent,
    ],
       imports: [
           CommonModule,
@@ -116,6 +119,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
           TabViewModule,
           InputTextareaModule,
           MultiSelectModule,
+          OverlayPanelModule,
           ConfirmDialogModule,
       ],
       providers:
