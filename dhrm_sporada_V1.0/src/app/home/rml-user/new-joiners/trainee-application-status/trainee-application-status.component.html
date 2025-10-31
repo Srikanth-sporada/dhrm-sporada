@@ -104,14 +104,14 @@
 <!-- tarinee application table -->
 <ng-template #show>
   <div class="mx-2 mt-8">
-    <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
       <table id="table" class="table-auto !w-full">
         <!-- table head -->
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
-              {{form.get('status').value == 'appointed' ? 'Date of Joining' : form.get('status').value == 'relieved' ?
-              'Date of Leaving' : 'Date'}}
+              {{form.get('status').value == 'appointed' ? 'DOJ' : form.get('status').value == 'relieved' ?
+              'DOL' : 'Date'}}
             </th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Full Name</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Father Name</th>
@@ -138,9 +138,14 @@
               <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)"></i>
               <!-- overlay panel -->
                <p-overlayPanel #op>
-                 <div>
-
-                  {{i.fullname}} | {{i.fathername}}
+                 <div class="font-poppins">
+                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
+                  <hr>
+                  <div>
+                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
+                     <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
+                     <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
+                  </div>
                  </div>
                </p-overlayPanel>
             </td>

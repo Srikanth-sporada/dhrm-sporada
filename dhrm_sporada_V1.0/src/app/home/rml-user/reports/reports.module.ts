@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CategoryLinePipe } from './category-line.pipe';
 
@@ -32,7 +32,9 @@ import { DropdownModule } from "primeng/dropdown";
 import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
 import { TooltipModule } from 'primeng/tooltip';
-
+import { OverlayPanelModule } from "primeng/overlaypanel";
+import { CummulativeReportComponent } from "./cummulative-report/cummulative-report.component";
+import { LopReportComponent } from "./lop-report/lop-report.component";
 @NgModule({
   declarations: [
     EvaluationDueReportComponent,
@@ -45,7 +47,9 @@ import { TooltipModule } from 'primeng/tooltip';
     AtndreportComponent,
     CategoryLinePipe,
     CanteenReportsComponent,
-    SkillMatrixReportComponent
+    SkillMatrixReportComponent,
+    CummulativeReportComponent,
+    LopReportComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +74,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DropdownModule,
     CalendarModule,
     TooltipModule,
+    OverlayPanelModule,
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ReportsModule {}

@@ -286,7 +286,7 @@
         </div>
 
         <!-- Salary Master -->
-        <div
+        <!-- <div
           *ngIf="
             ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin
           "
@@ -405,31 +405,9 @@
               >
                 <mat-icon class="icon-pad">list_alt</mat-icon>CL Salary Report
               </a>
-              <!-- <a mat-list-item  *ngIf=" (ishr == 'true' && ishrappr == 'false' )|| isadmin == 'true' "  routerLink="/rhrm/contra/bulk_rev_payscale" style="color: white">
-                      <mat-icon class="icon-pad">visibility</mat-icon>One Time Ear & Ded
-                    </a>
-                     -->
-              <!-- <mat-expansion-panel  [class.mat-elevation-z0]="true" dense style="background-color: #023075;" *ngIf="ishr == 'true' || isadmin == 'true'" dense>
-                      <mat-expansion-panel-header style="color: white">
-                        <mat-icon class="icon-pad">visibility</mat-icon>Revise Salary
-                      </mat-expansion-panel-header>
-                      <mat-nav-list dense>
-                        <a mat-list-item routerLink="/rhrm/contra/rev_payscale" style="color: white">
-                          <mat-icon class="icon-pad">visibility</mat-icon>Single salary Revise
-                        </a>
-                        <a mat-list-item routerLink="/rhrm/contra/bulk_rev_payscale" style="color: white">
-                          <mat-icon class="icon-pad">visibility</mat-icon>Bulk Salary Revise
-                        </a>
-                      </mat-nav-list>
-                    </mat-expansion-panel>
-
-                <a mat-list-item  *ngIf="ishr == 'true' || isadmin == 'true' "
-                routerLink="/rhrm/contra/ont_salary" style="color: white">
-                    <mat-icon class="icon-pad">visibility</mat-icon>One Time Salary </a>
-                 -->
             </mat-nav-list>
           </mat-expansion-panel>
-        </div>
+        </div> -->
 
         <!-- Training Menu -->
         <div *ngIf="istrainer == 'true' || isRA ">
@@ -1287,6 +1265,28 @@
                 "
                 class="!mx-1 text-gray-600"
               >
+
+              <!-- new reports UI -->
+               <!-- cummulative report -->
+               <a
+                  mat-list-item
+                  routerLink="/rhrm/reports/cummulativereport"
+                  routerLinkActive="!text-blue-600 !font-semibold"
+                  class="rounded-sm"
+                >
+                  <mat-icon class="icon-pad">payments</mat-icon>Cummulative
+                  Report
+                </a>
+                <!-- LOP report -->
+                 <a
+                  mat-list-item
+                  routerLink="/rhrm/reports/lopreport"
+                  routerLinkActive="!text-blue-600 !font-semibold"
+                  class="rounded-sm"
+                >
+                  <i class="pi pi-calendar-minus mr-3" style="font-size: 1.75rem"></i>LOP Report
+                </a>
+
                 <a
                   mat-list-item
                   routerLink="/rhrm/reports/rawpunch"

@@ -9,6 +9,9 @@ import { ArsReportsComponent } from './ars-reports/ars-reports.component';
 import {AtndreportComponent} from "./atndreport/atndreport.component"
 import { CanteenReportsComponent } from './canteen-reports/canteen-reports.component';
 import { SkillMatrixReportComponent } from './skill-matrix-report/skill-matrix-report.component';
+/** new reports */
+import { CummulativeReportComponent } from './cummulative-report/cummulative-report.component';
+import { LopReportComponent } from './lop-report/lop-report.component';
 
 const routes: Routes = [
 
@@ -42,6 +45,14 @@ const routes: Routes = [
   {
     path:'Skill-Matrix-Report',
     component:SkillMatrixReportComponent
+  },
+  {
+    path:'cummulativereport',
+    component:CummulativeReportComponent
+  },
+  {
+    path:'lopreport',
+    component:LopReportComponent
   }
 
 

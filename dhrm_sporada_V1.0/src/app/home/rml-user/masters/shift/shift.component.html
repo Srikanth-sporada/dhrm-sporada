@@ -241,41 +241,41 @@
                     <!-- table head -->
                     <thead class="sticky top-0">
                         <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                                 SNo
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap">
                                 Shift Name
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Plant Code
                             </th>
 
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Start Time
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 End Time
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Min Time
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Max Time
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Coff Hours
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Shift Type
                             </th>
-                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Shift Group
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Security Shift
                             </th>
 
-                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
                                 Action
                             </th>
                         </tr>
@@ -286,31 +286,31 @@
                          *ngFor="let i of shift; let a = index"
                          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
                          >
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{a+1}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{a+1}}</td>
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-blue-600 font-semibold">
                                 {{i.shift_desc}}
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md ">{{i.plant_desc}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600">
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md ">{{i.plant_desc}}</td>
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-green-600">
                                 <span class="px-2 py-1 bg-green-100 rounded-md">{{i.Shift_Start | formatTime}}</span>
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600">
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-red-600">
                                 <span class="px-2 py-1 bg-red-100 rounded-md text-center">{{i.Shift_End | formatTime}}</span>
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-yellow-500">
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-yellow-500">
                                 <span class="px-2 py-1 bg-yellow-100 rounded-md">{{i.Min_Time | formatTime}}</span>
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-orange-400">
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-orange-400">
                                 <span class="px-2 py-1 bg-orange-100 rounded-md">{{i.Max_Time | formatTime}}</span>
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.coff_eligible_hours}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.type}}
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{i.coff_eligible_hours}}</td>
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold">{{i.type}}
                             </td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.shift_group}}
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold">{{i.shift_group}}
                             </td>
                             <td 
                               [ngClass]="i.security_shift == 'Y' ? 'text-green-600' : 'text-red-600'"
-                              class="font-semibold !px-2 !py-4 !rounded-s-md text-center">
+                              class="font-semibold !px-2 !py-4 text-nowrap !rounded-s-md text-center">
                              {{i.security_shift}}
                             </td>
                             <!-- action btn -->
