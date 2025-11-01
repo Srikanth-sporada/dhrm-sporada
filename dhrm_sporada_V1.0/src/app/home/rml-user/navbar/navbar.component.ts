@@ -83,7 +83,10 @@ export class NavbarComponent implements OnInit {
   isPmpdExpanded: boolean = false;
   isReportsExpanded: boolean = false;
   isUsermannualExpanded: boolean = false;
-  
+  // payroll Link
+  authToken:any = sessionStorage.getItem('token');
+  payrollNavLink:any = `${environment.payroll}`;
+
   constructor(
     private fb: FormBuilder,
     private breakpointObserver: BreakpointObserver,
@@ -108,6 +111,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHr();
+    // console.log(this.payrollNavLink)
   }
 
   isOperatorOrNot() {

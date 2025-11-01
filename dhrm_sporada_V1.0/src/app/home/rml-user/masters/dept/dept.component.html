@@ -180,13 +180,13 @@
           <!-- table header -->
           <thead class="sticky top-0">
             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-              <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
-              <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Code</th>
+              <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SNo</th>
+              <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Code</th>
               <th  class="!text-white !px-2 !py-2 !border-none !border-0 ">Department Name</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">SAP Code</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SAP Code</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0">Division</th>
-              <th  class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+              <th  class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Action</th>
             </tr>
           </thead>
 
@@ -196,16 +196,16 @@
              *ngFor="let i of department; let a = index"
              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
              >
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.plant_name }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.dept_slno }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-500 font-semibold">
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ a + 1 }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold">{{ i.dept_slno }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.dept_name }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-purple-500 font-semibold">
                 {{ !i.sap_code ? '-' : i.sap_code }}
               </td>
-              <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_group }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.dept_group }}</td>
               <!-- action buttons -->
-              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+              <td class="!px-2 !py-4 text-nowrap !rounded-e-md flex items-center justify-center">
                 <!-- edit btn -->
                 <button
                   (click)="edit(i, i.dept_slno)"

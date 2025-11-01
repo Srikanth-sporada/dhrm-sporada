@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
+import { Utility } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cummulative-report',
@@ -27,7 +28,7 @@ export class CummulativeReportComponent implements OnInit {
     cummulativeReportData:any = [
   {
     genId: '900001',
-    name: 'Arun Kumar KUMAR KUMAR',
+    name: 'Arun Kumar Kumar',
     plant: 'Chennai Plant 1',
     payrollArea: 'PA01',
     calDays: 31,
@@ -73,26 +74,9 @@ export class CummulativeReportComponent implements OnInit {
     shiftB: 3,
     shiftC: 1
   }
-];
-    // status options
-    statusOption=[
-    // { value: "NEW INCOMPLETE", label: "NEW INCOMPLETE" },
-    { value: "pending", label: "PENDING" },
-    { value: "submitted", label: "SUBMITTED" },
-    // { value: "approved", label: "APPROVED" },
-    { value: "Rejected", label: "REJECTED" },
-    { value: "appointed", label: "APPOINTED" },
-    { value: "relieved", label: "RELIEVED" }
-  ]
-  // search type options
-  searchTypeOptions =[
-    { value: "fullname", label: "NAME" },
-    { value: "fathername", label: "FATHER NAME" },
-    { value: "mobile_no1", label: "MOBILE NUMBER" },
-    { value: "aadhar_no", label: "AADHAR NUMBER" }
-  ];
-  
-    constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService, private apiService:ApiService) {
+    ];
+    
+    constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService, private apiService:ApiService, public utility:Utility) {
       /** cummulative report filter form */
       this.cummulativeReportForm = this.fb.group({
         companyCode: new UntypedFormControl(''),
@@ -103,6 +87,7 @@ export class CummulativeReportComponent implements OnInit {
         genId: new UntypedFormControl(''),
       });
     }
+
     ngOnInit(): void {
       let details = sessionStorage.getItem("all");
       if (details != null) {
@@ -123,7 +108,7 @@ export class CummulativeReportComponent implements OnInit {
       const ws = XLSX.utils.table_to_sheet(x);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Table');
-      XLSX.writeFile(wb, 'table.xlsx');
+      XLSX.writeFile(wb, 'cumulativereport.xlsx');
       this.messageService.add({severity:'info',summary:'Data Exported!'});
     }
 

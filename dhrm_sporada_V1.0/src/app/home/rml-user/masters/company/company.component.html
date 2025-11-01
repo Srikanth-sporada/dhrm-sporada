@@ -333,15 +333,15 @@
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
             <!-- table headers -->
-            <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">S.No</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Company Code</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0">Company Name</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0">Status</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0">Created By</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Created On</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Modified On</th>
-            <th div class="!text-white !px-2 !py-4 !border-none !border-0">Modified By</th>
-            <th div class="!text-white !px-2 !py-4 !rounded-e-lg !border-none !border-0">Action</th>
+            <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-nowrap text-center">S.No</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap text-center">Company Code</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap">Company Name</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap">Status</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap">Created By</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap text-center">Created On</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap text-center">Modified On</th>
+            <th div class="!text-white !px-2 !py-4 !border-none !border-0 text-nowrap">Modified By</th>
+            <th div class="!text-white !px-2 !py-4 !rounded-e-lg !border-none !border-0 text-nowrap">Action</th>
           </tr>
         </thead>
 
@@ -351,30 +351,30 @@
             *ngFor="let i of dummy; let a = index"
             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
           >
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
-            <td class="!px-2 !py-4 text-center text-blue-600 font-semibold">{{ i.company_code }}</td>
-            <td class="!px-2 !py-4">{{ i.company_name }}</td>
-            <td class="!px-2 !py-4">
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ a + 1 }}</td>
+            <td class="!px-2 !py-4 text-nowrap text-center text-blue-600 font-semibold">{{ i.company_code }}</td>
+            <td class="!px-2 !py-4 text-nowrap">{{ i.company_name }}</td>
+            <td class="!px-2 !py-4 text-nowrap">
               <span [ngClass]="
                 i.status ? 'bg-green-100 rounded-md px-2 text-green-600' : 
                 'bg-red-100 rounded-md px-2 text-red-600'">
                 {{ i.status ? i.status : '-'}}
               </span>
             </td>
-            <td class="!px-2 !py-4">
+            <td class="!px-2 !py-4 text-nowrap">
               <span [ngClass]="
                 i.created_by === 'admin' || i.created_by == 'ADMIN'
                   ? '!text-blue-600 bg-blue-100 rounded-md px-2'
                   : '!text-yellow-600 bg-yellow-100 rounded-md px-2'
               ">{{ i.created_by | lowercase}}</span>
             </td>
-            <td class="!px-2 !py-4 text-center">{{ i.created_on ? formatApiDate(i.created_on) : '-' | date:'dd-MMM-YYYY'}}</td>
-            <td class="!px-2 !py-4 text-center">{{ i.modified_on ? formatApiDate(i.modified_on): '-' }}</td>
-            <td [ngClass]="i.modified_by ? '!px-2 !py-4' : '!px-2 !py-4 text-center'">
+            <td class="!px-2 !py-4 text-nowrap text-center">{{ i.created_on ? formatApiDate(i.created_on) : '-' | date:'dd-MMM-YYYY'}}</td>
+            <td class="!px-2 !py-4 text-nowrap text-center">{{ i.modified_on ? formatApiDate(i.modified_on): '-' }}</td>
+            <td [ngClass]="i.modified_by ? '!px-2 !py-4 text-nowrap' : '!px-2 !py-4 text-nowrap text-center'">
               {{ i.modified_by ? i.modified_by: '-' }}
             </td>
 
-            <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+            <td class="!px-2 !py-4 text-nowrap !rounded-e-md flex items-center justify-center">
               <button (click)="edit(a)" (click)="opentoedit(content)">
                 <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
               </button>

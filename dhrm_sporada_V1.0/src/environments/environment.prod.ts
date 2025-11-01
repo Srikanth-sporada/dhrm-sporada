@@ -2,13 +2,13 @@ export const environment = {
   production: true,
   path: "https://rane.ssipl.org",
   path2: "https://rane.ssipl.org",
-
+  payroll:"https://rane.ssipl.org:8888",
   // path: 'http://10.102.2.11:5000',
   // path2:'http://10.102.2.11:5000',
 
   // path: 'http://10.51.12.166:5000',
   // path2:'http://10.51.12.166:5000',
-  prodLink: "dhrm", 
+  prodLink: "rdhrm", 
   // path2:'http://14.99.10.243:3000'
 
   // Canteen_Report: 'https://app.powerbi.com/view?r=eyJrIjoiMzYwNWUxOGItZGRlNy00NzM3LWJiOGUtZjFlYzIxMTM2N2FkIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',

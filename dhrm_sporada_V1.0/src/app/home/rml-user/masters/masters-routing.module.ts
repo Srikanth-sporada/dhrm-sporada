@@ -58,10 +58,12 @@ const routes: Routes = [
   {
     path: "shift",
     component: ShiftComponent
-  },{
+  },
+  {
     path:'backdate',
     component:BackdateComponent
-  }
+  },
+ 
 ];
 
 @NgModule({

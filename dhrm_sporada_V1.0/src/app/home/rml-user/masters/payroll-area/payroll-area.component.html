@@ -196,37 +196,37 @@
           <!-- plant table header -->
           <thead class="sticky top-0">
             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 SNo
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Plant
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Payroll Area
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Start Day
               </th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 End Day
               </th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Grace Minutes
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Created By
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Created On
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Modified By
               </th>
-              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+              <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                 Modified On
               </th>
-               <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center !rounded-e-lg">
+               <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap !rounded-e-lg">
                 Actions
               </th>
             </tr>
@@ -237,28 +237,28 @@
             *ngFor="let i of payrollAreaList; let a = index"
             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
             >
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{a+1}}</td>
-              <td class="!px-2 !py-4 text-blue-600 font-semibold text-center">{{i.PlantCode}}</td>
-              <td class="!px-2 !py-4 text-purple-600 font-semibold text-center">{{i.PayrollArea}}</td>
-              <td class="!px-2 !py-4 !text-center text-green-600 font-semibold">{{i.StartDay}}</td>
-              <td class="!px-2 !py-4 text-red-500 font-semibold text-center">{{i.EndDay}}</td>
-              <td class="!px-2 !py-4 !truncate !text-balance text-center">{{i.Grace_minutes}}</td>
-              <td class="!px-2 !py-4 !text-center">
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{a+1}}</td>
+              <td class="!px-2 !py-4 text-nowrap text-blue-600 font-semibold text-center">{{i.PlantCode}}</td>
+              <td class="!px-2 !py-4 text-nowrap text-purple-600 font-semibold text-center">{{i.PayrollArea}}</td>
+              <td class="!px-2 !py-4 text-nowrap !text-center text-green-600 font-semibold">{{i.StartDay}}</td>
+              <td class="!px-2 !py-4 text-nowrap text-red-500 font-semibold text-center">{{i.EndDay}}</td>
+              <td class="!px-2 !py-4 text-nowrap !truncate !text-balance text-center">{{i.Grace_minutes}}</td>
+              <td class="!px-2 !py-4 text-nowrap !text-center">
                 <span class="bg-sky-100 px-3 rounded-md">
                   {{!i.InsertBy ? '-' : i.InsertBy}}
                 </span>
               </td>
-              <td class="!px-2 !py-4 !text-center">
+              <td class="!px-2 !py-4 text-nowrap !text-center">
                 {{i.InsertDate | date:'dd-MM-yyyy'}}              
               </td>
-              <td class="!px-2 !py-4 !text-center">
+              <td class="!px-2 !py-4 text-nowrap !text-center">
                     {{!i.UpdateBy ? '-' : i.UpdateBy}}
               </td>
-               <td class="!px-2 !py-4 !text-center">
+               <td class="!px-2 !py-4 text-nowrap !text-center">
                 {{!i.UpdateDate ? '-' : i.UpdateDate | date:'dd-MM-yyyy'}}              
               </td>
             <!-- action buttons -->
-              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+              <td class="!px-2 !py-4 text-nowrap !rounded-e-md flex items-center justify-center">
                 <button (click)="patchUpdateValue(a)" (click)="opentoedit(content)">
                   <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
                 </button>

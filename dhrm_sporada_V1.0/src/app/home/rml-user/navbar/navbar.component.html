@@ -155,6 +155,19 @@
               > ballot </mat-icon>
               Masters
             </mat-expansion-panel-header>
+             <!-- sporada payroll -->
+            <mat-nav-list>
+              <div *ngIf="isadmin == 'true'">
+                <a
+                  mat-list-item
+                  class="rounded-sm"
+                  [href]="payrollNavLink"
+                  target="_blank"
+                >
+                  <mat-icon class="icon-pad">account_balance_wallet</mat-icon>Payroll</a
+                >
+              </div>
+            </mat-nav-list>
           </mat-expansion-panel>
         </div>
 

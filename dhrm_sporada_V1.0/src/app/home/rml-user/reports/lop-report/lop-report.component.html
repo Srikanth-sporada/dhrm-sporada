@@ -1,1 +1,195 @@
-<p>lop-report works!</p>
+<!-- header -->
+<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
+    <div class="flex items-center sm:items-start justify-center sm:justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>event_busy</mat-icon> LOP Report <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Download Trainee LOP Report</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+</div>
+
+   <div>
+    <!-- report filters -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+       <!-- download btn-->
+        <p-button 
+         icon="pi pi-download" 
+         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
+         (click)="utility.exportexcel('table','lopreport')"></p-button>
+      </div>
+   <form [formGroup]="lopReportForm">
+     <!-- filter first row -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+       <!-- company-->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Company</label> <br>
+          <p-dropdown 
+            [options]="companyData"
+            formControlName="companyCode"
+            optionLabel="company_name"
+            optionValue="company_code"
+            styleClass="w-full" 
+            (onChange)="getplantByCompanyCode()"
+            placeholder="Select Company" ></p-dropdown>
+       </div>
+       <!-- plant -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+          <p-dropdown 
+            [options]="plantData"
+            formControlName="plantCode"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full" 
+            (onChange)="getPayrollAreaByPlant()"
+            placeholder="Select Plant" ></p-dropdown>
+       </div>
+        <!-- payroll area-->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Payroll Area</label> <br>
+          <p-dropdown 
+            [options]="payrollAreaData"
+            formControlName="payrollArea"
+            optionLabel="PayrollArea"
+            optionValue="PayrollArea"
+            styleClass="w-full" 
+            placeholder="Select Payroll Area" ></p-dropdown>
+       </div>
+     
+     </div>
+     <!-- filters second row -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+        <!-- month -->
+        <div class="w-full">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Month</label> <br>
+        <p-calendar 
+            formControlName="month"
+            view="month"
+            styleClass="w-full !font-poppins"
+            dateFormat="MM"
+            (onSelect)="formatDateAndSetFormProperty($event,'month')"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+        <!-- year -->
+        <div class="w-full">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Year</label> <br>
+        <p-calendar 
+            formControlName="year"
+            view="year"
+            dateFormat="yy" 
+            styleClass="w-full !font-poppins"
+            (onSelect)="formatDateAndSetFormProperty($event,'year')"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+      <!-- search value -->
+     <div class="w-full p-fluid">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen</label> <br>
+      <input 
+       type="text" 
+       pInputText
+       styleClass="w-full !font-poppins"
+       placeholder="Enter Gen ID" 
+       formControlName="genId" />
+      
+     </div>
+     <!-- search btn -->
+     
+      <p-button 
+        icon="pi pi-search"
+        styleClass="rounded-[1.5rem] mt-9"
+        (onClick)="filterLopReport()"
+      >
+     </p-button> 
+    
+     </div>
+   </form>
+  </div>
+   </div>
+
+<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+
+<!-- tarinee application table -->
+<ng-template #show>
+  <div class="mx-2 mt-8">
+    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto">
+      <table id="table" class="w-full">
+        <!-- table head -->
+        <thead class="sticky top-0">
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
+             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Start Date</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">End Date</th>
+               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Duration</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">LOP Type</th>
+          </tr>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr 
+           *ngFor="let i of lopReportData;"
+           class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+           >
+            <td 
+            class="!px-2 !py-4 text-nowrap !rounded-s-md " scope="row" 
+            *ngFor="let key of reportDataObjectKeys; let index;">
+                <span 
+                   class="block"
+                   [ngClass]="{
+                    'text-blue-600 font-semibold': key == reportDataObjectKeys[0], 
+                    'text-center':key == reportDataObjectKeys[3] || key == reportDataObjectKeys[6] || key == reportDataObjectKeys[7] }">
+                    {{i[key]}}
+                     <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)" *ngIf=" key == reportDataObjectKeys[1]"></i>
+                </span>
+
+                <p-overlayPanel #op>
+                 <div class="font-poppins">
+                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
+                  <hr>
+                  <div>
+                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
+                     <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
+                     <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
+                  </div>
+                 </div>
+               </p-overlayPanel>
+            </td> 
+            <!-- <td class="!px-4 !py-4 text-nowrap !rounded-s-md w-full">
+             {{i.name}}
+              <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)"></i>
+               <p-overlayPanel #op>
+                 <div class="font-poppins">
+                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
+                  <hr>
+                  <div>
+                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
+                     <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
+                     <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
+                  </div>
+                 </div>
+               </p-overlayPanel>
+            </td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.plant }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.payrollArea }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.startDate }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.endDate }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.duration }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.lopType }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

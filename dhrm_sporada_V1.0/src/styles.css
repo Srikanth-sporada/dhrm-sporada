@@ -240,3 +240,8 @@ a{
 .p-highlight{
   /* background-color: var(--transparent) !important; */
 }
+/* th and td text no-wrap for global table */
+
+th,td{
+  text-wrap: nowrap;
+}
