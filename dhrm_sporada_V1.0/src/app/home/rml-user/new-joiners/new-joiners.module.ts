@@ -58,6 +58,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
+
 @NgModule({
     declarations: [	
         HrApprovalComponent,

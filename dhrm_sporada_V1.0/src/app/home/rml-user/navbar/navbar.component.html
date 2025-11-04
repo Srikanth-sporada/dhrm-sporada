@@ -161,7 +161,7 @@
                 <a
                   mat-list-item
                   class="rounded-sm"
-                  [href]="payrollNavLink"
+                  (click)="navigateToPayroll()"
                   target="_blank"
                 >
                   <mat-icon class="icon-pad">account_balance_wallet</mat-icon>Payroll</a
@@ -299,11 +299,8 @@
         </div>
 
         <!-- Salary Master -->
-        <!-- <div
-          *ngIf="
-            ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin
-          "
-        >
+       <div *ngIf="!hideSalaryMaster">
+         <div *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin">
           <mat-expansion-panel
             [class.mat-elevation-z0]="true"
             dense
@@ -420,7 +417,8 @@
               </a>
             </mat-nav-list>
           </mat-expansion-panel>
-        </div> -->
+        </div>
+       </div>
 
         <!-- Training Menu -->
         <div *ngIf="istrainer == 'true' || isRA ">
@@ -802,16 +800,18 @@
                 *ngIf="ishr == 'true' || ishrappr == 'true'"
                 ><mat-icon>cloud_upload</mat-icon>Missing Punch - HR</a
               >
-              <a
+              <span *ngIf="!hideMidPermission">
+                <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/mid-day-permission"
-               routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
                 *ngIf="
                   isadmin == 'true' || (ishr == 'true' && ishrappr == 'false')
                 "
-                ><mat-icon> local_parking</mat-icon>Middle Permission</a
-              >
+                ><mat-icon> local_parking</mat-icon>Middle Permission
+                </a>
+              </span>
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/otapprmapping"
@@ -1163,7 +1163,8 @@
         </div>
 
           <!-- people planning -->
-          <mat-expansion-panel
+          <div *ngIf="!hidePeoplePlanning">
+            <mat-expansion-panel
             [class.mat-elevation-z0]="true"
             dense
             class=" mx-2 my-2 rounded-lg"
@@ -1204,17 +1205,18 @@
                 <mat-icon class="icon-pad">event</mat-icon>Actual VS planned</a
               >  -->
             </mat-nav-list>
-          </mat-expansion-panel>
+            </mat-expansion-panel>
+          </div>
+
 
           <!-- PMPD -->
-          <div
-            *ngIf="isadmin == 'true' || ishrappr == 'true' || isCmed == true"
-          >
+          <div *ngIf="!hidePmpd">
             <mat-expansion-panel
               dense
               [class.mat-elevation-z0]="true"
              class=" mx-2 my-2 rounded-lg"
              [(expanded)]="  isPmpdExpanded"
+             *ngIf="isadmin == 'true' || ishrappr == 'true' || isCmed == true"
             >
               <mat-expansion-panel-header 
                  [ngClass]="  isPmpdExpanded ? 'text-gray-600 font-semibold border-2 border-blue-600 bg-[var(--transparent)]' : 'text-gray-600 font-semibold'"

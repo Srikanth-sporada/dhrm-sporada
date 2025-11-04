@@ -123,7 +123,7 @@ export class PayrollAreaComponent implements OnInit {
   ) { 
      this.payrollAreaForm = this.fb.group({
       PlantCode:['',Validators.required],
-      PayrollArea:['',Validators.required],
+      PayrollArea:['',[Validators.required,Validators.pattern(/\S+/)]],
       StartDay:['',Validators.required],
       EndDay:['',Validators.required],
       Grace_minutes: ['',Validators.required],
@@ -141,8 +141,8 @@ export class PayrollAreaComponent implements OnInit {
     // get plant data
     this.service.getplant().
     subscribe({
-      next: (response) => {
-        this.plantList = response;
+      next: (response:any) => {
+        this.plantList = [...response];
         this.plantList.unshift({plant_code:'all',plant_name:'All'})
         this.plantData = response;
       },

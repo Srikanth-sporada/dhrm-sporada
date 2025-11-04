@@ -61,10 +61,10 @@ export class PlantComponent implements OnInit {
     this.form = this.fb.group({
       sno:[''],
       plant_code :['', Validators.required],
-      plant_name : ['', Validators.required],
-      pl : ['', Validators.required], 
-      addr : ['', Validators.required],
-      locatn : ['', Validators.required],
+      plant_name : ['', [Validators.required,Validators.pattern(/\S+/)]],
+      pl : ['',[Validators.required,Validators.pattern(/\S+/)]], 
+      addr : ['',[Validators.required,Validators.pattern(/\S+/)]],
+      locatn : ['', [Validators.required,Validators.pattern(/\S+/)]],
       plant_sign : [''],
       personal_area : ['', Validators.required],
       payroll_area:['', Validators.required],
@@ -85,9 +85,10 @@ export class PlantComponent implements OnInit {
   getPlantData() {
        this.service.getplant().
     subscribe({
-      next: (response)=>{
+      next: (response) => {
         this.dummy = response;
         this.plantData= response;
+        this.filterPlantByCompany();
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     })
@@ -101,11 +102,12 @@ export class PlantComponent implements OnInit {
   getCompanyData() {
     this.service.getCompanyCode()
     .subscribe({
-      next: (response)=>{
+      next: (response:any)=>{
         console.log(response)
         this.companylist = response;
-        this.companyData = response;
+        this.companyData = [...response];
         this.companyData.unshift({company_code:'all',company_name:'All'});
+        console.log('cmplist',this.companylist);
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
     })
@@ -141,16 +143,17 @@ export class PlantComponent implements OnInit {
       {
         this.messageService.add({severity:'info',summary:'Plant Code already exists'})
       }else if(response.message == 'inserted'){
-        this.service.getplant().
-        subscribe({
-          next: (response) => {
-            this.dummy = response;
+        // this.service.getplant().
+        // subscribe({
+        //   next: (response) => {
+        //     this.dummy = response;
             
-            this.filterPlantByCompany();
-          },
-          error: (err) => this.messageService.add({severity:'error',summary:err.message})
-        })
+        //     this.filterPlantByCompany();
+        //   },
+        //   error: (err) => this.messageService.add({severity:'error',summary:err.message})
+        // })
        
+        this.getPlantData();
         this.form.reset()
         this.messageService.add({severity:'info',summary:'Plant Added Successfully!'})
       }else if(response.message == 'failure'){
@@ -190,6 +193,7 @@ export class PlantComponent implements OnInit {
     console.log(this.form.value);
     this.sign = this.dummy[a].plant_sign
     console.log(this.sign);
+    console.log(this.dummy[a])
   }
 
   // update plant api call function
@@ -389,6 +393,7 @@ searchPlantByCodeOrName(event:any){
     this.dummy = this.plantData;
   }
 }
+
 }
 
 

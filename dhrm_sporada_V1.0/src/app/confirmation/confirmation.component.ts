@@ -1,5 +1,5 @@
 import { Component, Input, OnInit,ViewChild,TemplateRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-confirmation',
@@ -13,9 +13,15 @@ export class ConfirmationComponent implements OnInit {
    * this function will be called when user click yes
    * */
   @Input() confirmFunction:any;
-  @Input() data:any;
-  @ViewChild('ngbModal', {read: TemplateRef}) ngbModalTemplateRef: TemplateRef<unknown> | undefined;
-  constructor(private modalService:NgbModal) { }
+
+  /**
+   * @type {*}
+   * @memberof ConfirmationComponent
+   * Modal close function from parent component
+   */
+  @Input() closeFunction:any;
+  // @ViewChild('ngbModal', {read: TemplateRef}) ngbModalTemplateRef: TemplateRef<unknown> | undefined;
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -23,10 +29,10 @@ export class ConfirmationComponent implements OnInit {
    * open ngb modal
    * @property {TemplateRef} ngbModalTemplateRef
    *  */
- openModal(){
-  this.modalService.open(this.ngbModalTemplateRef,{
-    centered:true
-  });
- }
+//  openModal(){
+//   this.modalService.open(this.ngbModalTemplateRef,{
+//     centered:true
+//   });
+//  }
 
 }

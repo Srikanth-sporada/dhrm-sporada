@@ -1,0 +1,341 @@
+
+{
+  "AppRoutingModule": [
+    {
+      "path": "/home",
+      "component_module": "HomeModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the HomeModule."
+    },
+    {
+      "path": "/rhrm",
+      "component_module": "RmlUserModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the RmlUserModule."
+    },
+    {
+      "path": "/con",
+      "component_module": "NewContractorModModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the NewContractorModModule."
+    },
+    {
+      "path": "/first",
+      "component_module": "FirstPageComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/trainee-application",
+      "component_module": "TraineeApplicationComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/forms/:mobile_no1/:company",
+      "component_module": "FormsComponent",
+      "can_activate_guard": "AuthGuard",
+      "permissions_logic": "Requires an active user session."
+    },
+    {
+      "path": "/idcard/:status/:mobile/:company",
+      "component_module": "IdcardComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/perm-idcard/:apln_slno/:cat",
+      "component_module": "PermIdcardComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/trainee-login",
+      "component_module": "TraineeLoginComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/trainee-test/:username",
+      "component_module": "TraineeTestComponent",
+      "can_activate_guard": "AuthGuard",
+      "permissions_logic": "Requires an active user session."
+    },
+    {
+      "path": "/",
+      "component_module": "FirstPageComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/**",
+      "component_module": null,
+      "can_activate_guard": null,
+      "permissions_logic": "Redirects to /page-not-found."
+    },
+    {
+      "path": "/page-not-found",
+      "component_module": "PageNotFoundComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    },
+    {
+      "path": "/dashboard",
+      "component_module": "DashboardComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No authentication required."
+    }
+  ],
+  "RmlUserRoutingModule": [
+    {
+      "path": "/rhrm/masters",
+      "component_module": "MastersRoutingModule",
+      "can_activate_guard": "MasterGuard",
+      "permissions_logic": "Requires admin privileges (isadmin === 'true')."
+    },
+    {
+      "path": "/rhrm/contra",
+      "component_module": "NewContractorModRoutingModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the NewContractorModRoutingModule."
+    },
+    {
+      "path": "/rhrm/trn",
+      "component_module": "NewContractorModRoutingModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the NewContractorModRoutingModule."
+    },
+    {
+      "path": "/rhrm/time_office",
+      "component_module": "TimeOfficeModule",
+      "can_activate_guard": "TimeOffice",
+      "permissions_logic": "Requires trainee privileges (istrainee === 'true')."
+    },
+    {
+      "path": "/rhrm/time_office-status",
+      "component_module": "TimeOfficeStatusModule",
+      "can_activate_guard": "TimeOffice",
+      "permissions_logic": "Requires trainee privileges (istrainee === 'true')."
+    },
+    {
+      "path": "/rhrm/new_joiners",
+      "component_module": "NewJoinersModule",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/login",
+      "component_module": "LoginModule",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/training_dojo",
+      "component_module": "TrainingDojoModule",
+      "can_activate_guard": "TrainerGuard",
+      "permissions_logic": "Requires trainer privileges (istrainer === 'true') or non-supervisor role (issupervisor === 'false')."
+    },
+    {
+      "path": "/rhrm/skill-developement",
+      "component_module": "SkillDevelopemntModule",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/time-office-appr",
+      "component_module": "TimeOfficeApprModule",
+      "can_activate_guard": "TimeOfficeAppr",
+      "permissions_logic": "Requires reporting authority (Is_ReportingAuth)."
+    },
+    {
+      "path": "/rhrm/time-office-down",
+      "component_module": "TimeOfficeDownModule",
+      "can_activate_guard": "TimeOfficeReport",
+      "permissions_logic": "Requires Time Office User privileges (istou === 'true')."
+    },
+    {
+      "path": "/rhrm/people-planning",
+      "component_module": "PeoplePlanningModule",
+      "can_activate_guard": "CommonPermission",
+      "permissions_logic": "Requires non-trainee (istrainee === 'false') or non-contract labor (isCL === 'false') role."
+    },
+    {
+      "path": "/rhrm/reports",
+      "component_module": "ReportsModule",
+      "can_activate_guard": "CommonPermission",
+      "permissions_logic": "Requires non-trainee (istrainee === 'false') or non-contract labor (isCL === 'false') role."
+    },
+    {
+      "path": "/rhrm/dashboard",
+      "component_module": "DashboardComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/planvsactual",
+      "component_module": "PlanvsactualComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/ocm",
+      "component_module": "OcmComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/Cnt",
+      "component_module": "CanteenBiRptComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/hrs",
+      "component_module": "HrSummaryComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/corp_hrs",
+      "component_module": "CorpHRDashboardComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    },
+    {
+      "path": "/rhrm/pmpd",
+      "component_module": "PMPDModule",
+      "can_activate_guard": null,
+      "permissions_logic": "Lazily loads the PMPDModule."
+    },
+    {
+      "path": "/rhrm/ars-login",
+      "component_module": "ArsLoginComponent",
+      "can_activate_guard": null,
+      "permissions_logic": "No additional authentication required."
+    }
+  ],
+  "SkillDevelopemntRoutingModule": [
+    {
+      "path": "/rhrm/skill-developement/trainer-evaluation",
+      "component_module": "TrainerEvaluationComponent",
+      "can_activate_guard": "SkillDevHR",
+      "permissions_logic": "Requires trainer, HR, or HR approver privileges."
+    },
+    {
+      "path": "/rhrm/skill-developement/supervisor-evaluation",
+      "component_module": "SupervisorEvaluationComponent",
+      "can_activate_guard": "SkillDevSupervisor",
+      "permissions_logic": "Requires reporting authority (Is_ReportingAuth)."
+    }
+  ],
+  "NewContractorModRoutingModule": [
+    {
+      "path": "/con/conemp",
+      "component_module": "ContractorEmployeeComponent",
+      "can_activate_guard": "Admin_HrApp_Hr_Sup",
+      "permissions_logic": "Requires supervisor, HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/newCon",
+      "component_module": "ContractorOnboardComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/payroll",
+      "component_module": "PayrollMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/canteen",
+      "component_module": "CanteenDeductionComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/bonus",
+      "component_module": "BonusMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/el_mst",
+      "component_module": "EarnedLeaveMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/fhday_mst",
+      "component_module": "HolidayMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/ot_mst",
+      "component_module": "OTLimitMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/w-off_mst",
+      "component_module": "WeekOffMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/dcoff_Mst",
+      "component_module": "DeclaredCompOffComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/dh_day_mst",
+      "component_module": "DeclaredHolidayMasterComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/trnsf_post",
+      "component_module": "TransferPostingComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/bill_pros_dt",
+      "component_module": "BillProcessedDateComponent",
+      "can_activate_guard": "Admin",
+      "permissions_logic": "Requires admin privileges."
+    },
+    {
+      "path": "/con/rev_payscale/...",
+      "component_module": "RevisePayscaleComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/updt_payscale/...",
+      "component_module": "ViewPayscaleComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/view_payscale/...",
+      "component_module": "ApprovePayscaleComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/appr_payscale/...",
+      "component_module": "ApprovePayscaleComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    },
+    {
+      "path": "/con/apprl_salary",
+      "component_module": "ApprovalSalaryComponent",
+      "can_activate_guard": "Admin_HrApp_Hr",
+      "permissions_logic": "Requires HR approver, HR, or admin privileges."
+    }
+  ]
+}

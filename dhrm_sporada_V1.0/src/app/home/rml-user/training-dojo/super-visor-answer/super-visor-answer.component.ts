@@ -54,12 +54,12 @@ export class SuperVisorAnswerComponent implements OnInit {
     this.dept = sessionStorage.getItem('dept_slno');
 
     console.log('plant & Dept', this.plant, this.dept);
-    // this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
-    //   next: (response) => {
-    //     console.log('supervisor Data', response);
-    //     this.filterinfo = response;
-    //   },
-    // });
+    this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
+      next: (response) => {
+        console.log('supervisor Data', response);
+        this.filterinfo = response;
+      },
+    });
   }
 
   exportexcel() {

@@ -1,27 +1,28 @@
 <!-- delete confirmation popup -->
-<ng-template #ngbModal let-modal>
-<div class="modal-overlay">
-  <div class="modal-content font-poppins p-3 rounded-sm">
+<!-- <ng-template let-modal> -->
+<!-- <div class="modal-overlay"> -->
+  <div class="modal-body font-poppins p-3 rounded-sm">
     <h2 class="text-2xl font-semibold text-blue-600">
       confirmation
-      <!-- <mat-icon class="text-blue-600 text-[20px]">check_circle</mat-icon> -->
+      <mat-icon class="text-blue-600 text-[20px]">check_circle</mat-icon>
     </h2>
     <p>Are you sure you want to delete?</p>
 
     <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
       <button 
-       (click)="confirmFunction(data)" 
+       (click)="confirmFunction()" 
         style="color: white; padding: 8px 16px; border: none; border-radius: 4px;"
         class="bg-blue-600">
         Yes
       </button>
-      <button (click)="modal.close('no clicked')" 
-              style="padding: 8px 16px; border: none; border-radius: 4px;"
-              class="text-blue-600">
+      <button
+      (click)="closeFunction()"
+        style="padding: 8px 16px; border: none; border-radius: 4px;"
+        class="text-blue-600">
         No
       </button>
     </div>
   </div>
-</div>
- </ng-template>
+<!-- </div> -->
+<!-- </ng-template> (click)="modal.close('no clicked')" -->
 

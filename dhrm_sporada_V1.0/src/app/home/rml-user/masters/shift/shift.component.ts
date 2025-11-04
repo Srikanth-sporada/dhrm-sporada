@@ -32,6 +32,13 @@ export class ShiftComponent implements OnInit {
   type: any = [{value:'S'},{value:'R'}]
   security_shift: any = [{value:'Y'},{value:'N'}]
   shiftData:any = []
+  /** shift group options */
+  shiftGroupOptions = [
+    {label:'A Morning 1st',value:'A'},
+    {label:'G General',value:'G'},
+    {label:'B Noon 2nd',value:'B'},
+    {label:'C Night 3rd',value:'C'}
+  ]
   selectedPlant:any = 'all';
   // material modal template ref
     @ViewChild('content', {read: TemplateRef}) addShiftTemplateRef: TemplateRef<unknown> | undefined;

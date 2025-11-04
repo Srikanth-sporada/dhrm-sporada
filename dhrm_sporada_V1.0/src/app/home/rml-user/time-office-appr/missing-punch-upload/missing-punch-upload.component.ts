@@ -96,7 +96,7 @@ present_type_before:any
       if(res.status='success'){
         console.log(res.data)
         this.reasonList=res.data
-        this.reason=''
+        this.reason = ''
       }else{
         // alert(res.message)
         // this.openAlertDialog(res.message,'error');
@@ -150,6 +150,7 @@ submitDateTime() {
       console.log(error);
       this.messageService.add({severity:'error',summary:error.message})
     });
+
     this.api
       .forgottoPunchCheck(this.genid, this.date, this.plant)
       .subscribe((res: any) => {
@@ -157,11 +158,11 @@ submitDateTime() {
           // alert(res.message);
           // this.openAlertDialog(res.message,'error');
           this.messageService.add({severity:'warn',summary:res.message})
-          this.inDate = undefined;
-          this.intime = undefined;
-          this.outDate = undefined;
-          this.outTime = undefined;
-          this.reason = undefined;
+          // this.inDate = undefined;
+          // this.intime = undefined;
+          // this.outDate = undefined;
+          // this.outTime = undefined;
+          // this.reason = undefined;
           this.show_fp_temp = false;
           return;
         }
@@ -169,10 +170,10 @@ submitDateTime() {
           this.fpin = res.data.in_time;
           this.fpout = res.data.out_time;
           this.show_fp_temp = true;
-          this.inDate = undefined;
-          this.intime = undefined;
-          this.outDate = undefined;
-          this.outTime = undefined;
+          // this.inDate = undefined;
+          // this.intime = undefined;
+          // this.outDate = undefined;
+          // this.outTime = undefined;
           this.reason = undefined;
         }
       }, (error) => {
@@ -257,7 +258,7 @@ submitDateTime() {
     }
  
 
-    this.closeDateTimePicker();
+    // this.closeDateTimePicker();
   }
 
   checkVerify() {
@@ -266,33 +267,31 @@ submitDateTime() {
     this.fpdata = [];
 
 
-    // console.log(this.date);
+    console.log(this.date);
     
-    // const maxOutTime = new Date(this.date);
-    // maxOutTime.setDate(maxOutTime.getDate() + 1);
-    // this.MaxOut = maxOutTime.toISOString().slice(0, 16);
+    const maxOutTime = new Date(this.date);
+    maxOutTime.setDate(maxOutTime.getDate() + 1);
+    this.MaxOut = maxOutTime;
   
-    // const minOutTime = new Date(this.date);
-    // minOutTime.setDate(minOutTime.getDate() );
-    // // this.MinOut = minOutTime.toISOString().slice(0, 16);
-    // this.MinOut = this.date
+    const minOutTime = new Date(this.date);
+    minOutTime.setDate(minOutTime.getDate() );
+    this.MinOut = minOutTime;
+    this.MinOut = new Date(this.date)
 
-
-
-    // const maxInTime = new Date(this.date);
-    // maxInTime.setDate(maxInTime.getDate() );
-    // // this.MaxIn = maxInTime.toISOString().slice(0, 16);
-    // this.MaxIn = this.date
+    const maxInTime = new Date(this.date);
+    maxInTime.setDate(maxInTime.getDate() );
+    this.MaxIn = maxInTime;
+    this.MaxIn = new Date(this.date)
   
-    // const minInTime = new Date(this.date);
-    // minInTime.setDate(minInTime.getDate() -1);
-    // this.MinIn = minInTime.toISOString().slice(0, 16);
+    const minInTime = new Date(this.date);
+    minInTime.setDate(minInTime.getDate() -1);
+    this.MinIn = minInTime;
 
 
-    // console.log(this.MaxOut);
-    // console.log(this.MinOut);
-    // console.log(this.MaxIn);
-    // console.log(this.MinIn);
+    console.log(this.MaxOut);
+    console.log(this.MinOut);
+    console.log(this.MaxIn);
+    console.log(this.MinIn);
     
     
   }
@@ -306,23 +305,23 @@ submitDateTime() {
     
     const maxOutTime = new Date(this.date);
     maxOutTime.setDate(maxOutTime.getDate() + 1);
-    this.MaxOut = maxOutTime.toISOString().slice(0, 10);
+    this.MaxOut = maxOutTime;
   
     const minOutTime = new Date(this.date);
     minOutTime.setDate(minOutTime.getDate() );
     // this.MinOut = minOutTime.toISOString().slice(0, 16);
-    this.MinOut = this.date
+    this.MinOut = new Date(this.date)
 
 
 
     const maxInTime = new Date(this.date);
     maxInTime.setDate(maxInTime.getDate() );
     // this.MaxIn = maxInTime.toISOString().slice(0, 16);
-    this.MaxIn = this.date
+    this.MaxIn = new Date(this.date)
   
     const minInTime = new Date(this.date);
     minInTime.setDate(minInTime.getDate() -1);
-    this.MinIn = minInTime.toISOString().slice(0, 10);
+    this.MinIn = minInTime;
     
     
   }
@@ -353,7 +352,7 @@ submitDateTime() {
         this.file=''
         this.verifybtn=true
         this.uploadBtn=true
-      }else if(res.status=='successfull'){
+      }else if(res.status=='successful'){
         this.uploadBtn=false
         // alert(`Record's Verified Successfully`);
         this.messageService.add({severity:'info',summary:"Record's Verified Sucessfully."})

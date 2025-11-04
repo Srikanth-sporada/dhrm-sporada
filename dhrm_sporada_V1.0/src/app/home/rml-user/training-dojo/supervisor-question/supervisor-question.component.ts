@@ -54,7 +54,8 @@ export class SupervisorQuestionComponent implements OnInit {
 
   addrow(i: any) {
     if (this.form.controls['module'].value == '') {
-      alert('Please select a Department');
+      // alert('Please select a Department');
+      this.messageService.add({severity:'warn',summary:'Please Select Department'})
     } else {
       if (i == this.questions.length - 1) {
         this.questions.push({
@@ -118,7 +119,8 @@ export class SupervisorQuestionComponent implements OnInit {
     const selectedDept = this.form.controls['module'].value;
   
     if (!selectedDept) {
-      alert("Please select a Department.");
+      // alert("Please select a Department.");
+      this.messageService.add({severity:'warn',summary:'Please Select Department'})
       return;
     }
   
@@ -126,7 +128,8 @@ export class SupervisorQuestionComponent implements OnInit {
     const lastQuestionText = this.questions[lastValidIndex]?.question;
   
     if (!lastQuestionText || lastQuestionText.trim() === '') {
-      alert("Last question should not be empty!");
+      // alert("Last question should not be empty!");
+      this.messageService.add({severity:'warn',summary:'Last question should not be empty'})
       return;
     }
   
@@ -149,15 +152,18 @@ export class SupervisorQuestionComponent implements OnInit {
         next: (res: any) => {
           console.log('sup', res);
           if (res.message === 'success') {
-            alert('The Questions have been successfully saved.');
+            // alert('The Questions have been successfully saved.');
+            this.messageService.add({severity:'info',summary:'The Questions have been successfully saved.'})
             location.reload();
           } else {
-            alert("There was an issue saving the questions. Please try again.");
+            // alert("There was an issue saving the questions. Please try again.");
+            this.messageService.add({severity:'warn',summary:'There was an issue saving the questions. Please try again.'})
           }
         },
         error: (err) => {
           console.log('Error saving questions:', err);
-          alert("There was an error while saving the questions.");
+          // alert("There was an error while saving the questions.");
+          this.messageService.add({severity:'error',summary:'There was an error while saving the questions.'})
         }
       });
   

@@ -6,10 +6,10 @@ import { FormService } from '../form.service';
 import { DatePipe } from '@angular/common';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import * as XLSX from 'xlsx';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
-
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 
 @Component({
   selector: 'app-trainee-application-status',
@@ -47,7 +47,7 @@ searchTypeOptions =[
   { value: "aadhar_no", label: "AADHAR NUMBER" }
 ];
 
-  constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService) {
+  constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService,) {
     this.form = this.fb.group({
       status: new UntypedFormControl(''),
       fromdate: new UntypedFormControl(''),
@@ -141,10 +141,12 @@ delete(item: any) {
     });
   }
 
-openDeleteModal(apln_slno: any, templeteRef:any) {
+openDeleteModal(apln_slno: any) {
   this.itemToDelete = apln_slno;
   this.showDeleteModal = true;
-  this.modalService.open(templeteRef, {centered:true});
+  const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
+  confirmModalRef.componentInstance.confirmFunction = this.confirmDelete;
+  confirmModalRef.componentInstance.closeFunction = confirmModalRef.close;
   console.log('modal opened.');
 }
 

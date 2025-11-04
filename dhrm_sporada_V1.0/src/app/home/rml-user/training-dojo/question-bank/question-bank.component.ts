@@ -178,7 +178,7 @@ export class QuestionBankComponent implements OnInit {
         if(res.message =='success')
         {
           this.messageService.add({severity:'info',summary:'Question Updated Successfully.'})
-          alert("The questions have been updated.");
+          // alert("The questions have been updated.");
           location.reload()
         }
       },

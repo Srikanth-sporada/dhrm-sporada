@@ -276,6 +276,8 @@ export class OperationsComponent implements OnInit {
 
     this.form.controls['critical_oprn'].setValue(this.dummy[a].critical_oprn ? 'YES' : 'NO');
     this.form.controls['Active_Sts'].setValue(this.dummy[a].del_status === 'Y' ? 'YES' : 'NO');
+
+    console.log('EDIT FORM',this.form.value, 'USER VALUE', this.dummy[a])
   }
 
   save(modal: any) {
@@ -346,9 +348,9 @@ export class OperationsComponent implements OnInit {
 
   editSave(modal: any) {
     this.form.get('plant_name').enable();
-    const departmentValue = this.form.get('Department')?.value;
+    const departmentValue = this.form.value.Department;
     const lineValue = this.form.get('Line')?.value;
-
+    console.log(departmentValue,lineValue)
     const requiredFields = [
       'plant_name',
       'oprn_desc',
@@ -388,7 +390,7 @@ export class OperationsComponent implements OnInit {
             this.messageService.add({severity:'warn',summary:'Operation Updated Successfully'});
             this.refreshData();
             modal.close('Close click');
-            location.reload();
+            // location.reload();
           }
         }
       });

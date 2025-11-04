@@ -86,7 +86,8 @@
                 dateFormat="yy-mm-dd"
                 styleClass="w-full !font-poppins"
                 [(ngModel)]="inDate"
-                [maxDate]="MinOut" [minDate]="MinIn"
+                [maxDate]="MinOut" 
+                [minDate]="MinIn"
                 (ngModelChange)="checkSubmit()"
                 [showIcon]="true" >
             </p-calendar>

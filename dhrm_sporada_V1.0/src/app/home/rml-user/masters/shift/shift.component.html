@@ -36,12 +36,21 @@
                 <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
                 Shift Group
                 </label> <br>
-                <input
+                 <p-dropdown 
+                    formControlName="shift_group"
+                    id="shiftgroup"
+                    [options]="shiftGroupOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="w-full"
+                    placeholder="Select Shift Group">
+                </p-dropdown>
+                <!-- <input
                     pInputText
                     styleClass="w-full"
                     id="shiftgroup"
                     formControlName="shift_group"
-                />
+                /> -->
             </div>   
             </div>
             <!-- second row  -->

@@ -168,7 +168,7 @@
                 <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
               </button>
               <button *ngIf="i.apln_status !== 'APPOINTED' && i.apln_status !== 'RELIEVED'" 
-               (click)="openDeleteModal(i.apln_slno,deleteModal);">
+               (click)="openDeleteModal(i.apln_slno);">
                 <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
               </button>
             </td>
@@ -179,7 +179,7 @@
   </div>
 
   <!-- delete confirmation popup -->
-<ng-template #deleteModal let-modal>
+<!-- <ng-template #deleteModal let-modal>
     <div class="modal-body font-poppins">
       <h2 class="text-2xl font-semibold text-blue-600">
         Confirmation <mat-icon class="text-blue-600 text-[20px]">check_circle</mat-icon>
@@ -200,8 +200,7 @@
         </button>
       </div>
     </div>
-</ng-template>
-
-
+</ng-template> -->
 
 <!-- Confirmation Modal -->
+<!-- <app-confirmation></app-confirmation> -->

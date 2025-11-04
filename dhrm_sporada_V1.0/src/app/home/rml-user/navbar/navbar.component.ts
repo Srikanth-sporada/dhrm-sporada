@@ -25,6 +25,12 @@ import { ToastService } from "angular-toastify";
 })
 export class NavbarComponent implements OnInit {
   url = environment.path + "/";
+  /** Menu Hide variables */
+  hideSalaryMaster = environment.hideSalaryMaster;
+  hidePmpd = environment.hidePmpd;
+  hideMidPermission = environment.hideMidPermission;
+  hidePeoplePlanning = environment.hidePeoplePlanning;
+
   ishrappr: any;
   form: FormGroup = new FormGroup({});
   ishr: any;
@@ -85,7 +91,7 @@ export class NavbarComponent implements OnInit {
   isUsermannualExpanded: boolean = false;
   // payroll Link
   authToken:any = sessionStorage.getItem('token');
-  payrollNavLink:any = `${environment.payroll}`;
+  payrollNavLink:any = `${environment.payroll}?STOKEN=${this.authToken}`;
 
   constructor(
     private fb: FormBuilder,
@@ -95,7 +101,7 @@ export class NavbarComponent implements OnInit {
     private service: ApiService,
     private active: ActivatedRoute,
     public router: Router,
-    private toast:ToastService
+    private toast:ToastService,
   ) {
     this.form = fb.group({
       username: new UntypedFormControl(sessionStorage.getItem("user_name")),
@@ -111,9 +117,17 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHr();
-    // console.log(this.payrollNavLink)
+    console.log(this.payrollNavLink);
   }
 
+  navigateToPayroll(){
+    const baseUrl = environment.payroll;
+    const payrollURL = new URL(baseUrl);
+    const params = payrollURL.searchParams;
+    params.append('STOKEN',this.authToken)
+    window.open(payrollURL.href);
+    console.log(payrollURL.toString());
+  }
   isOperatorOrNot() {
     if (this.apprentice_type === "OPERATOR") {
       this.isOperator = true;

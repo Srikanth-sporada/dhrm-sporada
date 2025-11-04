@@ -78,7 +78,8 @@ export class OnboardFormComponent implements OnInit {
   minlockdate:any;
   dolMinDate:any
   dolMaxDate:any = new Date();
-  payrollArea:any = []
+  payrollArea:any = [];
+  costCenterData:any = [];
   dojoTrainingOptions:any =  [
     { label: 'YES', value: 'YES' },
     { label: 'NO', value: 'NO' }
@@ -151,8 +152,12 @@ export class OnboardFormComponent implements OnInit {
         // console.log(response);
         // console.log(response[0][0])
 
-        // get payroll area for trainee
+        /** get payroll area by plant code */
          this.getPayrollArea(response[0][0]?.plant_code);
+
+        /** get cost center by plant code */
+         this.getCostcenterByPlantCode(response[0][0]?.plant_code);
+
         // console.log('Plant code',response[0][0]?.plant_code)
           this.setAge(response[0][0].birthdate);
           this.obj = response;
@@ -468,11 +473,13 @@ export class OnboardFormComponent implements OnInit {
       });
       // trainee employee relive api call
     } else if (this.readonly == true) {
-      // console.log(this.form.value)
+      /** DOL format */
+      // this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
+      console.log(this.form.value)
+
       this.service.relieve({...this.form.value,category:this.basic[0]?.apprentice_type }).subscribe({
         next: (response: any) => {
           // console.log(response);
-          
           if (response.message == "success") {
             this.messageService.add({severity:'info',summary:'The Employee has been Relieve'})
             // alert("The Employee has been Relieved ");
@@ -716,5 +723,29 @@ export class OnboardFormComponent implements OnInit {
       this.messageService.add({severity:'error',summary:error.message})
     }
    })
+  }
+
+  /**
+   * 1. get cost center by plant
+   * @param {*} plantCode
+   * @property {any[]} costCenterData
+   * @property {*} service
+   */
+
+  getCostcenterByPlantCode(plantCode:any){
+    this.service.getCostcenterByPlantcode(plantCode).subscribe({
+      next: (response:any) => {
+       if(response?.message){
+        this.messageService.add({severity:'warn',summary:response?.message});
+       }else{
+        this.costCenterData = response;
+       }
+       console.log(response)
+      },
+      error: (err) => {
+        console.log(err)
+        this.messageService.add({severity:'error',summary:err.error?.message})
+      }
+    })
   }
 }

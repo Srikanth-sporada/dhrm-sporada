@@ -36,7 +36,7 @@ export class CompanyComponent implements OnInit {
   all:any;
   // reference variable for company data
   companyData:any = [];
-  status = [{label:'Active',value:'Active'},{label:'In-Active',value:''}]
+  status = [{label:'Active',value:'Active'},{label:'In-Active',value:null}]
   editing_flag: any;
   // add company template reference
    @ViewChild('content', {read: TemplateRef}) addCompanyTemplateRef: TemplateRef<unknown> | undefined;
@@ -67,8 +67,8 @@ export class CompanyComponent implements OnInit {
 
     this.form = this.fb.group({
       sno: ['',],
-      company_code: ['',Validators.required],
-      company_name: ['',Validators.required],
+      company_code: ['',[Validators.required,Validators.pattern(/\S+/)]],
+      company_name: ['',[Validators.required,Validators.pattern(/\S+/)]],
       created_on: ['',],
       created_by: ['',],
       modified_on: ['',],

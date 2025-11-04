@@ -54,7 +54,7 @@ export class GenFilterPipe implements PipeTransform {
         return data;
       }
     return data.filter((data:any) => {
-      return data.dept_name == selectedDept
+      return data.dept_slno == selectedDept
     });
     
     }

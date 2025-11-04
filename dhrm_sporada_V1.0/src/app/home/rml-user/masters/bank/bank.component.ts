@@ -95,7 +95,7 @@ export class BankComponent implements OnInit {
             this.form.reset();
             this.messageService.add({severity:'info',summary:'Bank Added.'})
           }else{
-            this.messageService.add({severity:'info',summary:'Cannot Add Bank!'})
+            this.messageService.add({severity:'error',summary:'Cannot Add Bank!'})
           }
         },
         error:(err) => this.messageService.add({severity:'error',summary:err.message})
@@ -129,7 +129,7 @@ export class BankComponent implements OnInit {
            this.dummy[this.temp_a] = this.form.value
            this.messageService.add({severity:'info',summary:'Bank Updated!'})
           }else{
-             this.messageService.add({severity:'error',summary:'Cannot Delete Bank!'})
+             this.messageService.add({severity:'error',summary:'Cannot Update Bank!'})
           }
         },
         error:(err) => this.messageService.add({severity:'error',summary:err.message})
@@ -143,7 +143,7 @@ export class BankComponent implements OnInit {
         target: event.target as EventTarget,
             message: 'Are you sure you want to Delete?',
             icon: 'pi pi-exclamation-triangle',
-            accept: () => {this.deleteBankAPICall(a,slno)},
+            accept: () => {this.deleteBankAPICall(slno,a)},
             reject: () => {
                 this.messageService.add({ severity: 'error', summary: 'Rejected'});
             }
@@ -151,13 +151,18 @@ export class BankComponent implements OnInit {
   }
 // delete bank apicall function
   deleteBankAPICall(slno: any, a: any){
+    console.log(slno)
         this.service.deletebank({ Slno: slno })
       .subscribe({
         next: (response: any) => {
           console.log(response);
-          if (response.message == 'success')
-            this.dummy.splice(a, 1);
+          if (response.message == 'success'){
+             this.dummy.splice(a, 1);
             this.messageService.add({severity:'info',summary:'Bank Deleted!'})
+          }else{
+            this.messageService.add({severity:'error',summary:'Cannot Delete Bank!'})
+          }
+            
         },
         error:(err) => this.messageService.add({severity:'error',summary:err.message})
       })

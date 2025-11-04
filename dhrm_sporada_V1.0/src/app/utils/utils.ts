@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 })
 
 export class Utility{
-
-   payrollAreaPlantObservable:any;
+  
     constructor (private messageService:MessageService, private apiService:ApiService){
 
     }

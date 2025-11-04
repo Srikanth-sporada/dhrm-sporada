@@ -149,7 +149,13 @@ export class ApiService {
   addplant(form: any) {
     return this.http.post(this.url + "/master/addplant", form);
   }
-  // payroll area api service
+  /**
+   *
+   *
+   * @param {*} data
+   * @return {*} 
+   * @memberof ApiService
+   */
   addNewPayrollArea(data:any){
     return this.http.post(this.url + "/master/addPayrollArea",data);
   }
@@ -171,6 +177,16 @@ export class ApiService {
   getPayrollAreaByPlantcode(plantcode:any){
     return this.http.get(this.url + `/master/getPayrollAreaByPlant?PlantCode=${plantcode}`);
   }
+
+  /**
+   * Cost Center API Service
+   * 
+   */
+  getCostcenterByPlantcode(plantcode:any){
+    return this.http.get(this.url + `/master/getCostcenterbyplant?PlantCode=${plantcode}`)
+  }
+
+  
   // bank api service
   getbank() {
     return this.http.get(this.url + "/master/getbank");
