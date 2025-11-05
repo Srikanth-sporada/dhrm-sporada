@@ -12,38 +12,48 @@
     </div>
     <form [formGroup]="form">
       <!-- plant dropdown -->
-      <div class="mx-4 mt-3">
+      <div class="mx-2 mt-3">
         <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
           <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
           Plant
         </label><br />
         <p-dropdown 
           formControlName="plant_name"
-          [options]="plantname"
+          [options]="plantCopy"
           optionLabel="plant_name"
           optionValue="plant_code"
           styleClass="w-full"
           (onChange)="getall($event)"
-          placeholder="Select Plant" >
+          placeholder="Select Plant">
+           <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
         </p-dropdown>
       </div>
       <!-- department dropdown -->
-       <div class="mx-4 mt-3">
+       <div class="mx-2 mt-3">
         <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
            <mat-icon class="text-2xl text-blue-600 h-0 w-0">store</mat-icon>
           Department
         </label><br />
         <p-dropdown 
           formControlName="dept_name"
-          [options]="dept"
+          [options]="departmentCopy"
           optionLabel="dept_name"
           optionValue="dept_slno"
           styleClass="w-full"
           placeholder="Select Department" >
+           <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+              </div>
+            </ng-template>
         </p-dropdown>
       </div>
       <!-- line name input -->
-        <div class="mx-4 mt-3">
+        <div class="mx-2 mt-3">
           <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
             <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
             Line Name
@@ -57,7 +67,7 @@
           />
         </div>
       <!-- personal sub area input -->
-        <div class="mx-4 mt-4">
+        <div class="mx-2 mt-4">
           <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
             <mat-icon class="text-2xl text-blue-600 h-0 w-0">text_fields</mat-icon>
             Personal Subarea
@@ -137,7 +147,13 @@
             optionValue="plant_code"
             styleClass="w-full"
             (onChange)="filterLineByPlant()"  
-            placeholder="Select Plant"></p-dropdown>
+            placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
         <!-- department filter -->
         <div class="font-poppins w-full sm:w-1/3">
@@ -152,7 +168,13 @@
             filterBy="dept_name"
             filterPlaceholder="Search Department"
             styleClass="w-full"
-            placeholder="Select Department"></p-dropdown>
+            placeholder="Select Department">
+           <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
      </div>
   </div>
@@ -166,7 +188,7 @@
           <thead class="sticky top-0">
             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
               <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Plant</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Code</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -184,7 +206,7 @@
              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
             >
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.plant_code + '-' + i.plant_name }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.module_code }}</td>
               <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ i.Line_code}}</td>

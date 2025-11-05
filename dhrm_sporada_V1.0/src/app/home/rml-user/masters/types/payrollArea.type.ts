@@ -8,4 +8,5 @@ export type PayrollArea = {
   InsertDate?: string; // ISO date string
   UpdateBy: string;
   UpdateDate?: string; // ISO date string
+  weekoff_eligibility:any,
 };

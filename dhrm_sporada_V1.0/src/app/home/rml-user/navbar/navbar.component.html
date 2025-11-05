@@ -157,16 +157,27 @@
             </mat-expansion-panel-header>
              <!-- sporada payroll -->
             <mat-nav-list>
+              <!-- sporada payroll -->
               <div *ngIf="isadmin == 'true'">
                 <a
                   mat-list-item
                   class="rounded-sm"
                   (click)="navigateToPayroll()"
                   target="_blank"
+                  class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">account_balance_wallet</mat-icon>Payroll</a
                 >
               </div>
+              <!-- processed bills -->
+               <a
+                 *ngIf = "isadmin == 'true' " 
+                  mat-list-item 
+                  routerLink="/rhrm/contra/bill_pros_dt"
+                  routerLinkActive="!text-blue-600 !font-semibold" 
+                  class="rounded-sm">
+                    <mat-icon class="icon-pad">currency_rupee</mat-icon>Processed Bill's
+              </a>
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
@@ -1557,7 +1568,7 @@
     </mat-sidenav>
 
     <!-- right side dashboard content -->
-    <mat-sidenav-content class="!bg-white !h-full  lg:rounded-[1rem] sm:rounded-md rounded-md">
+    <mat-sidenav-content class="!bg-white !h-full  lg:rounded-md sm:rounded-md rounded-md">
       <!-- side navbar content header -->
       <!-- <mat-toolbar
         *ngIf="(isHandset$ | async)"
@@ -1596,7 +1607,7 @@
       </button>
       <!-- dhrm dashboard image -->
       <div *ngIf="router.url === '/rhrm'" class="h-full ml-2 overflow-hidden">
-        <img src="assets/HR2.jpg" alt="dhrm-image" class="h-full rounded-sm object-cover" />
+        <img [src]="homepageImgURL" alt="dhrm-image" class="h-full rounded-sm object-cover" />
       </div>
       <!-- Add Content Here -->
       <div>

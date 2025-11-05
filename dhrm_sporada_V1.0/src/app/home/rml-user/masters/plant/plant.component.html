@@ -29,6 +29,11 @@
             optionValue="company_code"
             styleClass="w-full"
             placeholder="Select Company">
+            <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+           </ng-template>
           </p-dropdown>
           </div>
            <!-- plant code -->
@@ -240,7 +245,13 @@
             styleClass="w-full"
             [(ngModel)]="selectedCompany"
             (onChange)="filterPlantByCompany()"  
-            placeholder="Select Company" ></p-dropdown>
+            placeholder="Select Company" >
+          <ng-template let-company pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <span>{{ company.company_code + '-' + company.company_name }}</span>
+            </div>
+         </ng-template>
+          </p-dropdown>
 
        </div>
        <!-- plant personal area filter -->
@@ -287,7 +298,7 @@
                 Plant Name
               </th>
               <th div class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                ShortName
+                Short Name
               </th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Company Name

@@ -32,7 +32,7 @@ export class PlantComponent implements OnInit {
   editing_flag: any;
   sign:any = null
   inx: any;
-  selectedCompany:any = 'all';
+  selectedCompany:any = '';
   // material modal template ref
   @ViewChild('content', {read: TemplateRef}) addPlantTemplateRef: TemplateRef<unknown> | undefined;
     // Speed Dial items
@@ -106,7 +106,7 @@ export class PlantComponent implements OnInit {
         console.log(response)
         this.companylist = response;
         this.companyData = [...response];
-        this.companyData.unshift({company_code:'all',company_name:'All'});
+        this.companyData.unshift({company_code:'',company_name:'All'});
         console.log('cmplist',this.companylist);
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
@@ -339,7 +339,7 @@ signUpload(event:any){
  * @property {plantData} has copy data of the plant
  */
 filterPlantByCompany(){
-  if(this.selectedCompany == 'all'){
+  if(this.selectedCompany == ''){
     this.dummy = this.plantData;
   }else{
     const FilteredPlantDataByCompany = this.plantData.filter((plant:any) => {

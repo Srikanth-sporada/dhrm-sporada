@@ -30,7 +30,11 @@ export class NavbarComponent implements OnInit {
   hidePmpd = environment.hidePmpd;
   hideMidPermission = environment.hideMidPermission;
   hidePeoplePlanning = environment.hidePeoplePlanning;
-
+  /** home page image */
+  homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
+  homepageImgIndex:any;
+  homepageImgURL:any;
+  /** permission properties */
   ishrappr: any;
   form: FormGroup = new FormGroup({});
   ishr: any;
@@ -89,9 +93,8 @@ export class NavbarComponent implements OnInit {
   isPmpdExpanded: boolean = false;
   isReportsExpanded: boolean = false;
   isUsermannualExpanded: boolean = false;
-  // payroll Link
+  /** payroll navigation */
   authToken:any = sessionStorage.getItem('token');
-  payrollNavLink:any = `${environment.payroll}?STOKEN=${this.authToken}`;
 
   constructor(
     private fb: FormBuilder,
@@ -116,10 +119,19 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** generate image function */ 
+    this.generateImage();
     this.getHr();
-    console.log(this.payrollNavLink);
+    // console.log(this.payrollNavLink);
   }
 
+  /** 
+   * @description navigate to payroll function
+   * @var baseUrl base payroll url from env
+   * @var payrollURL js url object
+   * @var params params to append STOKEN
+   * @global window
+   */
   navigateToPayroll(){
     const baseUrl = environment.payroll;
     const payrollURL = new URL(baseUrl);
@@ -128,6 +140,7 @@ export class NavbarComponent implements OnInit {
     window.open(payrollURL.href);
     console.log(payrollURL.toString());
   }
+
   isOperatorOrNot() {
     if (this.apprentice_type === "OPERATOR") {
       this.isOperator = true;
@@ -222,8 +235,21 @@ export class NavbarComponent implements OnInit {
     if (sessionStorage.getItem("istrainee")) {
       this.genid = sessionStorage.getItem("gen_id");
     }
-
     this.isOperatorOrNot();
     this.isCLOrNot();
   }
+
+  /**
+   * generate Home page Image
+   * @property {*} homepageImgIndex random value
+   * @property {*} homepageImgURL random image URL
+   * @property {*} homePageImg array of image URL
+   * @return {*}
+   */
+  generateImage():void{
+    this.homepageImgIndex = Math.floor(Math.random() * this.homePageImg.length);
+    this.homepageImgURL = this.homePageImg[this.homepageImgIndex]
+    console.log('HOME PAGE IMG', this.homePageImg[this.homepageImgIndex])
+  }
 }
+

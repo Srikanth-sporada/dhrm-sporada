@@ -150,13 +150,12 @@ export class ApiService {
     return this.http.post(this.url + "/master/addplant", form);
   }
   /**
-   *
-   *
+   * Payroll Area API Service
    * @param {*} data
    * @return {*} 
    * @memberof ApiService
    */
-  addNewPayrollArea(data:any){
+  addNewPayrollArea(data:any):any{
     return this.http.post(this.url + "/master/addPayrollArea",data);
   }
   updatePayrollArea(data:any){
@@ -186,7 +185,21 @@ export class ApiService {
     return this.http.get(this.url + `/master/getCostcenterbyplant?PlantCode=${plantcode}`)
   }
 
+  /**
+   * Full month LOP API service
+   */
+  getTraineeDataForFML(genid:any){
+    return this.http.get(this.url + `/ars/applyFML?gen_id=${genid}`)
+  }
+
+  applyfullMonthLOP(data:any){
+    return this.http.post(this.url + '/ars/addTrnFML',data);
+  }
   
+  getLOPDataByEmployeeID(id:any){
+    return this.http.get(this.url + `/ars/getFML?applied_by=${id}`)
+  }
+
   // bank api service
   getbank() {
     return this.http.get(this.url + "/master/getbank");

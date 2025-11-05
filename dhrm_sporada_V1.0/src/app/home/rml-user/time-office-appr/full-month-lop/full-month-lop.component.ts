@@ -1,0 +1,136 @@
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/home/api.service';
+import { Validators,UntypedFormBuilder} from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import moment from 'moment'
+
+@Component({
+  selector: 'app-full-month-lop',
+  templateUrl: './full-month-lop.component.html',
+  styleUrls: ['./full-month-lop.component.css']
+})
+
+export class FullMonthLopComponent implements OnInit {
+
+  employeeId:any = sessionStorage.getItem('emp_id');
+  lopForm:any;
+  traineeData:any = [];
+  lastProcessedBillDate:any;
+  traineeLopMonthData:any = [];
+
+  constructor(
+    private service:ApiService, 
+    private fb : UntypedFormBuilder, 
+    private messageService:MessageService) {
+  /**
+   * Apply Full Month LOP form
+   * by default applied by value is set for form default value
+   * @type {*}
+   * @memberof FullMonthLopComponent
+   * @property {*} employeeId applied by default value
+   */
+    this.lopForm = this.fb.group({
+      gen_id:['', [Validators.required,Validators.pattern(/\S+/)]],
+      payroll_area: [''],
+      plantcode:[''],
+      lop_month:['',Validators.required],
+      reason:['',[Validators.required,Validators.pattern(/\S+/)]],
+      applied_by:[this.employeeId],
+    })
+   }
+
+  ngOnInit(): void {
+   this.getFullMonthLopDataForEmployee();
+  }
+
+  /**
+   * get data by gen id
+   * @property {*} traineeData has trainee data
+   * @property {*} lopForm.gen_id 
+   */
+  searchTraineeByGenId(){
+    this.service.getTraineeDataForFML(this.lopForm.value.gen_id).subscribe({
+      next: (response:any) => {
+        if(response.length){
+          this.traineeData = response;
+          /** get last processed bill date */
+          this.getLastBillProcessedDate();
+          console.log(response);
+        }else{
+          this.messageService.add({severity:'warn',summary:'Gen ID not found!'})
+        }
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error',summary:error.error.message})
+      }
+    })
+  }
+
+  /**
+   * @property {*} lastProcessedBillDate js date object for calander minDate prop
+   * @var {*} lastProcessedBillDate formatted bill date
+   */
+  getLastBillProcessedDate(){
+    this.service.getlockdateByCategory('T').subscribe({
+      next: (response:any) => {
+        this.lastProcessedBillDate = new Date(response?.date);
+        const formattedLockDate = moment(response?.date).format('YYYY-MM-DD')
+        console.log('FORMATTED LOCK DATE', formattedLockDate);
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error',summary:error.message});
+        console.log('ERROR:',error)
+      }
+    })
+  }
+
+  /**
+   * apply full month lop
+   * @var {*} formattedLopMonth yy-mm-dd
+   * @property {*} lopForm
+   * @property {*} service
+   */
+  applyFullMonthLOP(){
+    /** formatted lop_month */
+    const formattedLopMonth = moment(this.lopForm.value.lop_month).format('YYYY-MM-DD');
+    /** lop form update */
+    this.lopForm.controls['payroll_area'].setValue(this.traineeData[0]?.payrollArea);
+    this.lopForm.controls['plantcode'].setValue(this.traineeData[0]?.plant_code);
+    this.lopForm.controls['lop_month'].setValue(formattedLopMonth);
+    console.log('LOP FORM',this.lopForm.value);
+    
+    this.service.applyfullMonthLOP(this.lopForm.value).subscribe({
+      next:(response:any) => {
+        console.log(response);
+        this.messageService.add({severity:'info',summary:response?.message});
+        /** refresh data */
+        this.getFullMonthLopDataForEmployee();
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error', summary:error?.error?.message});
+        console.error('ERROR',error);
+      }
+    });
+  }
+
+  /**
+   * get LOP data for employee
+   * @property {*} traineeLopMonthData
+   */
+  getFullMonthLopDataForEmployee(){
+    this.service.getLOPDataByEmployeeID(this.employeeId).subscribe({
+      next: (response:any) => {
+        if(response.length){
+          this.traineeLopMonthData = response;
+          console.log(response);
+        }else{
+          this.messageService.add({severity:'warn',summary:'No Data Found'});
+        }
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+        console.error('ERROR',error);
+      }
+    })
+  }
+}

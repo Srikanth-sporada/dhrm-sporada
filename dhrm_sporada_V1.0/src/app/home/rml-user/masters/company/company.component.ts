@@ -34,6 +34,7 @@ export class CompanyComponent implements OnInit {
   dummy: any = []
   userDetails:any;
   all:any;
+  hideProcessedtabMenu:boolean = environment.hideProcessedBillTabMenu;
   // reference variable for company data
   companyData:any = [];
   status = [{label:'Active',value:'Active'},{label:'In-Active',value:null}]

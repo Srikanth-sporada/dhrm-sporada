@@ -161,7 +161,7 @@
            </div>
           </div>
            <div>
-        <div  class="h-[100dvh] lg:h-[100dvh] xl:h-[100dvh] sm:h-[100dvh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+        <div  class="h-[100dvh] lg:h-[70dvh] xl:h-[70dvh] sm:h-[100dvh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
           <table
             id="fpdata"
            class="table-auto !w-full"
@@ -441,6 +441,21 @@
         </div>
          </ng-template>
        </p-tabPanel>
+
+       <!-- Full month LOP -->
+        <p-tabPanel>
+            <!-- header -->
+            <ng-template pTemplate="header">
+                      <div class="flex items-center justify-center gap-1">
+                        <mat-icon class="icon-pad text-[1.5rem]">money_off</mat-icon>
+                        <span>Full Month LOP</span>
+                      </div>
+            </ng-template>
+            <!-- content -->
+             <ng-template pTemplate="content">
+              <app-full-month-lop></app-full-month-lop>
+             </ng-template>
+        </p-tabPanel>
    </p-tabView>
   
 </div>

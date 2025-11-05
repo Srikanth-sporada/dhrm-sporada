@@ -153,6 +153,19 @@
 </div>
 </div>
 
+<!-- Masters header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row mx-2" *ngIf="hideHeader">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>currency_rupee</mat-icon> Processed Bill's <hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View and Manage Masters</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
 <!-- Table -->
 <div class="mx-2">
   <!-- processed bill master filter -->
@@ -203,7 +216,10 @@
   <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
         <!-- procesed bills table -->
         <ng-template #show>
-            <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+            <div
+            [class]="hideHeader ? 'h-[90svh] lg:h-[78vh] xl:h-[77.5vh] sm:h-[76vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll' 
+            : 'h-[90svh] lg:h-[65vh] xl:h-[64vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll'"
+            >
                 <table id="table" class="table-auto !w-full">
                   <!-- table head -->
                     <thead class="sticky top-0">

@@ -33,8 +33,10 @@ export class LineComponent implements OnInit {
   plantname: any;
   dept: any
   all_details: any
-  selectedPlant:any = 'all';
-  selectedDepartment:any = 'All'
+  selectedPlant:any = '';
+  selectedDepartment:any = 'All';
+  plantCopy:any = [];
+  departmentCopy:any = [];
   departmentData:any=[]
   lineData:any= []
   temp_a: any;
@@ -68,9 +70,9 @@ export class LineComponent implements OnInit {
       plant_code: ['',],
       plant_name: ['',Validators.required],
       dept_name: ['',Validators.required],
-      Line_Name: ['',Validators.required],
+      Line_Name: ['',[Validators.pattern(/\S+/),Validators.required]],
       Line_code: ['',],
-      personal_subarea: ['',Validators.required],
+      personal_subarea: ['',[Validators.pattern(/\S+/),Validators.required]],
       modified_by: ['',],
       created_by: ['',],
       module_code: ['',]
@@ -124,10 +126,11 @@ export class LineComponent implements OnInit {
     var company = { 'company_name': sessionStorage.getItem('companycode') }
     this.service.plantcodelist(company)
       .subscribe({
-        next: (response) => { 
+        next: (response:any) => { 
           console.log(response); 
-          this.plantname = response
-          this.plantname.unshift({plant_name:'All',plant_code:'all'})
+          this.plantname = [...response]
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
          },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
@@ -308,8 +311,9 @@ export class LineComponent implements OnInit {
   getDepartment(){
     this.service.getdepartment().subscribe({
       next:(response:any) => {
-        this.departmentData = this.removeDuplicateValues(response);
-        this.departmentData.unshift({dept_name:'All'})
+        this.departmentData = this.removeDuplicateValues([...response]);
+        this.departmentData.unshift({dept_name:'All'});
+        this.departmentCopy = this.removeDuplicateValues(response);
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     })

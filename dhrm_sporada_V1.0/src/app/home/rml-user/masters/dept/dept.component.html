@@ -20,11 +20,16 @@
         </label><br />
         <p-dropdown 
           formControlName="plant_name" 
-          [options]="plantname"
+          [options]="plantCopy"
           optionLabel="plant_name"
           optionValue="plant_code"
           styleClass="w-full"
           placeholder="Select Plant" >
+          <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+          </ng-template>
         </p-dropdown>
       </div>
       <!-- department group dropdown -->
@@ -35,11 +40,16 @@
         </label><br />
         <p-dropdown 
           formControlName="dh_Id"
-          [options]="Dept_header"
+          [options]="departmentHeaderCopy"
           optionLabel="Department_Header"
           optionValue="Dh_Id"
           styleClass="w-full"
           placeholder="Select Department" >
+          <ng-template let-deptHeader pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ deptHeader.Dh_Id + '-' + deptHeader.Department_Header }}</span>
+              </div>
+          </ng-template>
         </p-dropdown>
       </div>
       <!-- department name input -->
@@ -154,7 +164,13 @@
             [disabled]="!isAdmin"
             styleClass="w-full"
             (onChange)="filterDepartmentByPlant()"  
-            placeholder="Select Plant"></p-dropdown>
+            placeholder="Select Plant">
+             <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
         <!-- department filter -->
         <div class="font-poppins w-full sm:w-1/3">
@@ -166,7 +182,13 @@
             optionValue="Dh_Id"
             styleClass="w-full"
             (onChange)="filterByDepartment()"  
-            placeholder="Select Department"></p-dropdown>
+            placeholder="Select Department">
+          <ng-template let-deptHeader pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ deptHeader.Dh_Id + '-' + deptHeader.Department_Header }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
       </div>
   </div>
@@ -180,8 +202,8 @@
           <!-- table header -->
           <thead class="sticky top-0">
             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-              <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SNo</th>
-              <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Name</th>
+              <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Sno</th>
+              <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap">Name</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Code</th>
               <th  class="!text-white !px-2 !py-2 !border-none !border-0 ">Department Name</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SAP Code</th>
@@ -197,7 +219,7 @@
              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
              >
               <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ a + 1 }}</td>
-              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.plant_code + '-' + i.plant_name }}</td>
               <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold">{{ i.dept_slno }}</td>
               <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.dept_name }}</td>
               <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-purple-500 font-semibold">

@@ -48,7 +48,8 @@ export class CostCenterComponent implements OnInit {
   costCenterList:any = [];
   costCenterCopy:any = this.costCenterList;
   companyList:any = [];
-  selectedCompany:any = 'all';
+  companyListCopy:any = [];
+  selectedCompany:any = '';
   plantList: any = [];
   plantData:any=[]; 
   departmentList:any[];
@@ -116,7 +117,7 @@ export class CostCenterComponent implements OnInit {
       companyCode:['',Validators.required],
       plantCode:['',Validators.required],
       departmentCode:['',Validators.required],
-      costCenter:['',Validators.required],
+      costCenter:['',[Validators.pattern(/\S+/),Validators.required]],
       InsertBy:[],
       UpdateBy:[],
     })
@@ -363,7 +364,7 @@ export class CostCenterComponent implements OnInit {
    * @returns {void}
    **/
   filterCostCenterByCompany(): void{
-    if(this.selectedCompany == 'all'){
+    if(this.selectedCompany == ''){
       this.costCenterList = this.costCenterCopy;
     }else{
       const filteredcostCenterData = this.costCenterCopy.filter((costCenter:any) => {
@@ -421,8 +422,9 @@ export class CostCenterComponent implements OnInit {
   getCompanyList():void {
     this.service.getCompanyCode().subscribe({
       next: (response:any) => {
-        this.companyList = response;
-        this.companyList.unshift({company_code:'all',company_name:'All'})
+        this.companyList = [...response];
+        this.companyList.unshift({company_code:'',company_name:'All'});
+        this.companyListCopy = response;
       },
       error: (error) => this.messageService.add({severity:'error',summary:error.message})
     })

@@ -56,7 +56,7 @@ export class PayrollAreaComponent implements OnInit {
   payrollAreaList:PayrollArea[] = [];
   payrollAreaCopy:PayrollArea[] = [];
   companyData:any = []
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
   /**
    * editing_flag - Flag to indicate if the form is in edit mode
    * @type {boolean}
@@ -127,6 +127,7 @@ export class PayrollAreaComponent implements OnInit {
       StartDay:['',Validators.required],
       EndDay:['',Validators.required],
       Grace_minutes: ['',Validators.required],
+      weekoff_eligibility: ['',Validators.required],
       InsertBy:[''],
       UpdateBy:[''],
     })
@@ -143,7 +144,7 @@ export class PayrollAreaComponent implements OnInit {
     subscribe({
       next: (response:any) => {
         this.plantList = [...response];
-        this.plantList.unshift({plant_code:'all',plant_name:'All'})
+        this.plantList.unshift({plant_code:'',plant_name:'All'})
         this.plantData = response;
       },
       error: (err) => this.messageService.add({severity:'error',summary:err.message})
@@ -209,7 +210,7 @@ export class PayrollAreaComponent implements OnInit {
         this.messageService.add({severity:'info',summary:response.message})
         this.getPayrollArea();
       },
-      error: (error) => {
+      error: (error:any) => {
         console.log(error);
         this.messageService.add({severity:'error',summary:error.message})
       }
@@ -235,11 +236,12 @@ export class PayrollAreaComponent implements OnInit {
     patchUpdateValue(a:any){      
       this.editing_flag = true
       this.payrollAreaForm.controls['PlantCode'].setValue(this.payrollAreaList[a]?.PlantCode)    
-      this.payrollAreaForm.controls['PayrollArea'].setValue(this.payrollAreaList[a].PayrollArea)
-      this.payrollAreaForm.controls['StartDay'].setValue(this.payrollAreaList[a].StartDay)
-      this.payrollAreaForm.controls['EndDay'].setValue(this.payrollAreaList[a].EndDay);
-      this.payrollAreaForm.controls['InsertBy'].setValue(this.payrollAreaList[a].InsertBy)
-      this.payrollAreaForm.controls['Grace_minutes'].setValue(this.payrollAreaList[a].Grace_minutes);
+      this.payrollAreaForm.controls['PayrollArea'].setValue(this.payrollAreaList[a]?.PayrollArea)
+      this.payrollAreaForm.controls['StartDay'].setValue(this.payrollAreaList[a]?.StartDay)
+      this.payrollAreaForm.controls['EndDay'].setValue(this.payrollAreaList[a]?.EndDay);
+      this.payrollAreaForm.controls['InsertBy'].setValue(this.payrollAreaList[a]?.InsertBy)
+      this.payrollAreaForm.controls['Grace_minutes'].setValue(this.payrollAreaList[a]?.Grace_minutes);
+      this.payrollAreaForm.controls['weekoff_eligibility'].setValue(this.payrollAreaList[a]?.weekoff_eligibility);
       this.payrollAreaForm.controls['UpdateBy'].setValue(this.all?.gen_id);
       console.log(this.payrollAreaForm.value);
 
@@ -378,7 +380,7 @@ export class PayrollAreaComponent implements OnInit {
    * @returns {void}
    **/
   filterPayrollAreaByPlant(): void{
-    if(this.selectedPlant == 'all'){
+    if(this.selectedPlant == ''){
       this.payrollAreaList = this.payrollAreaCopy;
     }else{
       const filteredPayrollAreaData = this.payrollAreaCopy.filter((payrollArea:any) => {

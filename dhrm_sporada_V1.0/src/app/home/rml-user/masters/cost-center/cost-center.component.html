@@ -25,13 +25,18 @@
           </label><br />
           <p-dropdown 
             formControlName="companyCode" 
-            [options]="companyList"
+            [options]="companyListCopy"
             optionLabel="company_name"
             optionValue="company_code"
             styleClass="w-full"
             [disabled]="editing_flag"
             (onChange)="getPlantDataByCompanyCode($event.value)"
             placeholder="Select Company">
+            <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+           </ng-template>
           </p-dropdown>
           </div>
           <!-- plant -->
@@ -49,6 +54,11 @@
             [disabled]="editing_flag"
             (onChange)="getDepartmentByPlantCode($event.value)"
             placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+           </ng-template>
           </p-dropdown>
           </div>  
       </div>
@@ -68,6 +78,11 @@
             styleClass="w-full"
             [disabled]="editing_flag"
             placeholder="Select Department">
+            <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ dept.dept_slno + '-' + dept.dept_name }}</span>
+              </div>
+           </ng-template>
           </p-dropdown>
           </div> 
         <!-- costCenter -->
@@ -154,6 +169,11 @@
             (onChange)="filterCostCenterByCompany()"
             [(ngModel)]="selectedCompany"  
             placeholder="Select Company" >
+            <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+           </ng-template>
           </p-dropdown>
        </div>
        <!-- payroll area search filter -->

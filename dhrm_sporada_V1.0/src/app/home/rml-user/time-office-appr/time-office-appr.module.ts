@@ -73,7 +73,7 @@ import { InputNumberModule } from "primeng/inputnumber";
 import  { CalendarModule as CalanderModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { SpeedDialModule } from "primeng/speeddial";
-
+import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component";
 @NgModule({
   declarations: [
     CompOffApprComponent,
@@ -115,7 +115,7 @@ import { SpeedDialModule } from "primeng/speeddial";
     VanDelayRegularizationComponent,
     RouteMasterComponent,
     RejoinApprovalComponent,
-    
+    FullMonthLopComponent,
   ],
   imports: [
     MatNativeDateModule,

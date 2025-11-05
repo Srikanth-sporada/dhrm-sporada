@@ -10,6 +10,7 @@ import { ToastComponent } from '../toast/toast.component';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService,MenuItem } from 'primeng/api';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-bill-processed-date',
   templateUrl: './bill-processed-date.component.html',
@@ -32,7 +33,11 @@ export class BillProcessedDateComponent implements OnInit {
   maxStartDate:Date
   processedBillStartDate:Date;
   processedBillEndDate:Date;
+  /** hide processed bill */
+  hideHeader:boolean = environment.hideProcessedBillTabMenu;
   currentYear = new Date().getFullYear();
+  all:any;
+  userDetails:any;
   // months: string[] = [
   //   'January', 'February', 'March', 'April', 'May', 'June',
   //   'July', 'August', 'September', 'October', 'November', 'December'
@@ -91,7 +96,13 @@ export class BillProcessedDateComponent implements OnInit {
   }
 
 ngOnInit(): void {
-  this.plant_Code = sessionStorage.getItem('plantcode');
+   let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+    }
+
+    this.plant_Code = sessionStorage.getItem('plantcode');
     this.getplantcode()
     this.get_Bill_data();
     this.getPayrollArea(this.plant_Code)

@@ -31,11 +31,13 @@ export class DeptComponent implements OnInit {
   department: any = []
   Dept_header: any = []
   departmentData:any =  [];
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
   isAdmin:any = sessionStorage.getItem('isadmin')
-  selectedDepartment:any= 'all';
+  selectedDepartment:any= '';
   editing_flag: any;
-  index: any = -1
+  index: any = -1;
+  plantCopy:any = [];
+  departmentHeaderCopy:any =[];
   // material modal template ref
   @ViewChild('content', {read: TemplateRef}) addDepartmentTemplateRef: TemplateRef<unknown> | undefined;
       // Speed Dial items
@@ -86,9 +88,10 @@ export class DeptComponent implements OnInit {
     var company = {'company_name': sessionStorage.getItem('companycode')}
     this.service.plantcodelist(company)
     .subscribe({
-      next: (response) =>{ console.log(response);
-         this.plantname = response;
-         this.plantname.unshift({plant_name:'All',plant_code:'all'})
+      next: (response:any) =>{ console.log(response);
+         this.plantname = [...response];
+         this.plantname.unshift({plant_name:'All',plant_code:''});
+         this.plantCopy = response;
         // for(var o in this.plantname)
         // this.array.push(this.plantname[o].plant_name)
        },
@@ -115,9 +118,10 @@ export class DeptComponent implements OnInit {
 getDepartmentHeader(){
     this.service.getdepartment_header().
     subscribe({
-      next: (response) => { 
-        this.Dept_header = response;
-        this.Dept_header.unshift({Dh_Id:'all',Department_Header:'All'})
+      next: (response:any) => { 
+        this.Dept_header = [...response];
+        this.Dept_header.unshift({Dh_Id:'',Department_Header:'All'});
+        this.departmentHeaderCopy = response;
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     })
@@ -276,13 +280,13 @@ reset()
   this.form.reset()
 }
 
-// filter  by department
+// filter by department
 filterByDepartment(){
   const filteredDataByDepartment = this.departmentData.filter((dept:any) => {
     if(this.selectedPlant){
       if(dept.Dh_id == this.selectedDepartment && dept.plant_code == this.selectedPlant){
       return dept;
-    }else if(this.selectedPlant == 'all'){
+    }else if(this.selectedPlant == ''){
       if(dept.Dh_id == this.selectedDepartment){
            return dept;
       }
@@ -291,7 +295,7 @@ filterByDepartment(){
   })
   if(filteredDataByDepartment.length){
     this.department = filteredDataByDepartment
-  }else if(this.selectedDepartment === 'all'){
+  }else if(this.selectedDepartment === ''){
     this.department = this.departmentData;
   }else{
     this.department = this.departmentData;
@@ -308,7 +312,7 @@ filterDepartmentByPlant(){
   });
   if(filteredDataByPlant.length){
     this.department = filteredDataByPlant;
-  }else if(this.selectedPlant === 'all'){
+  }else if(this.selectedPlant === ''){
     this.department = this.departmentData;
   }else{
     this.department =this.departmentData;
