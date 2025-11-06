@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { CookieService } from "ngx-cookie-service";
 import { HttpClient } from "@angular/common/http";
+import { MessageService } from "primeng/api";
 import {
   FormGroup,
   FormControl,
@@ -30,6 +31,9 @@ export class NavbarComponent implements OnInit {
   hidePmpd = environment.hidePmpd;
   hideMidPermission = environment.hideMidPermission;
   hidePeoplePlanning = environment.hidePeoplePlanning;
+  hideHrDashboard = environment.hideHrDashboard;
+  hideHrSumary = environment.hideHrSummary;
+  hideCanteenDashboard = environment.hideCanteenDashboard;
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;
@@ -105,6 +109,7 @@ export class NavbarComponent implements OnInit {
     private active: ActivatedRoute,
     public router: Router,
     private toast:ToastService,
+    private messageService:MessageService,
   ) {
     this.form = fb.group({
       username: new UntypedFormControl(sessionStorage.getItem("user_name")),
@@ -130,15 +135,21 @@ export class NavbarComponent implements OnInit {
    * @var baseUrl base payroll url from env
    * @var payrollURL js url object
    * @var params params to append STOKEN
+   * @property {*} isadmin extra check to ensure user access payroll
    * @global window
    */
   navigateToPayroll(){
-    const baseUrl = environment.payroll;
-    const payrollURL = new URL(baseUrl);
-    const params = payrollURL.searchParams;
-    params.append('STOKEN',this.authToken)
-    window.open(payrollURL.href);
-    console.log(payrollURL.toString());
+    if(this.isadmin){
+      const baseUrl = environment.payroll;
+      const payrollURL = new URL(baseUrl);
+      const params = payrollURL.searchParams;
+      params.append('STOKEN',this.authToken)
+      window.open(payrollURL.href);
+      console.log(payrollURL.toString());
+    }else{
+      this.messageService.add({severity:'warn',summary:'Access Denied!'});
+    }
+   
   }
 
   isOperatorOrNot() {

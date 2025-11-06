@@ -7,39 +7,41 @@
             </h1>
             <div>
                 <!-- trainee details -->
-                 <div class="flex items-center justify-around shadow-md px-2 py-3 mt-2 rounded-md mx-auto" *ngIf="traineeData.length">
+                 <div 
+                 class="flex items-center justify-around shadow-md px-2 py-3 mt-2 rounded-md mx-auto animate" *ngIf="traineeData.length"
+                 @slowAnimate>
                     <!-- gen id -->
                     <p class="text-blue-600 font-semibold">
                         Gen ID:
-                     <span class="text-gray-400 ml-3">{{traineeData[0]?.gen_id}}</span>
+                     <span class="text-gray-400 ml-2">{{traineeData[0]?.gen_id}}</span>
                     </p>
                     <!-- plant name -->
                      <p class="text-blue-600 font-semibold">
                         Plant:
-                     <span class="text-gray-400 ml-3">
+                     <span class="text-gray-400 ml-2">
                         {{traineeData[0]?.plant_name}} ({{traineeData[0]?.plant_code}})
                     </span>
                     </p>
                     <!-- Name -->
                       <p class="text-blue-600 font-semibold">
                         Name:
-                      <span class="text-gray-400 ml-3">{{traineeData[0]?.fullname}}</span>
+                      <span class="text-gray-400 ml-2">{{traineeData[0]?.fullname}}</span>
                       </p>
                       <!-- Category -->
                       <p class="text-blue-600 font-semibold">
                         Category:
-                      <span class="text-gray-400 ml-3">{{traineeData[0]?.apprentice_type}}</span>
+                      <span class="text-gray-400 ml-2">{{traineeData[0]?.apprentice_type}}</span>
                       </p>
                       <!-- payroll area -->
                        <p class="text-blue-600 font-semibold">
                         Payroll Area:
-                      <span class="text-gray-400 ml-3">{{traineeData[0]?.payrollArea}}</span>
+                      <span class="text-gray-400 ml-2">{{traineeData[0]?.payrollArea}}</span>
                       </p>
                  </div>
                 <!-- row one -->
                 <div 
                     class="flex items-center justify-center sm:justify-start w-full gap-2" 
-                    [formGroup]="lopForm">
+                    [formGroup]="fullMonthLopForm">
                         <!-- gen id -->
                         <div [class]=" traineeData.length ? 'w-full p-fluid' : 'w-1/3 p-fluid'">
                         <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
@@ -82,7 +84,7 @@
                             iconPos="right"
                             icon="pi pi-search"
                             class="mt-10 w-1/3"
-                            [disabled]="!lopForm.controls['gen_id'].valid"
+                            [disabled]="!fullMonthLopForm.controls['gen_id'].valid"
                             (click)="searchTraineeByGenId()"
                         >
                         </button>
@@ -95,7 +97,7 @@
                             icon="pi pi-check-circle"
                             class="mt-10 w-1/3"
                             (click)="applyFullMonthLOP()"
-                            [disabled]="!lopForm.valid"
+                            [disabled]="!fullMonthLopForm.valid"
                         >
                         </button>
                 </div>

@@ -36,7 +36,8 @@
             </mat-expansion-panel-header>
 
             <mat-nav-list  class="!mx-1 text-gray-600">
-              <a
+              <span *ngIf="!hideHrSumary">
+                <a
                 mat-list-item
                 routerLink="/rhrm/hrs"
                 routerLinkActive="!text-blue-600 !font-semibold"
@@ -49,9 +50,11 @@
                   ishr == 'true'
                 "
               >
-                <mat-icon class="icon-pad">dashboard</mat-icon>HR Summary</a
-              >
-              <a
+                <mat-icon class="icon-pad">dashboard</mat-icon>HR Summary
+              </a>
+              </span>
+              <span *ngIf="!hideHrDashboard">
+                <a
                 mat-list-item
                 routerLink="/rhrm/corp_hrs"
                 routerLinkActive="!text-blue-600 !font-semibold"
@@ -64,8 +67,9 @@
                   ishr == 'true'
                 "
               >
-                <mat-icon class="icon-pad">dashboard</mat-icon>HR Dashboard</a
-              >
+                <mat-icon class="icon-pad">dashboard</mat-icon>HR Dashboard
+              </a>
+              </span>
               <a
                 mat-list-item
                 routerLink="/rhrm/dashboard"
@@ -118,7 +122,8 @@
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon>OCM MIS</a
               >
-              <a
+              <span *ngIf="!hideCanteenDashboard">
+                <a
                 mat-list-item
                 routerLink="/rhrm/Cnt"
                 routerLinkActive="!text-blue-600 !font-semibold"
@@ -131,8 +136,9 @@
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon>Canteen
-                Dashboard</a
-              >
+                Dashboard
+              </a>
+              </span>
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
@@ -147,8 +153,7 @@
           >
             <mat-expansion-panel-header 
              routerLink="/rhrm/masters"
-             routerLinkActive="!text-blue-600 !font-semibold border-2 border-blue-600 bg-[var(--transparent)]"
-             class="py-4 text-gray-600 font-semibold"
+             [ngClass]="isMasterExpanded ? '!text-blue-600 !font-semibold border-2 border-blue-600 bg-[var(--transparent)]' : 'py-4 text-gray-600 font-semibold'"
             >
               <mat-icon class="icon-pad" 
                 [ngClass]="router.url == '/rhrm/masters' || isMasterExpanded ? 'text-blue-600' : 'text-gray-600'"
@@ -158,7 +163,7 @@
              <!-- sporada payroll -->
             <mat-nav-list>
               <!-- sporada payroll -->
-              <div *ngIf="isadmin == 'true'">
+              <div *ngIf="isadmin == 'true'"> 
                 <a
                   mat-list-item
                   class="rounded-sm"

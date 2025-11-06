@@ -12,8 +12,9 @@ import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
 })
 export class BackdateComponent implements OnInit {
   data:any[];
-  selectedPlant:any='all';
+  selectedPlant:any='';
   plantData:any=[];
+  plantCopy:any = [];
   backDateData:any = [];
    // Speed Dial items
     items: MenuItem[] = [
@@ -66,7 +67,7 @@ export class BackdateComponent implements OnInit {
      this.service.getplant().subscribe({
       next:(response:any) =>{
         this.plantData = response;
-        this.plantData.unshift({plant_name:'All', plant_code:'all'});
+        this.plantData.unshift({plant_name:'All', plant_code:''});
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})
     });
@@ -111,7 +112,7 @@ export class BackdateComponent implements OnInit {
   }
   // filter backdate by plant
   filterBackDateByPlant(){
-     if(this.selectedPlant !== 'all'){
+     if(this.selectedPlant !== ''){
       const filteredData = this.backDateData.filter((backdate:any) => {
        if(this.selectedPlant == backdate.plant.toString()){
         return backdate;

@@ -312,7 +312,7 @@ export class LineComponent implements OnInit {
     this.service.getdepartment().subscribe({
       next:(response:any) => {
         this.departmentData = this.removeDuplicateValues([...response]);
-        this.departmentData.unshift({dept_name:'All'});
+        this.departmentData.unshift({dept_name:'All',dept_slno:''});
         this.departmentCopy = this.removeDuplicateValues(response);
       },
       error:(err) => this.messageService.add({severity:'error',summary:err.message})

@@ -63,13 +63,18 @@
                 </label><br />
                 <p-dropdown 
                     formControlName="plant_code" 
-                    [options]="plant"
+                    [options]="plantCopy"
                     (onChange)="pp($event)"
                     [disabled]="editing_flag"
                     optionLabel="plant_name"
                     optionValue="plant_code"
                     styleClass="w-full"
                     placeholder="Select Plant">
+                     <ng-template let-plant pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                        </div>
+                    </ng-template>
                 </p-dropdown>
                 </div>
                 <!-- coff hours -->
@@ -211,7 +216,7 @@
 
 <div class="mx-2">
     <!--shift master filter -->
-  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
+  <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-1 !px-4 !font-poppins sm:h-40 border border-gray-400 ">
      <!-- filter header -->
      <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
@@ -238,7 +243,13 @@
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full py-1"  
-            placeholder="Select Plant"></p-dropdown>
+            placeholder="Select Plant">
+             <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
+        </p-dropdown>
         </div>
      </div>
   </div>
@@ -249,13 +260,13 @@
                 <table id="table" class="table-auto !w-full">
                     <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">
                                 SNo
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap">
                                 Shift Name
                             </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap text-center">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap">
                                 Plant Code
                             </th>
 
@@ -299,7 +310,7 @@
                             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-blue-600 font-semibold">
                                 {{i.shift_desc}}
                             </td>
-                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md ">{{i.plant_desc}}</td>
+                            <td class="!px-2 !py-4 text-nowrap !rounded-s-md ">{{ i.plant_code + '-' + i.plant_desc}}</td>
                             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-green-600">
                                 <span class="px-2 py-1 bg-green-100 rounded-md">{{i.Shift_Start | formatTime}}</span>
                             </td>

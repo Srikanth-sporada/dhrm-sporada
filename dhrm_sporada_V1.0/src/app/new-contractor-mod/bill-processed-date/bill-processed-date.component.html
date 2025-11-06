@@ -31,6 +31,11 @@
             styleClass="w-full"
             (onChange)="onPlantChange($event.value)"
             placeholder="Select Plant">
+             <ng-template let-plant pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                </div>
+          </ng-template>
           </p-dropdown>
           </div>
           <!-- Payroll area -->
@@ -223,9 +228,9 @@
                 <table id="table" class="table-auto !w-full">
                   <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Lock Month</th>
+                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Lock Month</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll Area</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll Start </th>
@@ -244,7 +249,7 @@
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md">{{data.lock_month | date : 'MMMM'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.plant_Code}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.PayrollArea}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.PayrollArea || '-'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{data.bill_processed_st | date:'dd-MM-yyyy'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{data.bill_prossed_enddt | date:'dd-MM-yyyy'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.locked_date | date:'dd-MM-yyyy'}}</td>

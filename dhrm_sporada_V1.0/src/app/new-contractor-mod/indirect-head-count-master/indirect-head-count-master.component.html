@@ -23,12 +23,17 @@
           </label><br />
           <p-dropdown 
             formControlName="plant"
-            [options]="plantname"
+            [options]="plantCopy"
             optionLabel="plant_name"
             optionValue="plant_code"
             (onChange)="onPlantChange($event)"
             styleClass="w-full"
             placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                </div>
+            </ng-template>
           </p-dropdown>
           </div>
           <!--department -->
@@ -39,12 +44,17 @@
           </label><br />
           <p-dropdown 
            formControlName="dept_id"
-            [options]="dept_data"
+            [options]="departmentCopy"
             optionLabel="dept_name"
             optionValue="dept_slno"
             (onChange)="onDeptChange($event)"
             styleClass="w-full"
             placeholder="Select Department">
+            <ng-template let-dept pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+                </div>
+            </ng-template>
           </p-dropdown>
           </div>
       </div>
@@ -214,7 +224,13 @@
           (onChange)="onPlantChange($event)"
           styleClass="w-full"
           placeholder="Select Plant"
-        ></p-dropdown>
+        >
+          <ng-template let-plant pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                </div>
+            </ng-template>
+      </p-dropdown>
       </div>
       <!-- Department filter -->
       <div class="font-poppins w-full sm:w-1/3">
@@ -232,7 +248,13 @@
           (onChange)="onDeptChange($event)"
           styleClass="w-full"
           placeholder="Select Department"
-        ></p-dropdown>
+        >
+          <ng-template let-dept pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+                </div>
+            </ng-template>
+      </p-dropdown>
       </div>
     </div>
   </div>
@@ -245,10 +267,11 @@
                 <table id="table" class="table-auto !w-full">
                   <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
+                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Role Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Role</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0">Category </th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Head Count</th>     
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Action</th>
@@ -262,7 +285,8 @@
                          >
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Plant}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Role_Name}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Role_Id + '-' + data.Role_Name}}</td>
+                             <td class="!px-2 !py-4 !rounded-s-md">{{data.dept_slno + '-' + data.dept_name}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md">{{data.Category_Name}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.Head_Count}}</td>
                             <!-- action btn -->

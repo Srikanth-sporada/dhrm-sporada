@@ -29,7 +29,8 @@ const material = [
 export class EmployeeComponent implements OnInit {
   closeResult: string;
   form: any
-  plantname: any
+  plantname: any;
+  plantCopy:any = [];
   array: any = []
   all_details: any
   desig: any
@@ -41,7 +42,7 @@ export class EmployeeComponent implements OnInit {
   sample: any = environment.path
   employee: any = []
   employeeData:any=[]
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
   editing_flag: any;
   temp_a: any;
 // material modal template ref
@@ -151,10 +152,11 @@ export class EmployeeComponent implements OnInit {
     var company = { 'company_name': sessionStorage.getItem('companycode') }
     this.service.plantcodelist(company)
       .subscribe({
-        next: (response) => {
+        next: (response:any) => {
           console.log(response); 
-          this.plantname = response;
-          this.plantname.unshift({plant_name:'All',plant_code:'all'})
+          this.plantname = [...response];
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
@@ -372,7 +374,7 @@ export class EmployeeComponent implements OnInit {
  
   // filter meployee by plant
   filterEmployeeByPlant(){
-   if(this.selectedPlant == 'all'){
+   if(this.selectedPlant == ''){
         this.employee = this.employeeData;
    }else{
      const filteredEmployeeDataByPlant = this.employeeData.filter((employee:any) => {

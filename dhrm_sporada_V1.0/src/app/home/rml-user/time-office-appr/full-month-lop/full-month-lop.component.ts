@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {animate,style,transition,trigger} from '@angular/animations';
 import { ApiService } from 'src/app/home/api.service';
 import { Validators,UntypedFormBuilder} from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -7,13 +8,19 @@ import moment from 'moment'
 @Component({
   selector: 'app-full-month-lop',
   templateUrl: './full-month-lop.component.html',
-  styleUrls: ['./full-month-lop.component.css']
+  styleUrls: ['./full-month-lop.component.css'],
+  animations: [
+        trigger('slowAnimate', [
+            transition(':enter', [style({ opacity: '0' }), animate(500)]),
+            transition(':leave', [style({ opacity: '1' }), animate(500, style({ opacity: '0' }))]),
+        ])
+    ]
 })
 
 export class FullMonthLopComponent implements OnInit {
 
   employeeId:any = sessionStorage.getItem('emp_id');
-  lopForm:any;
+  fullMonthLopForm:any;
   traineeData:any = [];
   lastProcessedBillDate:any;
   traineeLopMonthData:any = [];
@@ -29,7 +36,7 @@ export class FullMonthLopComponent implements OnInit {
    * @memberof FullMonthLopComponent
    * @property {*} employeeId applied by default value
    */
-    this.lopForm = this.fb.group({
+    this.fullMonthLopForm = this.fb.group({
       gen_id:['', [Validators.required,Validators.pattern(/\S+/)]],
       payroll_area: [''],
       plantcode:[''],
@@ -46,15 +53,15 @@ export class FullMonthLopComponent implements OnInit {
   /**
    * get data by gen id
    * @property {*} traineeData has trainee data
-   * @property {*} lopForm.gen_id 
+   * @property {*} fullMonthLopForm.gen_id 
    */
   searchTraineeByGenId(){
-    this.service.getTraineeDataForFML(this.lopForm.value.gen_id).subscribe({
+    this.service.getTraineeDataForFML(this.fullMonthLopForm.value.gen_id).subscribe({
       next: (response:any) => {
         if(response.length){
           this.traineeData = response;
           /** get last processed bill date */
-          this.getLastBillProcessedDate();
+          this.getLastBillProcessedDate(response[0]?.plant_code);
           console.log(response);
         }else{
           this.messageService.add({severity:'warn',summary:'Gen ID not found!'})
@@ -69,9 +76,10 @@ export class FullMonthLopComponent implements OnInit {
   /**
    * @property {*} lastProcessedBillDate js date object for calander minDate prop
    * @var {*} lastProcessedBillDate formatted bill date
+   * @param {*} plantCode
    */
-  getLastBillProcessedDate(){
-    this.service.getlockdateByCategory('T').subscribe({
+  getLastBillProcessedDate(plantCode:any){
+    this.service.getLastProcesedBill(plantCode,'T').subscribe({
       next: (response:any) => {
         this.lastProcessedBillDate = new Date(response?.date);
         const formattedLockDate = moment(response?.date).format('YYYY-MM-DD')
@@ -87,19 +95,19 @@ export class FullMonthLopComponent implements OnInit {
   /**
    * apply full month lop
    * @var {*} formattedLopMonth yy-mm-dd
-   * @property {*} lopForm
+   * @property {*} fullMonthLopForm
    * @property {*} service
    */
   applyFullMonthLOP(){
     /** formatted lop_month */
-    const formattedLopMonth = moment(this.lopForm.value.lop_month).format('YYYY-MM-DD');
+    const formattedLopMonth = moment(this.fullMonthLopForm.value.lop_month).format('YYYY-MM-DD');
     /** lop form update */
-    this.lopForm.controls['payroll_area'].setValue(this.traineeData[0]?.payrollArea);
-    this.lopForm.controls['plantcode'].setValue(this.traineeData[0]?.plant_code);
-    this.lopForm.controls['lop_month'].setValue(formattedLopMonth);
-    console.log('LOP FORM',this.lopForm.value);
+    this.fullMonthLopForm.controls['payroll_area'].setValue(this.traineeData[0]?.payrollArea);
+    this.fullMonthLopForm.controls['plantcode'].setValue(this.traineeData[0]?.plant_code);
+    this.fullMonthLopForm.controls['lop_month'].setValue(formattedLopMonth);
+    console.log('LOP FORM',this.fullMonthLopForm.value);
     
-    this.service.applyfullMonthLOP(this.lopForm.value).subscribe({
+    this.service.applyfullMonthLOP(this.fullMonthLopForm.value).subscribe({
       next:(response:any) => {
         console.log(response);
         this.messageService.add({severity:'info',summary:response?.message});

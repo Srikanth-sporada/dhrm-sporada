@@ -26,7 +26,9 @@ export class IndirectHeadCountMasterComponent implements OnInit {
   showHCForm=false
   editHCForm=false
   showAdd=true ;
-  plantname:any
+  plantname:any;
+  plantCopy:any = [];
+  departmentCopy:any = [];
   dept_data:any
   isadmin:string |null= sessionStorage.getItem('isadmin')
   plant_Code: any = sessionStorage.getItem('plantcode');
@@ -104,11 +106,12 @@ export class IndirectHeadCountMasterComponent implements OnInit {
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
     .subscribe({
-      next: (response) =>{
-        this.plantname = response;
+      next: (response:any) =>{
+        this.plantname = [...response];
         if(this.isadmin == 'true'){
-          this.plantname = response;
-          this.plantname.push({plant_name:'All',plant_code:''})
+          this.plantname = [...response];
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         }else{
           this.plantname = this.plantname.filter( (data:any) => data.plant_code === this.plant_Code)
         }
@@ -132,9 +135,9 @@ getdept_data(){
   this.api.getDepList(this.selectedPlant).subscribe({
     next: (resp: any) => {
       console.log(resp);
-      
-      this.dept_data = resp;
-      this.dept_data.push({dept_name:'ALL'})
+      this.dept_data = [...resp];
+      this.dept_data.unshift({dept_name:'ALL',dept_slno:''});
+      this.departmentCopy = resp;
     },
     error: (error) => console.log(error)
   });

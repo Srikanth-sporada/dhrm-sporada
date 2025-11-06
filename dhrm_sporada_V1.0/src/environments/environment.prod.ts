@@ -4,12 +4,16 @@ export const environment = {
   path2: "https://rane.ssipl.org",
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
-  /** change value true to show respective UI */
+  /** Side Nav Menu  */
   hideSalaryMaster:false,
   hidePeoplePlanning:false,
   hidePmpd:false,
   hideMidPermission:false,
   hideProcessedBillTabMenu:true,
+  /** power BI dashboard */
+  hideHrSummary:false,
+  hideHrDashboard:false,
+  hideCanteenDashboard:false,
 
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 

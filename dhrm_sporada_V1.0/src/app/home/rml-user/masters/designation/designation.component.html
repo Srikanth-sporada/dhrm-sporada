@@ -18,12 +18,17 @@
         </label><br />
         <p-dropdown 
           formControlName="plant_name"
-          [options]="plantname"
+          [options]="plantCopy"
           optionLabel="plant_name"
           optionValue="plant_code"
           styleClass="w-full"
           (onChange)="get_slno($event)"
           placeholder="Select Plant" >
+          <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
         </p-dropdown>
       </div>
       <!-- designation name input -->
@@ -107,7 +112,13 @@
             optionValue="plant_code"
             (onChange)="filterDesignationByPlant()"
             styleClass="w-full"  
-            placeholder="Select Plant"></p-dropdown>
+            placeholder="Select Plant">
+             <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
         </div>
      </div>
   </div>
@@ -124,7 +135,7 @@
               <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SNo</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0">Designation Name</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant Code</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap">Plant Name</th>
               <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Action</th>
             </tr>
           </thead>
@@ -137,7 +148,7 @@
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ a + 1 }}</td>
               <td class="!px-2 !py-4 !rounded-s-md">{{ i.desig_name }}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.plant_code }}</td>
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.plant_name }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md">{{ i.plant_code + '-' + i.plant_name }}</td>
               <!-- action buttons -->
               <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
                 <button

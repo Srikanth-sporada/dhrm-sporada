@@ -20,7 +20,8 @@ export class DeclaredCompOffComponent implements OnInit {
   D_OffForm:any
   showD_offForm=false
   showAdd=true ;
-  plantname:any
+  plantname:any;
+  plantCopy:any;
   altHoliday_data:any
   isadmin:string |null= sessionStorage.getItem('isadmin')
   plant_Code: any = sessionStorage.getItem('plantcode');
@@ -29,7 +30,7 @@ export class DeclaredCompOffComponent implements OnInit {
   FH_Holiday:any
   holidayType: string = '';
   altHolidayData:any = [];
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
  // Speed Dial items
     items: MenuItem[] = [
               {
@@ -99,11 +100,12 @@ if(holiday.plant_code  == this.plant_Code){
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
     .subscribe({
-      next: (response) =>{ 
-        this.plantname = response;
+      next: (response:any) =>{ 
+        this.plantname = [...response];
         if(this.isadmin == 'true'){
-          this.plantname = response;
-          this.plantname.unshift({plant_name:'All',plant_code:'all'})
+          this.plantname = [...response];
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         }else{
           this.plantname = this.plantname.filter( (data:any) => data.plant_code === this.plant_Code)
         }
@@ -348,7 +350,7 @@ exportExcel() : void{
 
 // filter alternate holiday by plant
 filterAltHolidayByPlant(){
-  if(this.selectedPlant == 'all'){
+  if(this.selectedPlant == ''){
     this.altHoliday_data = this.altHolidayData;
    
   }else{

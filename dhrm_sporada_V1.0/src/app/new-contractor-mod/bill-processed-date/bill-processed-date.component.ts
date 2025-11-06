@@ -409,25 +409,25 @@ onSubmit(){
     formData.category = this.billForm.value.category[0];
     formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
     console.log(formData);
-    // formData.process_start_date = this.formatDate(this.billForm.value.process_start_date)
-    // formData.process_end_date = this.formatDate(this.billForm.value.process_end_date)
-    // formData.lock_date = this.formatDate(this.billForm.value.lock_date)
-    // this.api.add_Bill_date(formData,this.userEmpcode).subscribe(res =>{
-    //   this.hideForm()
-    //   this.openAlertDialog(`${res}`,'check')
-    //   this.get_Bill_data()
-    //   this.reset()
-    //   },(error) => {
-    //     if (error.status === 400) {
-    //       console.log(error)
-    //       this.openAlertDialog(`${error.error}`,'error');
-    //       this.showForm()
-    //     }
-    //      else {
-    //       this.openAlertDialog('Error in connection','error');
-    //       this.showForm()
-    //     }
-    // })
+    formData.process_start_date = this.formatDate(this.billForm.value.process_start_date)
+    formData.process_end_date = this.formatDate(this.billForm.value.process_end_date)
+    formData.lock_date = this.formatDate(this.billForm.value.lock_date)
+    this.api.add_Bill_date(formData,this.userEmpcode).subscribe(res =>{
+      this.hideForm();
+      this.openAlertDialog(`${res}`,'check')
+      this.get_Bill_data();
+      this.reset();
+      },(error) => {
+        if (error.status === 400) {
+          console.log(error)
+          this.openAlertDialog(`${error.error}`,'error');
+          this.showForm()
+        }
+         else {
+          this.openAlertDialog('Error in connection','error');
+          this.showForm()
+        }
+    })
 }
 }
 

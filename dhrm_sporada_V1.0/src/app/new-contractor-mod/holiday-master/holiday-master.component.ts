@@ -23,8 +23,9 @@ export class HolidayMasterComponent implements OnInit {
   plant_Code: any = sessionStorage.getItem('plantcode');
   userEmpcode:string |null = sessionStorage.getItem('user_name');
   showAdd=true ;
-  plantname:any
-  selectedPlant:any = 'all';
+  plantname:any;
+  plantCopy:any =[]
+  selectedPlant:any = '';
   factHoliday_data:any
   holidayData:any=[];
   holidayType = [{label:'National Holiday',value:'N'},{label:'Festival Holiday',value:'F'}];
@@ -72,11 +73,12 @@ export class HolidayMasterComponent implements OnInit {
     var company = {'company_name': sessionStorage.getItem('companyList.companycode')}
     this.service.plantcodelist(company)
     .subscribe({
-      next: (response) =>{
+      next: (response:any) =>{
         this.plantname = response;
         if(this.isadmin == 'true'){
-          this.plantname = response;
-          this.plantname.unshift({plant_name:'All',plant_code:'all'})
+          this.plantname = [...response];
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         }else{
           this.plantname = this.plantname.filter( (data:any) => data.plant_code === this.plant_Code)
         }
@@ -265,7 +267,7 @@ exportExcel() : void{
 
 // filter holiday by plant
 filterHolidayByPlant(){
- if(this.selectedPlant == 'all'){
+ if(this.selectedPlant == ''){
      this.factHoliday_data = this.holidayData;
  }else{
   const filteredHolidayData = this.holidayData.filter((holiday:any) => {

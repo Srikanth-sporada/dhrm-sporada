@@ -869,6 +869,12 @@ export class ApiService {
       `/ars/getlockdateByCategory?plant=${sessionStorage.getItem("plantcode")}&cat=${category}`
     );
   }
+
+  getLastProcesedBill(plantCode:any,category:any){
+    return this.http.get(this.url + `/ars/getlockdateByCategory?plant=${plantCode}&cat=${category}`)
+  }
+
+  
   checkCoffDate(date: any, apln_slno: any) {
     return this.http.get(
       this.url + `/ars/checkCoffDate?date=${date}&apln_slno=${apln_slno}`

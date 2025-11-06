@@ -24,7 +24,8 @@ export class ShiftComponent implements OnInit {
   closeResult: string;
   form: any
   sample: any = environment.path
-  plant_name: any
+  plant_name: any;
+  plantCopy:any = [];
   plant: any
   shift: any = []
   editing_flag: any;
@@ -39,7 +40,7 @@ export class ShiftComponent implements OnInit {
     {label:'B Noon 2nd',value:'B'},
     {label:'C Night 3rd',value:'C'}
   ]
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
   // material modal template ref
     @ViewChild('content', {read: TemplateRef}) addShiftTemplateRef: TemplateRef<unknown> | undefined;
   // Speed Dial items
@@ -106,8 +107,9 @@ export class ShiftComponent implements OnInit {
      this.service.getplant().
       subscribe({
         next: (response: any) => {
-          this.plant = response;
-          this.plant.unshift({plant_name:'All',plant_code:'all'})
+          this.plant = [...response];
+          this.plant.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         },
         error: (err) => this.messageService.add({severity:'error',summary:err.messaage})
       })
@@ -299,7 +301,7 @@ export class ShiftComponent implements OnInit {
   }
   // filter shift by plant
   filterShiftByPlant(){
-   if(this.selectedPlant == 'all'){
+   if(this.selectedPlant == ''){
     this.shift = this.shiftData;
    }else{
      const filteredShiftDataByPlant = this.shiftData.filter((shift:any) => {

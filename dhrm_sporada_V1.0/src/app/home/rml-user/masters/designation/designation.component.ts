@@ -31,7 +31,8 @@ export class DesignationComponent implements OnInit {
   array: any = []
   index: any = -1
   designation: any = []
-  selectedPlant:any = 'all';
+  selectedPlant:any = '';
+  plantCopy:any = []
   designationData:any=[]
   editing_flag: any;
   // material modal template ref
@@ -117,10 +118,11 @@ export class DesignationComponent implements OnInit {
     var company = { 'company_name': sessionStorage.getItem('companycode') }
     this.service.plantcodelist(company)
       .subscribe({
-        next: (response) => {
+        next: (response:any) => {
           console.log(response);
-          this.plantname = response;
-          this.plantname.unshift({plant_name:'All',plant_code:'all'});
+          this.plantname = [...response];
+          this.plantname.unshift({plant_name:'All',plant_code:''});
+          this.plantCopy = response;
         },
         error: (error) => this.messageService.add({severity:'error',summary:error.message}),
       });
@@ -227,7 +229,7 @@ export class DesignationComponent implements OnInit {
 
   // filterDesignation by plant
   filterDesignationByPlant(){
-   if(this.selectedPlant == 'all'){
+   if(this.selectedPlant == ''){
       this.designation = this.designationData;
    }else{
      const filteredDeptDataByPlant=this.designationData.filter((designation:any) => {
