@@ -21,6 +21,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { ForgottopunchpopupComponent } from "./forgottopunchpopup/forgottopunchpopup.component";
 import moment from "moment";
 import { MessageService } from "primeng/api";
+import { environment } from "src/environments/environment.prod";
 
 interface MyEvent extends CalendarEvent {
   in_time: string;
@@ -45,7 +46,9 @@ export class CalenderComponent implements OnInit {
   CalendarView = CalendarView;
   lockdate: any;
   backdate: any;
-
+  /** shift & present full width */
+  shiftFullWidth:boolean = environment.shiftFullWidth;
+   _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff"];
   evnt: CalendarEvent[] = [];
 
   events: MyEvent[] = [
@@ -105,6 +108,7 @@ export class CalenderComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: any }): void {
+    
     if (events.length == 0) {
       return;
     }
@@ -119,13 +123,14 @@ export class CalenderComponent implements OnInit {
     //   const min_date = new Date();
     //   min_date.setDate(min_date.getDate() - this.backdate - 1);
     //   console.log(min_date, date);
-    //   // if(date<today_date && date>new Date(this.lockdate))for locakdate wise restrictoin
-    //   // if (date < today_date && date > new Date(min_date)) {
-    //     //for day wise restricton
-    //   //  const dailogRef = this.dailog.open(ForgottopunchpopupComponent, {
-    //     //   data: events[0],
-    //     // });
-    //   // }
+      
+    //   if(date<today_date && date>new Date(this.lockdate)) //for locakdate wise restrictoin
+    //   if (date < today_date && date > new Date(min_date)) {
+    //     // for day wise restricton
+    //    const dailogRef = this.dailog.open(ForgottopunchpopupComponent, {
+    //       data: events[0],
+    //     });
+    //   }
     // }
   }
 
@@ -193,72 +198,80 @@ export class CalenderComponent implements OnInit {
         var x = new Date(this.attData[i].att_date);
         var date = x.getDate();
         var month = x.getMonth();
-        switch (this.attData[i].present) {
-          case "Present": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-green-200 shadow-md m-1 rounded-md";
-            }
-            break;
+         if((this.attData[i]?.late_comeing > 0 || this.attData[i]?.early_going > 0) 
+          && this._exceptLC_EG_values.indexOf(this.attData[i].present) == -1){
+          if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-yellow-300 shadow-md m-1 rounded-md";
           }
-          case "Absent": {
-            if (month == monthofYear && date == dayOfMonth) {
-             day.cssClass = "bg-red-200 shadow-md m-1 rounded-md";
+        }
+        else {
+          switch (this.attData[i].present) {
+            case "Present": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-green-400 shadow-md m-1 rounded-md";
+              }
+              break;
+            } 
+            case "Absent": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-red-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "Comp Off": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
+            case "Comp Off": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-orange-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "Holiday": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
+            case "Holiday": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-blue-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "Leave": {
-            if (month == monthofYear && date == dayOfMonth) {
-             day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
+            case "Factory Holiday": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-blue-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "Factory Holiday": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
+            case "Leave": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-orange-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "half": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-orange-200 shadow-md m-1 rounded-md";
+            case "half": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-orange-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "weekoff": {
-            if (month == monthofYear && date == dayOfMonth) {
-             day.cssClass = "bg-gray-200 shadow-md m-1 rounded-md";
+            case "weekoff": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-gray-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "onduty": {
-            if (month == monthofYear && date == dayOfMonth) {
-              day.cssClass = "bg-purple-200 shadow-md m-1 rounded-md";
+            case "onduty": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-purple-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "permision": {
-            if (month == monthofYear && date == dayOfMonth) {
-               day.cssClass = "bg-purple-200 shadow-md m-1 rounded-md";
+            case "permision": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-purple-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
-          }
-          case "Comp_Off_Holiday": {
-            if (month == monthofYear && date == dayOfMonth) {
-               day.cssClass = "bg-blue-200 shadow-md m-1 rounded-md";
+            case "Comp_Off_Holiday": {
+              if (month == monthofYear && date == dayOfMonth) {
+                day.cssClass = "bg-blue-400 shadow-md m-1 rounded-md";
+              }
+              break;
             }
-            break;
           }
         }
       }

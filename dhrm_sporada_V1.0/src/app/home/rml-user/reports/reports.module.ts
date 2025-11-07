@@ -33,6 +33,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
 import { TooltipModule } from 'primeng/tooltip';
 import { OverlayPanelModule } from "primeng/overlaypanel";
+import { AccordionModule } from 'primeng/accordion';
 import { CummulativeReportComponent } from "./cummulative-report/cummulative-report.component";
 import { LopReportComponent } from "./lop-report/lop-report.component";
 @NgModule({
@@ -75,6 +76,7 @@ import { LopReportComponent } from "./lop-report/lop-report.component";
     CalendarModule,
     TooltipModule,
     OverlayPanelModule,
+    AccordionModule,
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

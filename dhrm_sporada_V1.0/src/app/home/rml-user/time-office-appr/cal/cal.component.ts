@@ -7,6 +7,7 @@ import { DatePipe } from "@angular/common";
 import { ApiService } from "src/app/home/api.service";
 import { MatDialog } from "@angular/material/dialog";
 import { MessageService } from "primeng/api";
+import { environment } from "src/environments/environment.prod";
 
 interface MyEvent extends CalendarEvent {
   in_time: string;
@@ -23,7 +24,8 @@ setDefaultOptions({ weekStartsOn: 1 });
 })
 
 export class CalComponent implements OnInit {
-
+ /** shift & present full width */
+  shiftFullWidth:boolean = environment.shiftFullWidth;
   firstDayOfWeek: number;
   today: any = new Date();
   month: any = new Date();
@@ -38,7 +40,7 @@ export class CalComponent implements OnInit {
   all:any;
   userDetails:any;
   evnt: CalendarEvent[] = [];
-  _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday"];
+  _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff"];
   events: any[] = [
     {
       title: "title",

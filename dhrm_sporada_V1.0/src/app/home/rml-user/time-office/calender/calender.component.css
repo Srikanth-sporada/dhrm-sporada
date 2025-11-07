@@ -204,9 +204,15 @@ li {
   }
   
   .cal-month-view .cal-day-cell {
-    height: max-content !important;
+    /* height: max-content !important; */
+    /* min-width: 180px !important; */
+
   }
   
+   .cal-month-view {
+    background-color: #fff;
+    width: 100%;
+}
   .calender {
     width: 83%;
     margin:0 21px 0 50px ;

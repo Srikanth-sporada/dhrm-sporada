@@ -20,6 +20,9 @@ export const environment = {
   hideLopReport:true,
   hideMachineReport:true,
   hideCanteenReport:true,
+
+  /** attedance calander */
+  shiftFullWidth:false,
   
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 

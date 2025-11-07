@@ -3,9 +3,9 @@
   <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
-      <mat-icon>calendar_today</mat-icon> Employee Attedance <hr/>
+      <mat-icon>calendar_today</mat-icon> Trainee Attendance <hr/>
     </h1>
-    <p class="mt-1 text-gray-400">View Employee Attedance Information</p>
+    <p class="mt-1 text-gray-400">View Trainee Attendance Information</p>
     </div>
     <!-- user details -->
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
@@ -22,48 +22,55 @@
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Actions <mat-icon>call_to_action</mat-icon>
         </h1>
-        <p class="text-blue-600 font-semibold mr-4 text-[1.3rem] mt-2">MONTH: {{month | date:'MMMM'}}</p>
+       <div class="flex items-center justify-around gap-8 mt-2">
+          <!-- month -->
+        <div class="text-center text-[1.3rem] flex gap-3">
+          <!-- month nav link -->
+          <div class="flex gap-3">
+            <!-- prev btn -->
+          <div>
+            <button
+              pButton 
+              icon="pi pi-arrow-circle-left"
+              class="!px-0 !py-2 bg-orange-200 !outline-none !border-none text-orange-600 !w-[2.5rem]"
+              (click)="getDates()"
+              mwlCalendarPreviousView
+              [view]="view"
+              [(viewDate)]="viewDate"  
+            >
+          </button> 
+          </div>
+          <!-- next btn -->
+          <div>
+            <button 
+            pButton
+              icon="pi pi-arrow-circle-right"
+              iconPos="right"
+              class="!px-0 !py-2 bg-purple-200 !outline-none !border-none text-purple-600 !w-[2.5rem]"
+              (click)="getDates()"
+              mwlCalendarNextView
+              [view]="view"
+              [(viewDate)]="viewDate"  
+            >
+          </button> 
+          </div>
+          </div>
+         <span class="text-blue-600 font-semibold text-center flex item-center justify-center">
+          {{ viewDate | calendarDate : view + "ViewTitle" : "en" }}
+         </span>
+        </div>
+        </div>
       </div>
      <div>
-     <!-- action row one -->
-      <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
-     <!-- prev btn -->
-     <div class="mt-2">
-      <button
-        pButton 
-        icon="pi pi-arrow-circle-left"
-        label="Previous"
-        class=" mt-2 bg-orange-200 !outline-none !border-none text-orange-600"
-        (click)="getDates()"
-         mwlCalendarPreviousView
-        [view]="view"
-        [(viewDate)]="viewDate"  
-      >
-     </button> 
-     </div>
-     <!-- next btn -->
-     <div class="mt-2 ml-2">
-      <button 
-       pButton
-        icon="pi pi-arrow-circle-right"
-        iconPos="right"
-        label="Next"
-        class=" mt-2 bg-purple-200 !outline-none !border-none text-purple-600"
-        (click)="getDates()"
-        mwlCalendarNextView
-        [view]="view"
-        [(viewDate)]="viewDate"  
-      >
-     </button> 
-     </div>
-
-     </div>
      </div>
      <!-- legends division -->
     <div class="py-2 !shadow-md !mt-2 !rounded-md  h-full !font-poppins sm:h-min border border-gray-400 flex items-center justify-around flex-col sm:flex-row">
       <div class="flex items-center justify-evenly gap-4 flex-col sm:flex-row">
         <div class="bg-green-200 text-green-600 present py-1 px-2 rounded-lg text-center">
           Present
+        </div>
+        <div class="bg-yellow-200 text-yellow-600 sunday py-1 px-2 rounded-lg text-center">
+          LC | EG
         </div>
         <div class="bg-orange-200 text-orange-600 halfday py-1 px-2 rounded-lg text-center">
           Leave | Half Day | Comp-Off
@@ -101,59 +108,50 @@
 <!-- attedance details template -->
 <ng-template #IN_OUT_TIME let-day="day" let-locale="locale">
   <div
-    class="container pt-1"
-    style="padding-left: 5px;padding-right: 0;"
+    class="w-full h-full p-2"
     [matTooltip]="day.events[0]?.regular == 'C' ? 'Comp-Off' : 'Weekly Off'"
     [matTooltipDisabled]="!['O', 'C'].includes(day.events[0]?.regular)"
   >
-    <div id="yes" class="cal-cell-top" style="min-height: 41px;">
+  <!-- style="min-height: 41px;" -->
+    <div id="yes"class="flex items-center justify-between" >
+      <!-- IN OUT time -->
+      <div class="" *ngIf="day.date.getMonth() == month.getMonth() && day.date < today">
+        <span class="text-black font-semibold">IN : {{ day.events[0]?.in_time  }}</span> <br>
+        <span class="text-black font-semibold">OUT : {{ day.events[0]?.out_time  }}</span> <br>
+      </div>
       <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span> -->
-      <span class="cal-day-number" style="font-weight: 700;">{{
-        day.date | calendarDate : "monthViewDayNumber" : locale
-      }}</span>
+      <span class="cal-day-number" style="font-weight: 700;">
+        {{ day.date | calendarDate : "monthViewDayNumber" : locale }}</span>
     </div>
     <!-- time details cell -->
     <div
-      class="font"
+      class="font w-full"
       *ngIf="day.date.getMonth() == month.getMonth() && day.date < today"
     >
-    <div class="flex items-center justify-around w-full">
+    <!-- shift & present -->
+    <div class="flex items-center justify-between w-full gap-2">
       <div>
-        <span class="text-green-600 font-semibold">IN: {{ day.events[0]?.in_time  }}</span>
+        <p [ngClass]="shiftFullWidth ? 'w-max' : ''">SHIFT :{{ day.events[0]?.shift_desc }}</p>
       </div>
-      |
+    
       <div>
-          <span class="text-red-600 font-semibold">OUT: {{ day.events[0]?.out_time  }}</span>
-      </div>
-    </div>
-    <div class="flex items-center justify-around w-full">
-      <div>
-        <span class="text-orange-600 font-semibold">SHIFT:{{ day.events[0]?.shift_desc }}</span>
-      </div>
-      |
-      <div>
-          <span class="text-purple-600 font-semibold">Present:  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,5) }}</span>
+          <p [ngClass]="shiftFullWidth ? 'w-max' : ''">Present :  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,4) }}</p>
       </div>
     </div>
-    <div class="flex items-center justify-around w-full">
+    <!-- late coming , early going excess hour -->
+    <div class="flex items-center justify-between w-full">
       <div>
-        <span class="text-yellow-600 font-semibold">LC: {{ day.events[0]?.late_comeing }}</span>
+        <span>LC : {{ day.events[0]?.late_comeing }}</span>
       </div>
       |
       <div>
-        <span class="text-purple-600 font-semibold">EH: {{ day.events[0]?.excess_hrs }}</span>
+          <span>EG : {{ day.events[0]?.early_going }} </span>
       </div>
       |
       <div>
-          <span class="text-emerald-600 font-semibold">EG: {{ day.events[0]?.early_going }} </span>
+        <span>EH : {{ day.events[0]?.excess_hrs }}</span>
       </div>
-      
     </div>
-    <!-- <b> IN :</b> {{ day.events[0]?.in_time  }} |
-    <b> OUT :</b> {{ day.events[0]?.out_time  }}<br />
-    <b>SHIFT:&nbsp;</b>{{ day.events[0]?.shift_desc }} |&nbsp;<b >Present:</b>  {{ day.events[0]?.present_type==null?0:day.events[0]?.present_type.toString().slice(0,5) }}<br />
-   <b >LC :</b> {{ day.events[0]?.late_comeing }} |&nbsp;<b > EG : </b> {{ day.events[0]?.early_going }}   |<b>EH : </b > {{ day.events[0]?.excess_hrs }} &nbsp;  -->
-
     </div>
   </div>
 </ng-template>

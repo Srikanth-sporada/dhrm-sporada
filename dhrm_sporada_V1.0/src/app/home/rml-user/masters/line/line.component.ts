@@ -207,8 +207,7 @@ export class LineComponent implements OnInit {
         },
         error: (error) => console.log(error),
       });
-    this.form.controls['dept_name'].setValue(Number(this.line[a].module_code))
-
+    this.form.controls['dept_name'].setValue(Number(this.line[a].module_code));
   }
 
   // add new line
