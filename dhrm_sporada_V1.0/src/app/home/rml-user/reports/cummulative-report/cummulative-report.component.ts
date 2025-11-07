@@ -11,6 +11,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Utility } from 'src/app/utils/utils';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-cummulative-report',
@@ -19,62 +20,14 @@ import { Utility } from 'src/app/utils/utils';
 })
 export class CummulativeReportComponent implements OnInit {
 
-    cummulativeReportForm: any
+    cummulativeReportForm: any;
+    hideCumulativeReport:boolean = environment.hideCumulativeReport;
     all:any;
     userDetails:any;
     companyData:any = [];
     plantData:any = [];
     payrollAreaData:any = [];
-    cummulativeReportData:any = [
-  {
-    genId: '900001',
-    name: 'Arun Kumar Kumar',
-    plant: 'Chennai Plant 1',
-    payrollArea: 'PA01',
-    calDays: 31,
-    month: 'October',
-    fromDate: '2025-10-01',
-    toDate: '2025-10-31',
-    sunday: 4,
-    holiday: 2,
-    workingDays: 25,
-    presentDays: 23,
-    absentDays: 2,
-    paidDays: 23,
-    otHour: 5,
-    otDouble: 2,
-    otTrible: 1,
-    shiftA: 10,
-    shiftG: 8,
-    shiftB: 5,
-    shiftC: 2
-  },
-  {
-    genId: '900002',
-    name: 'Meena R.',
-    plant: 'Chennai Plant 2',
-    payrollArea: 'PA02',
-    calDays: 31,
-    month: 'October',
-    fromDate: '2025-10-01',
-    toDate: '2025-10-31',
-    lop:'530',
-    eg:'120',
-    sunday: 4,
-    holiday: 1,
-    workingDays: 26,
-    presentDays: 26,
-    absentDays: 0,
-    paidDays: 26,
-    otHour: 3,
-    otDouble: 1,
-    otTrible: 0,
-    shiftA: 12,
-    shiftG: 10,
-    shiftB: 3,
-    shiftC: 1
-  }
-    ];
+    cummulativeReportData:any = [];
     
     constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService, private apiService:ApiService, public utility:Utility) {
       /** cummulative report filter form */

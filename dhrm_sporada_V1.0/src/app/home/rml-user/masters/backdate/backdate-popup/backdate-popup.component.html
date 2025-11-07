@@ -10,6 +10,29 @@
       </div>
     </div>
   <div>
+    <!-- plant  -->
+     <div class="mx-2 mt-3">
+          <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">domain</mat-icon>
+          Plant
+          </label>
+          <br />
+          <p-dropdown 
+            [options]="plantData"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full"
+            [disabled]="editing_flag"
+            [(ngModel)]="data.plant"
+            placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+           </ng-template>
+      </p-dropdown>
+        </div>
+     
     <!-- DOJ limit input -->
         <div class="mx-2 mt-3">
           <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="code">

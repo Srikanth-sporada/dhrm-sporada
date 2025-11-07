@@ -27,6 +27,7 @@ import { ToastService } from "angular-toastify";
 export class NavbarComponent implements OnInit {
   url = environment.path + "/";
   /** Menu Hide variables */
+  hideMissPunchHr = environment.hideMissPunchHR;
   hideSalaryMaster = environment.hideSalaryMaster;
   hidePmpd = environment.hidePmpd;
   hideMidPermission = environment.hideMidPermission;
@@ -34,6 +35,10 @@ export class NavbarComponent implements OnInit {
   hideHrDashboard = environment.hideHrDashboard;
   hideHrSumary = environment.hideHrSummary;
   hideCanteenDashboard = environment.hideCanteenDashboard;
+  hideCumulativeReport = environment.hideCumulativeReport;
+  hideCanteenReport = environment.hideCanteenReport;
+  hideLopReport = environment.hideLopReport;
+  hideMachinePunchReport = environment.hideMachineReport;
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;

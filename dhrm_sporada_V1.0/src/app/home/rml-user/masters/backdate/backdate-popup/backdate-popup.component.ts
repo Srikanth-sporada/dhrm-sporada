@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
 })
 export class BackdatePopupComponent implements OnInit {
    editing_flag:any;
+   plantData:any = [];
+
   constructor(private dailogRef:MatDialogRef<BackdatePopupComponent>,@Inject(MAT_DIALOG_DATA)  public data:any,private apiService:ApiService,private messageService:MessageService) { 
     if(data.editingFlag){
       this.editing_flag = false;
@@ -19,6 +21,10 @@ export class BackdatePopupComponent implements OnInit {
   
   ngOnInit() {
     console.log(this.data,this.editing_flag);
+    /** converting plant code int to string */
+    this.data.plant = String(this.data.plant);
+    console.log(this.data.plant);
+    this.getPlantData();
   }
 
   update(){
@@ -34,9 +40,24 @@ export class BackdatePopupComponent implements OnInit {
   }
 
   close(){
-    this.dailogRef.close()
+    this.dailogRef.close();
   }
   addBackDate(){
     console.log(this.data)
+  }
+
+  /** get plant data 
+   * @property {*} plantData
+   */
+  getPlantData(){
+    this.apiService.getplant().subscribe({
+      next: (response:any) => {
+         this.plantData = response;
+      },
+      error: (error) => {
+        this.messageService.add({severity:'error',summary:error.message})
+        console.error(error);
+      }
+    })
   }
 }

@@ -5,16 +5,22 @@ export const environment = {
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
-  hideSalaryMaster:false,
-  hidePeoplePlanning:false,
-  hidePmpd:false,
-  hideMidPermission:false,
+  hideSalaryMaster:true,
+  hidePeoplePlanning:true,
+  hidePmpd:true,
+  hideMidPermission:true,
+  hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:false,
-  hideHrDashboard:false,
-  hideCanteenDashboard:false,
-
+  hideHrSummary:true,
+  hideHrDashboard:true,
+  hideCanteenDashboard:true,
+  /** reports */
+  hideCumulativeReport:true,
+  hideLopReport:true,
+  hideMachineReport:true,
+  hideCanteenReport:true,
+  
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

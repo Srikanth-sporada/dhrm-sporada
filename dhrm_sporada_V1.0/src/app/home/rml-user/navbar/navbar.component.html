@@ -808,14 +808,16 @@
               >
                 <mat-icon class="icon-pad">work_history</mat-icon>On-Duty</a
               > -->
-              <a
-                mat-list-item
-                routerLink="/rhrm/time-office-appr/missing-punch"
-               routerLinkActive="!text-blue-600 !font-semibold"
-                class="rounded-sm"
-                *ngIf="ishr == 'true' || ishrappr == 'true'"
-                ><mat-icon>cloud_upload</mat-icon>Missing Punch - HR</a
-              >
+              <span *ngIf="!hideMissPunchHr">
+                <a
+                  mat-list-item
+                  routerLink="/rhrm/time-office-appr/missing-punch"
+                  routerLinkActive="!text-blue-600 !font-semibold"
+                  class="rounded-sm"
+                  *ngIf="ishr == 'true' || ishrappr == 'true'"
+                ><mat-icon>cloud_upload</mat-icon>Missing Punch - HR
+                </a>
+              </span>
               <span *ngIf="!hideMidPermission">
                 <a
                 mat-list-item
@@ -1297,36 +1299,43 @@
                 class="!mx-1 text-gray-600"
               >
 
-              <!-- new reports UI -->
+              <!-- new reports -->
+
                <!-- cummulative report -->
-               <a
+                <span *ngIf="!hideCumulativeReport">
+                  <a
                   mat-list-item
                   routerLink="/rhrm/reports/cummulativereport"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
-                >
-                  <mat-icon class="icon-pad">payments</mat-icon>Cummulative
+                 >
+                  <mat-icon class="icon-pad">payments</mat-icon>Cumulative
                   Report
                 </a>
+                </span>
                 <!-- LOP report -->
-                 <a
+                 <span *ngIf="!hideLopReport">
+                  <a
                   mat-list-item
                   routerLink="/rhrm/reports/lopreport"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
-                >
+                  >
                   <i class="pi pi-calendar-minus mr-3" style="font-size: 1.75rem"></i>LOP Report
-                </a>
-
-                <a
+                  </a>
+                 </span>
+                 <!-- machine punch report -->
+              <span *ngIf="!hideMachinePunchReport">
+                  <a
                   mat-list-item
                   routerLink="/rhrm/reports/rawpunch"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">access_time</mat-icon>Machine Punch
-                  Report</a
-                >
+                  Report
+                  </a>
+              </span>
                 <a
                   mat-list-item
                   routerLink="/rhrm/reports/arsreports"
@@ -1363,7 +1372,8 @@
                   <mat-icon class="icon-pad">person_search</mat-icon>Employee
                   Record</a
                 >
-                <a
+                <span *ngIf="!hideCanteenReport">
+                  <a
                   *ngIf="
                     isadmin == 'true' ||
                     ishrappr == 'true' ||
@@ -1376,8 +1386,9 @@
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad"> fastfood</mat-icon>Canteen
-                  Report</a
-                >
+                  Report
+                </a>
+                </span>
 
                 <!-- <a
                   mat-list-item
