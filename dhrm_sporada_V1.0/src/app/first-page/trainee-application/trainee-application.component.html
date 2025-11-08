@@ -11,7 +11,19 @@
     formControlName="company"
     [loading]="true"
     (onChange)="getplantcode($event)"
-  ></p-dropdown>
+    [disabled]="true"
+  > 
+  <ng-template let-company pTemplate="selectedItem">
+      <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+      </div>
+  </ng-template>
+    <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+    </ng-template>
+</p-dropdown>
   <br />
 
   <!-- Plane Name -->
@@ -20,10 +32,16 @@
     [options]="plantcode"
     optionLabel="plant_name"
     optionValue="plant_name"
-    placeholder="Choose Company Name"
+    placeholder="Choose Plant"
     styleClass="font-poppins w-full mb-3"
     formControlName="plant"
-  ></p-dropdown>
+  >
+      <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+           </ng-template>
+</p-dropdown>
   <!--  mobile number -->
   <div class="flex-auto mb-3">
     <span class="font-bold block mb-2">Mobile Number</span>

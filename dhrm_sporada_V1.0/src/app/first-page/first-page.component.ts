@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { imageList } from "../imageList";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-first-page",
@@ -6,6 +8,8 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./first-page.component.css"],
 })
 export class FirstPageComponent implements OnInit {
+  /** company code from route url */
+  companyCode:any;
   gradients = [
     "linear-gradient(135deg, rgb(232, 200, 230) 0%, rgb(232, 200, 230) 100%)",
     "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
@@ -62,11 +66,16 @@ export class FirstPageComponent implements OnInit {
     { width: "160px", height: "140px", objectFit: "cover", marginTop: "8px" },
   ];
 
-  constructor() {
+  constructor(private route:ActivatedRoute) {
+    /** converting string into number */
+    this.companyCode = Number(this.route.snapshot.paramMap.get('companyCode'));
+    console.log('CODE:',this.companyCode);
     sessionStorage.clear();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.news = imageList;
+  }
 
   setSession(key: string): void {
     sessionStorage.setItem("user", key);

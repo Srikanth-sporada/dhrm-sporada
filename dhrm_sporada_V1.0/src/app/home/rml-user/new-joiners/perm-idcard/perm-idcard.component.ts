@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { UntypedFormBuilder } from "@angular/forms";
 import { environment } from "src/environments/environment.prod";
 import { ApiService } from "src/app/home/api.service";
-
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-perm-idcard",
@@ -34,7 +34,8 @@ export class PermIdcardComponent implements OnInit {
     private active: ActivatedRoute,
     private http: HttpClient,
     private fb: UntypedFormBuilder,
-    private service: ApiService
+    private service: ApiService,
+    private messageService:MessageService
   ) {
     this.form = fb.group({
       permanent: [],

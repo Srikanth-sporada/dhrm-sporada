@@ -89,6 +89,7 @@
       <!-- user type based login form -->
       <trainee-application
         *ngIf="selectedUser === 'trainee-application'"
+        [companyCode]="companyCode"
       ></trainee-application>
       <!-- trainee login component -->
       <trainee-login

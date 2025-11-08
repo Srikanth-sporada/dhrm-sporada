@@ -11,10 +11,10 @@
       [opened]="(isHandset$ | async) === false"
     >
       <!-- navbar logo -->
-      <mat-toolbar
-        class="bg-[var(--secondary)] text-white h-24 py-2 rounded-[1rem]"
-        ><img src="assets/ranelogo.png" alt="rane" class="!object-fill !rounded-md"
-      />
+      <mat-toolbar 
+       class="bg-[var(--secondary)] text-white h-24 py-2 rounded-[1rem] hover:cursor-pointer" 
+       (click)="navigateToHome()">
+          <img src="assets/ranelogo.png" alt="rane" class="!object-fill !rounded-md"/>
       </mat-toolbar>
       <hr>
       <!-- material side nav list -->
@@ -1622,8 +1622,43 @@
           <mat-icon class="text-blue-600">notes</mat-icon>
       </button>
       <!-- dhrm dashboard image -->
-      <div *ngIf="router.url === '/rhrm'" class="h-full ml-2 overflow-hidden">
-        <img [src]="homepageImgURL" alt="dhrm-image" class="h-full rounded-sm object-cover" />
+      <div *ngIf="router.url === '/rhrm'" class="w-full flex justify-center">
+        <!-- <img [src]="homepageImgURL" alt="dhrm-image" class="h-full rounded-sm object-cover" /> -->
+          <!-- primang carousel -->
+        <p-carousel
+            [value]="news"
+            [numVisible]="1"
+            [numScroll]="1"
+            [circular]="true"
+            [autoplayInterval]=3000
+            styleClass="w-full"
+          >
+            <ng-template let-news pTemplate="item">
+              <div class="m-2 p-3 w-full">
+                <div class="mb-3">
+                  <div class="relative mx-auto">
+                    <img
+                      src="{{ news.image }}"
+                      [alt]="news.alt"
+                      class="w-full object-fill"
+                    />
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+        </p-carousel>
+        <!-- Trainee Related Information -->
+         <!-- <div class="w-full shadow-md border border-gray-200 flex items-center justify-between px-3 h-[40vh]">
+           <div>
+            <p class="font-poppins text-xl font-semibold text-blue-600">New Trainees</p>
+           </div>
+           <div>
+            <p class="font-poppins text-xl font-semibold text-blue-600">Relived Trainees</p>
+           </div>
+           <div>
+            <p class="font-poppins text-xl font-semibold text-blue-600">Birth Days</p>
+           </div>
+         </div> -->
       </div>
       <!-- Add Content Here -->
       <div>

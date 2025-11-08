@@ -105,3 +105,8 @@
     text-align: left;
     margin-top: 8%;
   }
+
+ /* ::ng-deep .p-dropdown-item .p-dropdown-label { 
+  background-color: yellowgreen !important;
+  color: red;
+ } */

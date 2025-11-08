@@ -18,7 +18,7 @@ import { FormService } from "../new-joiners/form.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { environment } from "src/environments/environment.prod";
-import { ToastService } from "angular-toastify";
+import { imageList } from "src/app/imageList";
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -26,6 +26,7 @@ import { ToastService } from "angular-toastify";
 })
 export class NavbarComponent implements OnInit {
   url = environment.path + "/";
+  news:any = [];
   /** Menu Hide variables */
   hideMissPunchHr = environment.hideMissPunchHR;
   hideSalaryMaster = environment.hideSalaryMaster;
@@ -113,7 +114,6 @@ export class NavbarComponent implements OnInit {
     private service: ApiService,
     private active: ActivatedRoute,
     public router: Router,
-    private toast:ToastService,
     private messageService:MessageService,
   ) {
     this.form = fb.group({
@@ -132,6 +132,8 @@ export class NavbarComponent implements OnInit {
     /** generate image function */ 
     this.generateImage();
     this.getHr();
+    /** new Images */
+    this.news = imageList;
     // console.log(this.payrollNavLink);
   }
 
@@ -214,7 +216,7 @@ export class NavbarComponent implements OnInit {
         sessionStorage.setItem("dept_slno", this.ishrappr[0]?.Department);
         this.getitems();
       },
-      error: (error) => this.toast.error(error.message),
+      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
     });
   }
 
@@ -266,6 +268,10 @@ export class NavbarComponent implements OnInit {
     this.homepageImgIndex = Math.floor(Math.random() * this.homePageImg.length);
     this.homepageImgURL = this.homePageImg[this.homepageImgIndex]
     console.log('HOME PAGE IMG', this.homePageImg[this.homepageImgIndex])
+  }
+
+  navigateToHome(){
+    this.router.navigate(['../rhrm']);
   }
 }
 

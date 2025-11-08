@@ -57,7 +57,7 @@ const routes: Routes = [
     component: TraineeTestComponent, canActivate: [AuthGuard]
   },
   {
-    path: '',
+    path: ':companyCode',
     component: FirstPageComponent,
   },
   {

@@ -13,9 +13,9 @@
   </div>
 
   <!-- attedance filter-->
-   <p-accordion>
-    <p-accordionTab styleClass="font-poppins">
-      <ng-template pTemplate="header">
+      <div>
+    <!-- attedance report filters -->
+      <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
         <!-- filter header -->
           <div class="relative w-full font-poppins">
             <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
@@ -27,11 +27,6 @@
             styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
             (click)="exportexcel()"></p-button>
           </div>
-      </ng-template>
-      <div>
-    <!-- attedance report filters -->
-      <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
-        
         <div>
         <!-- attedance filter row one -->
         <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
@@ -132,9 +127,6 @@
         </div>
       </div>
       </div>
-    </p-accordionTab>
-   </p-accordion>
-
 <!-- attedance table -->
 <div class="h-[90svh] lg:h-[55vh] xl:h-[55vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
   <table id="table" class="table-auto !w-full" id="atnddata">

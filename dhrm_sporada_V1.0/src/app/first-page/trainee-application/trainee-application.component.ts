@@ -10,18 +10,20 @@ import { Router } from "@angular/router";
 import { ApiService } from "src/app/home/api.service";
 import { ToastService } from "angular-toastify";
 import { MessageService } from 'primeng/api';
+import { Input } from '@angular/core';
 @Component({
   selector: 'trainee-application',
   templateUrl: './trainee-application.component.html',
   styleUrls: ['./trainee-application.component.css']
 })
 export class TraineeApplicationComponent implements OnInit {
+  @Input() companyCode:any;
   mobilenum: any = "";
   companyname: any = "";
   plantname: any = "";
   isHrappr: any;
   plantcode: any;
-  companycode: any;
+  companycode:any;
   errmsg: any = "";
   items: any[] = [];
   public inputType: string = "password";
@@ -39,25 +41,31 @@ export class TraineeApplicationComponent implements OnInit {
     private service: ApiService,
     private toastService: ToastService,
     private messageService: MessageService,
-  ) {
+  ) {}
+
+  // on component initialization
+  ngOnInit(): void {
+    // getting compoany code
+    this.getcompanycode();
+
     // initializing the trainee application form with form builder
-    this.traineeApplicationForms = fb.group({
+    this.traineeApplicationForms = this.fb.group({
       mobileNumber: [
         "",
         [Validators.required,]
       ],
-      company: ["", Validators.required],
+      company: [this.companyCode, Validators.required],
       plant: ["", Validators.required],
       pass: ["", Validators.required],
     });
     this.mobilenum = this.traineeApplicationForms.controls["mobileNumber"].value;
     this.companyname = this.traineeApplicationForms.controls["company"].value;
-  }
-  // on component initialization
-  ngOnInit(): void {
-    // getting compoany code
-    this.getcompanycode();
-    // this.messageService.add({severity: 'info',summary: 'Test Notification',})
+
+    console.log(Number(this.companyCode));
+    console.log(this.traineeApplicationForms.value)
+    
+    /** get plant code based on company */
+    this.getplantcode({value:this.companyCode});
   }
 
   // setting cookie with mobile number
