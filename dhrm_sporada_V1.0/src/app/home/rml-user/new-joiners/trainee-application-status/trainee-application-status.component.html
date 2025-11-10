@@ -90,7 +90,8 @@
         icon="pi pi-search"
         styleClass="rounded-[1.5rem] mt-2"
         (onClick)="filterTraineeApplication()"
-        label="Search"  
+        label="Search"
+        [disabled]="!form.controls['colvalue'].valid"
       >
      </p-button> 
      </div>
@@ -108,13 +109,13 @@
       <table id="table" class="table-auto !w-full">
         <!-- table head -->
         <thead class="sticky top-0">
-          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">
               {{form.get('status').value == 'appointed' ? 'DOJ' : form.get('status').value == 'relieved' ?
               'DOL' : 'Date'}}
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Full Name</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Father Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Full Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Father Name</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOB</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Mobile Number</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Aadhaar Number</th>
@@ -128,7 +129,7 @@
            *ngFor="let i of filterinfo"
            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
            >
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">
+            <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">
               {{ i.apln_status == 'APPOINTED' ? (i.doj?.split('T')[0] | date: 'dd-MM-yyyy') : i.apln_status ==
               'RELIEVED' ? (i.dol?.split('T')[0] | date: 'dd-MM-yyyy') : (i.created_dt?.split('T')[0] | date:
               'dd-MM-yyyy') }}
@@ -159,16 +160,17 @@
               <button
                 *ngIf="i.apln_status == 'PENDING' || i.apln_status == 'REJECTED' || i.apln_status == 'NEW INCOMPLETE'"
                 [routerLink]="['/rhrm/new_joiners/forms', i.mobile_no1, i.apln_status, i.sno]" 
-                title="Edit the trainee">
-                <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                title="Send For Approval">
+                <mat-icon class="text-blue-600 text-[20px]">send</mat-icon>
               </button>
               <button
                 *ngIf="i.apln_status != 'PENDING' && i.apln_status != 'REJECTED' && i.apln_status != 'NEW INCOMPLETE'"
-                [routerLink]="['/rhrm/new_joiners/hr-view', i.mobile_no1, i.apln_status, i.sno, 'status']">
+                [routerLink]="['/rhrm/new_joiners/hr-view', i.mobile_no1, i.apln_status, i.sno, 'status']"
+                title="View Trainee Details">
                 <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
               </button>
               <button *ngIf="i.apln_status !== 'APPOINTED' && i.apln_status !== 'RELIEVED'" 
-               (click)="openDeleteModal(i.apln_slno);">
+               (click)="openDeleteModal(i.apln_slno);" title="Delete Trainee">
                 <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
               </button>
             </td>

@@ -1,10 +1,44 @@
 <form [formGroup]="form">
   <div *ngFor="let i of formvalues" class="container">
+    <!-- front card design -->
     <div class="card bg-image">
-      <div class="row px-2">
-        <img style="float: left; margin-left: 10px;" class="img" width="100px" height="75px" src="assets/rane.png" alt="Avatar"></div>
-      <img class="row text-center img" width="120px" height="150px" [src]=this.url alt="Avatar"><br>
-      <table class="font">
+      <!-- rane logo -->
+      <div class="flex items-center justify-center my-2">
+        <img class="h-[var(--id-card-height)] w-[var(--id-card-width)]" src="assets/ranelogo.png" alt="rane-logo">
+      </div>
+      <!-- company name -->
+       <p class="text-3xl text-center mb-4 font-bold">
+        Rane Holdings Limited Rane Holding 
+      </p>
+      <!-- trainee image -->
+      <!-- src=this.url -->
+       <div  class="flex items-center justify-center">
+          <img 
+           class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain !border-2 !border-gray-400 rounded-md" 
+           src="assets/Executive.jpeg" 
+           alt="Avatar" />
+       </div>
+     
+      <!-- trainee details -->
+       <div class="ml-8">
+        <p class="text-xl font-semibold font-poppins my-2">
+          Name 
+          <span class="ml-[4.5rem]">:</span>
+          <span class="ml-2">{{i?.fullname}}</span>
+        </p>
+        <p class="text-xl font-semibold font-poppins my-2">
+          Trainee ID
+           <span class="ml-8">:</span>
+          <span class="ml-2">{{i?.gen_id}}</span>
+        </p>
+        <p class="text-xl font-semibold font-poppins my-2">
+          Blood Group
+           <span class="ml-2">:</span>
+          <span class="ml-2">{{i?.blood_group}}</span>
+        </p>
+       </div>
+
+      <!-- <table class="font">
         <div class="mx-5" style="align-items: center; text-align: center;">
           <tr class="font">
             <div style="padding-left: 5px;">
@@ -14,12 +48,6 @@
               <br><br>
               <div style="font-size: large; text-align: center; font-size: 16px; display: inline-block;"><b>Valid from :</b> {{frommdate}} to
                 {{toodate}}</div>
-              <!-- <tr></div><div class="md">
-                    <td div class="aligncommand1"><b> Valid from</b></td>
-                    <td div class="aligncommand1">:{{frommdate}}</td><br>
-                <tr> 
-                    <td div class="aligncommand1"><b> Valid to</b></td>
-                    <td div class="aligncommand1">:{{toodate}}</td><br><br> -->
             </div><br><br>
         </div>
           <img class="sign" height="75px" [src]='this.plant' alt="Avatar">
@@ -27,8 +55,9 @@
         <div class="sign1">
           <b>Issuing Authority </b>
         </div>
-      </table>
+      </table> -->
     </div>
+    <!-- back card design -->
     <div class="card bg-image2">
       <div class="container2">
         <div class="col-sm-8">

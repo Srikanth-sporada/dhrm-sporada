@@ -21,7 +21,7 @@ export class EmpTwoRecordComponent implements OnInit {
   plantlist: any = [];
   isadmin:string |null= sessionStorage.getItem('isadmin')
   plant_Code: any = sessionStorage.getItem('plantcode');
-  userEmpcode:string |null = sessionStorage.getItem('user_name');
+  userEmpcode:string | null = sessionStorage.getItem('user_name');
   all:any;
   userDetails:any;
   statusOptions = [
@@ -89,8 +89,7 @@ roleOptions = [
     console.log(this.empForm.value)
     this.api.getFilteredData(this.empForm.value).subscribe(res => {
       // console.log(res)
-      this.emplist =res
-
+      this.emplist = res;
       // console.log(this.emplist.length)
       if(this.emplist.length == 0)
 {

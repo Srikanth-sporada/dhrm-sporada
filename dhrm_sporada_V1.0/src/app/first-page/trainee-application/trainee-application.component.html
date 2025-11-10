@@ -11,7 +11,7 @@
     formControlName="company"
     [loading]="true"
     (onChange)="getplantcode($event)"
-    [disabled]="true"
+    [disabled]="disableCompayDropdown"
   > 
   <ng-template let-company pTemplate="selectedItem">
       <div class="flex align-items-center gap-2">
@@ -35,6 +35,7 @@
     placeholder="Choose Plant"
     styleClass="font-poppins w-full mb-3"
     formControlName="plant"
+    [disabled]="disablePlantDropdown"
   >
       <ng-template let-plant pTemplate="item">
               <div class="flex align-items-center gap-2">

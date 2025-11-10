@@ -210,8 +210,8 @@
 <div class="mt-4 mx-4">
     <table class="table-auto w-full !font-poppins">
         <thead>
-            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 ">
                     Language Name
                 </th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -233,7 +233,7 @@
         </thead>
         <tbody  *ngFor="let i of basic">
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md text-blue-600 font-semibold">{{i.lang1_name}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_speak == 1 ? tick: ex }}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_write== 1 ? tick: ex}}</td>
@@ -241,7 +241,7 @@
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang1_understand == 1 ? tick: ex}}</td>
             </tr>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_name }}</td>
+                <td class="!px-2 !py-2 !rounded-s-md  text-blue-600 font-semibold">{{i.lang2_name }}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_speak == 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_write== 1 ? tick: ex}}</td>
@@ -249,7 +249,7 @@
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang2_understand== 1 ? tick: ex}}</td>
             </tr>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md  text-blue-600 font-semibold">{{i.lang3_name}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_speak== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_write== 1 ? tick: ex}}</td>
@@ -257,7 +257,7 @@
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang3_understand== 1 ? tick: ex}}</td>
             </tr>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md  text-blue-600 font-semibold">{{i.lang4_name}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_speak== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_write== 1 ? tick: ex}}</td>
@@ -265,7 +265,7 @@
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang4_understand== 1 ? tick: ex}}</td>
             </tr>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md  text-blue-600 font-semibold">{{i.lang5_name}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_speak== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_write== 1 ? tick: ex}}</td>
@@ -273,7 +273,7 @@
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang5_understand== 1 ? tick: ex}}</td>
             </tr>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full">
-                <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_name}}</td>
+                <td class="!px-2 !py-2 !rounded-s-md  text-blue-600 font-semibold">{{i.lang6_name}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_speak== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_read== 1 ? tick: ex}}</td>
                 <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{i.lang6_write== 1 ? tick: ex}}</td>
@@ -292,11 +292,11 @@
 <div class="mt-4 mx-4">
     <table class="table-auto w-full !font-poppins">
     <thead>
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">
                 Name of company
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Designation
             </th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -308,7 +308,7 @@
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 Salary Last Drawn
             </th>
-            <th class="!text-white rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white rounded-e-lg !px-2 !py-2 !border-none !border-0">
                 Reason for leaving
             </th>
         </tr>
@@ -318,12 +318,12 @@
         *ngFor="let i of career"
         class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
          >
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.company_name}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.designation}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.company_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.designation}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.period_from}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.period_to}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.last_salary}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.leaving_reason}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.leaving_reason}}</td>
         </tr>
 
     </tbody>
@@ -335,20 +335,20 @@
 <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
     Education Details <mat-icon>book_4</mat-icon>
 </h3> <hr>
-<div class="mt-4 mx-4">
+<div class="mt-4 mx-4 overflow-x-scroll">
     <table class="table-auto w-full !font-poppins">
     <thead>
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">
                 Name of School/Institution
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Exam passed
             </th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 Year of Passing
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Department
             </th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -367,10 +367,10 @@
          *ngFor="let i of education"
          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
          >
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.school_name}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.exam_passed}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.school_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.exam_passed}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.passing_yr}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.subjects}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.subjects}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.cert_number}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.cert_date}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.percentage}}</td>
@@ -388,20 +388,20 @@
 <div class="mt-4 mx-4">
     <table class="table-auto w-full !font-poppins">
     <thead >
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">
                 Relation name
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Relation type
             </th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 age
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 occupation
             </th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
                 Dependent?
             </th>
             <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
@@ -414,11 +414,11 @@
          *ngFor="let i of family"
           class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer w-full rounded-md"
          >
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.relation_name}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.relation_type}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.relation_name}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.relation_type}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.age}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.occupation}}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.dependent}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.occupation}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{i.dependent ? 'YES' : 'NO'}}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{i.contact_number}}</td>
         </tr>
     </tbody>
@@ -433,9 +433,9 @@
 <div class="mt-4 mx-4">
  <table class="table-auto w-full !font-poppins">
     <thead>
-        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">File name</th>
-            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center"> Open File</th>
+        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 ">File name</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 "> Open File</th>
         </tr>
     </thead>
     <tbody *ngFor="let i of basic">
@@ -481,8 +481,8 @@
     <table class="table-auto w-full !font-poppins">
     <thead >
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">File Name</th>
-            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center"> Open File</th>
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">File Name</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0"> Open File</th>
         </tr>
     </thead>
     <tbody  *ngFor="let i of basic">

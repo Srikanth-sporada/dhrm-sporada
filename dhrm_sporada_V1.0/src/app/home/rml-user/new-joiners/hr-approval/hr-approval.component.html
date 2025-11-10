@@ -79,11 +79,11 @@
         <table id="table" class="table-auto !w-full">
           <!-- table head -->
           <thead class="sticky top-0">
-            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center" style="width: 10%">Date</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 15%">Full Name</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 20%">Father Name</th>
-              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="width: 10%">DOB</th>
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">Date</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Full Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0">Father Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOB</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Contact</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 ID NO
@@ -117,11 +117,13 @@
                       i.sno,
                       'approval'
                     ]"
-                    *ngIf="i.apln_status == 'SUBMITTED'"
+                    *ngIf="i.apln_status == 'SUBMITTED' || i.apln_status == 'APPOINTED'"
                   >
-                    <mat-icon class="text-blue-600 text-[20px]">published_with_changes</mat-icon>
+                    <mat-icon class="text-blue-600 text-[20px]">
+                      {{i.apln_status == 'SUBMITTED' ? 'published_with_changes' : 'visibility'}}
+                    </mat-icon>
                   </button>
-                  <span *ngIf="i.apln_status !== 'SUBMITTED'">-</span>
+                  <span *ngIf="i.apln_status !== 'SUBMITTED' && i.apln_status !== 'APPOINTED'">-</span>
                 </div>
               </td>
             </tr>

@@ -85,10 +85,10 @@
      [applicationStatus]="details[0]?.apln_status"
      [applicationData]="details[0]" 
      *ngIf="showOnboard">
+  </app-onboard-form>
 
-   </app-onboard-form>
-
-  <p *ngIf="apln_status=='REJECTED'" style="margin-left: 15px;color: red;">Application Rejection Reason:<span style="color: black;">{{details[0].remarks_rejd}}</span></p>
+  <p *ngIf="apln_status=='REJECTED'" style="margin-left: 15px;color: red;">Application Rejection     Reason:<span style="color: black;">{{details[0].remarks_rejd}}</span>
+  </p>
 
   <!-- show only if apprentice type is CL -->
   <div class="row" *ngIf="ishr== 'undefined' || showCategory ? true : false">

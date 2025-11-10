@@ -5,9 +5,17 @@
         <h3 class="text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
           Employee Related Documents
           <mat-icon>assignment</mat-icon>
+          <span class="text-[length:--required-size] ml-2 text-black" *ngIf="this.ishr == 'true' ">
+           (<i class="star-color">*</i> fields are required)
+          </span>
         </h3>
 <h3 class="text-blue-500 mb-2">Upload the files in any one of the following formats:(pdf/jpeg/png/docx) (file size : 1MB)</h3>
-<div *ngIf="this.ishr == 'true' " ><b><h3 class="mb-3">(<span class = "star-color">*</span> fields are required)</h3></b></div>
+
+<!-- <div *ngIf="this.ishr == 'true' " >
+  <b>
+    <h3 class="mb-3">(<span class = "star-color">*</span> fields are required)</h3>
+  </b>
+</div> -->
 
 <table [width]="1000">
     <tr>
@@ -122,7 +130,6 @@
 <td class="text-blue-600 font-semibold">
   <a  [href]= 'url_appointmentorder_file' target = "_blank"> {{appointmentorder_file_name}} </a>
 </td>
-
   </tr>
   <tr>
     <td class="text-blue-600 font-semibold">Declaration File</td>

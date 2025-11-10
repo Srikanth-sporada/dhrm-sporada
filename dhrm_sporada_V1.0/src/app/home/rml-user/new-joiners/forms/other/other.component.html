@@ -7,7 +7,7 @@
         </h3>
     <form [formGroup]="forms">
       <!-- realtionship with rane -->
-      <div style="width: fit-content" class="other-form">
+      <div class="other-form">
         <label class="form-header" for="known"
           >Do You Have Any Relations Or Friends Employed In Any Location Of Rane
           Group Of Companies Or Office</label
@@ -15,9 +15,9 @@
         <select
           (ngModelChange)="sendData()"
           formControlName="known"
-          class="form-control"
+          class="form-control w-full sm:w-1/3"
         >
-          <option>Choose</option>
+          <option>Choose Option</option>
           <option *ngFor="let rel of Relations" [ngValue]="rel">
             {{ rel }}
           </option>

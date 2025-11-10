@@ -8,8 +8,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ["./first-page.component.css"],
 })
 export class FirstPageComponent implements OnInit {
-  /** company code from route url */
+  /** company & plant code from ng route  */
   companyCode:any;
+  plantCode:any;
   gradients = [
     "linear-gradient(135deg, rgb(232, 200, 230) 0%, rgb(232, 200, 230) 100%)",
     "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
@@ -69,6 +70,7 @@ export class FirstPageComponent implements OnInit {
   constructor(private route:ActivatedRoute) {
     /** converting string into number */
     this.companyCode = Number(this.route.snapshot.paramMap.get('companyCode'));
+    this.plantCode = this.route.snapshot.paramMap.get('plantCode');
     console.log('CODE:',this.companyCode);
     sessionStorage.clear();
   }

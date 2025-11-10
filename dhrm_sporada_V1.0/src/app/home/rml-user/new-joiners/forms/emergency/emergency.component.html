@@ -2,9 +2,12 @@
    <!-- basic details -->
         <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
          Emergency Details
-          <mat-icon>health_cross</mat-icon>
+          <mat-icon>local_hospital</mat-icon>
+          <span class="text-[length:--required-size] ml-2 text-black">
+       (<i class="star-color">*</i> fields are required)
+      </span>
         </h3>
-    <h2 class="">(<span class = "star-color">*</span> fields are required)</h2>
+    <!-- <h2 class="">(<span class = "star-color">*</span> fields are required)</h2> -->
 
       <form [formGroup]="form" class="mt-3">
         <div class="row">

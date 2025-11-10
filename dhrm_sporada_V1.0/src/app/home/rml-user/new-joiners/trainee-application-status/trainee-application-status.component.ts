@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder,Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../form.service';
@@ -53,7 +53,7 @@ searchTypeOptions =[
       fromdate: new UntypedFormControl(''),
       todate: new UntypedFormControl(''),
       colname: new UntypedFormControl(''),
-      colvalue: new UntypedFormControl(''),
+      colvalue: new UntypedFormControl('',Validators.pattern(/\S+/)),
       plantcode: [sessionStorage.getItem('plantcode')]
     });
   }
@@ -146,7 +146,6 @@ openDeleteModal(apln_slno: any) {
   this.showDeleteModal = true;
   const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
   confirmModalRef.componentInstance.confirmFunction = this.confirmDelete;
-  confirmModalRef.componentInstance.closeFunction = confirmModalRef.close;
   console.log('modal opened.');
 }
 
@@ -174,7 +173,7 @@ confirmDelete():any {
 
 // trainee application filter function
 filterTraineeApplication(){
-  console.log(this.form.value)
+  console.log(this.form)
   if(this.form.value.colname && this.form.value.colvalue){
     this.searchfilter();
   }else{

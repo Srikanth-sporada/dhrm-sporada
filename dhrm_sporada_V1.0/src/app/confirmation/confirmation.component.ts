@@ -14,16 +14,11 @@ export class ConfirmationComponent implements OnInit {
    * */
   @Input() confirmFunction:any;
 
-  /**
-   * @type {*}
-   * @memberof ConfirmationComponent
-   * Modal close function from parent component
-   */
-  @Input() closeFunction:any;
   // @ViewChild('ngbModal', {read: TemplateRef}) ngbModalTemplateRef: TemplateRef<unknown> | undefined;
-  constructor() { }
+  constructor(public activeModal:NgbActiveModal) { }
 
   ngOnInit(): void {
+   console.log('confirm modal.')
   }
   /** 
    * open ngb modal
@@ -35,4 +30,7 @@ export class ConfirmationComponent implements OnInit {
 //   });
 //  }
 
+log(){
+  console.log('close')
+}
 }

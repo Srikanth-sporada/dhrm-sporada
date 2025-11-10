@@ -21,7 +21,8 @@
 /* custom font */
 @font-face {
   font-family: "Poppins";
-  src: url(./fonts/Poppins/Poppins-Regular.ttf) format("truetype");
+  src: url(./fonts/Poppins/Poppins-Regular.ttf) format("truetype"),
+  url(./fonts/Poppins/Poppins-Bold.ttf) format('truetype');
   /* url(./fonts/Poppins/Poppins-Italic.ttf) format('truetype'), */
   /* url(./fonts/Poppins/Poppins-Medium.ttf) format('truetype'),
        url(./fonts/Poppins/Poppins-SemiBold.ttf) format('truetype'),
@@ -29,6 +30,8 @@
        url(./fonts/Poppins/Poppins-ExtraBold.ttf) format('truetype'),
        url(./fonts/Poppins/Poppins-Light.ttf) format('truetype'), */
 }
+
+
 
 /* tailwindcss imports */
 @tailwind base;
@@ -75,6 +78,11 @@
   --bg-transparent: #3e7bff93;
   --transparent:#0050fc23;
   --sidenav-width: 280px;
+  --required-size: 1rem;
+  --id-card-width:145px;
+  --id-card-height:72.5px;
+  --trainee-img-width:150px;
+  --trainee-img-height:150px;
   /* 60B5FF sec*/
   /* AFDDFF asc */
 }

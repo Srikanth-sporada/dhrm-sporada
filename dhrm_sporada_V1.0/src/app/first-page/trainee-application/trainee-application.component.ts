@@ -11,13 +11,17 @@ import { ApiService } from "src/app/home/api.service";
 import { ToastService } from "angular-toastify";
 import { MessageService } from 'primeng/api';
 import { Input } from '@angular/core';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'trainee-application',
   templateUrl: './trainee-application.component.html',
   styleUrls: ['./trainee-application.component.css']
 })
+
 export class TraineeApplicationComponent implements OnInit {
+  /** company and plant code from first page component */
   @Input() companyCode:any;
+  @Input() plantCode:any;
   mobilenum: any = "";
   companyname: any = "";
   plantname: any = "";
@@ -26,6 +30,8 @@ export class TraineeApplicationComponent implements OnInit {
   companycode:any;
   errmsg: any = "";
   items: any[] = [];
+  disableCompayDropdown:boolean = environment.disableCompanyDropDown;
+  disablePlantDropdown:boolean = environment.disablePlantDropDown;
   public inputType: string = "password";
   public Tvalue: string = "";
 
@@ -45,9 +51,9 @@ export class TraineeApplicationComponent implements OnInit {
 
   // on component initialization
   ngOnInit(): void {
-    // getting compoany code
+    /** getting company and plant data */
     this.getcompanycode();
-
+    this.getplantcode({value:this.companyCode});
     // initializing the trainee application form with form builder
     this.traineeApplicationForms = this.fb.group({
       mobileNumber: [
@@ -55,17 +61,14 @@ export class TraineeApplicationComponent implements OnInit {
         [Validators.required,]
       ],
       company: [this.companyCode, Validators.required],
-      plant: ["", Validators.required],
+      plant: [this.plantCode, Validators.required],
       pass: ["", Validators.required],
     });
     this.mobilenum = this.traineeApplicationForms.controls["mobileNumber"].value;
     this.companyname = this.traineeApplicationForms.controls["company"].value;
 
     console.log(Number(this.companyCode));
-    console.log(this.traineeApplicationForms.value)
-    
-    /** get plant code based on company */
-    this.getplantcode({value:this.companyCode});
+    console.log(this.traineeApplicationForms.value);
   }
 
   // setting cookie with mobile number
@@ -75,7 +78,7 @@ export class TraineeApplicationComponent implements OnInit {
   // getting plant code based on company selection
   getplantcode(event: any) {
     console.log(event.value);
-    this.traineeApplicationForms.controls["plant"].setValue("");
+    // this.traineeApplicationForms.controls["plant"].setValue("");
     var company = { company_name: event.value };
     this.service.getPlantCode(company).subscribe({
       next: (response) => {
@@ -98,6 +101,7 @@ export class TraineeApplicationComponent implements OnInit {
 
   // sending form data to api
   sendFormData() {
+    // console.log(this.traineeApplicationForms.value)
     if (this.traineeApplicationForms.invalid) {
       this.messageService.add({severity:'error',summary:'Please fill all fields!'})
     } else {

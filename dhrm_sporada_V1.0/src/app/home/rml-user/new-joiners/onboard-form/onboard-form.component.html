@@ -366,7 +366,7 @@
             <!-- onboard -->
             <p-button 
                *ngIf="!readonly"
-               [disabled]="disbleApproveBtn == 'status'"
+               [disabled]="disbleApproveBtn == 'status' || this.applicationStatus == 'APPOINTED'"
                [hidden]="this.applicationStatus == this.applicationStatusForBtn"
                 icon="pi pi-check-square"
                 iconPos="right"

@@ -1,52 +1,165 @@
-<div style='overflow-x:auto'>
-<div class="mx-5">
-     <!-- basic details -->
-        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
-          Family Details
-          <mat-icon>diversity_1</mat-icon>
-        </h3>
-    <b><h3 class="my-3">(<span class = "star-color">*</span> fields are required)</h3></b>
+<div style="overflow-x: auto">
+  <div class="mx-5">
+    <!-- basic details -->
+    <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-4 font-semibold">
+      Family Details
+      <mat-icon>diversity_1</mat-icon>
+      <span class="text-[length:--required-size] ml-2 text-black">
+       (<i class="star-color">*</i> fields are required)
+      </span>
+    </h3>
+    <!-- <b>
+      <h3 class="my-2 ml-3">
+        (<span class="star-color">*</span> fields are required)
+      </h3>
+    </b> -->
 
     <table class="table-auto w-full !font-poppins">
-        <thead>
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center" scope="col" >SNo</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col" >Name</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Relation</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Age</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">Occupation</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" scope="col">ContactNumber&nbsp;<span *ngIf = 'mobile_validate' style="color: red;">(*Should be equal to 10)</span></th>
-        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center"scope="col">Dependent/Self-Sufficient</th>
+      <thead>
+        <tr
+          class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left"
+        >
+          <th
+            class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center"
+            scope="col"
+          >
+            Sno  
+          </th>
+          <th
+            class="!text-white !px-2 !py-2 !border-none !border-0"
+            scope="col"
+          >
+            Name <span class="star-color">*</span>
+          </th>
+          <th
+            class="!text-white !px-2 !py-2 !border-none !border-0"
+            scope="col"
+          >
+            Relation <span class="star-color">*</span>
+          </th>
+          <th
+            class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            scope="col"
+          >
+            Age <span class="star-color">*</span>
+          </th>
+          <th
+            class="!text-white !px-2 !py-2 !border-none !border-0"
+            scope="col"
+          >
+            Occupation <span class="star-color">*</span>
+          </th>
+          <th
+            class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            scope="col"
+          >
+            ContactNumber&nbsp;<span *ngIf="mobile_validate" style="color: red"
+              >(*Should be equal to 10)</span
+            >
+          </th>
+          <th
+            class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0"
+            scope="col"
+          >
+            Dependent/Self-Sufficient <span class="star-color">*</span>
+          </th>
         </tr>
         <tr *ngFor="let data of familyData">
-            <td><input type="text" style="width:25px;"[(ngModel)]="data.sno" disabled></td>
-        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control" type="text" [(ngModel)]="data.name" (ngModelChange)="valids($event, 'name')" ></td>
-        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><select class="form-control" type = "text" [(ngModel)]="data.relation" (ngModelChange)= "sendData()" (ngModelChange)="valids($event, data)" ><option *ngFor= "let i of relation">
-          {{i}}
-  </option> ></select></td>
-        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control" type = "number" maxlength="2" pattern="/d{10}" [(ngModel)]="data.age" (ngModelChange)="valids($event, 'age')" (ngModelChange)="valid()" ></td>
-        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control" type = "text"[(ngModel)]="data.occupation" (ngModelChange)="valids($event, 'occ')"></td>
-        <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><input class="form-control" type = "number" maxlength="10" pattern="/d{10}" [(ngModel)]="data.contactnumber" (change)="valids($event, 'ContactNumber')" (ngModelChange)="valid()"></td>
-               <td><span *ngIf = "data.sno == '1' " class = "star-color">*</span><select class="form-control" type = "text" [(ngModel)]="data.dependent" (ngModelChange)="valids($event, 'dependent')" (ngModelChange)="valid()" (ngModelChange)="sendData()"><option *ngFor= "let i of dependent">
-          {{i}}
-  </option> </select></td>
-        <tr>
-    </thead>    
-    </table>
+          <td class="text-center">
+            <input
+              type="text"
+              style="width: 25px"
+              [(ngModel)]="data.sno"
+              disabled
+            />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="data.name"
+              (ngModelChange)="valids($event, 'name')"
+            />
+          </td>
+          <td>
+            <select
+              class="form-control"
+              type="text"
+              [(ngModel)]="data.relation"
+              (ngModelChange)="sendData()"
+              (ngModelChange)="valids($event, data)"
+            >
+              <option *ngFor="let i of relation">
+                {{ i }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              maxlength="2"
+              pattern="/d{10}"
+              [(ngModel)]="data.age"
+              (ngModelChange)="valids($event, 'age')"
+              (ngModelChange)="valid()"
+            />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="data.occupation"
+              (ngModelChange)="valids($event, 'occ')"
+            />
+          </td>
+          <td>
+            <input
+              class="form-control"
+              type="number"
+              maxlength="10"
+              pattern="/d{10}"
+              [(ngModel)]="data.contactnumber"
+              (change)="valids($event, 'ContactNumber')"
+              (ngModelChange)="valid()"
+            />
+          </td>
+          <td>
+           <select
+              class="form-control"
+              type="text"
+              [(ngModel)]="data.dependent"
+              (ngModelChange)="valids($event, 'dependent')"
+              (ngModelChange)="valid()"
+              (ngModelChange)="sendData()"
+            >
+              <option *ngFor="let i of dependent">
+                {{ i }}
+              </option>
+            </select>
+          </td>
+        </tr>
 
-</div>
+        <tr></tr>
+      </thead>
+    </table>
+  </div>
 </div>
 
 <div class="w-full flex items-center justify-center mt-4">
-  <button 
+  <button
     pButton
     label="Save"
     icon="pi pi-save"
-    [disabled]="flag" (click)="submit()">
-</button>
-
+    [disabled]="flag"
+    (click)="submit()"
+  ></button>
 </div>
 
-<span style = 'float:right;font-size: 20px;color: green;' class="animate" @slowAnimate *ngIf="state" >&nbsp; Details are saved</span>
-
- 
+<span
+  style="float: right; font-size: 20px; color: green"
+  class="animate font-semibold font-poppins"
+  @slowAnimate
+  *ngIf="state"
+  >&nbsp; Details are saved</span
+>
