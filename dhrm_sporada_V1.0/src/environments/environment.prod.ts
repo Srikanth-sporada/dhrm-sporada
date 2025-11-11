@@ -12,9 +12,9 @@ export const environment = {
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:true,
-  hideHrDashboard:true,
-  hideCanteenDashboard:true,
+  hideHrSummary:false,
+  hideHrDashboard:false,
+  hideCanteenDashboard:false,
   /** reports */
   hideCumulativeReport:true,
   hideLopReport:true,

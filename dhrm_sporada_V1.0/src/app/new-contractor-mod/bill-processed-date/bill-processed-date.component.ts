@@ -90,7 +90,8 @@ export class BillProcessedDateComponent implements OnInit {
       process_start_date:['',{validators : [Validators.required]}],
       process_end_date:['',{validators : [Validators.required]}],
       lock_date:[''],
-      category:['',{validators : [Validators.required]}],
+      companyTraineeLock: ['',[Validators.required]],
+      category:['T',{validators : [Validators.required]}],
       // holidayName:['',{validators : [Validators.required],updateOn: 'blur',disabled: false}]
     })
   }
@@ -112,15 +113,6 @@ updateSelectedDate() {
     const selectedLockMonth = this.billForm.get('lock_month')?.value;
     console.log('SELECTED LOCK MONTH: ' + selectedLockMonth)
     if (selectedLockMonth){
-      // const lockMonth = new Date(selectedLockMonth);
-      //  // calculated processed bill start date
-      // this.processedBillStartDate = new Date(new Date(selectedLockMonth)
-      // .setDate(lockMonth.getDate() + this.selecetedPayrollArea.StartDay - 1));
-
-      //  // calculated processed bill end date
-      //  this.processedBillEndDate = new Date(new Date(selectedLockMonth)
-      // .setDate(this.processedBillStartDate.getDate() + this.selecetedPayrollArea.EndDay));
-
       /** bill process start date & end date as calaulation based on start of the month */
        const selected = moment(selectedLockMonth, 'YYYY-MM'); // e.g. '2025-11']
        console.log('SELECTED LOCK MONTH:',selected);
@@ -395,12 +387,14 @@ onSubmit(){
     const formData = { ...this.billForm.value };
     // check box index value
     formData.category = this.billForm.value.category[0];
+    formData.companyTraineeLock = this.billForm.value.companyTraineeLock[0];
     formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
-    console.log(formData);
-    formData.process_start_date = this.formatDate(this.billForm.value.process_start_date)
-    formData.process_end_date = this.formatDate(this.billForm.value.process_end_date)
-    formData.lock_date = this.formatDate(this.billForm.value.lock_date)
-    this.api.add_Bill_date(formData,this.userEmpcode).subscribe(res =>{
+    formData.process_start_date = this.formatDate(this.billForm.value.process_start_date);
+    formData.process_end_date = this.formatDate(this.billForm.value.process_end_date);
+    formData.lock_date = this.formatDate(this.billForm.value.lock_date);
+     console.log(formData);
+    /** add new processed bill api call */
+    this.api.add_Bill_date(formData,this.userEmpcode).subscribe( (res) => {
       this.hideForm();
       this.openAlertDialog(`${res}`,'check')
       this.get_Bill_data();

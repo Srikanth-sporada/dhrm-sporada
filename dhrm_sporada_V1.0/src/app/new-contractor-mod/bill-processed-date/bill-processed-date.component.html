@@ -99,6 +99,33 @@
           </p-calendar>
           </div>
           <br>
+          <!-- company trainee process days calander days or between days -->
+           <div class="w-[95%] mx-auto">
+            <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
+            <br>
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+            Process Calenday Days
+          </label>
+           <div class="flex items-center justify-start gap-10">
+             <!-- festival -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="companyTraineeLock"
+              value="Y" 
+              inputId="admin" ></p-checkbox>
+              <label for="admin" class="mb-0 text-blue-600">YES</label>
+            </div>
+            <!-- national -->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+              formControlName="companyTraineeLock"
+              value="N" 
+              inputId="national" ></p-checkbox>
+              <label for="national" class="mb-0 text-blue-600">NO</label>
+            </div>
+           </div>
+         </div>
+          <br>
            <!-- category -->
          <div class="w-[95%] mx-auto">
             <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
@@ -107,17 +134,19 @@
             Category
           </label>
            <div class="flex items-center justify-start gap-10">
-             <!-- festival -->
+             <!-- company rainee -->
             <div class="flex items-center gap-2 ml-2 mb-2">
               <p-checkbox 
               formControlName="category"
+              [checked]="true"
               value="T" 
               inputId="admin" ></p-checkbox>
               <label for="admin" class="mb-0 text-blue-600">Trainee</label>
             </div>
-            <!-- national -->
+            <!-- operator -->
             <div class="flex items-center gap-2 ml-2 mb-2">
               <p-checkbox 
+              [disabled]="true"
               formControlName="category"
               value="O" 
               inputId="national" ></p-checkbox>

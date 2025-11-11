@@ -61,6 +61,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ChartModule } from 'primeng/chart';
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
 import { CostCenterComponent } from "./masters/cost-center/cost-center.component";
@@ -135,6 +136,7 @@ import { CostCenterComponent } from "./masters/cost-center/cost-center.component
     FileUploadModule,
     InputTextModule,
     CheckboxModule,
+    ChartModule,
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
