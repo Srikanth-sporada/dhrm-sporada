@@ -62,6 +62,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChartModule } from 'primeng/chart';
+import {CardModule} from 'primeng/card'
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
 import { CostCenterComponent } from "./masters/cost-center/cost-center.component";
@@ -137,6 +138,7 @@ import { CostCenterComponent } from "./masters/cost-center/cost-center.component
     InputTextModule,
     CheckboxModule,
     ChartModule,
+    CardModule,
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

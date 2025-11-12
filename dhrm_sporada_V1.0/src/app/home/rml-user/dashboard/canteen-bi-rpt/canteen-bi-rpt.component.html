@@ -1,3 +1,69 @@
+
+<div class="mx-3">
+  <!-- header -->
+   <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>dining</mat-icon> Canteen Dashboard<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View Canteen Dashboard Reports</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+  <!-- filter -->
+   <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-25 border border-gray-400 ">
+    <!-- filter header -->
+      <div class="relative mb-2">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+        </h1>
+      </div>
+    <div class="flex items-center flex-col md:flex-row gap-4">
+      <!-- date filter -->
+     <div class="w-full sm:w-1/3">
+      <label for="date" class="font-semibold text-gray-400">Date</label> <br>
+      <p-calendar 
+        [(ngModel)]="selectedDate" 
+        dateFormat="yy-mm-dd"
+        styleClass="w-full !font-poppins"
+        [showIcon]="true" >
+     </p-calendar>
+    </div>
+    </div>
+    </div>
+
+    <!-- canten dashborad Cards & doughtnut chart-->
+     <div class="flex items-center justify-center px-2 flex-col sm:flex-row sm:justify-between">
+      <!-- reports division -->
+        <div class="w-1/2">
+        <div *ngFor="let i of getRowIndices()" class="flex items-center justify-between gap-3 flex-col sm:flex-row my-3">
+          <ng-container *ngFor="let label of dataLabels.slice(i, i + 2)">
+            <p-card
+              [header]="label"
+              [style]="{ width: '230px', textAlign: 'center' }"
+              styleClass="font-poppins font-bold w-full"
+            >
+              <p class="text-xl font-semibold">{{ reportData[0][label] }}</p>
+            </p-card>
+          </ng-container> 
+        </div>
+        </div>
+      <!-- chart division -->
+        <div class="flex items-center justify-center" #chartContainer>
+          <p-chart 
+            type="doughnut" 
+            [data]="canteenReportData" 
+            [options]="chartOptions" 
+            height="400px"
+            width="500px">
+          </p-chart>
+        </div>
+     </div>
+
 <div class="lg:mx-4 lg:my-4">
   <iframe 
   title="canteen dashboard_prod" 
@@ -8,5 +74,3 @@
   >
 </iframe>
 </div>
-
-

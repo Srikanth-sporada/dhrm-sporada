@@ -471,8 +471,7 @@ onSignatureChange(event:any){
 		window.alert("File size should be less than 2MB") 
 		const t:any = document.getElementById('sign')
 		t.value =''
-		this.signature_file = null
-
+		this.signature_file = null;
 	}
 	else
 	{

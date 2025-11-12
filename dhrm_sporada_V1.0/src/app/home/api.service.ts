@@ -48,6 +48,10 @@ export class ApiService {
       this.url + "/hrOperation/plantcodelist?company_name=" + form.company_name
     );
   }
+  /** get plant data by company code */
+  getPlantsByCompanyCode(companyCode:any){
+    return this.http.get(this.url + `/HROperation/plantcodeCC?company_name=${companyCode}`)
+  }
   getCompanyCode() {
     return this.http.get(this.url + "/hrOperation/companycodelist");
   }
@@ -71,6 +75,11 @@ export class ApiService {
       "&company=" +
       form.company
     );
+  }
+
+  /** get all data about trainee for ID card */
+  getTraineeDataForIdCard(applicationNo:any){
+    return this.http.get(this.url + `/HROperation/getdatafortrainee?apln_slno=${applicationNo}`)
   }
   getDataForPermId(form: any) {
     return this.http.get(

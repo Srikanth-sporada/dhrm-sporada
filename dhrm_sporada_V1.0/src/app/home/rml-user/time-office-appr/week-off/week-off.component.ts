@@ -42,8 +42,7 @@ export class WeekOffComponent implements OnInit {
       console.log(error);
       this.messageService.add({severity:'error',summary:error.message})
     });
-    this.getLockDate()
- 
+    this.getLockDate();
   }
 
   getDates(){
@@ -82,21 +81,21 @@ export class WeekOffComponent implements OnInit {
   getData(){
     this.data=[]
     this.apiService.getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine).subscribe((response:any)=>{
-      let data
+      let data;
       if(response.status='success'){
         data = response.data.map((element:any) => {
           // five days default sunday + saturday mapping
-          if(element.active_status == 'Y' && element.week_off_day[0].week_off_day == 7 && element.week_off_day.length == 1){
-            const weekOfArrray = element.week_off_day.map((data:any) => {
-            return data.week_off_day.toString();
+          if(element?.active_status == 'Y' && element.week_off_day[0]?.week_off_day == 7 && element?.week_off_day.length == 1){
+            const weekOfArrray = element?.week_off_day.map((data:any) => {
+            return data?.week_off_day?.toString();
           });
-          // default select for saturday if five day mapping
+          // default select for saturday and sunday if six day mapping
           weekOfArrray.unshift('6');
             return {...element,week_off_day_arr:weekOfArrray}
           }else{
                // constructing the respose data for mat multiselect
-            return {...element,week_off_day_arr:element.week_off_day.map((data:any) => {
-            return data.week_off_day.toString();
+            return {...element,week_off_day_arr:element?.week_off_day.map((data:any) => {
+            return data?.week_off_day.toString();
           })}
           }
         
@@ -110,9 +109,9 @@ export class WeekOffComponent implements OnInit {
             return element.apprentice_type=='OPERATOR'
           })
         }
-        
         console.log(data)
-        this.data=data
+        this.data = data;
+        console.log(this.checkAlreadyApplied())
       }else{
         // alert(response.message)
         this.messageService.add({severity:'warn',summary:response.message})
@@ -228,7 +227,7 @@ onWeekOffChange(item: any, dayValue:any): void {
               week_of_date:date,
               trn_woff_id: weekOffID
             }
-            // api call
+          /** second week of update api */
             this.changealreadyUpdatedWeekOff(updateData);
             console.log('updatedData',updateData)
           }
@@ -308,4 +307,8 @@ onWeekOffChange(item: any, dayValue:any): void {
    })
   }
   
+  /** check already applied week off */
+  checkAlreadyApplied() {
+    return this.data.some((weekoffData:any) => weekoffData.already_applied == 1);
+  }
 }

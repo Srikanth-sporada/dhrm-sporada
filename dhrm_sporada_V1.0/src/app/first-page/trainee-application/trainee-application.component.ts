@@ -24,6 +24,8 @@ export class TraineeApplicationComponent implements OnInit {
   @Input() plantCode:any;
   mobilenum: any = "";
   companyname: any = "";
+  companyCodeSno:any;
+  plantName:any;
   plantname: any = "";
   isHrappr: any;
   plantcode: any;
@@ -53,21 +55,19 @@ export class TraineeApplicationComponent implements OnInit {
   ngOnInit(): void {
     /** getting company and plant data */
     this.getcompanycode();
-    this.getplantcode({value:this.companyCode});
+    this.getPlantsByCompanyCode(this.companyCode);
+
+    
+   
     // initializing the trainee application form with form builder
     this.traineeApplicationForms = this.fb.group({
-      mobileNumber: [
-        "",
-        [Validators.required,]
-      ],
-      company: [this.companyCode, Validators.required],
-      plant: [this.plantCode, Validators.required],
+      mobileNumber: ["",Validators.required],
+      company: ['', Validators.required],
+      plant: ['', Validators.required],
       pass: ["", Validators.required],
     });
     this.mobilenum = this.traineeApplicationForms.controls["mobileNumber"].value;
     this.companyname = this.traineeApplicationForms.controls["company"].value;
-
-    console.log(Number(this.companyCode));
     console.log(this.traineeApplicationForms.value);
   }
 
@@ -94,6 +94,10 @@ export class TraineeApplicationComponent implements OnInit {
     this.service.getCompanyCode().subscribe({
       next: (response) => {
         this.companycode = response;
+        this.companyCodeSno = this.companycode.filter((company:any) => company.company_code == this.companyCode);
+        /** setting company sno */
+        this.traineeApplicationForms.controls['company'].setValue(this.companyCodeSno[0].sno)
+       console.log("company",this.companyCodeSno);
       },
       error: (error) => this.messageService.add({severity:'error',summary:error.message})
     });
@@ -105,6 +109,7 @@ export class TraineeApplicationComponent implements OnInit {
     if (this.traineeApplicationForms.invalid) {
       this.messageService.add({severity:'error',summary:'Please fill all fields!'})
     } else {
+      console.log(this.traineeApplicationForms.value)
       this.service.traineeFormData(this.traineeApplicationForms.value).subscribe({
         next: (response: any) => {
           this.errmsg = response;
@@ -175,5 +180,23 @@ export class TraineeApplicationComponent implements OnInit {
 
   submitTraineeApplicationForm() {
     console.log(this.traineeApplicationForms.value);
+  }
+
+  /** get plant by company code */
+  getPlantsByCompanyCode(compantCode:any){
+    this.service.getPlantsByCompanyCode(compantCode).subscribe({
+      next: (response:any) => {
+       this.plantcode = response;
+       this.plantName = this.plantcode.filter((plant:any) => plant.plant_code == this.plantCode);
+       console.log(this.plantcode);
+       this.traineeApplicationForms.controls['plant'].setValue(this.plantName[0].plant_name);
+       console.log(this.traineeApplicationForms.value);
+       console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
+    })
   }
 }

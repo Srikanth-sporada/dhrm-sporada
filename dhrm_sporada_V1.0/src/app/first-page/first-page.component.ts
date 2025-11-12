@@ -69,9 +69,9 @@ export class FirstPageComponent implements OnInit {
 
   constructor(private route:ActivatedRoute) {
     /** converting string into number */
-    this.companyCode = Number(this.route.snapshot.paramMap.get('companyCode'));
+    this.companyCode = this.route.snapshot.paramMap.get('companyCode');
     this.plantCode = this.route.snapshot.paramMap.get('plantCode');
-    console.log('CODE:',this.companyCode);
+    console.log('company Code:', this.companyCode , 'Plant Code:' , this.plantCode);
     sessionStorage.clear();
   }
 

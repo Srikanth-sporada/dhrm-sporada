@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root' // Makes the service available globally
 })
 
-export class Utility{
+export class Utility {
   
     constructor (private messageService:MessageService, private apiService:ApiService){
 
@@ -34,6 +34,20 @@ export class Utility{
       if (!Array.isArray(dataArray) || dataArray.length === 0) return [];
       return Object.keys(dataArray[0]);
     }
+    /** extract response data object keys 
+     * @param dataArray data array to extract object keys
+    */
+    extractKeysForReports(dataArray:any) {
+      if (!Array.isArray(dataArray) || dataArray.length === 0) return [];
+      return Object.keys(dataArray[0]);
+    }
+    /** extract response data object values 
+     * @param dataArray
+    */
+    extractValues(dataArray: any[]) {
+      if (!Array.isArray(dataArray) || dataArray.length === 0) return [];
+      return Object.values(dataArray[0]);
+     }
 
     /** get payroll area by plant code
       * @property {UntypedForm} form.plantCode

@@ -20,7 +20,7 @@ export class HrSummaryComponent implements OnInit {
     // Sanitize the Power BI link
     this.HR_link = this.sanitizer.bypassSecurityTrustResourceUrl(powerBiLink.HR_link);
         const documentStyle = getComputedStyle(document.documentElement);
-        console.log('DOC STYLE:',documentStyle);
+        console.dir(documentStyle);
         const textColor = documentStyle.getPropertyValue('--text-color');
         console.log('Color',textColor);
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -32,9 +32,9 @@ export class HrSummaryComponent implements OnInit {
             datasets: [
                 {
                     label: 'Sales',
-                    data: [540, 325, 702, 620],
-                    backgroundColor: [documentStyle.getPropertyValue('--blue-500'), 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                    borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
+                    data: [540, 325, 702, 620], //'rgba(255, 159, 64, 0.2)'
+                    backgroundColor: [documentStyle.getPropertyValue('--blue-200'), 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                    borderColor: [documentStyle.getPropertyValue('--blue-800'), 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
                     borderWidth: 1
                 }
             ]

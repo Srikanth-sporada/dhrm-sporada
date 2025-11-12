@@ -46,7 +46,8 @@ export class PermIdcardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDataForID();
+    // this.getDataForID();
+    this.getTraineeData();
 
     if (this.formvalues) {
       setTimeout(() => {
@@ -55,6 +56,9 @@ export class PermIdcardComponent implements OnInit {
     }
   }
 
+  /** ID card print function
+   * while print hiding prin btn using print events
+   */
   printing() {
     window.addEventListener('beforeprint', (event) => {
     // Code to run before the print dialog opens
@@ -79,8 +83,7 @@ export class PermIdcardComponent implements OnInit {
   }
 
   getDataForID() {
-    this.uniqueId.trainee_apln =
-      this.active.snapshot.paramMap.get("trainee_apln");
+    this.uniqueId.trainee_apln = this.active.snapshot.paramMap.get("trainee_apln");
     this.uniqueId.apln_slno = this.active.snapshot.paramMap.get("apln_slno");
     this.uniqueId.status = this.active.snapshot.paramMap.get("status");
     console.log(this.status);
@@ -92,16 +95,12 @@ export class PermIdcardComponent implements OnInit {
         this.getDate()
         this.plant = this.formvalues[0].plant_sign;
          this.plantName = response[0].plant_name
-        this.form.controls["permanent"].setValue(
-          this.formvalues[0]?.permanent_address
-        );
-        this.form.controls["company_address"].setValue(
-          this.formvalues[0]?.addr
-        );
-
-        this.url = this.url + "/uploads/" + this.formvalues[0]?.other_files6;
-        this.plant = environment.path + "/plant/" + this.formvalues[0]?.plant_sign;
-        this.traineeSign = environment.path + '/uploads/' + this.formvalues[0]?.other_files6;
+        this.form.controls["permanent"].setValue(this.formvalues[0]?.permanent_address);
+        this.form.controls["company_address"].setValue(this.formvalues[0]?.addr);
+        /** trainee signature */
+        this.url = this.url + "/uploads/" + this.formvalues[0]?.other_files6; // trainee photo
+        this.plant = environment.path + "/plant/" + this.formvalues[0]?.plant_sign; // plant sign
+        this.traineeSign = environment.path + '/uploads/' + this.formvalues[0]?.other_files7; // trainee signature
         console.log("url", this.plant, this.url);
       },
       error: (error) => console.log(error),
@@ -119,32 +118,41 @@ export class PermIdcardComponent implements OnInit {
           const toDate = fromDate.clone().add(this.validdate,'months');
           this.todate = toDate;
           console.log(this.validdate,this.fromdate,this.todate);
-          // if(this.validdate == null || this.validdate == undefined)
-          //   this.validdate = 1
-          // else
-          //   this.validdate = this.validdate/12
-          // let date = this.formvalues[0].doj
-          // console.log(date, new Date(date))
-          // this.fromdate = new Date(date)
-
-          // this.todate = new Date(this.fromdate.getTime() + ((365000*this.validdate) * 60 * 60 * 24));
-          
-          // var x = this.fromdate.getMonth()+1
-          // var y = this.todate.getMonth()+1
-  
-          // if(x<10)
-          // this.frommdate = this.fromdate.getDate()+'-0'+x+'-'+this.fromdate.getFullYear()
-          // else
-          // this.frommdate = this.fromdate.getDate()+'-'+x+'-'+this.fromdate.getFullYear()
-  
-          // if(y<10)
-          // this.toodate = this.todate.getDate()+'-0'+y+'-'+this.todate.getFullYear()
-          // else
-          // this.toodate = this.todate.getDate()+'-'+y+'-'+this.todate.getFullYear()
         }
     )
   }
   formatDate(date: any) {
     return date.split("-").revers().join("-");
+  }
+
+  /** get trainee data for permanent ID card 
+   * @property uniqueId has trainee data from router params
+  */
+  getTraineeData(){
+    this.uniqueId.trainee_apln = this.active.snapshot.paramMap.get("trainee_apln");
+    this.uniqueId.apln_slno = this.active.snapshot.paramMap.get("apln_slno");
+    this.uniqueId.status = this.active.snapshot.paramMap.get("status");
+    console.log(this.status);
+
+    this.service.getTraineeDataForIdCard(this.uniqueId.apln_slno).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.formvalues = response;
+        this.getDate()
+        this.plant = this.formvalues[0].plant_sign;
+         this.plantName = response[0].plant_name
+        this.form.controls["permanent"].setValue(this.formvalues[0]?.permanent_address);
+        this.form.controls["company_address"].setValue(this.formvalues[0]?.addr);
+        /** trainee signature */
+        this.url = this.url + "/uploads/" + this.formvalues[0]?.other_files6; // trainee photo
+        this.plant = environment.path + "/plant/" + this.formvalues[0]?.plant_sign; // plant sign
+        this.traineeSign = environment.path + '/uploads/' + this.formvalues[0]?.other_files7; // trainee signature
+        console.log("url", this.plant, this.url);
+      },
+      error: (error) => {
+        console.error(error);
+        this.messageService.add({severity:'error',summary:error.message})
+      },
+    });
   }
 }

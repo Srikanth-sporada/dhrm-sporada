@@ -10,7 +10,12 @@
 
 <!-- test chart -->
  <div>
-    <p-chart type="pie" [data]="basicData" [options]="basicOptions" (onDataSelect)="onDataSelect($event)">
-
+    <p-chart 
+     type="doughnut" 
+     [data]="basicData" 
+     [options]="basicOptions" 
+     (onDataSelect)="onDataSelect($event)"
+     height="400px"
+     width="500px">
     </p-chart>
 </div>
