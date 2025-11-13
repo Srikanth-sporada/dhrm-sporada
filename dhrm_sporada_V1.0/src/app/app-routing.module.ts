@@ -56,23 +56,25 @@ const routes: Routes = [
     path: 'trainee-test/:username',
     component: TraineeTestComponent, canActivate: [AuthGuard]
   },
+  /** root path */
   {
     path: ':companyCode/:plantCode',
     component: FirstPageComponent,
+    pathMatch:'full'
   },
   {
     path:'**',
     redirectTo: 'page-not-found',
+    pathMatch:'full'
   },
   {
-    path: 'page-not-found',
-    component: PageNotFoundComponent
+    path: 'page-not-found', 
+    component: FirstPageComponent, //PageNotFoundComponent
   },
   {
     path: 'dashboard',
     component: DashboardComponent
   }
-
 ];
 
 @NgModule({

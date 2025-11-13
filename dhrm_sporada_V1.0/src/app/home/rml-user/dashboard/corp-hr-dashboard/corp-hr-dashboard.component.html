@@ -1,3 +1,66 @@
+<div>
+   <!-- header -->
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="flex items-start justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>dashboard</mat-icon>HR Dashboard<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">View Trainee Summary</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+  </div>
+
+  <!-- Prime ng tab view -->
+   <p-tabView>
+    <!-- trainee head count summary -->
+     <p-tabPanel>
+       <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">pin</mat-icon>
+                    <span>Head Count Summary</span>
+                  </div>
+        </ng-template>
+        <!-- content -->
+         <ng-template pTemplate="content">
+          <app-trainee-head-count-summary></app-trainee-head-count-summary>
+         </ng-template>
+     </p-tabPanel>
+     <!-- Trainee plant wise head count -->
+     <p-tabPanel>
+       <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">domain</mat-icon>
+                    <span>Plant Wise Head Count</span>
+                  </div>
+        </ng-template>
+        <!-- content -->
+         <ng-template pTemplate="content">
+          <app-trainee-plant-wise-head-count></app-trainee-plant-wise-head-count>
+         </ng-template>
+     </p-tabPanel>
+
+      <!-- Trainee Present Trend -->
+     <p-tabPanel>
+       <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">trending_up</mat-icon>
+                    <span>Present Trend</span>
+                  </div>
+        </ng-template>
+        <!-- content -->
+         <ng-template pTemplate="content">
+          <app-trainee-present-trend></app-trainee-present-trend>
+         </ng-template>
+     </p-tabPanel>
+   </p-tabView>
+</div>
+
 <div class="lg:mx-4 lg:my-4">
   <iframe 
   title="HR summary dashboard" 

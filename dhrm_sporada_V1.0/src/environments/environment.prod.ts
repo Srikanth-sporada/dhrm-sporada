@@ -8,7 +8,7 @@ export const environment = {
   hideSalaryMaster:true,
   hidePeoplePlanning:true,
   hidePmpd:true,
-  hideMidPermission:true,
+  hideMidPermission:false,
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */

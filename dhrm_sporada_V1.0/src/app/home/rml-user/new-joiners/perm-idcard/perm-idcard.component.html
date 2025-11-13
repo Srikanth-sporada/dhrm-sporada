@@ -8,14 +8,14 @@
       </div>
       <!-- company name -->
        <p class="text-3xl text-center mb-2 font-bold mx-1">
-        Rane Holdings Limited Rane Holding 
+       {{i?.company_name}}
       </p>
       <!-- trainee image -->
-      <!-- src=this.url -->
+      <!-- src=this.apiPath Executive.jpeg apiPath + '/uploads/' + i?.other_files6-->
        <div  class="flex items-center justify-center">
           <img 
            class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain !border-2 !border-gray-400 rounded-md" 
-           src="assets/Executive.jpeg" 
+           [src]="apiPath + '/uploads/' + i?.other_files6"
            alt="Avatar" />
        </div>
      
@@ -40,11 +40,11 @@
        <!-- signature -->
         <div class="flex item-center justify-between mt-2">
           <div class="text-center w-1/2">
-            <img [src]="plant" alt="sign" class="object-contain">
+            <img [src]="apiPath + '/uploads/' + i?.other_files7" alt="sign" class="object-contain">
             <p class="text-lg">Holder's Signature</p>
           </div>
           <div class="text-center w-1/2">
-            <img [src]="plant" alt="sign">
+            <img [src]="apiPath + '/plant/' + i?.plant_sign" alt="sign">
             <p class="text-lg">Issuing Authority</p>
           </div>
         </div>
@@ -110,7 +110,7 @@
                <tr class="my-2">
                 <td div class="aligncommand1 text-xl"><b>Res. Address </b> :</td>
                </tr>
-               <p class="text-xl">{{i?.addr}}</p>
+               <p class="text-xl">{{i?.present_address}}</p>
               <tr class="my-2">
                 <td div class="aligncommand1 text-xl"><b>Contact No</b></td>
                 <td div class="aligncommand1 text-xl">: +91 {{i.mobile_no1}}</td>

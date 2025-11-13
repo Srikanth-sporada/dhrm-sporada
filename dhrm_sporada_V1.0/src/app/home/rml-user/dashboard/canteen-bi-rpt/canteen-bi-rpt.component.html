@@ -12,7 +12,7 @@
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
           {{userDetails}}
          </h1>
-  </div>
+   </div>
 
   <!-- filter -->
    <div class="!shadow-md !my-4 !rounded-md !mx-auto h-full pb-3 !px-4 !font-poppins sm:h-25 border border-gray-400 ">
@@ -35,17 +35,16 @@
     </div>
     </div>
     </div>
-
     <!-- canten dashborad Cards & doughtnut chart-->
-     <div class="flex items-center justify-center px-2 flex-col sm:flex-row sm:justify-between">
-      <!-- reports division -->
+     <div class="flex justify-center px-2 flex-col sm:flex-row sm:justify-between gap-4">
+      <!-- reports division in row only two card-->
         <div class="w-1/2">
-        <div *ngFor="let i of getRowIndices()" class="flex items-center justify-between gap-3 flex-col sm:flex-row my-3">
-          <ng-container *ngFor="let label of dataLabels.slice(i, i + 2)">
+        <div *ngFor="let i of getRowIndices()" class="flex items-center justify-around gap-3 flex-col sm:flex-row my-3">
+          <ng-container *ngFor="let label of dataLabels.slice(i, i + 2); let index">
             <p-card
               [header]="label"
               [style]="{ width: '230px', textAlign: 'center' }"
-              styleClass="font-poppins font-bold w-full"
+              [styleClass]="'font-poppins font-bold w-full bg-blue-100'"
             >
               <p class="text-xl font-semibold">{{ reportData[0][label] }}</p>
             </p-card>
@@ -53,18 +52,17 @@
         </div>
         </div>
       <!-- chart division -->
-        <div class="flex items-center justify-center" #chartContainer>
+        <div class="w-1/2 mx-auto" #chartContainer>
           <p-chart 
             type="doughnut" 
             [data]="canteenReportData" 
-            [options]="chartOptions" 
-            height="400px"
-            width="500px">
+            [options]="chartOptions"
+            [height]="'100%'">
           </p-chart>
         </div>
      </div>
-
-<div class="lg:mx-4 lg:my-4">
+ 
+<!-- <div class="lg:mx-4 lg:my-4">
   <iframe 
   title="canteen dashboard_prod" 
   [src]="cnt_link" 
@@ -73,4 +71,4 @@
  class="rounded-md !flex !items-center !justify-center !h-dvh"
   >
 </iframe>
-</div>
+</div> -->

@@ -36,8 +36,7 @@ export class CanteenBiRptComponent implements OnInit,AfterViewInit {
   const rect = this.chartContainer.nativeElement.getBoundingClientRect();
   this.chartWidth = `${rect.width}px`;
   this.chartHeight = `${rect.height}px`;
-
-  console.log(this.chartHeight,this.chartWidth)
+  console.log(this.chartHeight,this.chartWidth);
 }
 
   ngOnInit(): void {
@@ -81,12 +80,45 @@ export class CanteenBiRptComponent implements OnInit,AfterViewInit {
         };
 
         /** doughtnut chart options */
+        //  this.chartOptions = {
+        //   responsive:true,
+        //   maintainAspectRatio:false,
+        //     plugins: {
+        //         legend: {
+        //             labels: {
+        //                 usePointStyle: true,
+        //                 color: textColor
+        //             }
+        //         }
+        //     }
+        // };
+
          this.chartOptions = {
             plugins: {
                 legend: {
                     labels: {
-                        usePointStyle: true,
                         color: textColor
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
                     }
                 }
             }

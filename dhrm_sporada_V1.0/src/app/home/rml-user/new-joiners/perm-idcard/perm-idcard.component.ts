@@ -30,6 +30,7 @@ export class PermIdcardComponent implements OnInit {
   cat: any;
   validdate: any;
   plantName:string;
+  apiPath:any = environment.path
   // todate = this.fromdate.setDate(this.fromdate.getDate() + 10)
 
   constructor(
