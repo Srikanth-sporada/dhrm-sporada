@@ -55,7 +55,7 @@ export class PayrollAreaComponent implements OnInit {
   plantData:any=[];
   payrollAreaList:PayrollArea[] = [];
   payrollAreaCopy:PayrollArea[] = [];
-  companyData:any = []
+  companyData:any = [];
   selectedPlant:any = '';
   /**
    * editing_flag - Flag to indicate if the form is in edit mode
@@ -127,7 +127,7 @@ export class PayrollAreaComponent implements OnInit {
       StartDay:['',Validators.required],
       EndDay:['',Validators.required],
       Grace_minutes: ['',Validators.required],
-      weekoff_eligibility: ['',Validators.required],
+      week_off_eligibility: ['',Validators.required],
       InsertBy:[''],
       UpdateBy:[''],
     })
@@ -241,7 +241,7 @@ export class PayrollAreaComponent implements OnInit {
       this.payrollAreaForm.controls['EndDay'].setValue(this.payrollAreaList[a]?.EndDay);
       this.payrollAreaForm.controls['InsertBy'].setValue(this.payrollAreaList[a]?.InsertBy)
       this.payrollAreaForm.controls['Grace_minutes'].setValue(this.payrollAreaList[a]?.Grace_minutes);
-      this.payrollAreaForm.controls['weekoff_eligibility'].setValue(this.payrollAreaList[a]?.weekoff_eligibility);
+      this.payrollAreaForm.controls['week_off_eligibility'].setValue(this.payrollAreaList[a]?.week_off_eligibility);
       this.payrollAreaForm.controls['UpdateBy'].setValue(this.all?.gen_id);
       console.log(this.payrollAreaForm.value);
 

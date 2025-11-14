@@ -38,6 +38,7 @@ export class BillProcessedDateComponent implements OnInit {
   currentYear = new Date().getFullYear();
   all:any;
   userDetails:any;
+  isChecked:boolean = false;
   // months: string[] = [
   //   'January', 'February', 'March', 'April', 'May', 'June',
   //   'July', 'August', 'September', 'October', 'November', 'December'
@@ -93,14 +94,14 @@ export class BillProcessedDateComponent implements OnInit {
       companyTraineeLock: ['',[Validators.required]],
       category:['T',{validators : [Validators.required]}],
       // holidayName:['',{validators : [Validators.required],updateOn: 'blur',disabled: false}]
-    })
+    });
   }
 
 ngOnInit(): void {
    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
     }
 
     this.plant_Code = sessionStorage.getItem('plantcode');
@@ -433,5 +434,9 @@ exportExcel() : void{
   XLSX.utils.book_append_sheet(wb, ws, "Factory Holiday Master");
   XLSX.writeFile(wb,"Mst_Factory_Holiday.xlsx");
 
+}
+
+disabelChecked(){
+  this.isChecked = !this.isChecked;
 }
 }

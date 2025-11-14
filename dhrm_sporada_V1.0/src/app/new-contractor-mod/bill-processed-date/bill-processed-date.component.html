@@ -103,7 +103,7 @@
            <div class="w-[95%] mx-auto">
             <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
             <br>
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
             Process Calenday Days
           </label>
            <div class="flex items-center justify-start gap-10">
@@ -111,8 +111,12 @@
             <div class="flex items-center gap-2 ml-2 mb-2">
               <p-checkbox 
               formControlName="companyTraineeLock"
-              value="Y" 
-              inputId="admin" ></p-checkbox>
+              value="Y"
+              [disabled]="true"
+              inputId="admin"
+              (onChange)="disabelChecked()"
+              [disabled]="isChecked" >
+             </p-checkbox>
               <label for="admin" class="mb-0 text-blue-600">YES</label>
             </div>
             <!-- national -->
@@ -120,7 +124,11 @@
               <p-checkbox 
               formControlName="companyTraineeLock"
               value="N" 
-              inputId="national" ></p-checkbox>
+              inputId="national"
+              (onChange)="disabelChecked()"
+              [disabled]="isChecked"
+              >
+             </p-checkbox>
               <label for="national" class="mb-0 text-blue-600">NO</label>
             </div>
            </div>

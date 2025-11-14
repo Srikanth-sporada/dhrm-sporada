@@ -18,7 +18,7 @@ import { FormService } from "../new-joiners/form.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { environment } from "src/environments/environment.prod";
-import { imageList } from "src/app/imageList";
+import { homeImages } from "src/app/imageList";
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -133,7 +133,7 @@ export class NavbarComponent implements OnInit {
     this.generateImage();
     this.getHr();
     /** new Images */
-    this.news = imageList;
+    this.news = homeImages;
     // console.log(this.payrollNavLink);
   }
 

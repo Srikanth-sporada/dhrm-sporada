@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { imageList } from "../imageList";
+import { newsImages } from "../imageList";
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -76,7 +76,7 @@ export class FirstPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.news = imageList;
+    this.news = newsImages;
   }
 
   setSession(key: string): void {
