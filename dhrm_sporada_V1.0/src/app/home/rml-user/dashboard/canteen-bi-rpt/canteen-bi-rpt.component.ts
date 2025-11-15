@@ -15,6 +15,7 @@ export class CanteenBiRptComponent implements OnInit,AfterViewInit {
   selectedDate:any = new Date();
   canteenReportData:any;
   chartOptions:any;
+  /** mock api data */
   reportData:any = [{
      "Supper":540,
      "Break Fast":325,
@@ -78,21 +79,7 @@ export class CanteenBiRptComponent implements OnInit,AfterViewInit {
                 }
             ]
         };
-
-        /** doughtnut chart options */
-        //  this.chartOptions = {
-        //   responsive:true,
-        //   maintainAspectRatio:false,
-        //     plugins: {
-        //         legend: {
-        //             labels: {
-        //                 usePointStyle: true,
-        //                 color: textColor
-        //             }
-        //         }
-        //     }
-        // };
-
+        /** dougnut chart options */
          this.chartOptions = {
             plugins: {
                 legend: {

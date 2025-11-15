@@ -38,7 +38,6 @@ export class BillProcessedDateComponent implements OnInit {
   currentYear = new Date().getFullYear();
   all:any;
   userDetails:any;
-  isChecked:boolean = false;
   // months: string[] = [
   //   'January', 'February', 'March', 'April', 'May', 'June',
   //   'July', 'August', 'September', 'October', 'November', 'December'
@@ -434,9 +433,5 @@ exportExcel() : void{
   XLSX.utils.book_append_sheet(wb, ws, "Factory Holiday Master");
   XLSX.writeFile(wb,"Mst_Factory_Holiday.xlsx");
 
-}
-
-disabelChecked(){
-  this.isChecked = !this.isChecked;
 }
 }

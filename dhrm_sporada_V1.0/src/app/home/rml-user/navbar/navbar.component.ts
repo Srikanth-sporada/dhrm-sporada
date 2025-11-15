@@ -184,7 +184,8 @@ export class NavbarComponent implements OnInit {
         this.ishrappr = response;
 
         sessionStorage.setItem("all", JSON.stringify(this.ishrappr[0]));
-
+        sessionStorage.setItem('companyCode', JSON.stringify(this.ishrappr[0]?.company_code));
+        sessionStorage.setItem('companyName', JSON.stringify(this.ishrappr[0]?.company_name));
         sessionStorage.setItem("ishr", this.ishrappr[0]?.Is_HR);
         sessionStorage.setItem("ishrappr", this.ishrappr[0]?.Is_HRAppr);
         sessionStorage.setItem("istrainer", this.ishrappr[0]?.Is_Trainer);

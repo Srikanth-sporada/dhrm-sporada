@@ -18,12 +18,18 @@ export class Utility {
       * @param tableId ID of table to convert excel sheet
       * @param fileName name to save excel file
     */
-     exportexcel(tableId:string, fileName:string) {
+     exportexcel(tableId:string, fileName:string,plant:any) {
        const x = document.querySelector(`#${tableId}`)
        const ws = XLSX.utils.table_to_sheet(x);
        const wb = XLSX.utils.book_new();
-       XLSX.utils.book_append_sheet(wb, ws, 'Table');
-       XLSX.writeFile(wb, `${fileName}.xlsx`);
+      /** checking if the plant code is empty */
+       if(plant == ''){
+        XLSX.utils.book_append_sheet(wb, ws, fileName + '_' + 'all');
+        XLSX.writeFile(wb, `${fileName}_${'all'}.xlsx`);
+       }else{
+        XLSX.utils.book_append_sheet(wb, ws, fileName + '_' + plant);
+        XLSX.writeFile(wb, `${fileName}_${plant}.xlsx`);
+       }
        this.messageService.add({severity:'info',summary:'Data Exported!'});
      }
 

@@ -24,7 +24,7 @@
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="utility.exportexcel('table','lopreport')"></p-button>
+         (click)="utility.exportexcel('table','lopreport',lopReportForm.value.plantCode)"></p-button>
       </div>
    <form [formGroup]="lopReportForm">
      <!-- filter first row -->
@@ -39,7 +39,13 @@
             optionValue="company_code"
             styleClass="w-full" 
             (onChange)="getplantByCompanyCode()"
-            placeholder="Select Company" ></p-dropdown>
+            placeholder="Select Company" >
+            <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
        </div>
        <!-- plant -->
        <div class="font-poppins w-full">
@@ -51,7 +57,13 @@
             optionValue="plant_code"
             styleClass="w-full" 
             (onChange)="getPayrollAreaByPlant()"
-            placeholder="Select Plant" ></p-dropdown>
+            placeholder="Select Plant" >
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+          </ng-template>
+        </p-dropdown>
        </div>
         <!-- payroll area-->
        <div class="font-poppins w-full">
@@ -126,15 +138,15 @@
       <table id="table" class="w-full">
         <!-- table head -->
         <thead class="sticky top-0">
-          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Name</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap" scope="col">Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0  text-nowrap">Plant</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Start Date</th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">End Date</th>
                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Duration</th>
-            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">LOP Type</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-nowrap">LOP Type</th>
           </tr>
         </thead>
         <!-- table body -->
@@ -149,8 +161,8 @@
                 <span 
                    class="block"
                    [ngClass]="{
-                    'text-blue-600 font-semibold': key == reportDataObjectKeys[0], 
-                    'text-center':key == reportDataObjectKeys[3] || key == reportDataObjectKeys[6] || key == reportDataObjectKeys[7] }">
+                    'text-center text-blue-600 font-semibold': key == reportDataObjectKeys[0], 
+                    'text-center':key == reportDataObjectKeys[3] || key == reportDataObjectKeys[6] || key == reportDataObjectKeys[4] || key == reportDataObjectKeys[5]}">
                     {{i[key]}}
                      <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)" *ngIf=" key == reportDataObjectKeys[1]"></i>
                 </span>

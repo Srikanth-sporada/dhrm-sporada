@@ -22,8 +22,8 @@ export class LopReportComponent implements OnInit {
      all:any;
      userDetails:any;
      companyData:any = [];
-     plantData:any = [];
-     payrollAreaData:any = [];
+     plantData:any = [{plant_code:'',plant_name:'All'}];
+     payrollAreaData:any = [{PayrollArea:'All'}];
      reportDataObjectKeys:any;
      lopReportData:any = [
   {
@@ -57,14 +57,19 @@ export class LopReportComponent implements OnInit {
     lopType: 'Casual Leave'
   }
 ]
-     constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService, private apiService:ApiService, public utility:Utility) {
-       /** cummulative report filter form */
+     constructor(
+      private fb: UntypedFormBuilder, 
+      public loader: LoaderserviceService, 
+      private messageService:MessageService, 
+      private apiService:ApiService, 
+      public utility:Utility) {
+       /** lop report form */
        this.lopReportForm = this.fb.group({
          companyCode: new UntypedFormControl(''),
          plantCode: new UntypedFormControl(''),
-         payrollArea: new UntypedFormControl(''),
-         month: new UntypedFormControl(''),
-         year: new UntypedFormControl(''),
+         payrollArea: new UntypedFormControl('All'),
+         month: new UntypedFormControl(new Date()),
+         year: new UntypedFormControl(new Date()),
          genId: new UntypedFormControl(''),
        });
      }
@@ -81,13 +86,6 @@ export class LopReportComponent implements OnInit {
       /** extract object keys */
       this.reportDataObjectKeys = this.utility.extractKeys(this.lopReportData);
       console.log(this.reportDataObjectKeys);
-
-      /** test api call using utlity function with observable */
-      this.utility.getPayrollAreaByPlant('1150').subscribe({
-        next: (data) => {
-          this.payrollAreaData = data
-        }
-      });
      }
  
      /** get company data for filter dropdown 
@@ -97,6 +95,8 @@ export class LopReportComponent implements OnInit {
        this.apiService.companyshow().subscribe({
          next: (reponse:any) => {
            this.companyData = reponse;
+          /** all data push */
+          this.companyData.unshift({company_code:'',company_name:'All'})
          },
          error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
        })
@@ -110,6 +110,8 @@ export class LopReportComponent implements OnInit {
        this.apiService.getPlantByCompanyCode(this.lopReportForm.value.companyCode).subscribe({
          next: (response) => {
            this.plantData = response;
+          /** all data push */
+           this.plantData.unshift({plant_code:'',plant_name:'All'})
          },
          error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
        })
@@ -123,8 +125,10 @@ export class LopReportComponent implements OnInit {
        this.apiService.getPayrollAreaByPlantcode(this.lopReportForm.value.plantCode).subscribe({
          next: (response) => {
            this.payrollAreaData = response;
+            /** all push */
+          this.payrollAreaData.unshift({PayrollArea:'All'});
          },
-         error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
+         error: (error:any) => this.messageService.add({severity:'error',summary:error?.error?.message})
        })
      }
  
@@ -151,8 +155,13 @@ export class LopReportComponent implements OnInit {
       * @var month user selected month
      */
      filterLopReport(){
+      /** select month number format */
        const month = this.lopReportForm.value.month;
        this.lopReportForm.controls['month'].setValue(moment().month(month).format("M"));
+      /** setting payroll area all to '' string */
+       if(this.lopReportForm.value.payrollArea == 'All'){
+        this.lopReportForm.controls['payrollArea'].setValue('')
+       }
        console.log('DATA', this.lopReportForm.value);
      }
 

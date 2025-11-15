@@ -113,9 +113,7 @@
               formControlName="companyTraineeLock"
               value="Y"
               [disabled]="true"
-              inputId="admin"
-              (onChange)="disabelChecked()"
-              [disabled]="isChecked" >
+              inputId="admin" >
              </p-checkbox>
               <label for="admin" class="mb-0 text-blue-600">YES</label>
             </div>
@@ -125,8 +123,6 @@
               formControlName="companyTraineeLock"
               value="N" 
               inputId="national"
-              (onChange)="disabelChecked()"
-              [disabled]="isChecked"
               >
              </p-checkbox>
               <label for="national" class="mb-0 text-blue-600">NO</label>

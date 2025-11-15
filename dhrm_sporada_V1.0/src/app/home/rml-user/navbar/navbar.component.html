@@ -1622,10 +1622,10 @@
           <mat-icon class="text-blue-600">notes</mat-icon>
       </button>
       <!-- dhrm dashboard image -->
-      <div *ngIf="router.url === '/rhrm'" class="w-full flex justify-center">
+      <div *ngIf="router.url === '/rhrm'" class="w-full flex justify-center items-center h-full">
         <!-- <img [src]="homepageImgURL" alt="dhrm-image" class="h-full rounded-sm object-cover" /> -->
           <!-- primang carousel -->
-        <p-carousel
+        <!-- <p-carousel
             [value]="news"
             [numVisible]="1"
             [numScroll]="1"
@@ -1646,7 +1646,26 @@
                 </div>
               </div>
             </ng-template>
-        </p-carousel>
+        </p-carousel> -->
+       <p-carousel
+  [value]="news"
+  [numVisible]="1"
+  [numScroll]="1"
+  [circular]="true"
+  [autoplayInterval]="3000"
+  styleClass="w-full h-screen overflow-hidden"
+>
+  <ng-template let-news pTemplate="item">
+    <div class="flex justify-center items-center h-screen w-full">
+      <img
+        [src]="news.image"
+        [alt]="news.alt"
+        class="h-full w-full object-cover"
+      />
+    </div>
+  </ng-template>
+</p-carousel>
+
         <!-- Trainee Related Information -->
          <!-- <div class="w-full shadow-md border border-gray-200 flex items-center justify-between px-3 h-[40vh]">
            <div>

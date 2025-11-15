@@ -66,9 +66,9 @@ import {CardModule} from 'primeng/card'
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
 import { CostCenterComponent } from "./masters/cost-center/cost-center.component";
-import { TraineeHeadCountSummaryComponent } from "./dashboard/trainee-head-count-summary/trainee-head-count-summary.component";
-import { TraineePlantWiseHeadCountComponent } from "./dashboard/trainee-plant-wise-head-count/trainee-plant-wise-head-count.component";
-import { TraineePresentTrendComponent } from "./dashboard/trainee-present-trend/trainee-present-trend.component";
+import { TraineeHeadCountSummaryComponent } from "./dashboard/hr-dashboard/trainee-head-count-summary/trainee-head-count-summary.component";
+import { TraineePlantWiseHeadCountComponent } from "./dashboard/hr-dashboard/trainee-plant-wise-head-count/trainee-plant-wise-head-count.component";
+import { TraineePresentTrendComponent } from "./dashboard/hr-dashboard/trainee-present-trend/trainee-present-trend.component";
 @NgModule({
   declarations: [
     CompanyComponent,
