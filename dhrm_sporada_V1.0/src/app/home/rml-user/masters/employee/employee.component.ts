@@ -136,16 +136,24 @@ export class EmployeeComponent implements OnInit {
 
   /** get employee data */
   getEmployeeData(){
-     this.service.getemployee().
+    try{
+       this.service.getemployee().
       subscribe({
-        next: (response) => { 
-          this.employee = response;
-          this.employeeData=response;
+        next: (response:any) => { 
+          if(response?.message == 'failure'){
+            this.messageService.add({severity:'warn', summary:'Error in server'});
+          }else{
+            this.employee = response;
+          this.employeeData = response;
           /** filer function */
           this.filterEmployeeByPlant();
+          } 
         },
         error:(err) => this.messageService.add({severity:'info',summary:err.message})
-      })
+      });
+    }catch(error:any){
+      console.error('ERROR', error);
+    }
   }
   /** get plant data */
   getplantcode() {

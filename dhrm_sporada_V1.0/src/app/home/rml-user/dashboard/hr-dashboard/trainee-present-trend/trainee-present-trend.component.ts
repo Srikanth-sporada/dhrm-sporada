@@ -153,7 +153,7 @@ export class TraineePresentTrendComponent implements OnInit {
                     borderColor: documentStyle.getPropertyValue('--blue-500'),
                     pointBackgroundColor: textColor,
                     yAxisID: 'y',
-                    tension: 0.5,
+                    tension: 0.4,
                     data: this.utils.extractValues(this.lineChartData),
                 },
             ]
@@ -175,7 +175,6 @@ export class TraineePresentTrendComponent implements OnInit {
                   title:{
                     display:true,
                     text:'Day',
-                    color: bgColor,
                   },
                     ticks: {
                         color: textColorSecondary

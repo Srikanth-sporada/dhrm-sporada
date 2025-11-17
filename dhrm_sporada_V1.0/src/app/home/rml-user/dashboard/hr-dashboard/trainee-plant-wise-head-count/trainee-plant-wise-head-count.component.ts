@@ -19,7 +19,7 @@ export class TraineePlantWiseHeadCountComponent implements OnInit {
 
   chartOptions = {
     indexAxis: 'y',
-    plugins: { legend: { position: 'right' } },
+    plugins: { legend: { position: 'right' } }, 
     responsive: true
   };
 
