@@ -21,10 +21,13 @@ export class TraineePresentTrendComponent implements OnInit {
   initialFromDate:any = moment().subtract(31,'days').toDate();
   /** current date */
   initialToDate:any =  new Date();
+  /** plant code for !admin */
+  plantCode:any = sessionStorage.getItem('plantcode') || '';
   plantOptions:any;
   categoryOptions:any;
   workContractOptions:any;
   companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
+  isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '')
   lineChartData:any = [{
   1: 87,
   2: 142,
@@ -66,15 +69,21 @@ export class TraineePresentTrendComponent implements OnInit {
     private messageService:MessageService,
     private utils:Utility,
   ) { 
+    /** checking isAdmin */
+    if(this.isAdmin){
+      this.plantCode = '';
+    }
+    /** form init */
     this.filterForm = formBuilder.group({
       fromDate:[this.initialFromDate],
       toDate:[this.initialToDate],
-      plant:[''],
+      plant:[this.plantCode],
       traineeCategory:[],
       workContract:[]
     });
     /** line chart initilization */
     this.initChartConfig();
+    
   }
 
   ngOnInit(): void {
@@ -82,6 +91,8 @@ export class TraineePresentTrendComponent implements OnInit {
     /** get present trend data */
     this.getTraineePresentTrendData();
     console.log(this.initialFromDate,this.initialToDate, this.companyCode);
+    console.log('isAdmin:',this.isAdmin);
+    console.log('plant:',this.plantCode)
     
   }
 

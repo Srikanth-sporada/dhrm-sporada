@@ -62,7 +62,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChartModule } from 'primeng/chart';
-import {CardModule} from 'primeng/card'
+import {CardModule} from 'primeng/card';
+import {TableModule} from 'primeng/table'
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
 import { CostCenterComponent } from "./masters/cost-center/cost-center.component";
@@ -145,6 +146,7 @@ import { TraineePresentTrendComponent } from "./dashboard/hr-dashboard/trainee-p
     CheckboxModule,
     ChartModule,
     CardModule,
+    TableModule,
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

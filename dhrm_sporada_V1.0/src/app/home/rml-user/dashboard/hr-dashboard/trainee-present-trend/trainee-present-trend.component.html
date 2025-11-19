@@ -38,8 +38,8 @@
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full" 
-            placeholder="Select Plant" >
-             placeholder="Select Plant" >
+            placeholder="Select Plant"
+            [disabled]="!isAdmin" >
             <ng-template let-plant pTemplate="item">
               <div class="flex align-items-center gap-2">
                 <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation,LOCALE_ID,Inject,ViewChild,TemplateRef} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,LOCALE_ID,Inject,ViewChild,TemplateRef,ElementRef,} from '@angular/core';
 import { formatDate } from '@angular/common';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -41,6 +41,7 @@ export class CompanyComponent implements OnInit {
   editing_flag: any;
   // add company template reference
    @ViewChild('content', {read: TemplateRef}) addCompanyTemplateRef: TemplateRef<unknown> | undefined;
+   @ViewChild('tabView') tabView: ElementRef;
   // Speed Dial items
   items: MenuItem[] = [
             {

@@ -1,13 +1,7 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormControl, UntypedFormBuilder,Validators } from '@angular/forms';
 import { ApiService } from 'src/app/home/api.service';
-import { FormService } from '../../new-joiners/form.service';
-import { DatePipe } from '@angular/common';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
-import * as XLSX from 'xlsx';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Utility } from 'src/app/utils/utils';
@@ -25,38 +19,10 @@ export class LopReportComponent implements OnInit {
      plantData:any = [{plant_code:'',plant_name:'All'}];
      payrollAreaData:any = [{PayrollArea:'All'}];
      reportDataObjectKeys:any;
-     lopReportData:any = [
-  {
-    genId: 'G101',
-    name: 'Sundar Raj',
-    plant: 'Plant A - Hosur',
-    payrollArea: 'PA03',
-    startDate: '2025-10-05',
-    endDate: '2025-10-10',
-    duration: 6,
-    lopType: 'Unpaid Leave'
-  },
-  {
-    genId: 'G102',
-    name: 'Lakshmi Devi',
-    plant: 'Plant B - Sriperumbudur',
-    payrollArea: 'PA04',
-    startDate: '2025-10-15',
-    endDate: '2025-10-18',
-    duration: 4,
-    lopType: 'Sick Leave'
-  },
-  {
-    genId: 'G103',
-    name: 'Ravi Shankar',
-    plant: 'Plant C - Oragadam',
-    payrollArea: 'PA05',
-    startDate: '2025-10-20',
-    endDate: '2025-10-22',
-    duration: 3,
-    lopType: 'Casual Leave'
-  }
-]
+     lopReportData:any = [];
+     isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
+     companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
+     plantCode:any = sessionStorage.getItem('plantcode');
      constructor(
       private fb: UntypedFormBuilder, 
       public loader: LoaderserviceService, 
@@ -65,27 +31,25 @@ export class LopReportComponent implements OnInit {
       public utility:Utility) {
        /** lop report form */
        this.lopReportForm = this.fb.group({
-         companyCode: new UntypedFormControl(''),
-         plantCode: new UntypedFormControl(''),
+         companyCode: new UntypedFormControl(this.companyCode),
+         plantCode: new UntypedFormControl(this.plantCode),
          payrollArea: new UntypedFormControl('All'),
          month: new UntypedFormControl(new Date()),
          year: new UntypedFormControl(new Date()),
-         genId: new UntypedFormControl(''),
+         genId: new UntypedFormControl('',Validators.pattern(/\S+/)),
        });
      }
+
      ngOnInit(): void {
        let details = sessionStorage.getItem("all");
        if (details != null) {
          this.all = JSON.parse(details);
          this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
        }
- 
-       /** get company data */
-       this.getCompanyData();
-
-      /** extract object keys */
-      this.reportDataObjectKeys = this.utility.extractKeys(this.lopReportData);
-      console.log(this.reportDataObjectKeys);
+        /** get company & plant & payroll area */
+        this.getCompanyData();
+        this.getplantByCompanyCode();
+        this.getPayrollAreaByPlant();
      }
  
      /** get company data for filter dropdown 
@@ -104,10 +68,13 @@ export class LopReportComponent implements OnInit {
  
      /** get plant data by company code
       * @property {UntypedForm} form.companyCode
+      * @var {*} companyCode has company code based n admin
       */
  
      getplantByCompanyCode(){
-       this.apiService.getPlantByCompanyCode(this.lopReportForm.value.companyCode).subscribe({
+      let companyCode = this.isAdmin ? this.lopReportForm.value.companyCode : this.companyCode;
+      console.log('PLANT COMPANY CODE:', companyCode);
+       this.apiService.getPlantByCompanyCode(companyCode).subscribe({
          next: (response) => {
            this.plantData = response;
           /** all data push */
@@ -119,10 +86,13 @@ export class LopReportComponent implements OnInit {
  
       /** get payroll area by plant code
       * @property {UntypedForm} form.plantCode
+      * @var {*} plantCode has plant code value based on admin
       */
  
      getPayrollAreaByPlant(){
-       this.apiService.getPayrollAreaByPlantcode(this.lopReportForm.value.plantCode).subscribe({
+      let plantCode:any = this.isAdmin ? this.lopReportForm.value.plantCode : this.plantCode;
+      console.log('PAYROLL PLANT CODE:', plantCode);
+       this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
          next: (response) => {
            this.payrollAreaData = response;
             /** all push */
@@ -143,11 +113,12 @@ export class LopReportComponent implements OnInit {
        console.log(date)
        let formattedValue:any;
        if(formPropery == 'month'){
-         formattedValue = moment(date).format('MMMM') // returns month number
+         formattedValue = moment(date).format('MMMM') // returns month string
        }else{
          formattedValue = moment(date).format('YYYY') // returns year
        }
        this.lopReportForm.controls[`${formPropery}`].setValue(formattedValue);
+       console.log(this.lopReportForm.value);
      }
  
      /** filter cummulative report 
@@ -155,14 +126,28 @@ export class LopReportComponent implements OnInit {
       * @var month user selected month
      */
      filterLopReport(){
-      /** select month number format */
-       const month = this.lopReportForm.value.month;
-       this.lopReportForm.controls['month'].setValue(moment().month(month).format("M"));
+      /** format month & year */
+       const formattedMonth = moment(this.lopReportForm.value.month).format('M');
+       const formattedYear = moment(this.lopReportForm.value.year).format('YYYY');
+       console.log({formattedMonth,formattedYear});
       /** setting payroll area all to '' string */
        if(this.lopReportForm.value.payrollArea == 'All'){
         this.lopReportForm.controls['payrollArea'].setValue('')
        }
-       console.log('DATA', this.lopReportForm.value);
+      /** constructed form data */
+       const formData = {...this.lopReportForm.value,month:formattedMonth,year:formattedYear}
+       console.log(formData);
+      /** get LOP report data */
+      this.apiService.getLopReportData(formData).subscribe({
+        next: (response:any) => {
+          console.log('LOP REPORT DATA:',response);
+          this.lopReportData = response;
+        },
+        error: (error:any) =>{
+          console.error(error);
+          this.messageService.add({severity:'error',summary:error?.error?.message})
+        }
+      })
      }
 
 }

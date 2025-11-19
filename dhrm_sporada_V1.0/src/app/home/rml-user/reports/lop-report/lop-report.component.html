@@ -19,12 +19,15 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{lopReportData?.length || 0}}
+          </span>
         </h1>
        <!-- download btn-->
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="utility.exportexcel('table','lopreport',lopReportForm.value.plantCode)"></p-button>
+         (click)="utility.exportexcel('table','LOP_Report',lopReportForm.value.plantCode)"></p-button>
       </div>
    <form [formGroup]="lopReportForm">
      <!-- filter first row -->
@@ -39,6 +42,7 @@
             optionValue="company_code"
             styleClass="w-full" 
             (onChange)="getplantByCompanyCode()"
+            [disabled]="!isAdmin"
             placeholder="Select Company" >
             <ng-template let-company pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -57,6 +61,7 @@
             optionValue="plant_code"
             styleClass="w-full" 
             (onChange)="getPayrollAreaByPlant()"
+            [disabled]="!isAdmin"
             placeholder="Select Plant" >
             <ng-template let-plant pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -88,7 +93,6 @@
             view="month"
             styleClass="w-full !font-poppins"
             dateFormat="MM"
-            (onSelect)="formatDateAndSetFormProperty($event,'month')"
             [showIcon]="true" >
         </p-calendar>
         </div>
@@ -100,7 +104,6 @@
             view="year"
             dateFormat="yy" 
             styleClass="w-full !font-poppins"
-            (onSelect)="formatDateAndSetFormProperty($event,'year')"
             [showIcon]="true" >
         </p-calendar>
         </div>
@@ -121,6 +124,7 @@
         icon="pi pi-search"
         styleClass="rounded-[1.5rem] mt-9"
         (onClick)="filterLopReport()"
+        [disabled]="!lopReportForm.valid"
       >
      </p-button> 
     
@@ -139,7 +143,8 @@
         <!-- table head -->
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Sno</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap" scope="col">Name</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0  text-nowrap">Plant</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
@@ -152,56 +157,56 @@
         <!-- table body -->
         <tbody>
           <tr 
-           *ngFor="let i of lopReportData;"
+           *ngFor="let i of lopReportData; index as j;"
            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
            >
-            <td 
-            class="!px-2 !py-4 text-nowrap !rounded-s-md " scope="row" 
-            *ngFor="let key of reportDataObjectKeys; let index;">
-                <span 
-                   class="block"
-                   [ngClass]="{
-                    'text-center text-blue-600 font-semibold': key == reportDataObjectKeys[0], 
-                    'text-center':key == reportDataObjectKeys[3] || key == reportDataObjectKeys[6] || key == reportDataObjectKeys[4] || key == reportDataObjectKeys[5]}">
-                    {{i[key]}}
-                     <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)" *ngIf=" key == reportDataObjectKeys[1]"></i>
-                </span>
-
+           <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center" scope="row">{{j + 1}}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md font-semibold text-blue-600 text-center" scope="row">
+              {{i?.gen_id || '-'}}
                 <p-overlayPanel #op>
                  <div class="font-poppins">
-                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
+                  <p class="text-xl text-blue-600 font-semibold">{{i?.fullname}}</p>
                   <hr>
                   <div>
-                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
+                     <p class="font-semibold">Application No:<span class="ml-2">{{i?.apln_slno}}</span></p>
                      <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
                      <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
                   </div>
                  </div>
                </p-overlayPanel>
             </td> 
-            <!-- <td class="!px-4 !py-4 text-nowrap !rounded-s-md w-full">
-             {{i.name}}
-              <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)"></i>
-               <p-overlayPanel #op>
-                 <div class="font-poppins">
-                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
-                  <hr>
-                  <div>
-                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
-                     <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
-                     <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
-                  </div>
-                 </div>
-               </p-overlayPanel>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.fullname || '-' }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant_name || '-'}}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea || '-'}}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">
+              {{ i?.startDate | date:'dd-MM-yyyy' }}
             </td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.plant }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.payrollArea }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.startDate }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.endDate }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.duration }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.lopType }}</td> -->
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">
+              {{ i?.endDate | date:'dd-MM-yyyy'}}
+            </td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.duration || '-' }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">
+             <span [ngClass]="
+              {'bg-red-200':i.lop_type == 'Absent', 'bg-yellow-200':i.lop_type == 'Late Coming' || i.lop_type == 'Early Going'}
+              " class="!px-2 !py-1 rounded-md">
+              {{ i?.lop_type || '-' }}
+            </span>
+            </td>
           </tr>
         </tbody>
       </table>
+
+      <!-- no data found div -->
+           <div *ngIf="lopReportData.length == 0" class="flex items-center justify-center flex-col h-full">
+             <img src="assets/no-data.svg" alt="not-found" class="object-contain h-44 w-44">
+              <p class="text-xl font-semibold text-blue-600">Data Not Found !</p>
+           </div>
+
+      <!-- loader -->
+       <div class="flex-col gap-4 w-full flex items-center justify-center" [hidden]="true">
+          <div class="w-28 h-28 border-8 text-blue-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-blue-400 rounded-full">
+            <span class="animate-fade-in font-semibold text-blue-600 text-xl">RANE</span>
+          </div>
+       </div>
     </div>
   </div>

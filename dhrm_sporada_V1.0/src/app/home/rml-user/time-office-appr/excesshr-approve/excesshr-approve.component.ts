@@ -36,7 +36,7 @@ export class ExcesshrApproveComponent implements OnInit {
     });
     this.apiService.getAllowedOtHours().subscribe((response:any)=>{
       if(response.status=='success'){
-        this.max_hrs=response.data.day
+        this.max_hrs = response.data.day
       }else{
         // alert(respone.message)
         this.messageService.add({severity:'warn',summary:response.message})
@@ -54,11 +54,11 @@ export class ExcesshrApproveComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       } else {
         console.log(response.data);
+
         this.data = response.data.map((element: any) => {
           return { ...element, approvedHr: null, reason: "" };
         });
         console.log(this.data );
-        
       }
     },(error) => {
       console.log(error);

@@ -666,7 +666,7 @@ export class OnboardFormComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.messageService.add({severity:'error',summary:error.response})
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
      })
   }
@@ -678,7 +678,7 @@ export class OnboardFormComponent implements OnInit {
     })
     rejectDailog.afterClosed().subscribe( data =>{
       if(data){
-        this.rejected(data)
+        this.rejected(data);
       }
     })
   }

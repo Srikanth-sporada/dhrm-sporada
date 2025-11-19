@@ -1,2 +1,6 @@
 /* prime ng icons css */
 @import "primeicons/primeicons.css";
+
+:host ::ng-deep .p-sortable-column-icon {
+  color: white !important;
+}
