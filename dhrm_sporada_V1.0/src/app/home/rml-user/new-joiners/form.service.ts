@@ -166,7 +166,7 @@ submitted(uniqueId: any){
   console.log("----------------------------", uniqueId)
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)
   .subscribe({
-    next: (response) =>{ 
+    next: (response) => { 
       console.log("HR SUBMITTED",response);
     },
     error: (error) => {

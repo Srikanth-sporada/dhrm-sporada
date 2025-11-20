@@ -80,7 +80,7 @@
             </div>
             <!-- category -->
             <div class="font-poppins w-full">
-                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Category</label> <br>
+                <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Category</label> <span class="text-red-600 ml-2">*</span><br>
                 <p-dropdown 
                     [options]="category"
                     formControlName="category"
@@ -235,7 +235,7 @@
             <!-- UAN NUMBER -->
             <div class="w-full p-fluid">
             <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
-                UAN Number<span class="text-red-600 ml-2">*</span>
+                UAN Number
             </label> <br>
             <input 
             type="text" 
@@ -366,7 +366,7 @@
             <!-- onboard -->
             <p-button 
                *ngIf="!readonly"
-               [disabled]="disbleApproveBtn == 'status' || this.applicationStatus == 'APPOINTED'"
+               [disabled]="disbleApproveBtn == 'status' || this.applicationStatus == 'APPOINTED' || !form.valid"
                [hidden]="this.applicationStatus == this.applicationStatusForBtn"
                 icon="pi pi-check-square"
                 iconPos="right"
@@ -378,6 +378,7 @@
             <!-- send for approval -->
             <p-button 
                *ngIf="this.applicationStatus == this.applicationStatusForBtn"
+               [disabled]="!form.valid"
                 icon="pi pi-send"
                 iconPos="right"
                 (onClick)="sendForApprovalByHR()"

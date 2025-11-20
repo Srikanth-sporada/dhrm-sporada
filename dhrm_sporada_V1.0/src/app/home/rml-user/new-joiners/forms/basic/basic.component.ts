@@ -189,7 +189,7 @@ export class BasicComponent implements OnInit {
                 this.apln_status = this.basic[0]?.apln_status
 
                 if (this.basic[0]?.title == null)
-                    this.form.controls['pd'].setValue('No')
+                    this.form.controls['pd'].setValue('No');
 
                 this.form.controls['title'].setValue(this.basic[0]?.title)
                 this.form.controls['fname'].setValue(this.basic[0]?.first_name)

@@ -8,16 +8,16 @@ export const environment = {
   hideSalaryMaster:true,
   hidePeoplePlanning:true,
   hidePmpd:true,
-  hideMidPermission:false,
+  hideMidPermission:true,
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:false,
-  hideHrDashboard:false,
-  hideCanteenDashboard:false,
+  hideHrSummary:true,
+  hideHrDashboard:true,
+  hideCanteenDashboard:true,
   /** reports */
   hideCumulativeReport:true,
-  hideLopReport:false,
+  hideLopReport:true,
   hideMachineReport:true,
   hideCanteenReport:true,
   /** attedance calander */

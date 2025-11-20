@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation,LOCALE_ID,Inject,ViewChild,TemplateRef,ElementRef,} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,LOCALE_ID,Inject,ViewChild,TemplateRef,ElementRef,AfterViewInit} from '@angular/core';
 import { formatDate } from '@angular/common';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -23,7 +23,7 @@ const material = [
   styleUrls: ['./company.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CompanyComponent implements OnInit {
+export class CompanyComponent implements OnInit,AfterViewInit {
   closeResult: string;
   form:any;
   sample: any = environment.path
@@ -37,11 +37,11 @@ export class CompanyComponent implements OnInit {
   hideProcessedtabMenu:boolean = environment.hideProcessedBillTabMenu;
   // reference variable for company data
   companyData:any = [];
-  status = [{label:'Active',value:'Active'},{label:'In-Active',value:null}]
+  status = [{label:'All',value:'all'},{label:'Active',value:'Active'},{label:'In-Active',value:null}]
   editing_flag: any;
   // add company template reference
    @ViewChild('content', {read: TemplateRef}) addCompanyTemplateRef: TemplateRef<unknown> | undefined;
-   @ViewChild('tabView') tabView: ElementRef;
+   @ViewChild('tabView',{ read: ElementRef }) tabView: ElementRef | undefined;
   // Speed Dial items
   items: MenuItem[] = [
             {
@@ -65,7 +65,7 @@ export class CompanyComponent implements OnInit {
             }
   ];
   activeIndex:number = 0;
-  constructor(private fb: UntypedFormBuilder, private modalService: NgbModal, private service: ApiService, public loader: LoaderserviceService, public router:Router,@Inject(LOCALE_ID) private locale: string, private toast:ToastService, private messageService: MessageService,private confirmationService: ConfirmationService) {
+  constructor(private fb: UntypedFormBuilder, private modalService: NgbModal, private service: ApiService, public loader: LoaderserviceService, public router:Router,@Inject(LOCALE_ID) private locale: string, private messageService: MessageService,private confirmationService: ConfirmationService) {
 
     this.form = this.fb.group({
       sno: ['',],
@@ -77,6 +77,31 @@ export class CompanyComponent implements OnInit {
       modified_by: ['',],
     })
   }
+
+ ngAfterViewInit() {
+  setTimeout(() => {
+    const root = this.tabView?.nativeElement;
+    const navContainer = root?.querySelector('.p-tabview-nav');
+
+    if (navContainer) {
+      navContainer.addEventListener(
+        'wheel',
+        (e: WheelEvent) => {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            navContainer.scrollLeft += e.deltaY;
+            console.dir(navContainer)
+            console.log(e.deltaY, navContainer.scrollLeft,navContainer.scrollTop)
+          }
+        },
+        { passive: false }
+      );
+    } else {
+      console.warn('TabView scroll container not found');
+    }
+  });
+}
+
 
   ngOnInit(): void {
     let details = sessionStorage.getItem("all");
@@ -323,18 +348,17 @@ export class CompanyComponent implements OnInit {
   */ 
   filterCompanyByStatus(event:any){
     const status = event.value;
+    if(status == 'all'){
+      this.dummy = this.companyData;
+    }
     const filteredData = this.companyData.filter((company:any) => {
       if(company.status == status){
         return company
       }
-    })
-   if(!filteredData.length){
-    this.messageService.add({severity:'info',summary:'Data Not Found!'})
-    this.dummy = this.companyData;
-   }else{
-    this.dummy = filteredData;
-   }
-   
+    });
+    if(filteredData.length){
+      this.dummy = filteredData;
+    }
    console.log(filteredData)
   }
 

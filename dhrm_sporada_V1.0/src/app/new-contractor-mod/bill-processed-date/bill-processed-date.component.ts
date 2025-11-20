@@ -25,7 +25,7 @@ export class BillProcessedDateComponent implements OnInit {
   selecetedPayrollArea:any = [];
   isadmin:string |null= sessionStorage.getItem('isadmin')
   plant_Code: any = sessionStorage.getItem('plantcode');
-  userEmpcode:string |null = sessionStorage.getItem('user_name');
+  userEmpcode:string | null = sessionStorage.getItem('user_name');
   showAdd=true ;
   plantname:any
   bill_data:any
@@ -81,7 +81,13 @@ export class BillProcessedDateComponent implements OnInit {
                 }
               }
     ];
-  constructor(private fb: FormBuilder,private api : ClamAPIService,private modalService: NgbModal,private dialog: MatDialog,private service : ApiService,public loader: LoaderserviceService,private messageService:MessageService) { 
+  constructor(
+    private fb: FormBuilder,
+    private api : ClamAPIService
+    ,private dialog: MatDialog
+    ,private service : ApiService
+    ,public loader: LoaderserviceService
+    ,private messageService:MessageService) { 
   // bill form
     this.billForm = this.fb.group({
       plant:[this.plant_Code],

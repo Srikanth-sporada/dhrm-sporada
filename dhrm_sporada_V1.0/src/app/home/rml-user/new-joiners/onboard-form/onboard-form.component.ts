@@ -85,6 +85,7 @@ export class OnboardFormComponent implements OnInit {
     { label: 'NO', value: 'NO' }
   ]
   contractorData:any;
+  /** contractor list */
   contractorsList:any = [
     'CL',
     'CL - PIECE RATE',
@@ -113,21 +114,21 @@ export class OnboardFormComponent implements OnInit {
       account_number: ["", ],
       department: ["",Validators.required],
       active_status: ["ACTIVE"],
-      bank_name: ["", Validators.required],
+      bank_name: [""],
       line: ["",Validators.required],
       Role_Id: ["",Validators.required],
       dol: new FormControl(""),
       bio_id: [""],
       process_trained: ["",Validators.required],
       rfr: new FormControl(""),
-      bnum: ["", Validators.required],
+      bnum: ["",],
       reportingto: ["", Validators.required],
-      uan: ["", Validators.maxLength(12)],
+      uan: [""],
       wcontract: ["",Validators.required],
       trainee_id: [""],
       designation: [""],
       payrollArea:['', Validators.required],
-      costCenter: ['', Validators.required],
+      costCenter: ['',Validators.required],
       legacyNumberOne: [''],
       legacyNumberTwo: [''],
       // dojo training
@@ -249,7 +250,7 @@ export class OnboardFormComponent implements OnInit {
             this.dolMinDate = new Date(this.dolMinDate)
             this.calMin_Max_DOL(this.lockDate)
             if(this.DOJ < this.lockDate){
-              // this.minDate = this.lockDate
+              this.minDate = moment(this.lockDate)
               this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD')
             }
           })
@@ -356,7 +357,7 @@ export class OnboardFormComponent implements OnInit {
       if (response.status=='success'){
       //  console.log(response.data.doj_limit)
         this.backdate = response.data.doj_limit
-        this.today= new Date()
+        this.today = new Date()
       //  console.log('created_dt',created_dt);
       //  console.log('doj limit', moment().subtract(this.backdate, 'days').format('yyyy-MM-DD') );
      const backdate1 = moment().subtract(this.backdate - 1, 'days').format('YYYY-MM-DD');
@@ -435,7 +436,7 @@ export class OnboardFormComponent implements OnInit {
       this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
       // logging onboard form data
       console.log('ONBOARD DATA',this.form.value);
-      // trainee onboard api call
+      /** trainee send for approval api call */
       this.service.onboard_form(this.form.value).subscribe({
         next: (response: any) => {
         //  console.log(response);
@@ -471,7 +472,7 @@ export class OnboardFormComponent implements OnInit {
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
-      // trainee employee relive api call
+      /** trainee releive api call */
     } else if (this.readonly == true) {
       /** DOL format */
       // this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
@@ -662,7 +663,7 @@ export class OnboardFormComponent implements OnInit {
       // HR APPROVAL API CALL
        this.formservice.submitted(submitData);
       // onboard form submit api call 
-      this.submit(true)
+      this.submit(true);
       },
       error: (error) => {
         console.log(error);

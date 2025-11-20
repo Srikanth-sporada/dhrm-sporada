@@ -1,6 +1,6 @@
-<div >
+<div class="mx-2">
   <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>cloud_upload</mat-icon>Punch Data Upload Manual<hr/>
@@ -40,7 +40,7 @@
             <!-- row one -->
             <div class="flex items-center justify-center sm:justify-start w-full gap-2">
            <!-- gen id -->
-              <div class="w-full p-fluid">
+              <div class="w-full p-fluid sm:w-1/4">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
               <input 
                 type="text" 
@@ -51,7 +51,7 @@
                 (ngModelChange)="checkVerify()" />
               </div>
             <!-- Date-->
-            <div class="w-full">
+            <div class="w-full sm:w-1/4">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
               <p-calendar 
                 dateFormat="yy-mm-dd"
@@ -68,16 +68,23 @@
                   label="Verify"
                   iconPos="right"
                   icon="pi pi-check-circle"
-                  class="mt-9"
+                  class="mt-10"
                   (click)="verify()" >
                 </button>
               </div>
+              <!-- actual in & out time -->
+              <div class="w-full sm:w-1/2" *ngIf="fpin!=null || fpout!=null">
+                  <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8">
+                  <p class="w-full" *ngIf="fpin != null">Actual In Time :{{fpin}}</p>
+                  <p class="w-full" *ngIf="fpout != null">Actual Out Time : {{fpout}}</p>
+                </h1>
+              </div>
             </div>
             <!-- row two *ngIf="show_fp_temp" *ngIf="fpin!=null" *ngIf="fpout!=null"-->
-              <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8">
-                  <span *ngIf="fpin!=null">Actual In Time: {{fpin}}</span>
-                  <span *ngIf="fpout!=null">Actual Out Time : {{fpout}}</span>
-                </h1>
+              <!-- <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8">
+                  <span >Actual In Time: {{fpin}}</span>
+                  <span >Actual Out Time : {{fpout}}</span>
+                </h1> -->
             <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_fp_temp">
             <!-- in date-->
             <div class="w-full">
@@ -104,13 +111,7 @@
                 [showIcon]="true" >
             </p-calendar>
             </div>
-            </div>
-            <!-- row three -->
-              <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8" *ngIf="show_fp_temp">
-                Out Punch
-                </h1>
-            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_fp_temp">
-            <!-- Out Date-->
+               <!-- Out Date-->
             <div class="w-full">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Out Date</label> <br>
               <p-calendar 
@@ -123,7 +124,7 @@
                 [showIcon]="true" >
             </p-calendar>
             </div>
-            <!-- in time-->
+            <!-- out time-->
             <div class="w-full">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Out Time</label> <br>
               <p-calendar 
@@ -135,8 +136,15 @@
                 [showIcon]="true" >
             </p-calendar>
             </div>
+            </div>
+            <!-- row three -->
+              <!-- <h1 class="!text-[1.3rem] !font-semibold text-blue-600 flex items-center justify-start mt-2 gap-8" *ngIf="show_fp_temp">
+                Out Punch
+                </h1> -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_fp_temp">
+           
              <!-- reason -->
-            <div class="w-full p-fluid">
+            <div class="w-full p-fluid sm:w-1/3">
                 <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
               <p-dropdown
               [options]="reasonList"
@@ -147,21 +155,21 @@
               </p-dropdown> 
             </div>
               <!-- details btn -->
-                <button
-                  pButton
-                  label="Submit"
-                  iconPos="right"
-                  icon="pi pi-send"
-                  class="mt-9 w-1/3"
-                  (click)="onSubmit()" >
-                </button>
+              <button
+                    pButton
+                    label="Submit"
+                    iconPos="right"
+                    icon="pi pi-send"
+                    class="mt-9"
+                    (click)="onSubmit()" >
+              </button>
             </div>
-            </div>
+             </div>
              </div>
            </div>
           </div>
            <div>
-        <div  class="h-[100dvh] lg:h-[70dvh] xl:h-[70dvh] sm:h-[100dvh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+        <div  class="h-[100dvh] lg:h-[66dvh] xl:h-[66dvh] sm:h-[100dvh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
           <table
             id="fpdata"
            class="table-auto !w-full"
@@ -215,19 +223,19 @@
             <!-- row one -->
             <div class="flex items-center justify-center sm:justify-start w-full gap-2">
             <!--download btn-->
-            <a [href]="url + 'sop/Bulk Punch Upload.xlsx'" style="text-decoration: none;" class="w-full">
+            <a [href]="url + 'sop/Bulk Punch Upload.xlsx'" style="text-decoration: none;">
                 <button
                   pButton
-                  label="Download Template"
+                  label="Template"
                   iconPos="right"
                   icon="pi pi-download"
-                  class="mt-9 w-1/2">
+                  class="mt-10">
                 </button>
             </a>
             <!-- file upload-->
-            <div class="w-full">
+            <div>
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Upload</label> <br>
-              <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file" (ngModelChange)="filechange()" class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+              <input type="file" (change)="fileUpload($event)" accept=".xlsx" [(ngModel)]="file" (ngModelChange)="filechange()" class="block text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-400 py-2 px-2 rounded-md">
             </div>
             <!-- verify btn -->
                 <button
@@ -235,7 +243,7 @@
                   label="Verify"
                   iconPos="right"
                   icon="pi pi-check"
-                  class="mt-9 w-1/3"
+                  class="mt-10"
                  (click)="verify_bulkData()"  
                  [disabled]="verifybtn">
                 </button>
@@ -245,7 +253,7 @@
                   label="Upload"
                   iconPos="right"
                   icon="pi pi-upload"
-                  class="mt-9 w-1/3"
+                  class="mt-10"
                  (click)="upload_bulkdData()" 
                  [disabled]="uploadBtn">
                 </button>
@@ -280,7 +288,7 @@
             <!-- row one -->
             <div class="flex items-center justify-center sm:justify-start w-full gap-2">
               <!-- gen id -->
-              <div class="w-full p-fluid">
+              <div class="w-full p-fluid sm:w-1/3">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
               <input 
                 type="text" 
@@ -291,7 +299,7 @@
                 (ngModelChange)="checkODVerify()" />
               </div>
             <!-- Date-->
-            <div class="w-full">
+            <div class="w-full sm:w-1/3">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
               <p-calendar 
                 dateFormat="yy-mm-dd"
@@ -308,14 +316,14 @@
                   label="Verify"
                   iconPos="right"
                   icon="pi pi-check-circle"
-                  class="mt-9 w-1/3"
+                  class="mt-10"
                   (click)="Od_Verify()">
                 </button>
             </div>
-            <!-- row two -->
-            <div class="flex items-center justify-center sm:justify-start w-full gap-2" *ngIf="show_od_temp">
+            <!-- row two *ngIf="show_od_temp" -->
+            <div class="flex items-center justify-center sm:justify-start w-full gap-2" >
             <!-- reason -->
-              <div class="w-full p-fluid">
+              <div class="w-full p-fluid sm:w-1/3">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
               <input 
                 type="text" 
@@ -326,7 +334,7 @@
                (ngModelChange)="checkODSubmit()" />
               </div>
             <!-- type -->
-            <div class="w-full p-fluid  ">
+            <div class="w-full p-fluid sm:w-1/3">
               <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Type</label> <br>
               <mat-radio-group [(ngModel)]="dayType" (ngModelChange)="checkODSubmit()" class="!font-poppins">
                 <mat-radio-button value="0.5" checked>Half Day</mat-radio-button>
@@ -339,7 +347,7 @@
                   label="Submit"
                   iconPos="right"
                   icon="pi pi-send"
-                  class="mt-9 w-1/3"
+                  class="mt-10"
                   (click)="oDSubmit()" 
                   [disabled]="odSubmit">
                 </button>
@@ -348,8 +356,6 @@
              </div>
            </div>
           </div>
-
-
           <!-- *ngIf="show_od_temp" -->
       <!-- <div class="view" *ngIf="trn_list && trn_list.length > 0">  *ngIf="ODList && ODList.length > 0"-->
         <!-- on duty table -->
@@ -385,14 +391,16 @@
         </div>
        <!-- *ngIf="FP_list && FP_list.length > 0" -->
         <div class="font-poppins mx-2 mb-4" *ngIf="FP_list && FP_list.length > 0">
-          <h1 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">Forget to Punch</h1>
+          <h1 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">
+            Forget to Punch
+          </h1>
           <table
             id="fpdata"
             id="table" class="table-auto !w-full"
           >
             <thead class="sticky top-0">
               <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Attendance Date</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
@@ -414,18 +422,20 @@
         </div>
        <!-- attedance table -->
         <div class="font-poppins mx-2 mb-4">
-          <h3 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">Attendace Table</h3>
+          <h3 class="text-blue-600 font-poppins font-semibold text-center text-2xl mb-2">
+            Attendace Table
+          </h3>
           <table
             id="fpdata"
             id="table" class="table-auto !w-full"
           >
             <thead class="sticky top-0">
               <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center rounded-s-lg">Date</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Swipe ID</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Punch</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Punch</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present </th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center rounded-e-lg">Present </th>
               </tr>
             </thead>
             <tbody>

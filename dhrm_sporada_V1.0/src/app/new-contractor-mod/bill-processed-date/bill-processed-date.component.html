@@ -1,10 +1,10 @@
 <!-- add,update bill processed date template -->
 <div class="overlay overflow-y-auto no-scrollbar" [hidden]="!showHolidayForm">
-  <div class="form-popup !p-0 !font-poppins xl:w-[25%] lg:w-[35%] md:w-[40%] w-[80%] !top-1/2 !left-1/2" [hidden]="!showHolidayForm">
+  <div class="form-popup !p-0 !font-poppins w-1/2" [hidden]="!showHolidayForm">
   <!-- form header -->
      <div>
-      <div class="bg-blue-600 flex items-center justify-start py-4">
-        <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+      <div class="bg-blue-600 flex items-center justify-center py-4">
+        <div class="flex items-center justify-center text-white font-poppins mx-4 gap-2">
           <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
             <mat-icon class="h-0 w-0 text-2xl opacity-100">{{showAdd ? 'add_circle' : 'edit'}}</mat-icon>
           </div>
@@ -16,149 +16,158 @@
   <!-- processed bill form -->
     <div>
         <form [formGroup]="billForm" >
+          <!-- first row -->
+          <div class="row mx-2">
            <!--plant name -->
-          <div class="w-[95%] mx-auto">
-            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
-            Plant
-          </label><br />
-          <p-dropdown 
-            formControlName="plant"
-            [disabled]="!showAdd"
-            [options]="plantname"
-            optionLabel="plant_name"
-            optionValue="plant_code"
-            styleClass="w-full"
-            (onChange)="onPlantChange($event.value)"
-            placeholder="Select Plant">
-             <ng-template let-plant pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                    <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+            <div class="col-sm-6">
+              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
+              Plant
+            </label><br />
+            <p-dropdown 
+              formControlName="plant"
+              [disabled]="!showAdd"
+              [options]="plantname"
+              optionLabel="plant_name"
+              optionValue="plant_code"
+              styleClass="w-full"
+              (onChange)="onPlantChange($event.value)"
+              placeholder="Select Plant">
+              <ng-template let-plant pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                      <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                  </div>
+            </ng-template>
+            </p-dropdown>
+            </div>
+            <!-- Payroll area -->
+            <div class="col-sm-6">
+              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
+              Payroll Area
+            </label><br/>
+            <p-dropdown 
+              formControlName="payrollArea"
+              [disabled]="!showAdd"
+              [options]="payrollArea"
+              optionLabel="PayrollArea"
+              (onChange)="onPayrollAreaChange($event.value)"
+              styleClass="w-full"
+              placeholder="Select Payroll Area">
+            </p-dropdown>
+            </div>
+          </div>
+          <!-- second row -->
+           <div class="row mx-2 mt-3">
+            <!--Lock month -->
+            <div class="col-sm-6">
+              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
+              Lock Month
+            </label><br />
+            <p-dropdown 
+              formControlName="lock_month"
+              [options]=" monthsWithFirstDates"
+              optionLabel="month"
+              optionValue="firstDate"
+              styleClass="w-full"
+              (onChange)="updateSelectedDate()"
+              placeholder="Select Month">
+            </p-dropdown>
+            </div>
+            <!-- Start Date calender -->
+            <div class="col-sm-6">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                Start Date
+              </label> <br>
+            <p-calendar 
+                [disabled]="true"
+                dateFormat="yy-mm-dd"
+                formControlName="process_start_date"
+                styleClass="w-full !font-poppins"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+           </div>
+           <!-- third row -->
+            <div class="row mx-2 mt-3">
+              <!-- End Date calender -->
+              <div class="col-sm-6">
+              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                  End Date
+                </label> <br>
+              <p-calendar 
+                  [disabled]="true"
+                  dateFormat="yy-mm-dd"
+                  formControlName="process_end_date"
+                  styleClass="w-full !font-poppins"
+                  [showIcon]="true" >
+              </p-calendar>
+              </div>
+              <!-- company trainee process days calander days or between days -->
+              <div class="col-sm-6 flex items-start justify-center flex-col">
+                <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
+                <br>
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
+                Process Calenday Days
+              </label>
+              <div class="flex items-center justify-start gap-10">
+                <!-- festival -->
+                <div class="flex items-center gap-2 ml-2 mb-2">
+                  <p-checkbox 
+                  formControlName="companyTraineeLock"
+                  value="Y"
+                  inputId="admin" >
+                </p-checkbox>
+                  <label for="admin" class="mb-0 text-blue-600">YES</label>
                 </div>
-          </ng-template>
-          </p-dropdown>
-          </div>
-          <!-- Payroll area -->
-          <div class="w-[95%] mx-auto mt-3">
-            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
-            Payroll Area
-          </label><br />
-          <p-dropdown 
-            formControlName="payrollArea"
-            [disabled]="!showAdd"
-            [options]="payrollArea"
-            optionLabel="PayrollArea"
-            (onChange)="onPayrollAreaChange($event.value)"
-            styleClass="w-full"
-            placeholder="Select Payroll Area">
-          </p-dropdown>
-          </div>
-           <!--Lock month -->
-          <div class="w-[95%] mx-auto mt-3">
-            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
-            Lock Month
-          </label><br />
-          <p-dropdown 
-            formControlName="lock_month"
-            [options]=" monthsWithFirstDates"
-            optionLabel="month"
-            optionValue="firstDate"
-            styleClass="w-full"
-            (onChange)="updateSelectedDate()"
-            placeholder="Select Month">
-          </p-dropdown>
-          </div>
-          <!-- Start Date calender -->
-          <div class="w-[95%] mx-auto mt-3">
-          <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-              <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-              Start Date
-            </label>
-          <p-calendar 
-              [disabled]="true"
-              dateFormat="yy-mm-dd"
-              formControlName="process_start_date"
-              styleClass="w-full !font-poppins"
-              [showIcon]="true" >
-          </p-calendar>
-          </div>
-          <!-- End Date calender -->
-          <div class="w-[95%] mx-auto mt-3">
-          <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-              <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-              End Date
-            </label>
-          <p-calendar 
-              [disabled]="true"
-              dateFormat="yy-mm-dd"
-              formControlName="process_end_date"
-              styleClass="w-full !font-poppins"
-              [showIcon]="true" >
-          </p-calendar>
-          </div>
-          <br>
-          <!-- company trainee process days calander days or between days -->
-           <div class="w-[95%] mx-auto">
-            <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-            <br>
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
-            Process Calenday Days
-          </label>
-           <div class="flex items-center justify-start gap-10">
-             <!-- festival -->
-            <div class="flex items-center gap-2 ml-2 mb-2">
-              <p-checkbox 
-              formControlName="companyTraineeLock"
-              value="Y"
-              [disabled]="true"
-              inputId="admin" >
-             </p-checkbox>
-              <label for="admin" class="mb-0 text-blue-600">YES</label>
+                <!-- national -->
+                <div class="flex items-center gap-2 ml-2 mb-2">
+                  <p-checkbox 
+                  formControlName="companyTraineeLock"
+                  value="N" 
+                  inputId="national"
+                  >
+                </p-checkbox>
+                  <label for="national" class="mb-0 text-blue-600">NO</label>
+                </div>
+              </div>
+              </div>
             </div>
-            <!-- national -->
-            <div class="flex items-center gap-2 ml-2 mb-2">
-              <p-checkbox 
-              formControlName="companyTraineeLock"
-              value="N" 
-              inputId="national"
-              >
-             </p-checkbox>
-              <label for="national" class="mb-0 text-blue-600">NO</label>
-            </div>
+          <!-- fourth row -->
+           <div class="row mx-2 mt-3">
+               <!-- category -->
+              <div class="col-sm-6">
+                  <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
+                  <br>
+                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">category</mat-icon>
+                  Category
+                </label>
+                <div class="flex items-center justify-start gap-10">
+                  <!-- company rainee -->
+                  <div class="flex items-center gap-2 ml-2 mb-2">
+                    <p-checkbox 
+                    formControlName="category"
+                    [checked]="true"
+                    value="T" 
+                    inputId="admin" ></p-checkbox>
+                    <label for="admin" class="mb-0 text-blue-600">Trainee</label>
+                  </div>
+                  <!-- operator -->
+                  <div class="flex items-center gap-2 ml-2 mb-2">
+                    <p-checkbox 
+                    [disabled]="true"
+                    formControlName="category"
+                    value="O" 
+                    inputId="national" ></p-checkbox>
+                    <label for="national" class="mb-0 text-blue-600">Operator</label>
+                  </div>
+                </div>
+              </div>
            </div>
-         </div>
-          <br>
-           <!-- category -->
-         <div class="w-[95%] mx-auto">
-            <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-            <br>
-            <mat-icon class="text-2xl text-blue-600 h-0 w-0">category</mat-icon>
-            Category
-          </label>
-           <div class="flex items-center justify-start gap-10">
-             <!-- company rainee -->
-            <div class="flex items-center gap-2 ml-2 mb-2">
-              <p-checkbox 
-              formControlName="category"
-              [checked]="true"
-              value="T" 
-              inputId="admin" ></p-checkbox>
-              <label for="admin" class="mb-0 text-blue-600">Trainee</label>
-            </div>
-            <!-- operator -->
-            <div class="flex items-center gap-2 ml-2 mb-2">
-              <p-checkbox 
-              [disabled]="true"
-              formControlName="category"
-              value="O" 
-              inputId="national" ></p-checkbox>
-              <label for="national" class="mb-0 text-blue-600">Operator</label>
-            </div>
-           </div>
-         </div>
-          <br>
+          
           <!-- form footer -->
           <div class="bg-gray-100 flex items-center justify-end gap-6 py-2">
             <!-- add btn -->
@@ -216,6 +225,10 @@
         class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
       >
         Filters <mat-icon>filter_alt</mat-icon>
+        <!-- total count -->
+        <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{ bill_data?.length || 0}}
+        </span>
       </h1>
       <!-- primeNG speedDial -->
       <p-speedDial
