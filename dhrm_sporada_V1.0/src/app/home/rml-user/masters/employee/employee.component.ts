@@ -249,7 +249,7 @@ export class EmployeeComponent implements OnInit {
     this.form.controls['gen_id'].setValue(this.employee[a].gen_id)
     this.form.controls['plant_name'].setValue(this.employee[a].plant_code)
     this.form.controls['plant_name'].disable()
-    this.form.controls['gen_id'].disable()
+    this.form.controls['gen_id'].disable();
 
     this.form.controls['dept_name'].setValue(Number(this.employee[a].Department))
     this.form.controls['desig_name'].setValue(Number(this.employee[a].Designation))
@@ -327,6 +327,7 @@ export class EmployeeComponent implements OnInit {
             this.form.get('Designation').setValue(this.form.get('desig_name').value)
             this.form.get('line_code').setValue(this.form.get('Line_Name').value)
             this.form.get('dept_name').setValue(this.dept[index2].dept_name);
+            this.messageService.add({severity:'info',summary:'Employee Updated.'})
             /** refresh */
             this.getEmployeeData();
           }else{

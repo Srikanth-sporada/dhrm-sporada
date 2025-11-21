@@ -285,11 +285,20 @@ filterHolidayByPlant(){
  }
 }
 
-/** filter holiday fn */
+/** filter holiday fn
+ * @var holidayType event value
+ * @param event
+ * @var filteredHolidayData filtered holiday
+ * @property {*} selectedPlant user selected plant
+ * @property {*} factHoliday_data Table ref data
+ * @property {*} holidayData copy of holiday day
+ */
 filterHoliday(event:any){
   const holidayType = event.value;
-  const filteredHolidayData =  this.holidayData.filter((holiday:any) => holidayType == holiday.type && this.selectedPlant == holiday.plant_code);
-
+  console.log('HOLIDAY DATA:',this.holidayData);
+  /** filters plant and plant holiday type */
+  const filteredHolidayData =  this.holidayData.filter((holiday:any) => holidayType == holiday.type || this.selectedPlant == holiday.plant_code);
+  console.log('FILTERED DATA:', filteredHolidayData)
   if(filteredHolidayData.length){
     this.factHoliday_data = filteredHolidayData;
   }else{

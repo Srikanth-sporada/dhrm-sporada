@@ -82,8 +82,12 @@ export class FormsComponent implements OnInit, OnDestroy {
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
     this.getDataForID();
-    this.formservice.getdatabasic(this.uniqueId).subscribe((data: any) => {
+    this.formservice.getdatabasic(this.uniqueId).subscribe({
+      next: (data: any) => {
       this.details = data;
+      /** initial apln_slno */
+      this.apln_no = this.details[0]?.apln_slno;
+      console.log('NUMBER:',this.apln_no);
       this.Load = true;
       
       this.ishr = sessionStorage.getItem("ishr") || '' ;
@@ -110,8 +114,7 @@ export class FormsComponent implements OnInit, OnDestroy {
         this.message_from_category=true
         this.submit = "SEND FOR APPROVAL"
        }
-
-      this.apln_no = this.details[0]?.apln_slno;
+      /** setting apln_status */
       this.apln_status = this.details[0]?.apln_status;
 
       if (this.ishr == "true" && this.apln_status == "NEW INCOMPLETE")
@@ -124,6 +127,11 @@ export class FormsComponent implements OnInit, OnDestroy {
       )
         this.flag = true;
       else this.flag = false;
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
     });
     console.log('MESSAGE',this.message)
   }
@@ -134,7 +142,7 @@ export class FormsComponent implements OnInit, OnDestroy {
     this.Bodhi_training =data.Bodhi_training || 'NO'
     this.Role_id =data.Role_id || ''
     this.dept_Id =data.dept_Id || ''
-console.log('data.category',data.category);
+    console.log('data.category',data.category);
 
     this.message_from_category = data.category
     console.log(this.message_from_category)
@@ -247,28 +255,28 @@ console.log('data.category',data.category);
     )
       this.message = true;
     else {
-      this.formservice.submitbank();
-      console.log(this.formservice.bank);
+      // this.formservice.submitbank();
+      // console.log(this.formservice.bank);
 
-      this.formservice.submitbasic();
-      console.log(this.formservice.basic);
+      // this.formservice.submitbasic();
+      // console.log(this.formservice.basic);
 
-      this.formservice.submitedu();
-      console.log(this.formservice.edu);
+      // this.formservice.submitedu();
+      // console.log(this.formservice.edu);
 
-      this.formservice.submitemer();
-      console.log(this.formservice.emer);
+      // this.formservice.submitemer();
+      // console.log(this.formservice.emer);
 
-      this.formservice.submitfamily();
-      console.log(this.formservice.fam);
+      // this.formservice.submitfamily();
+      // console.log(this.formservice.fam);
 
-      this.formservice.submitother();
-      console.log(this.formservice.other);
+      // this.formservice.submitother();
+      // console.log(this.formservice.other);
 
-      this.formservice.submitprev();
-      console.log(this.formservice.prev);
+      // this.formservice.submitprev();
+      // console.log(this.formservice.prev);
 
-      this.formservice.sumbitlang();
+      // this.formservice.sumbitlang();
      
       console.log('this.ishr',this.ishr);
       console.log('type.ishr',typeof(this.ishr));
@@ -290,7 +298,9 @@ console.log('data.category',data.category);
             rejectVisible:false,
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.router.navigate(["/"]);
+              /** route back to login */
+               window.history.back();
+                // this.router.navigate(["/"]);
             }
         });
         // this.router.navigate(["/"]);
@@ -400,31 +410,31 @@ console.log('data.category',data.category);
 
   // trainee submit function
   submitTraineeApplication(event:Event){
-     this.formservice.submitbank();
-      console.log(this.formservice.bank);
+    //  this.formservice.submitbank();
+    //   console.log(this.formservice.bank);
 
-      this.formservice.submitbasic();
-      console.log(this.formservice.basic);
+    //   this.formservice.submitbasic();
+    //   console.log(this.formservice.basic);
 
-      this.formservice.submitedu();
-      console.log(this.formservice.edu);
+    //   this.formservice.submitedu();
+    //   console.log(this.formservice.edu);
 
-      this.formservice.submitemer();
-      console.log(this.formservice.emer);
+    //   this.formservice.submitemer();
+    //   console.log(this.formservice.emer);
 
-      this.formservice.submitfamily();
-      console.log(this.formservice.fam);
+    //   this.formservice.submitfamily();
+    //   console.log(this.formservice.fam);
 
-      this.formservice.submitother();
-      console.log(this.formservice.other);
+    //   this.formservice.submitother();
+    //   console.log(this.formservice.other);
 
-      this.formservice.submitprev();
-      console.log(this.formservice.prev);
+    //   this.formservice.submitprev();
+    //   console.log(this.formservice.prev);
 
-      this.formservice.sumbitlang();
+    //   this.formservice.sumbitlang();
      
-      console.log('this.ishr',this.ishr);
-      console.log('type.ishr',typeof(this.ishr));
+    //   console.log('this.ishr',this.ishr);
+    //   console.log('type.ishr',typeof(this.ishr));
       
       if (this.ishr !== 'true' ){
         // this.messageService.add({severity:'info',summary: "Your application " + this.apln_no +"has been submitted. \n Contact HR for more information"});
@@ -443,7 +453,9 @@ console.log('data.category',data.category);
             rejectVisible:false,
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.router.navigate(["/"]);
+              /** window back to load previous query params */
+                window.history.back();
+                // this.router.navigate(["/"]);
             }
         });
         // this.router.navigate(["/"]);

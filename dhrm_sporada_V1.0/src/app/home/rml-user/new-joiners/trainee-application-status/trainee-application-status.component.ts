@@ -47,7 +47,13 @@ searchTypeOptions =[
   { value: "aadhar_no", label: "AADHAR NUMBER" }
 ];
 
-  constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService,) {
+  constructor(
+    private modalService:NgbModal,
+    private fb: UntypedFormBuilder, 
+    private service: FormService,
+    public loader: LoaderserviceService, 
+    private active: ActivatedRoute,
+    private messageService:MessageService,) {
     this.form = this.fb.group({
       status: new UntypedFormControl(''),
       fromdate: new UntypedFormControl(''),
@@ -126,7 +132,6 @@ searchTypeOptions =[
   // delete trainee application
 delete(item: any) {
     console.log('Item to delete:', item);
-
     this.service.deleteTrainee(item).subscribe({
       next: (res: any) => {
         console.log('Delete response:', res);
@@ -141,11 +146,17 @@ delete(item: any) {
     });
   }
 
+  /**
+   * 
+   * @param apln_slno 
+   * opens delete confirmation component
+   * pass comfirmModalRef compoenentInstance confirm function
+   */
 openDeleteModal(apln_slno: any) {
   this.itemToDelete = apln_slno;
   this.showDeleteModal = true;
   const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
-  confirmModalRef.componentInstance.confirmFunction = this.confirmDelete;
+  confirmModalRef.componentInstance.confirmFunction = () => this.confirmDelete();
   console.log('modal opened.');
 }
 

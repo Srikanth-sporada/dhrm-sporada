@@ -95,9 +95,10 @@
     <div class="col-sm-6">
       <div class="btn1">
         <p-confirmDialog ></p-confirmDialog>
-        <!-- send for approval btn show if only for CL supervison application -->
+        <!-- send for approval btn show if only for CL supervisor application -->
         <button
           pButton
+          [hidden]="true"
           *ngIf="ishr !== 'undefined'"
           label="Send For Approval"
           icon="pi pi-send"

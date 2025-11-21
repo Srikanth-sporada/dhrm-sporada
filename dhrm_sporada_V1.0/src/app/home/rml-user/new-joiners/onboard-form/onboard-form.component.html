@@ -18,7 +18,7 @@
             <!-- ifsc code -->
             <div class="w-full p-fluid">
             <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">
-                IFCS Code<span class="text-red-600 ml-2">*</span>
+                IFSC Code<span class="text-red-600 ml-2">*</span>
             </label> <br>
             <input 
             type="text" 
@@ -90,7 +90,7 @@
                     placeholder="Select Category" ></p-dropdown>
             </div>
             <!-- Contractors -->
-            <div class="font-poppins w-full" *ngIf="contractorsList.includes(form.value.category) || basic[0].cont_id !== null">
+            <div class="font-poppins w-full" *ngIf="contractorsList?.includes(form?.value?.category) || basic[0]?.cont_id !== null">
                 <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Contractor</label> <br>
                 <p-dropdown 
                     [options]="contractorData"
@@ -306,6 +306,7 @@
                      Cost Center<span class="text-red-600 ml-2">*</span>
                   </label> <br>
                   <p-dropdown 
+                     *ngIf="hideCostCenterInput"
                       [options]="costCenterData"
                       optionLabel="CostCenter"
                       optionValue="CostCenter"
@@ -313,12 +314,13 @@
                       formControlName="costCenter"
                       placeholder="Select Cost Center" >
                     </p-dropdown>
-                  <!-- <input
+                  <input
+                    *ngIf="!hideCostCenterInput"
                      pInputText
                      [maxlength]="12"
                       styleClass="w-full"
                       formControlName="costCenter" 
-                      placeholder="Select Cost Center" /> -->
+                      placeholder="Select Cost Center" />
               </div>
                <!--  Legacy Number one -->
               <div class="font-poppins w-full p-fluid">

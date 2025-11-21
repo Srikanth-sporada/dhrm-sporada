@@ -12,19 +12,21 @@ export const environment = {
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:true,
-  hideHrDashboard:true,
-  hideCanteenDashboard:true,
+  hideHrSummary:false,
+  hideHrDashboard:false,
+  hideCanteenDashboard:false,
   /** reports */
-  hideCumulativeReport:true,
-  hideLopReport:true,
-  hideMachineReport:true,
-  hideCanteenReport:true,
+  hideCumulativeReport:false,
+  hideLopReport:false,
+  hideMachineReport:false,
+  hideCanteenReport:false,
   /** attedance calander */
   shiftFullWidth:false,
   /** Trainee Login page */
-  disableCompanyDropDown:true,
-  disablePlantDropDown:true,
+  disableCompanyDropDown:false,
+  disablePlantDropDown:false,
+  /** onboard cost center*/
+  hidecostCenterInput:true,
   
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 

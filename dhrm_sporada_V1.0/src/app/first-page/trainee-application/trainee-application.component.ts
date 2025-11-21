@@ -103,7 +103,7 @@ export class TraineeApplicationComponent implements OnInit {
     });
   }
 
-  // sending form data to api
+  /** trainee application form api call */
   sendFormData() {
     // console.log(this.traineeApplicationForms.value)
     if (this.traineeApplicationForms.invalid) {
@@ -160,7 +160,9 @@ export class TraineeApplicationComponent implements OnInit {
             console.log(this.traineeApplicationForms.value);
           }else if(this.errmsg.status == "failed"){
            this.messageService.add({severity:'info',summary:this.errmsg.message})
-           this.traineeApplicationForms.reset()
+           setTimeout(() => {
+             window.location.reload();
+           }, 3100)
           }
         },
         error: (error: any) => this.messageService.add({severity:'error',summary:error.message}),

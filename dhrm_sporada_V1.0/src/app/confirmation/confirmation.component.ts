@@ -33,4 +33,12 @@ export class ConfirmationComponent implements OnInit {
 log(){
   console.log('close')
 }
+/** deletion function
+ * @property {*} activeModal
+ * @property {*} confirmFunction
+ */
+confirmDelete(){
+  this.confirmFunction();
+  this.activeModal.close()
+}
 }

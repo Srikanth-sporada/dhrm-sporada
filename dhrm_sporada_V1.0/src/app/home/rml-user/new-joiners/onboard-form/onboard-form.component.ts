@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, ErrorHandler, OnInit } from "@angular/core";
 import { FormControl, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/home/api.service";
@@ -23,6 +23,7 @@ export class OnboardFormComponent implements OnInit {
   @Input() applicationData:any= [];
   @Input() disbleApproveBtn:any;
   disableApproveBtn:any;
+  hideCostCenterInput:boolean = environment.hidecostCenterInput;
   applicationStatusForBtn = 'PENDING'
   lockDate:any;
   form: any;
@@ -34,7 +35,11 @@ export class OnboardFormComponent implements OnInit {
   {value:4,label:4}];
   account_number: any;
   department: any;
-  active_status: any = [{value:"ACTIVE",label:"ACTIVE"}, {value:"INACTIVE",label:"INACTIVE"}];
+  /** active status */
+  active_status: any = [
+    {value:"ACTIVE",label:"ACTIVE"}, 
+    {value:"INACTIVE",label:"INACTIVE"}
+  ];
   bank_name: any;
   line: any;
   Role: any;
@@ -44,6 +49,7 @@ export class OnboardFormComponent implements OnInit {
   b_num: any;
   reporting_to: any;
   uan: any;
+  /** work contract */
   w_contract: any = ["DIRECT", "INDIRECT",'OTHERS'];
   isWContractDisabled: boolean = true;
   trainee_id: any;
@@ -55,7 +61,7 @@ export class OnboardFormComponent implements OnInit {
   down: any;
   age:any;
   reason:any;
-  DOJ:any
+  DOJ:any;
   readonly: boolean = this.status == "APPOINTED" ? true : false;
   obj: any = [];
   OnboardData = [];
@@ -71,7 +77,7 @@ export class OnboardFormComponent implements OnInit {
   department_: any;
   fullname: any;
   minDate:any;
-  today:any
+  today:any;
   minDateCal:any;
   backdate:any;
   created_dt:any;
@@ -85,7 +91,9 @@ export class OnboardFormComponent implements OnInit {
     { label: 'NO', value: 'NO' }
   ]
   contractorData:any;
-  /** contractor list */
+  /** contractor list
+   * used to seperate contract trainee & company trainee
+   */
   contractorsList:any = [
     'CL',
     'CL - PIECE RATE',
@@ -98,15 +106,15 @@ export class OnboardFormComponent implements OnInit {
     'VENDOR NEEM']
   constructor(
     private fb: UntypedFormBuilder,
-     private formservice: FormService,
-    private http: HttpClient,
+    private formservice: FormService,
     private router: Router,
     private active: ActivatedRoute,
     private service: ApiService,
     private messageService:MessageService,
     private location:Location,
-     private dailog:MatDialog,
+    private dailog:MatDialog,
   ) {
+    /** onboard form */
     this.form = this.fb.group({
       ifsc_code: ["",],
       grade: [1],
@@ -119,7 +127,7 @@ export class OnboardFormComponent implements OnInit {
       Role_Id: ["",Validators.required],
       dol: new FormControl(""),
       bio_id: [""],
-      process_trained: ["",Validators.required],
+      process_trained: [""],
       rfr: new FormControl(""),
       bnum: ["",],
       reportingto: ["", Validators.required],
@@ -143,6 +151,7 @@ export class OnboardFormComponent implements OnInit {
   values: any;
 
   ngOnInit(): void {
+    console.log('form:',this.form.value)
     console.log('DATA FROM APPLICATION', this.applicationNumber)
     this.form.get("bnum").setValue(this.active.snapshot.paramMap.get("id"));
     this.form.controls["bio_id"].setValue(false);
@@ -228,7 +237,8 @@ export class OnboardFormComponent implements OnInit {
           // before trainee onboard
           if (this.readonly == false) {
             this.form.controls["grade"].disable();
-             this.form.controls["active_status"].setValue('ACTIVE');
+            /** active status */
+            //  this.form.controls["active_status"].setValue('ACTIVE');
             this.form.controls["active_status"].disable();
             this.form.controls["category"].setValue(
               this.basic[0]?.apprentice_type
@@ -242,19 +252,25 @@ export class OnboardFormComponent implements OnInit {
             // }
             
           }
-
-          this.service.getlockdateByCategory(this.category=='OPREATOR'?'O':'T').subscribe((response:any)=>{
-            this.lockDate=response.date.split('T')[0]
-         //   console.log(this.lockDate)
-            this.dolMinDate = this.lockDate > this.DOJ? moment(this.lockDate).format('yyyy-MM-DD') :this.DOJ
-            this.dolMinDate = new Date(this.dolMinDate)
-            this.calMin_Max_DOL(this.lockDate)
-            if(this.DOJ < this.lockDate){
-              this.minDate = moment(this.lockDate)
-              this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD')
+          /** get lock date by category */
+          this.service.getlockdateByCategory(this.category=='OPREATOR'?'O':'T').subscribe({
+            next: (response:any) =>{
+              this.lockDate = response?.date?.split('T')[0]
+              //console.log(this.lockDate)
+              this.dolMinDate = this.lockDate > this.DOJ? moment(this.lockDate).format('yyyy-MM-DD') :this.DOJ
+              this.dolMinDate = new Date(this.dolMinDate)
+              this.calMin_Max_DOL(this.lockDate)
+              if(this.DOJ < this.lockDate){
+                this.minDate = moment(this.lockDate)
+                this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD');
+              }
+            },
+            error:(error:any) => {
+              console.error('ERROR:',error);
+              this.messageService.add({severity:'error',summary:error?.message});
             }
           })
-// before trainee appointed
+     // before trainee appointed
           if (this.readonly == true) {
             this.getRolesFor2ndApporver()
             this.form.controls["grade"].setValue(this.basic[0]?.emp_grade);
@@ -273,9 +289,7 @@ export class OnboardFormComponent implements OnInit {
             this.form.controls["trainee_id"].setValue(this.basic[0]?.gen_id);
             this.form.controls["reportingto"].setValue(this.basic[0]?.reporting_to);
               // payroll area
-            this.form.controls["payrollArea"].setValue(
-              this.basic[0]?.payrollArea
-            );
+            this.form.controls["payrollArea"].setValue(this.basic[0]?.payrollArea);
             // dojo training new extra fields
             this.form.controls['dojoTraining']
             .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); // setting server response opposite value
@@ -285,6 +299,8 @@ export class OnboardFormComponent implements OnInit {
 
             this.form.controls["wcontract"].setValue("DIRECT");
             this.form.controls["doj"].setValue(this.basic[0]?.doj);
+            /** active status */
+            // this.form.controls['active_status'].setValue(this.basic[0]?.activestat)
             if (this.form.controls["active_status"].value == "ACTIVE") {
               this.form.controls["rfr"].disable();
               this.form.controls["dol"].disable();
@@ -339,7 +355,11 @@ export class OnboardFormComponent implements OnInit {
   }
 
 
-  // get payroll area by plant code
+  /**
+   * get payroll area by plant code
+   * @param plantcode 
+   * @property {*} payrollArea
+   */
   getPayrollArea(plantcode:any){
     this.service.getPayrollAreaByPlantcode(plantcode).subscribe({
       next: (response:any) => {
@@ -348,6 +368,10 @@ export class OnboardFormComponent implements OnInit {
         }
         this.payrollArea = response;
         console.log(response);
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
   }
@@ -410,41 +434,47 @@ export class OnboardFormComponent implements OnInit {
     else this.true = false;
   }
 
-  // onboard form submit
+  /**
+   * 
+   * @param isFirstApprover define first approver
+   */
   submit(isFirstApprover:any) {
-  //   if(this.form.controls["doj"].value<this.lockDate && this.readonly == false){
-  //     this.messageService.add({severity:'warn',summary:'`DOJ should be within current payroll period'})
-  //     return
-  //   }
 
-  //  if(this.form.controls["doj"].value>this.today  && this.readonly == false ){
-  //   this.messageService.add({severity:'warn',summary:'DOJ is cannot be future date'})
-  //   return 
-  //  }
+    // if(this.form.controls["doj"].value < this.lockDate && this.readonly == false){
+    //   this.messageService.add({severity:'warn',summary:'`DOJ should be within current payroll period'})
+    //   return
+    // }
+
+    // if(this.form.controls["doj"].value > this.today  && this.readonly == false ){
+    //   this.messageService.add({severity:'warn',summary:'DOJ is cannot be future date'})
+    //   return 
+    // }
  
-
-  //  if(this.form.controls["doj"].value<this.created_dt && this.readonly == false){
-  //   this.messageService.add({severity:'warn',summary:`Application Created  Date is ${this.created_dt} and DOJ cannot be less then applicatin creation date`})
-  //   return
-  //  }
-
+    // if(this.form.controls["doj"].value < this.created_dt && this.readonly == false){
+    //   this.messageService.add({severity:'warn',summary:`Application Created  Date is ${this.created_dt} and DOJ cannot be less then application creation date`})
+    //   return
+    // }
+  /** trainee onboard send for approval & approve isFirstApproval boolean */
     if (this.readonly == false) {
       this.form.get("grade").enable();
       this.form.get('category').enable();
+      /** DOJ format */
       this.form.controls["doj"].setValue(moment(this.form.value.doj).format('YYYY-MM-DD'));
-      // setting dojo training value to actual value
+      /**  setting dojo training value to actual value */
       this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
-      // logging onboard form data
-      console.log('ONBOARD DATA',this.form.value);
-      /** trainee send for approval api call */
-      this.service.onboard_form(this.form.value).subscribe({
+      this.form.controls['active_status'].setValue('ACTIVE');
+      console.log('ONBOARD DATA',this.form.getRawValue());
+      /** trainee send for approval & appoint[gen id generation] api call 
+       * get form raw values for disabled fields
+      */
+      this.service.onboard_form(this.form.getRawValue()).subscribe({
         next: (response: any) => {
         //  console.log(response);
           if (response) {
             if(isFirstApprover){
               this.messageService.add({severity:'info',summary:'Application Send For Approval'});
             }else{
-             this.messageService.add({severity:'info',summary:response})
+             this.messageService.add({severity:'info',summary:response});
             }
             if (this.setting == 1) {
               this.form.controls["trainee_id"].setValue();
@@ -475,9 +505,9 @@ export class OnboardFormComponent implements OnInit {
       /** trainee releive api call */
     } else if (this.readonly == true) {
       /** DOL format */
-      // this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
+      this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
       console.log(this.form.value)
-
+      /** releive api call */
       this.service.relieve({...this.form.value,category:this.basic[0]?.apprentice_type }).subscribe({
         next: (response: any) => {
           // console.log(response);
@@ -662,7 +692,7 @@ export class OnboardFormComponent implements OnInit {
        console.log('category submitted',response);
       // HR APPROVAL API CALL
        this.formservice.submitted(submitData);
-      // onboard form submit api call 
+      /** onboard form api call first approver */
       this.submit(true);
       },
       error: (error) => {

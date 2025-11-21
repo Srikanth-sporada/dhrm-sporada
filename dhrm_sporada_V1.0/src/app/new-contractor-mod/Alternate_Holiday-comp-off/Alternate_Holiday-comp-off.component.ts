@@ -171,7 +171,8 @@ getAltHoliday_data(){
 
 onedit(data:any){
     this.showForm()
-  console.log(data)
+  console.log('VIEW DATA:',data);
+  this.D_OffForm.get('last')?.disable()
   this.showAdd=false;
   console.log(this.D_OffForm.value)
   this.D_OffForm.patchValue({
