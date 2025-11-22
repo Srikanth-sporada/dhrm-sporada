@@ -65,7 +65,7 @@ eduData = [
     'department': '',
     'certificatenumber': '',
     'certificatedate': '',
-    'percentage': ''
+    'percentage': '0'
   },
   {
     'sno':'3',
@@ -75,7 +75,7 @@ eduData = [
     'department': '',
     'certificatenumber': '',
     'certificatedate': '',
-    'percentage': ''
+    'percentage': '0'
   },
   {
     'sno':'4',
@@ -85,7 +85,7 @@ eduData = [
     'department': '',
     'certificatenumber': '',
     'certificatedate': '',
-    'percentage': ''
+    'percentage': '0'
   },
 ];
   state: boolean;

@@ -1,6 +1,6 @@
 <!-- add,update bill processed date template -->
 <div class="overlay overflow-y-auto no-scrollbar" [hidden]="!showHolidayForm">
-  <div class="form-popup !p-0 !font-poppins w-1/2" [hidden]="!showHolidayForm">
+  <div class="form-popup !p-0 !font-poppins w-1/2 !rounded-md" [hidden]="!showHolidayForm">
   <!-- form header -->
      <div>
       <div class="bg-blue-600 flex items-center justify-center py-4">
@@ -197,7 +197,7 @@
           </div>
         </form>
     </div>
-</div>
+  </div>
 </div>
 
 <!-- Masters header -->
@@ -314,7 +314,8 @@
                                     <mat-icon class="text-yellow-600 text-[20px]">lock_open</mat-icon>
                                 </button>
                                 <button 
-                                  (click)="confirmDelete(data)">
+                                 *ngIf="data.category === 'T' && data.Salary_Locked==='FALSE'"
+                                 (click)="confirmDelete(data)">
                                     <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
                                 </button>
                             </td>

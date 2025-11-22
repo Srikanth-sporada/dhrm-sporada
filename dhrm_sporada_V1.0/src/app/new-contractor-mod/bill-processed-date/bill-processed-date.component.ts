@@ -301,7 +301,7 @@ confirmDelete(delData:any) {
     formData.locked_date = this.formatDate(delData.locked_date)
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        message: 'Are you sure you want to delete this record?',
+        message: 'Are you sure you want to delete ?',
         confirmText: 'Yes, Delete',
         cancelText: 'Cancel',
       },
@@ -310,18 +310,19 @@ confirmDelete(delData:any) {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(result)
-        this.api.del_Bill_date(formData).subscribe(res =>{
-      this.openAlertDialog(`${res}`,'check')
-      this.get_Bill_data()
+        this.api.del_Bill_date(formData).subscribe((res:any) =>{
+        // this.openAlertDialog(`${res}`,'check');
+        this.messageService.add({severity:'info',summary:res});
+        this.get_Bill_data()
         },(error) => {
           if (error.status === 400) {
             console.log(error)
-            this.openAlertDialog(`${error.error}`,'error');
-            
+            // this.openAlertDialog(`${error.error}`,'error');
+            this.messageService.add({severity:'error',summary:error?.error});
           }
            else {
-            this.openAlertDialog('Error in connection','error');
-           
+            // this.openAlertDialog('Error in connection','error');
+            this.messageService.add({severity:'error',summary:'Error In Server'});
           }
       })
       }
@@ -338,21 +339,25 @@ const dialogRef = this.dialog.open(ConfirmDialogComponent, {
   },
 });
 
+/** setting salary lock into TRUE final lock */
+ data = {...data,Salary_Locked:'TRUE'}
+ console.log('LOCK DATA', data);
 dialogRef.afterClosed().subscribe((result) => {
   if (result) {
     console.log(result)
-    this.api.Lock_Salary(data,this.userEmpcode).subscribe(res =>{
-  this.openAlertDialog(`${res}`,'check')
-  this.get_Bill_data()
+    this.api.Lock_Salary(data,this.userEmpcode).subscribe((res:any) =>{
+    // this.openAlertDialog(`${res}`,'check');
+    this.messageService.add({severity:'info',summary:res})
+    this.get_Bill_data()
     },(error) => {
       if (error.status === 400) {
         console.log(error)
-        this.openAlertDialog(`${error.error}`,'error');
-        
+        // this.openAlertDialog(`${error.error}`,'error');
+        this.messageService.add({severity:'error', summary:error?.error});
       }
        else {
-        this.openAlertDialog('Error in connection','error');
-       
+        // this.openAlertDialog('Error in connection','error');
+        this.messageService.add({severity:'error',summary:'Error In Connection'})
       }
   })
   }
@@ -397,22 +402,27 @@ onSubmit(){
     formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
     formData.process_start_date = this.formatDate(this.billForm.value.process_start_date);
     formData.process_end_date = this.formatDate(this.billForm.value.process_end_date);
-    formData.lock_date = this.formatDate(this.billForm.value.lock_date);
+    // formData.lock_date = this.formatDate(this.billForm.value.lock_date);
+    /** lock date format */
+    formData.lock_date = moment().format('YYYY-MM-DD');
      console.log(formData);
     /** add new processed bill api call */
-    this.api.add_Bill_date(formData,this.userEmpcode).subscribe( (res) => {
+    this.api.add_Bill_date(formData,this.userEmpcode).subscribe( (res:any) => {
       this.hideForm();
-      this.openAlertDialog(`${res}`,'check')
+      this.messageService.add({severity:'info',summary:res});
+      // this.openAlertDialog(`${res}`,'check');
       this.get_Bill_data();
       this.reset();
       },(error) => {
         if (error.status === 400) {
-          console.log(error)
-          this.openAlertDialog(`${error.error}`,'error');
+          console.log(error);
+          // this.openAlertDialog(`${error.error}`,'error');
+          this.messageService.add({severity:'error',summary:error.error});
           this.showForm()
         }
          else {
-          this.openAlertDialog('Error in connection','error');
+          // this.openAlertDialog('Error in connection','error');
+          this.messageService.add({severity:'error',summary:'Error In Connection'})
           this.showForm()
         }
     })
@@ -436,8 +446,8 @@ exportExcel() : void{
   console.log(transformedArray);
   var ws = XLSX.utils.json_to_sheet(transformedArray);
   var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Factory Holiday Master");
-  XLSX.writeFile(wb,"Mst_Factory_Holiday.xlsx");
+  XLSX.utils.book_append_sheet(wb, ws, "Processed Bills");
+  XLSX.writeFile(wb,"processed_bills.xlsx");
 
 }
 }

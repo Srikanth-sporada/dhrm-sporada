@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,10 @@ export class FormService {
   mobile:any;
   cont_id:any;
 
-  constructor(private http : HttpClient, private active : ActivatedRoute)
+  constructor(
+    private http : HttpClient, 
+    private active : ActivatedRoute,
+    private messageService:MessageService)
   {
    }
 
@@ -61,8 +65,13 @@ submitbasic(){
   console.log(this.basic)
   this.http.put(this.url+'/hrOperation/basicforms', this.basic)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+     next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
@@ -70,8 +79,13 @@ submitedu(){
   console.log(this.edu)
   this.http.put(this.url+'/hrOperation/edu', this.edu)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+      next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
@@ -81,8 +95,13 @@ submitemer(){
   console.log(this.emer)
   this.http.put(this.url+'/hrOperation/emergency', this.emer)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+      next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
@@ -90,8 +109,13 @@ submitfamily(){
   console.log(this.edu)
   this.http.put(this.url+'/hrOperation/family', this.fam)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+     next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
@@ -99,8 +123,13 @@ submitother(){
   console.log(this.other)
   this.http.put(this.url+'/hrOperation/others', this.other)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+      next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
@@ -108,16 +137,26 @@ submitprev(){
   console.log(this.prev)
   this.http.put(this.url+'/hrOperation/prev', this.prev)
   .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+     next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
 })
 }
 
 sumbitlang(){
-        this.http.put(this.url+'/hrOperation/lang', this.lang)
+   this.http.put(this.url+'/hrOperation/lang', this.lang)
     .subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+      next: (response:any) => {
+        console.log(response);
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
+      },
+      error: (error) => console.error(error),
   })
 }
 

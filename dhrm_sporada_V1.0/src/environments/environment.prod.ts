@@ -23,8 +23,8 @@ export const environment = {
   /** attedance calander */
   shiftFullWidth:false,
   /** Trainee Login page */
-  disableCompanyDropDown:false,
-  disablePlantDropDown:false,
+  disableCompanyDropDown:true,
+  disablePlantDropDown:true,
   /** onboard cost center*/
   hidecostCenterInput:true,
   

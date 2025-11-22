@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,ChangeDetectionStrategy} from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
@@ -7,16 +7,20 @@ import { MessageService } from "primeng/api";
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
   styleUrls: ["./excesshr-approve.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class ExcesshrApproveComponent implements OnInit {
   data: any;
-  filterDate: any;
+  filterDate: any = new Date();
   lines: any;
   selectedLine: any = "All";
+  userEnteredGenID:any;
   loading:any=false;
   max_hrs:any;
   all:any;
   userDetails:any;
+  excessHourData:any;
   constructor(private apiService: ApiService, private messageService:MessageService) {}
 
   ngOnInit() {
@@ -54,11 +58,12 @@ export class ExcesshrApproveComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       } else {
         console.log(response.data);
-
         this.data = response.data.map((element: any) => {
           return { ...element, approvedHr: null, reason: "" };
         });
-        console.log(this.data );
+        /** excess hour data copy */
+        this.excessHourData = this.data;
+        console.log(this.data);
       }
     },(error) => {
       console.log(error);
@@ -104,9 +109,6 @@ export class ExcesshrApproveComponent implements OnInit {
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
-
-
-
 
   exportexcel() {
     this.apiService.getExcessHours_Report().subscribe((response: any) => {
@@ -165,5 +167,21 @@ export class ExcesshrApproveComponent implements OnInit {
     });
   }
   
+  /** 
+   * filter excess hours by gen id
+   * @var filteredEhData
+   * @property {*} data actual EH data
+   * @property {*} excessHourData copy data
+   *  */
 
+  filterExcessHourByGenID(){
+    this.userEnteredGenID = this.userEnteredGenID.trim();
+   const filteredEhData = this.excessHourData.filter((trainee:any) => trainee.gen_id.includes(this.userEnteredGenID));
+
+   if(filteredEhData.length){
+    this.data = filteredEhData;
+   }else{
+    this.data = this.excessHourData;
+   }
+  }
 }

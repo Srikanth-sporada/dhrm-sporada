@@ -30,7 +30,7 @@
      <div>
      <!--  filter row one -->
      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
-     <!-- date -->
+      <!-- date -->
         <div class="w-full">
           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
           <p-calendar 
@@ -51,7 +51,16 @@
             styleClass="w-full" 
             placeholder="Select Line" ></p-dropdown>
        </div>
-      
+       <!-- gen id -->
+       <div class="font-poppins w-full p-fluid">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Gen ID</label> <br>
+          <input 
+            pInputText
+            [(ngModel)]="userEnteredGenID"
+            styleClass="w-full" 
+            (input)="filterExcessHourByGenID()"
+            placeholder="Enter Gen ID"/>
+       </div>
      </div>
      </div>
   </div>
@@ -60,39 +69,39 @@
 <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
   <table id="table" class="table-auto !w-full">
     <!-- table head -->
-      <thead class="sticky top-0">
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+      <thead class="sticky top-0 !z-10">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
           <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Biometric ID</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Worked Date</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">IN Time</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">OUT Time</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Excess Work Hrs</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Actual Worked Hrs</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
-          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Verification</th>
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
         </tr>
       </thead>
-      <!-- table body |datefilter:filterDate|lineFilter:selectedLine;-->
+      <!-- table body | datefilter:filterDate | lineFilter:selectedLine;-->
       <tbody>
-        <tr *ngFor="let item of data let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+        <tr *ngFor="let item of data | datefilter:filterDate | lineFilter:selectedLine let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.biometric_no}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md ">{{ item.fullname }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md r">{{ item.Line_Name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md ">{{ item.apprentice_type }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.att_date|date:'dd-MM-yyyy'}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{item.in_time}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{item.out_time}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.apprentice_type }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-blue-600">{{ item.att_date | date:'dd-MM-yyyy'}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-green-500">{{item.in_time}}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-red-500">{{item.out_time}}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ item.expect_othr }}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">
             <input
-                class="text-center"
+                class="text-center w-[100px] h-[40px]"
                 type="number"
                 [(ngModel)]="item.approvedHr"
                 pInputText
@@ -110,7 +119,7 @@
             <p *ngIf=" item.approvedHr > getMaxHours(item)" style="color:red" >OT  Cannot be Greater Then {{max_hrs}} Hours</p>
           </td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">
-            <input type='text' pInputText [(ngModel)]="item.reason" />
+            <input type='text' pInputText [(ngModel)]="item.reason" class="w-[100px] h-[40px]"/>
             <!-- <mat-form-field>
               <input matInput [(ngModel)]="item.reason" />
             </mat-form-field> -->

@@ -16,9 +16,8 @@ export class CoffotpopupComponent implements OnInit {
   gen_id: any = sessionStorage.getItem("gen_id");
   user: any = sessionStorage.getItem("user");
   plant: any = sessionStorage.getItem("plantcode");
-
-applyshow:boolean=false
-agreed: boolean = false;
+  applyshow:boolean=false
+  agreed: boolean = false;
 
   constructor(private dailogRef:MatDialogRef<CoffotpopupComponent>,@Inject(MAT_DIALOG_DATA) public data:any,
   private apiService:ApiService,
@@ -39,7 +38,7 @@ agreed: boolean = false;
           this.messageService.add({severity:"warn",summary:response.message});
           // alert(response.message)
         }else{
-          this.absentData=response.data.map((element:any)=>{
+          this.absentData = response.data.map((element:any)=>{
             return {...element,selected:false}
           })
           console.log(this.absentData)
@@ -55,7 +54,7 @@ agreed: boolean = false;
           this.messageService.add({severity:"warn",summary:response.message});
 
         }else{
-          this.absentData=response.data.map((element:any)=>{
+          this.absentData = response.data.map((element:any)=>{
             return {...element,selected:false}
           })
           console.log(this.absentData)
@@ -205,4 +204,10 @@ this.apiService.applyCoffByOptr(data).subscribe((res:any)=>{
 });
 }
 
+/** 
+ * close modal
+ */
+ close(){
+  this.dailogRef.close();
+ }
 }

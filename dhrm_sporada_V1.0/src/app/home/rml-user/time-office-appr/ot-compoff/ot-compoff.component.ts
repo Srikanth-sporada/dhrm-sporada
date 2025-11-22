@@ -16,26 +16,37 @@ export class OtCompoffComponent implements OnInit {
 
   data: any;
   lines: any;
-  selectedLine: any = "";
+  /** sesstion storage login details get getting line code */
+  selectedLine:any;
   downlodData:any;
   all:any;
   userDetails:any;
   constructor(private apiService: ApiService,private matdailog:MatDialog,private messageService:MessageService,private confirmationService:ConfirmationService) {}
   
   ngOnInit() {
-        let details = sessionStorage.getItem("all");
+    /** logged in user information */
+    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
     this.getData();
-    this.apiService.getlineBydept().subscribe((response: any) => {
+    this.getLineByDept();
+  }
+
+  /**
+   * get line by department
+   */
+  getLineByDept(){
+      this.apiService.getlineBydept().subscribe((response: any) => {
       this.lines = response;
       this.lines.push({Line_Name:'All'});
       this.lines.reverse();
-    
+      /** line code need Line name */
+      // this.selectedLine = this.all.line_code.toString();
+      // console.log(this.selectedLine);
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
@@ -57,7 +68,7 @@ export class OtCompoffComponent implements OnInit {
         console.log(this.data);
       }
     },(error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
@@ -75,8 +86,8 @@ export class OtCompoffComponent implements OnInit {
    
     var ws = XLSX.utils.json_to_sheet(this.downlodData);
     var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Report");
-    XLSX.writeFile(wb, `OT report.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, "comp-off");
+    XLSX.writeFile(wb, `comp_off_report.xlsx`);
     this.messageService.add({severity:'info',summary:'Data Converted.'})
   }
   
@@ -84,7 +95,7 @@ export class OtCompoffComponent implements OnInit {
   openCoffDeatils(data:any){
     this.matdailog.open(CoffDetailsComponent,{
       data:data
-    })
+    });
   }
 
   // dialog modal for excess hour details

@@ -46,7 +46,7 @@
   <!-- back date table -->
     <ng-template #show>
       <div class="h-[90svh] lg:h-[65vh] xl:h-[64vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
-          <table  id="table" class="table-auto !w-full">
+          <table  id="backdateTable" class="table-auto !w-full">
             <!-- table head -->
             <thead class="sticky top-0">
               <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
@@ -56,6 +56,7 @@
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">DOJ Limit</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">EH Approval Limit</th>
+                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">C-Off Expiry</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Forgot to Punch HR Limit</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Forgot to Punch Workmen Limit</th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Approval For FH Limit</th>
@@ -72,6 +73,7 @@
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold">{{ i.plant }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.doj_limit }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.eh_approval_sup }}</td>
+                <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.compoff_expiry || '-' }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.fp_hr }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.fp_workmen }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-purple-600 font-semibold">{{ i.ot_appr_fh }}</td>

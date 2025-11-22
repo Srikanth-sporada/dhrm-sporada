@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/home/api.service';
 import { BackdatePopupComponent } from './backdate-popup/backdate-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
+import { Utility } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-backdate',
@@ -36,11 +37,16 @@ export class BackdateComponent implements OnInit {
                 },
                 command: () => {
                   this.exportexcel();
-                  this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
                 }
               }
     ];
-  constructor(public loader: LoaderserviceService,private service:ApiService,private dailog:MatDialog,private messageService:MessageService,private confirmationService:ConfirmationService) { }
+  constructor(
+    public loader: LoaderserviceService,
+    private service:ApiService,
+    private dailog:MatDialog,
+    private messageService:MessageService,
+    private confirmationService:ConfirmationService,
+   public utils:Utility) { }
 
   ngOnInit() {
     this.getPlantData();
@@ -132,6 +138,7 @@ export class BackdateComponent implements OnInit {
 
   // export to excel
   exportexcel(){
-
+    /** utlity export excel fn call */
+    this.utils.exportexcel('backdateTable','back_date_master','')
   }
 }

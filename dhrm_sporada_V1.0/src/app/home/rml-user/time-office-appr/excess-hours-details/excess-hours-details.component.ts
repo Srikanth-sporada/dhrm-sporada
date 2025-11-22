@@ -19,9 +19,8 @@ export class ExcessHoursDetailsComponent implements OnInit {
 
   ngOnInit() {
 
-this.gethrApproverDtls()
-    console.log(this.data.apprentice_type ==="OPERATOR" && this.user ==="ars")
-
+  this.gethrApproverDtls()
+    console.log(this.data.apprentice_type ==="OPERATOR" && this.user ==="ars");
   }
   
   close(){

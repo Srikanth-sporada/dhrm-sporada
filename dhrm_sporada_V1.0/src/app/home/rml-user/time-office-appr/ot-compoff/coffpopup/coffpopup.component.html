@@ -1,4 +1,4 @@
-<div class="!font-poppins">
+<div class="!font-poppins h-[100dvh]">
   <!-- modal header -->
   <div class="bg-blue-600 flex items-center justify-center py-4">
       <div class="flex items-center justify-center text-white font-poppins mx-4 gap-2">
@@ -8,18 +8,18 @@
          <h4 class="text-2xl text-white">Apply Comp-Off</h4>
       </div>
    </div>
-  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2">
+  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2 mx-2">
     <div><b class="mr-2 text-blue-600 font-semibold">Name:</b>{{ data.fullname }}</div>
     <div><b class="mx-2 text-blue-600 font-semibold">Gen ID:</b>{{ data.gen_id }}</div>
     <div><b class="mx-2 text-blue-600 font-semibold">Category:</b>{{ data.apprentice_type }}</div>
     <div><b class="mx-2 text-blue-600 font-semibold">Department:</b>{{ data.dept_name }}</div>
     <div><b class="mx-2 text-blue-600 font-semibold">Line:</b>{{ data.Line_Name }}</div>
   </div>
-  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2">
+  <div class="flex lg:items-center justify-evenly flex-col lg:flex-row lg:py-4 px-2 shadow-md rounded-md border border-gray-400 mt-2 mx-2">
     <div><b class="mr-2 text-blue-600 font-semibold">Total Excess Hrs Worked:</b>{{ data.excess_hr }}</div>
     <div><b class="mr-2 text-blue-600 font-semibold">Approved OT Hrs:</b>{{ data.ot }}</div>
     <div><b class="mr-2 text-blue-600 font-semibold">Adjusted in C-OFF :</b>{{ data.coff }}</div>
-    <div><b class="mr-2 text-blue-600 font-semibold">Balanceq Hrs:</b>{{ data.bal }}</div>
+    <div><b class="mr-2 text-blue-600 font-semibold">Balance Hrs:</b>{{ data.bal }}</div>
     <!-- <div [hidden]="applyshow" ><b>Un-Approved Balance Hrs:</b>{{ data.bal }}</div> -->
   </div>
   <div >
@@ -30,7 +30,7 @@
       (ngModelChange)="handelSelectAll()"
       >Select All</mat-checkbox
     > -->
-    <div class="details my-2 mx-2">
+    <div class="details my-2 mx-3">
       <button 
        (click)="approve()" 
        [disabled]="loading" 
@@ -60,10 +60,10 @@
     </div>
   </div>
   <!-- table -->
-  <div class="shadow-md rounded-md border border-gray-400">
+  <div class="shadow-md rounded-md border border-gray-400 mx-2 overflow-y-scroll !h-1/2">
       <table id="table" class="table-auto !w-full">
         <!-- table head -->
-        <thead >
+        <thead class="sticky top-0 !z-10">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
             <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Absent Date</th>
@@ -80,7 +80,7 @@
                 [(ngModel)]="item.selected"
                 color="primary"
                 (ngModelChange)="checkItems(i)"
-                [disabled]="(sum+item.hrs_req)>data.bal && !item.selected"
+                [disabled]="(sum + item.hrs_req) > data.bal && !item.selected"
                 >{{ i + 1 }}</mat-checkbox
               >
             </td>
@@ -92,4 +92,8 @@
         </tbody>
       </table>
   </div>
+</div>
+
+<div style="display: flex;justify-content: flex-end;" class="bg-gray-100 py-2 mt-3">
+  <button class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md" (click)="close()">close</button>
 </div>
