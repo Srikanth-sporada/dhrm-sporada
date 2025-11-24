@@ -21,13 +21,17 @@ export const environment = {
   hideMachineReport:false,
   hideCanteenReport:false,
   /** attedance calander */
-  shiftFullWidth:false,
+  shiftFullWidth:true,
   /** Trainee Login page */
   disableCompanyDropDown:true,
   disablePlantDropDown:true,
   /** onboard cost center*/
   hidecostCenterInput:true,
-  
+  /** approvals */
+  hideOperatorCOffApproval:true,
+  /** image path */
+  noDataImgPath:'/assets/no-data.svg',
+  loaderLogoPath: '/assets/ranelogo.png', 
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

@@ -5,6 +5,7 @@ import { LoaderserviceService } from 'src/app/loaderservice.service';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Utility } from 'src/app/utils/utils';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-lop-report',
   templateUrl: './lop-report.component.html',
@@ -14,6 +15,7 @@ export class LopReportComponent implements OnInit {
 
      lopReportForm: any
      all:any;
+     noDataImgPath:any = environment?.noDataImgPath
      userDetails:any;
      companyData:any = [];
      plantData:any = [{plant_code:'',plant_name:'All'}];

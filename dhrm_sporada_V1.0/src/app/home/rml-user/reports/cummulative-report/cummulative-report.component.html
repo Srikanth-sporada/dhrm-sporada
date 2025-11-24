@@ -34,24 +34,38 @@
           <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Company</label> <br>
           <p-dropdown 
             [options]="companyData"
+            [disabled]="!isAdmin"
             formControlName="companyCode"
             optionLabel="company_name"
             optionValue="company_code"
             styleClass="w-full" 
             (onChange)="getplantByCompanyCode()"
-            placeholder="Select Company" ></p-dropdown>
+            placeholder="Select Company">
+            <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
        </div>
        <!-- plant -->
        <div class="font-poppins w-full">
           <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
           <p-dropdown 
             [options]="plantData"
+            [disabled]="!isAdmin"
             formControlName="plantCode"
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full" 
             (onChange)="getPayrollAreaByPlant()"
-            placeholder="Select Plant" ></p-dropdown>
+            placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
        </div>
         <!-- payroll area-->
        <div class="font-poppins w-full">
@@ -76,7 +90,6 @@
             view="month"
             styleClass="w-full !font-poppins"
             dateFormat="MM"
-            (onSelect)="formatDateAndSetFormProperty($event,'month')"
             [showIcon]="true" >
         </p-calendar>
         </div>
@@ -88,7 +101,6 @@
             view="year"
             dateFormat="yy" 
             styleClass="w-full !font-poppins"
-            (onSelect)="formatDateAndSetFormProperty($event,'year')"
             [showIcon]="true" >
         </p-calendar>
         </div>
@@ -100,7 +112,8 @@
        pInputText
        styleClass="w-full !font-poppins"
        placeholder="Enter Gen ID" 
-       formControlName="genId" />
+       formControlName="genId"
+       />
       
      </div>
      <!-- search btn -->
@@ -109,6 +122,7 @@
         icon="pi pi-search"
         styleClass="rounded-[1.5rem] mt-9"
         (onClick)="filterCummulativeReport()"
+        [disabled]="!cummulativeReportForm.valid"
       >
      </p-button> 
     
@@ -117,10 +131,7 @@
   </div>
    </div>
 
-<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
-
 <!-- tarinee application table -->
-<ng-template #show>
   <div class="mx-2 mt-8">
     <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto">
       <table id="table" class="w-full">
@@ -132,24 +143,27 @@
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Cal Days</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Month</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">From Date</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">To Date</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Sunday</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Holiday</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Working Days</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Present Days</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Absent Days</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Off</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">RH</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">PL</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">CL</th>
+             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">SL</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OD</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">PR</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">COFF</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Late Hrs</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Hrs</th>
+             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">2 OT Hrs </th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">3 OT Hrs</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Wrking Days</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Wrked Days</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">LOP</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">EG</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Paid Days</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Hour</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Double</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Trible</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Shift A (Morning)</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">shift G (General)</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">shift B (Noon)</th>
-            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap">shift C (Night)</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">G</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">N</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">I</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">II</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">FML</th>
+            <th class="!text-white !px-2 !py-2 !rounded-e-lg !border-none !border-0 text-center text-nowrap">Wrk.Sun</th>
           </tr>
         </thead>
         <!-- table body -->
@@ -158,47 +172,58 @@
            *ngFor="let i of cummulativeReportData"
            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
            >
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold" scope="row">{{i.genId}}</td> 
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold" scope="row">{{i?.genId}}</td> 
             <td class="!px-4 !py-4 text-nowrap !rounded-s-md w-full">
-             {{i.name}}
-              <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)"></i>
+             {{i?.name}}
+              <i 
+               class="pi pi-info-circle text-xl text-blue-600 float-right" 
+               (click)="op.toggle($event)" [hidden]="true"></i>
               <!-- overlay panel -->
                <p-overlayPanel #op>
                  <div class="font-poppins">
-                  <p class="text-xl text-blue-600 font-semibold">{{i.fullname}}</p>
+                  <p class="text-xl text-blue-600 font-semibold">{{i?.name}}</p>
                   <hr>
                   <div>
-                     <p class="font-semibold">Application No:<span class="ml-2">{{i.apln_slno}}</span></p>
-                     <p class="font-semibold" *ngIf="i.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i.doj}}</span></p>
-                     <p class="font-semibold">Created At:<span class="ml-2">{{i.created_dt | date: 'dd-MM-yyyy'}}</span></p>
+                     <p class="font-semibold">Application No:<span class="ml-2">{{i?.apln_slno}}</span></p>
+                     <p class="font-semibold" *ngIf="i?.apln_status == 'APPOINTED'">DOJ:<span class="ml-2">{{i?.doj}}</span></p>
+                     <p class="font-semibold">Created At:<span class="ml-2">{{i?.created_dt | date: 'dd-MM-yyyy'}}</span></p>
                   </div>
                  </div>
                </p-overlayPanel>
             </td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i.plant }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.payrollArea }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.calDays }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.month }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.fromDate }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.toDate }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.sunday }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.holiday }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.workingDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.presentDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.absentDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.lop || '-'}}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.eg || '-' }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.paidDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.otHour }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.otDouble }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.otTrible }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.shiftA }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.shiftG }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.shiftB }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i.shiftC }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.calDays }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.off }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.rh }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.pl }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.cl }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.sl }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.od }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.pr}}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.coff }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.lateHrs }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.otHrs }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.ot2Hrs }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.ot3Hrs }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkingDays }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkedDays }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.lop }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.g }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.n }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.s1 }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.s2 }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.fml }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkSun }}</td>
           </tr>
         </tbody>
       </table>
+        <!-- no data found div -->
+           <div *ngIf="cummulativeReportData.length == 0" [hidden]="loader.isLoding | async" class="flex items-center justify-center flex-col h-full">
+             <img [src]="noDataImgPath" alt="not-found" class="object-contain h-44 w-44">
+              <p class="text-xl font-semibold text-blue-600">Data Not Found !</p>
+           </div>
+           <!-- rane loader -->
+        <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
   </div>
-</ng-template>

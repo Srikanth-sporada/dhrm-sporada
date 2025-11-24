@@ -4,17 +4,22 @@ import { DateAdapter } from '@angular/material/core';
 import * as XLSX from'xlsx';
 import moment from 'moment';
 import { ClamAPIService } from '../clam-api.service';
+import { ApiService } from 'src/app/home/api.service';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
+
+/**
+ * @export
+ * @class EmpTwoRecordComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-emp-two-record',
   templateUrl: './emp-two-record.component.html',
   styleUrls: ['./emp-two-record.component.css']
 })
 export class EmpTwoRecordComponent implements OnInit {
-
-
 
   empForm: FormGroup
   emplist:any
@@ -24,6 +29,9 @@ export class EmpTwoRecordComponent implements OnInit {
   userEmpcode:string | null = sessionStorage.getItem('user_name');
   all:any;
   userDetails:any;
+  plantOptions:any = []
+  /** logged in user company code */
+  companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
   statusOptions = [
   { label: 'ALL', value: '' },
   { label: 'PENDING', value: 'PENDING' },
@@ -49,8 +57,12 @@ roleOptions = [
 ];
 
 
-  constructor(private fb: UntypedFormBuilder,private api:ClamAPIService
-    , private dialog: MatDialog, private messageService:MessageService) {
+  constructor(private fb: UntypedFormBuilder,
+    private api:ClamAPIService
+    , private dialog: MatDialog, 
+    private messageService:MessageService,
+    private apiService: ApiService, 
+    ) {
     this.empForm = this.fb.group({
       plant: [this.plant_Code],
       activeState: [''],
@@ -63,17 +75,17 @@ roleOptions = [
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
     }
-
-    this.api.getPlantForEmpRep().subscribe((res: any) => {
-      this.plantlist = res;
-      this.plantlist.unshift({plant_name:'All',plant_code:''});
-    }, (error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    })
-
+    /** get plants API */
+    this.getAllPlants();
+    // this.api.getPlantForEmpRep().subscribe((res: any) => {
+    //   this.plantlist = res;
+    //   this.plantlist.unshift({plant_name:'All',plant_code:''});
+    // }, (error) => {
+    //   console.log(error);
+    //   this.messageService.add({severity:'error',summary:error.message})
+    // });
   }
   openAlertDialog(message: string , icon:string): void {
     this.dialog.open(ToastComponent, {
@@ -123,6 +135,24 @@ roleOptions = [
       XLSX.writeFile(wb,"Employee_Record.xlsx");
       this.messageService.add({severity:'info',summary:'Data Downloaded!'})
       }
+
+      /**
+       * get plant by company code
+       * @property {*} companyCode
+      */
+     getAllPlants(){
+       this.apiService.getplant().subscribe({
+        next: (response:any) => {
+          this.plantlist = response;
+          /** all */
+          this.plantlist.unshift({plant_code:'',plant_name:'All'})
+        },
+        error: (error:any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.error?.message});
+        }
+       })
+     }
   }
 
 

@@ -132,11 +132,10 @@
    </form>
   </div>
    </div>
-
-<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+<!-- *ngIf="loader.isLoding | async; else show" -->
+<!-- <app-loader *ngIf="loader.isLoding | async; else show"></app-loader> -->
 
 <!-- tarinee application table -->
-<ng-template #show>
   <div class="mx-2 mt-8">
     <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto">
       <table id="table" class="w-full">
@@ -195,18 +194,17 @@
           </tr>
         </tbody>
       </table>
-
-      <!-- no data found div -->
-           <div *ngIf="lopReportData.length == 0" class="flex items-center justify-center flex-col h-full">
-             <img src="assets/no-data.svg" alt="not-found" class="object-contain h-44 w-44">
+         <!-- no data found div -->
+           <div *ngIf="lopReportData.length == 0" [hidden]="loader.isLoding | async" class="flex items-center justify-center flex-col h-full">
+             <img [src]="noDataImgPath" alt="not-found" class="object-contain h-44 w-44">
               <p class="text-xl font-semibold text-blue-600">Data Not Found !</p>
            </div>
-
-      <!-- loader -->
+        <!-- loader one -->
        <div class="flex-col gap-4 w-full flex items-center justify-center" [hidden]="true">
           <div class="w-28 h-28 border-8 text-blue-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-blue-400 rounded-full">
             <span class="animate-fade-in font-semibold text-blue-600 text-xl">RANE</span>
           </div>
        </div>
+       <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
   </div>

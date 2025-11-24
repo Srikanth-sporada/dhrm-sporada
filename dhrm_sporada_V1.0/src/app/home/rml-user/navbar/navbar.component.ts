@@ -40,6 +40,7 @@ export class NavbarComponent implements OnInit {
   hideCanteenReport = environment.hideCanteenReport;
   hideLopReport = environment.hideLopReport;
   hideMachinePunchReport = environment.hideMachineReport;
+  hideOperatorCoffApproval = environment.hideOperatorCOffApproval;
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;

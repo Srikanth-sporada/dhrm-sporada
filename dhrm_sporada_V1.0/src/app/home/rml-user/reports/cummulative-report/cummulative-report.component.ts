@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder,Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/home/api.service';
@@ -21,23 +21,89 @@ import { environment } from 'src/environments/environment.prod';
 export class CummulativeReportComponent implements OnInit {
 
     cummulativeReportForm: any;
+    noDataImgPath =environment?.noDataImgPath;
     hideCumulativeReport:boolean = environment.hideCumulativeReport;
     all:any;
     userDetails:any;
     companyData:any = [];
     plantData:any = [];
     payrollAreaData:any = [];
-    cummulativeReportData:any = [];
+    cummulativeReportData:any = [
+      {
+    genId: "E001",
+    name: "John Doe",
+    plant: "Plant A",
+    payrollArea: "Area 1",
+    calDays: 30,
+    off: 4,
+    rh: 1,
+    pl: 2,
+    cl: 1,
+    sl: 0,
+    od: 0,
+    pr: 0,
+    coff: 0,
+    lateHrs: 2,
+    otHrs: 5,
+    ot2Hrs: 3,
+    ot3Hrs: 0,
+    wrkingDays: 26,
+    wrkedDays: 25,
+    lop: 1,
+    g: 0,
+    n: 0,
+    s1: 0,
+    s2: 0,
+    fml: 0,
+    wrkSun: 1
+  },
+  {
+    genId: "E002",
+    name: "Jane Smith",
+    plant: "Plant B",
+    payrollArea: "Area 2",
+    calDays: 31,
+    off: 5,
+    rh: 2,
+    pl: 1,
+    cl: 0,
+    sl: 1,
+    od: 0,
+    pr: 0,
+    coff: 1,
+    lateHrs: 0,
+    otHrs: 8,
+    ot2Hrs: 2,
+    ot3Hrs: 1,
+    wrkingDays: 26,
+    wrkedDays: 26,
+    lop: 0,
+    g: 0,
+    n: 0,
+    i: 0,
+    ii: 0,
+    fml: 0,
+    wrkSun: 2
+  }
+];
+    isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
+    companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
+    plantCode:any = sessionStorage.getItem('plantcode');
     
-    constructor(private modalService:NgbModal,private fb: UntypedFormBuilder, private http: HttpClient, private service: FormService, public loader: LoaderserviceService, private active: ActivatedRoute,private messageService:MessageService, private apiService:ApiService, public utility:Utility) {
+    constructor(
+      private fb: UntypedFormBuilder, 
+      public loader: LoaderserviceService, 
+      private messageService:MessageService, 
+      private apiService:ApiService, 
+      public utility:Utility) {
       /** cummulative report filter form */
       this.cummulativeReportForm = this.fb.group({
-        companyCode: new UntypedFormControl(''),
-        plantCode: new UntypedFormControl(''),
+        companyCode: new UntypedFormControl(this.companyCode),
+        plantCode: new UntypedFormControl(this.plantCode),
         payrollArea: new UntypedFormControl(''),
-        month: new UntypedFormControl(''),
-        year: new UntypedFormControl(''),
-        genId: new UntypedFormControl(''),
+        month: new UntypedFormControl(new Date()),
+        year: new UntypedFormControl(new Date()),
+        genId: ['',Validators.pattern(/\S+/)],
       });
     }
 
@@ -47,9 +113,10 @@ export class CummulativeReportComponent implements OnInit {
         this.all = JSON.parse(details);
         this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
       }
-
-      /** get company data */
-      this.getCompanyData();
+      /** get company & plant & payroll area */
+        this.getCompanyData();
+        this.getplantByCompanyCode();
+        this.getPayrollAreaByPlant();
      
     }
 
@@ -82,11 +149,17 @@ export class CummulativeReportComponent implements OnInit {
      */
 
     getplantByCompanyCode(){
-      this.apiService.getPlantByCompanyCode(this.cummulativeReportForm.value.companyCode).subscribe({
+      let companyCode = this.isAdmin ? this.cummulativeReportForm.value.companyCode : this.companyCode;
+      this.apiService.getPlantByCompanyCode(companyCode).subscribe({
         next: (response) => {
           this.plantData = response;
         },
-        error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
+        error: (error:any) => {
+          /** setting plantData [] is error */
+          console.error('ERROR:',error);
+          this.plantData = [] ;
+          this.messageService.add({severity:'error',summary:error.message});
+        }
       })
     }
 
@@ -95,11 +168,16 @@ export class CummulativeReportComponent implements OnInit {
      */
 
     getPayrollAreaByPlant(){
-      this.apiService.getPayrollAreaByPlantcode(this.cummulativeReportForm.value.plantCode).subscribe({
+      let plantCode = this.isAdmin ? this.cummulativeReportForm.value.plantCode : this.plantCode;
+      this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
         next: (response) => {
           this.payrollAreaData = response;
         },
-        error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
+        error: (error:any) => {
+          console.error('ERROR:',error);
+          this.payrollAreaData = [];
+          this.messageService.add({severity:'error',summary:error?.error?.message})
+        }
       })
     }
 
@@ -123,11 +201,15 @@ export class CummulativeReportComponent implements OnInit {
 
     /** filter cummulative report 
      * @property {UntyperForm} form.value
-     * @var month user selected month
+     * @var formattedMonth user selected formatted  formattedMonth
+     * @var formattedYear user selected formatted formattedYear
     */
     filterCummulativeReport(){
-      const month = this.cummulativeReportForm.value.month;
-      this.cummulativeReportForm.controls['month'].setValue(moment().month(month).format("M"));
-      console.log('DATA', this.cummulativeReportForm.value);
+      console.log({mo:this.cummulativeReportForm.value.month,yy:this.cummulativeReportForm.value.year})
+      const formattedMonth = moment(this.cummulativeReportForm.value.month).format('M');
+      const formattedYear = moment(this.cummulativeReportForm.value.year).format('YYYY');
+      console.log({formattedMonth,formattedYear});
+      const formData = {...this.cummulativeReportForm.value,month:formattedMonth,year:formattedYear}
+      console.log('FORM DATA', formData);
     }
 }

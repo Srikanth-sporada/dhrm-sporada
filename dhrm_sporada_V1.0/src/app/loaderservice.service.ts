@@ -16,7 +16,6 @@ isLoding:BehaviorSubject<any>
 
    hide(){
     this.isLoding.next(false)
-
     console.log('loading stopped')
    }
 }

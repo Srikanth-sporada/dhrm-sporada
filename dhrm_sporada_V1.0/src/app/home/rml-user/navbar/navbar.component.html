@@ -1023,14 +1023,16 @@
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
               >
-              <a
+              <span *ngIf="!hideOperatorCoffApproval">
+                <a
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-Coff-exec"
                 routerLinkActive="!text-blue-600 !font-semibold"
                 class="rounded-sm"
-                ><mat-icon> polymer</mat-icon>Operator Coff Approval</a
-              >
+                ><mat-icon> polymer</mat-icon>Operator Coff Approval
+              </a>
+              </span>
               <a
                 *ngIf="
                   ishrappr === 'true' || isadmin === 'true' || Is_CHR === 'true'

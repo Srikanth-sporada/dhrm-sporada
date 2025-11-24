@@ -4,6 +4,7 @@ import moment from "moment";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
 
+
 @Component({
   selector: "app-ars-reports",
   templateUrl: "./ars-reports.component.html",
@@ -174,6 +175,7 @@ employeeTypeOptions = [
 
   getData() {
     this.loading = true;
+    /** report format */
     let data = {
       from: this.monthReport.includes(this.selectedReportType) ? moment(this.from).format('YYYY-MM-DD') : moment(this.from).format('YYYY-MM-DD'),
       to: moment(this.to).format('YYYY-MM-DD'),
@@ -185,12 +187,18 @@ employeeTypeOptions = [
     this.api.arsReports(data).subscribe((resp: any) => {
       console.log(resp);
       if (resp.status === 'success') {
+        /** checking response is array & has length & non empty 2D array */
         if (Array.isArray(resp.data) && resp.data.length === 0) {
           // alert('No data found');
+          /** non empty array check */
+          console.log('IS NON EMPTY ARRAY',resp?.data.some((innerArray:any) => innerArray.length == 0))
+
           this.messageService.add({severity:'info',summary:'No Data Found!'})
           this.loading = false;
         } else {
           this.exportexcel(resp.data);
+          /** non empty array */
+          console.log('IS NON EMPTY ARRAY',resp?.data.some((innerArray:any) => innerArray.length == 0))
           // console.log(resp);
           this.loading = false;
         }
@@ -243,9 +251,7 @@ employeeTypeOptions = [
   //   }
 
   exportexcel(data: any) {
-    console.log(data);
-    console.log();
-    
+    console.log('EXCEL DATA:',data);
     if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0])) {
       var wb = XLSX.utils.book_new();
       let type = this.reportType.filter((element: any) => element.code == this.selectedReportType);
@@ -299,8 +305,7 @@ employeeTypeOptions = [
   
       if (sheets.length === 0) {
         console.error('No sheets defined for the selected report type');
-        this.messageService.add({severity:'warn',summary:'No sheets defined for the selected report type'})
-
+        this.messageService.add({severity:'warn',summary:'No sheets defined for the selected report type'});
         return;
       }
   
@@ -316,7 +321,7 @@ employeeTypeOptions = [
             if (!ws[cellAddress]) continue;
             ws[cellAddress].s = {
               font: { bold: true, color: { rgb: "000000" } }, // Bold Black Text
-              fill: { fgColor: { rgb: "FFFF00" } }, // Yellow Background
+              fill: { fgColor: { rgb: "2563eb" } }, // blue Background
               alignment: { horizontal: "center", vertical: "center" }, // Center Alignment
               border: {
                 top: { style: "thin", color: { rgb: "000000" } },
@@ -353,7 +358,7 @@ employeeTypeOptions = [
       if (!ws[cellAddress]) continue;
       ws[cellAddress].s = {
         font: { bold: true, color: { rgb: "000000" } }, // Bold Black Text
-        fill: { fgColor: { rgb: "FFFF00" } }, // Yellow Background
+        fill: { fgColor: { rgb: "2563eb" } }, // blue Background
         alignment: { horizontal: "center", vertical: "center" }, // Center Alignment
         border: {
           top: { style: "thin", color: { rgb: "000000" } },
@@ -371,10 +376,43 @@ employeeTypeOptions = [
     }
   }
 
+   /**
+     * reverse MAS report attednace data for excel sheet
+     * @var priorityKeys keys to reverse response
+     * @var reordered reverser attedance object using priorityKeys
+     */
 
+    reorderObjectKeys(obj:any) {
+      const priorityKeys = [
+        "cemp_id",
+        "fullname",
+        "gen_id",
+        "dept_name",
+        "Line_Name",
+        "apprentice_type"
+      ];
 
+      const reordered:any = {};
+      // First add priority keys in order
+      for (const key of priorityKeys) {
+        if (key in obj) {
+          reordered[key] = obj[key];
+        }
+      }
+      // Then add the rest of the keys
+      for (const key of Object.keys(obj)) {
+        if (!priorityKeys.includes(key)) {
+          reordered[key] = obj[key];
+        }
+      }
 
+      return reordered;
+    }
 
-
-
+    /**
+     * re order MAS data[] reversed
+     */
+   reorderArray(arr:any) {
+    return arr.map(this.reorderObjectKeys);
+  }
 }
