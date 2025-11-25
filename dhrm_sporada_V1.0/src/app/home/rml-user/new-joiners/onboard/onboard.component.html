@@ -19,6 +19,10 @@
         <div class="relative">
             <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
             Filters <mat-icon>filter_alt</mat-icon>
+            <!-- total count -->
+            <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+              Total Count: {{filterinfo?.length || 0}}
+            </span>
             </h1>
         <!-- download btn-->
             <p-button 
@@ -91,18 +95,17 @@
     </div>
    </div>
 
-  <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+  <!-- <app-loader *ngIf="loader.isLoding | async; else show"></app-loader> -->
   <!-- onboard table -->
-  <ng-template #show>
       <div class="mx-2 mt-8">
-        <div class="h-[90svh] lg:h-[52vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+        <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll custom-scrollbar relative">
             <table id="table" class="table-auto !w-full">
                 <!-- table head -->
               <thead class="sticky top-0">
                 <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
                   <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Date</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'TRAINING COMPLETED'">Application No</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'TRAINING COMPLETED'">Gen ID</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'APPOINTED'">Gen ID</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" *ngIf="this.form.get('select').value == 'IN TRAINING'">Gen ID</th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
@@ -136,13 +139,13 @@
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.gen_id == null ? "-" : i.gen_id }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.fathername }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md">{{ i.fathername || '-' }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.apprentice_type }}</td>
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.birthdate | date : "dd-MM-yyyy" }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 || '-' }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno || '-' }}</td>
                   <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td> -->
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status || '-' }}</td>
                    <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.test_status == 'in_training' ? 'IN TRAINING' : i.test_status}}</td>
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
                     <div>
@@ -205,9 +208,10 @@
                 </tr>
               </tbody> -->
             </table>
+            <!-- rane logo loader *ngIf="loader.isLoding | async"-->
+            <app-loader *ngIf="loader.isLoding | async"></app-loader>
         </div>
       </div>
-  </ng-template>
 
 <!-- <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="getPremiumData();">
     </ngb-pagination> -->

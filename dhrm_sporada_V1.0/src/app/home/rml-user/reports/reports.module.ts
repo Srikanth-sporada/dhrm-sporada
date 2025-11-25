@@ -1,7 +1,6 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CategoryLinePipe } from './category-line.pipe';
-
 import { ReportsRoutingModule } from "./reports-routing.module";
 import { EvaluationDueReportComponent } from "./evaluation-due-report/evaluation-due-report.component";
 import { TestSummaryReportComponent } from "./test-summary-report/test-summary-report.component";
@@ -36,6 +35,7 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 import { AccordionModule } from 'primeng/accordion';
 import { CummulativeReportComponent } from "./cummulative-report/cummulative-report.component";
 import { LopReportComponent } from "./lop-report/lop-report.component";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 @NgModule({
   declarations: [
     EvaluationDueReportComponent,
@@ -55,6 +55,7 @@ import { LopReportComponent } from "./lop-report/lop-report.component";
   imports: [
     CommonModule,
     ReportsRoutingModule,
+    ScrollingModule,
     MatTableModule,
     MatRadioModule,
     ReactiveFormsModule,

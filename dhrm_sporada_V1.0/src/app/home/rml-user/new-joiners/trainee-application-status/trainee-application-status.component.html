@@ -19,6 +19,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{filterinfo?.length || 0}}
+           </span>
         </h1>
        <!-- download btn-->
         <p-button 
@@ -100,17 +104,16 @@
   </div>
    </div>
 
-<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+<!-- <app-loader *ngIf="loader.isLoding | async; else show"></app-loader> -->
 
 <!-- tarinee application table -->
-<ng-template #show>
   <div class="mx-2 mt-8">
-    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar relative">
       <table id="table" class="table-auto !w-full">
         <!-- table head -->
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
               {{form.get('status').value == 'appointed' ? 'DOJ' : form.get('status').value == 'relieved' ?
               'DOL' : 'Date'}}
             </th>
@@ -129,13 +132,13 @@
            *ngFor="let i of filterinfo"
            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
            >
-            <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">
+            <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold text-center">
               {{ i.apln_status == 'APPOINTED' ? (i.doj?.split('T')[0] | date: 'dd-MM-yyyy') : i.apln_status ==
               'RELIEVED' ? (i.dol?.split('T')[0] | date: 'dd-MM-yyyy') : (i.created_dt?.split('T')[0] | date:
               'dd-MM-yyyy') }}
             </td> 
             <td class="!px-2 !py-4 !rounded-s-md">
-              {{ i.fullname }}
+              {{ i.fullname || '-'}}
               <i class="pi pi-info-circle text-xl text-blue-600 float-right" (click)="op.toggle($event)"></i>
               <!-- overlay panel -->
                <p-overlayPanel #op>
@@ -150,11 +153,11 @@
                  </div>
                </p-overlayPanel>
             </td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ i.fathername }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ i.fathername || '-' }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.birthdate | date: 'dd-MM-yyyy' }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 || '-' }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no  || '-'}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status || '-' }}</td>
             <!-- action btn -->
             <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
               <button
@@ -177,6 +180,8 @@
           </tr>
         </tbody>
       </table>
+      <!-- loader -->
+       <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
   </div>
 

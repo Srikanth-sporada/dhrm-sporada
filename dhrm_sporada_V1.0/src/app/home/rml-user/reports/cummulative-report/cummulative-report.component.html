@@ -19,6 +19,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{cummulativeReportData?.length || 0}}
+           </span>
         </h1>
        <!-- download btn-->
         <p-button 
@@ -133,7 +137,7 @@
 
 <!-- tarinee application table -->
   <div class="mx-2 mt-8">
-    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto">
+    <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto relative">
       <table id="table" class="w-full">
         <!-- table head -->
         <thead class="sticky top-0">

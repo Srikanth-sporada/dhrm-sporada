@@ -369,6 +369,7 @@ onWeekOffChange(item: any, dayValue:any): void {
   
   /** check already applied week off */
   checkAlreadyApplied() {
+    console.log('ALREADY APPLIED:',this.data.some((weekoffData:any) => weekoffData.already_applied == 1))
     return this.data.some((weekoffData:any) => weekoffData.already_applied == 1);
   }
 

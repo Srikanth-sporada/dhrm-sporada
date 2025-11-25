@@ -89,7 +89,7 @@ export class BasicComponent implements OnInit {
             aadhar2: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
             aadhar3: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
             // new field
-            email: ['',[Validators.required,Validators.email]],
+            email: ['',[Validators.email]],
             nation: ['', Validators.required],
             city: [''],
             st: [''],

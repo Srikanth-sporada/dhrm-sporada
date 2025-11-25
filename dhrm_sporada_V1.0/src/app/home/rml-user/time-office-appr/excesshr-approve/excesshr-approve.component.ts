@@ -103,7 +103,7 @@ export class ExcesshrApproveComponent implements OnInit {
       this.getData();
       // alert(response.message);
       this.messageService.add({severity:'warn',summary:response.message})
-      this.loading=false
+      this.loading = false;
     },(error) => {
       console.log(error);
       this.messageService.add({severity:'error',summary:error.message})

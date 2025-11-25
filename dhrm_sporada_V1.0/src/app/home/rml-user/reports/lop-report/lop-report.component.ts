@@ -48,6 +48,11 @@ export class LopReportComponent implements OnInit {
          this.all = JSON.parse(details);
          this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
        }
+      /** non admin user init api call */
+       if(!this.isAdmin){
+        /** get LOP report data api call */
+        this.filterLopReport();
+       }
         /** get company & plant & payroll area */
         this.getCompanyData();
         this.getplantByCompanyCode();
@@ -70,7 +75,7 @@ export class LopReportComponent implements OnInit {
  
      /** get plant data by company code
       * @property {UntypedForm} form.companyCode
-      * @var {*} companyCode has company code based n admin
+      * @var {*} companyCode has company code based admin
       */
  
      getplantByCompanyCode(){
