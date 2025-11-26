@@ -2,7 +2,6 @@ import { Component, OnInit,Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { FormService } from '../../form.service';
-import { leadingComment } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
 import {
   trigger,
@@ -11,10 +10,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
-
-
-
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-education-edit',
   templateUrl: './education-edit.component.html',
@@ -30,18 +26,17 @@ export class EducationEditComponent implements OnInit {
   @Output() emit = new EventEmitter<any>()
   message = {'edu':false}
   message_bad = {'edu':true}
+  mobile: any
+  Exampassed: any = ['HSC','SSLC','BOARD','DIPLOMA','ITI','BE','BTECH','ARTS&SCIENCE']
+  education:any = []
+  flag: any = true
 
-mobile: any
-Exampassed: any = ['HSC','SSLC','BOARD','DIPLOMA','ITI','BE','BTECH','ARTS&SCIENCE']
-education:any = []
-flag: any = true
 
-
-mobile_no1 = {
+ mobile_no1 = {
   "mobile" : this.active.snapshot.paramMap.get('mobile_no1'),
   'company':  this.active.snapshot.paramMap.get('company')
 
-}
+ }
 
 eduData = [
   {
@@ -90,7 +85,11 @@ eduData = [
 ];
   state: boolean;
 
-  constructor(private http: HttpClient, private cookie: CookieService, private formservice: FormService, private active : ActivatedRoute) { 
+  constructor(
+    private cookie: CookieService, 
+    private formservice: FormService, 
+    private active : ActivatedRoute,
+    private messageService:MessageService) { 
     this.eduData[0].passed = 'Yes'
 
   }
@@ -99,7 +98,7 @@ eduData = [
     this.formservice.getdataqualifn(this.mobile_no1)
     .subscribe({
       next: (response) => {console.log("qualifn",response); this.education = response;
-      for(var i= 0; i<4 ;i++)
+      for(var i= 0; i < 4 ;i++)
       {
         if(this.education[i]?.school_name == 'undefined')
            this.education[i].school_name = ''
@@ -136,7 +135,10 @@ eduData = [
         this.emit.emit(this.message)
       }
       this.sendData()} ,
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
     })
   }  
   submit(){
@@ -158,24 +160,23 @@ eduData = [
 }
 
 sendData(){
-  this.formservice.edu = this.eduData
+  this.formservice.edu = this.eduData;
 } 
 
 public valid(){
   if((this.eduData[0].school != ''&&this.eduData[0].school != undefined) && (this.eduData[0].percentage != ''&& this.eduData[0].percentage != undefined) && (this.eduData[0].year != ''&& this.eduData[0].year != undefined) && (this.eduData[0].passed != ''&& this.eduData[0].passed != undefined) && (this.eduData[0].department != ''&&this.eduData[0].department !=undefined)  && (this.eduData[0].certificatenumber != ''&& this.eduData[0].certificatenumber != undefined)  && (this.eduData[0].certificatedate != ''&& this.eduData[0].certificatedate != undefined))
   {
     this.flag = false
-    this.emit.emit(this.message)
+    this.emit.emit(this.message);
   }
 }
 
 valids(event:any){
-  console.log(this.eduData)
+  console.log(this.eduData);
   console.log(event.length);
   
   if((this.eduData[0].school != '' && this.eduData[0].school != undefined) && (this.eduData[0].percentage != ''&& this.eduData[0].percentage != undefined) && (this.eduData[0].year != ''&& this.eduData[0].year != undefined) && (this.eduData[0].passed != ''&& this.eduData[0].passed != undefined) && (this.eduData[0].department != ''&&this.eduData[0].department !=undefined)  && (this.eduData[0].certificatenumber != ''&& this.eduData[0].certificatenumber != undefined)  && (this.eduData[0].certificatedate != ''&& this.eduData[0].certificatedate != undefined))
   {
-    console.log("good to go")
     this.flag = false
     this.emit.emit(this.message)
   }
@@ -184,11 +185,8 @@ valids(event:any){
     if(event == null || event?.length == 0)
     {
       this.flag = true
-      this.emit.emit(this.message_bad)
-
+      this.emit.emit(this.message_bad);
     }
-
-    
   }
 }
 emitData()

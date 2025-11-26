@@ -2,10 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormService } from "../form.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import { threadId } from "worker_threads";
 import { ApiService } from "src/app/home/api.service";
-import { log } from "console";
-import { Input } from "@angular/core";
 import { MessageService,ConfirmationService } from "primeng/api";
 
 @Component({

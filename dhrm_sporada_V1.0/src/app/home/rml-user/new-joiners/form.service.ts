@@ -57,7 +57,10 @@ submitbank(){
       next: (response:any) => {
         console.log(response);
          this.res = response.message},
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
 })
 }
 
@@ -71,7 +74,10 @@ submitbasic(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      },
 })
 }
 
@@ -85,7 +91,10 @@ submitedu(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      },
 })
 }
 
@@ -101,7 +110,10 @@ submitemer(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
 })
 }
 
@@ -195,8 +207,16 @@ fileupload(file:any,uniqueId:any,company:any, id_no :any, fileno:any){
   formData.append("fileno",fileno)
 
     this.http.post(this.url+'/image', formData).subscribe({
-      next: (res)=> {console.log(res);},
-      error: (err)=>console.log(err)
+      next: (res:any) => {
+        console.log(res);
+        if(res?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'});
+        }
+      },
+      error: (err) => {
+        console.error('ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message})
+      }
     })
 
 }
@@ -205,31 +225,48 @@ submitted(uniqueId: any){
   console.log("----------------------------", uniqueId)
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)
   .subscribe({
-    next: (response) => { 
+    next: (response:any) => { 
       console.log("HR SUBMITTED",response);
+      if(response?.message == 'failure'){
+        this.messageService.add({severity:'error',summary:'Error Occured!'});
+      }
     },
     error: (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.message})
     }
-    ,
   })
 }
 
 pending(uniqueId: any){
   this.http.put(this.url+'/hrOperation/pending',uniqueId)
   .subscribe({
-    next: (response) =>{ console.log(response);
+    next: (response:any) => { 
+      console.log(response);
+      if(response.message == 'failure'){
+        this.messageService.add({severity:'error',summary:'Error Occured!'});
+      }
     },
-    error: (error) => console.log(error),
+    error: (error) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.message});
+    },
   })
 }
 
 approved(uniqueId:any){
 
   this.http.put(this.url+'/hrOperation/approved', uniqueId) .subscribe({
-    next: (response) =>{ console.log(response);
+    next: (response:any) =>{ 
+      console.log(response);
+      if(response.message == 'failure'){
+        this.messageService.add({severity:'error',summary:'Error Occured!'});
+      }
     },
-    error: (error) => console.log(error),
+    error: (error) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.message});
+    },
   })
 }
 
@@ -238,10 +275,16 @@ rejected(uniqueId:any){
 
   this.http.put(this.url+'/hrOperation/rejected', uniqueId)
   .subscribe({
-    next: (response) =>{ 
+    next: (response:any) => { 
       console.log(response);
+      if(response.message == 'failure'){
+        this.messageService.add({severity:'error',summary:'Error Occured!'});
+      }
     },
-    error: (error) => console.log(error),
+    error: (error) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.message});
+    },
   })
 }
 
@@ -266,7 +309,7 @@ getbanknames()
 
 getpincode(pincode:any)
 {
-    return  this.http.get(this.url+'/hrOperation/getpincode?pincode='+pincode.pincode)
+    return  this.http.get(this.url+'/hrOperation/getpincode?pincode='+ pincode.pincode)
 }
 
 

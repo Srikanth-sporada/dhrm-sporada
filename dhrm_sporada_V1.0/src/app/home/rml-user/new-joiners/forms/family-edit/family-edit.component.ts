@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { FormService } from '../../form.service';
-import { leadingComment } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
 import {
   trigger,
@@ -11,8 +10,6 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
-import { threadId } from 'worker_threads';
 import { MessageService } from 'primeng/api';
 
 @Component({

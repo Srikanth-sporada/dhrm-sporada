@@ -9,6 +9,7 @@ import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
 import { FormService } from '../../form.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-choose-files',
   templateUrl: './choose-files.component.html',
@@ -99,7 +100,10 @@ export class ChooseFilesComponent implements OnInit {
 	state_: boolean= false;
 	state_1: boolean= false;
 	
-  constructor(private service: FormService, private active : ActivatedRoute, private http: HttpClient) {
+  constructor(
+	private service: FormService, 
+	private active : ActivatedRoute, 
+    private messageService:MessageService) {
 	this.ishr = sessionStorage.getItem('ishr')
   }
 
@@ -121,49 +125,51 @@ generate_link(){
 
 	this.service.getdatabasic(this.uniqueId)
 	.subscribe({
-		next: (response)=>{console.log('filenames : ', response);
-	this.basicDetails = response;
-	this.filenames = this.basicDetails;
-	this.resume_file_name = this.filenames[0]?.other_files1
-	this.urlforResume = this.url+'uploads/'+this.filenames[0]?.other_files1
+		next: (response)=>{
+			console.log('filenames : ', response);
+			this.basicDetails = response;
+			this.filenames = this.basicDetails;
+			this.resume_file_name = this.filenames[0]?.other_files1
+			this.urlforResume = this.url+'uploads/'+this.filenames[0]?.other_files1
 
-	this.marksheet_file_name = this.filenames[0]?.other_files2
-	this.urlforMark = this.url+'uploads/'+this.filenames[0]?.other_files2
-	
-	this.transfercertificate_file_name = this.filenames[0]?.other_files3
-	this.urlforTc = this.url+'uploads/'+this.filenames[0]?.other_files3
+			this.marksheet_file_name = this.filenames[0]?.other_files2
+			this.urlforMark = this.url+'uploads/'+this.filenames[0]?.other_files2
+			
+			this.transfercertificate_file_name = this.filenames[0]?.other_files3
+			this.urlforTc = this.url+'uploads/'+this.filenames[0]?.other_files3
 
-	this.aadharcard_file_name = this.filenames[0]?.other_files4
-	this.urlforaadhar = this.url+'uploads/'+this.filenames[0]?.other_files4
+			this.aadharcard_file_name = this.filenames[0]?.other_files4
+			this.urlforaadhar = this.url+'uploads/'+this.filenames[0]?.other_files4
 
-	this.bankpassbook_file_name = this.filenames[0]?.other_files5
-	this.urlforbankpass = this.url+'uploads/'+this.filenames[0]?.other_files5
+			this.bankpassbook_file_name = this.filenames[0]?.other_files5
+			this.urlforbankpass = this.url+'uploads/'+this.filenames[0]?.other_files5
 
-	this.photo_file_name = this.filenames[0]?.other_files6
-	this.urlforphoto = this.url+'uploads/'+this.filenames[0]?.other_files6
-	console.log(this.urlforphoto,"==");
-	
-	this.signature_file_name = this.filenames[0]?.other_files7
-	this.urlforSign = this.url+'uploads/'+this.filenames[0]?.other_files7
-
-
-	if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
-	{
-			this.flagged = false;
-			this.emit.emit(this.message);	
-	}
-},
-		error:(err)=>{console.error(err)}
-	})
+			this.photo_file_name = this.filenames[0]?.other_files6
+			this.urlforphoto = this.url+'uploads/'+this.filenames[0]?.other_files6
+			console.log(this.urlforphoto,"==");
+			
+			this.signature_file_name = this.filenames[0]?.other_files7
+			this.urlforSign = this.url+'uploads/'+this.filenames[0]?.other_files7
 
 
+			if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
+			{
+					this.flagged = false;
+					this.emit.emit(this.message);	
+			}
+        },
+		error: (error:any) => {
+		 console.error('ERROR:',error);
+		 this.messageService.add({severity:'error',summary:error?.message});
+		}
+	});
 }
 
 func()
 {
 	this.state_ = true
 	setTimeout(() => {
-		this.state_ = false
+		this.state_ = false;
 	}, 2000);
 }
 
@@ -171,9 +177,10 @@ generate_link_rml(){
 
 	this.service.getdatabasic(this.uniqueId)
 	.subscribe({
-		next: (response)=>{console.log('filenames : ', response);
-	this.basicDetails = response;
-	this.filenames = this.basicDetails;
+		next: (response) => {
+		console.log('filenames : ', response);
+		this.basicDetails = response;
+		this.filenames = this.basicDetails;
 
 		this.appointmentorder_file_name = this.filenames[0]?.other_files8
 		this.url_appointmentorder_file = this.url+'uploads/'+this.filenames[0]?.other_files8
@@ -196,13 +203,16 @@ generate_link_rml(){
 		this.natx_file_name = this.filenames[0]?.other_files14
 		this.url_natx_file = this.url+'uploads/'+this.filenames[0]?.other_files14
 		
-		this.state_1 = true
+		this.state_1 = true;
+		/** set timeout save */
 		setTimeout(() => {
-			this.state_1 = false
+			this.state_1 = false;
 		}, 2000);},
-		error:(err)=>{console.error(err)}
-	})
-
+		error:(error:any) => {
+			console.error('ERROR:',error);
+			this.messageService.add({severity:'error',summary:error?.message});
+		}
+	});
 }
 
 
@@ -214,23 +224,17 @@ valid()
 	
 			if(this.marksheet_file != null &&this.photo_file != null && this.aadharcard_file != null)
 			{
-				this.flagged = false
+				this.flagged = false;
 				this.emit.emit(this.message)
 			}
 	}, 500);
 	}
 	else
 	{
-		this.flagged = false
+		this.flagged = false;
 		this.emit.emit({'choose': false})
-
 	}
-
-
-
 }
-
-////////////////////////////////////////////////////////////////////////////
 
 checking(event:any)
 {
@@ -239,7 +243,7 @@ checking(event:any)
 		this.resume_file_name = ''
 
 if(this.resume_file!=null)
-	this.resume_file= null
+	this.resume_file= null;
 }
 
 onResumeChange(event:any){
@@ -250,11 +254,12 @@ onResumeChange(event:any){
 				var new_ = file_local?.pop()
 				if(this.size > 2000000)
 				{
-					this.flag_for_size = true
-					window.alert("File size should be less than 2MB")
+					this.flag_for_size = true;
+					// window.alert("File size should be less than 2MB");
+					this.messageService.add({severity:'warn',summary:'File size should be less than 2MB'});
 					const ms:any = document.getElementById('resume')
 					ms.value = ''
-					this.resume_file = null
+					this.resume_file = null;
 				}
 				else
 				{
@@ -262,18 +267,22 @@ onResumeChange(event:any){
 					{
 						const ms:any = document.getElementById('resume')
 						ms.value = ''
-						this.resume_file = null	
-						window.alert("File is not of metioned type")
+						this.resume_file = null	;
+						// window.alert("File is not of metioned type");
+						this.messageService.add({severity:'warn',summary:'File is not of mentioned type'});
 					}
 					else
 					{
-
-						this.service.fileupload(this.resume_file,this.uniqueId.mobile,this.uniqueId.company, this.rollno +'_resume','1' )
-
+						this.service.fileupload(this.resume_file,this.uniqueId.mobile,this.uniqueId.company, this.rollno +'_resume','1' );
 					}
 				}
 	}
-
+/**
+ *
+ *
+ * @param {*} event
+ * @memberof ChooseFilesComponent
+ */
 onMarksheetChange(event:any){
 		this.marksheet_file = event.target.files[0]
 		this.size = this.marksheet_file?.size
@@ -283,30 +292,38 @@ onMarksheetChange(event:any){
 
 		if(this.size > 1000000)
 		{
-			this.flag_for_size = true
-			window.alert("File size should be less than 1MB") 
-			const ms:any = document.getElementById('marksheet')
-			ms.value = ''
-			this.marksheet_file = null
-
+			this.flag_for_size = true;
+			// window.alert("File size should be less than 1MB") 
+			this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+			const ms:any = document.getElementById('marksheet');
+			ms.value = '';
+			this.marksheet_file = null;
 		}
 		else
 		{
 			if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 			{
-				window.alert("File is not of metioned type")
-				this.marksheet_file = null
+				// window.alert("File is not of metioned type");
+				this.messageService.add({severity:'warn',summary:'File is not of mentioned type'});
+				this.marksheet_file = null;
 				const ms:any = document.getElementById('marksheet')
 				ms.value = ''
-				this.marksheet_file = null
+				this.marksheet_file = null;
 			}
 			else
 			{
 				this.marksheet_file_name = this.marksheet_file_name == null ? 'photo' : this.marksheet_file_name
+				/** 
+				 * @param file:any
+				 * @param uniqueId:any
+				 * @param company:any
+				 * @param id_no :any
+				 * @param fileno:any
+				 */
 				this.service.fileupload(this.marksheet_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_marksheet','2' )
 				if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
 				{
-						this.flagged = false
+						this.flagged = false;
 						this.emit.emit(this.message)	
 				}
 			}
@@ -322,20 +339,22 @@ onTransfercertificateChange(event:any){
 
 	if(this.size > 1000000)
 	{
-		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
+		this.flag_for_size = true;
+		// window.alert("File size should be less than 1MB")
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 		const t:any = document.getElementById('transfer')
 		t.value =''
-		this.transfercertificate_file = null
+		this.transfercertificate_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File is not of mentioned type'})
 			const t:any = document.getElementById('transfer')
 			t.value =''
-			this.transfercertificate_file = null
+			this.transfercertificate_file = null;
 		}
 		else
 			this.service.fileupload(this.transfercertificate_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_tc','3' )
@@ -354,20 +373,22 @@ onAadharcardChange(event:any){
 
 	if(this.size > 1000000)
 	{
-		this.flag_for_size = true
-		window.alert("File size should be less than 1MB")
+		this.flag_for_size = true;
+		// window.alert("File size should be less than 1MB");
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 		const t:any = document.getElementById('aadhar')
 		t.value =''			
-		this.aadharcard_file = null 
+		this.aadharcard_file = null ;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File is not of mentioned type'});
 			const t:any = document.getElementById('aadhaar')
 			t.value =''
-			this.aadharcard_file = null
+			this.aadharcard_file = null;
 		}
 		else
 		{		
@@ -375,7 +396,7 @@ onAadharcardChange(event:any){
 			this.service.fileupload(this.aadharcard_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_aadhar','4' )
 			if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
 			{
-					this.flagged = false
+					this.flagged = false;
 					this.emit.emit(this.message)	
 			}
 		}
@@ -393,20 +414,22 @@ onBankpassbookChange(event:any){
 
 	if(this.size > 1000000)
 	{
-		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
+		this.flag_for_size = true;
+		// window.alert("File size should be less than 1MB")
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 		const t:any = document.getElementById('passbook')
 		t.value =''
-		this.bankpassbook_file = null
+		this.bankpassbook_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
+			// window.alert("File is not of metioned type");
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'})
 			const t:any = document.getElementById('passbook')
 			t.value =''
-			this.bankpassbook_file = null
+			this.bankpassbook_file = null;
 		}
 				else
 			this.service.fileupload(this.bankpassbook_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_passbook','5' )
@@ -425,20 +448,22 @@ onPhotoChange(event:any){
 
 	if(this.size > 1000000)
 	{
-		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
+		this.flag_for_size = true;
+		// window.alert("File size should be less than 1MB")
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 		const t:any = document.getElementById('photo')
 		t.value =''
-		this.photo_file = null
+		this.photo_file = null;;
 	}
 	else
 	{
 		if(new_ != 'png'&& new_ != 'jpg' && new_!='jpeg')
 			{
-				window.alert("File is not of metioned type")
+				window.alert("File is not of metioned type");
+				this.messageService.add({severity:'warn',summary:'File Type is not mentioned!'})
 				const t:any = document.getElementById('photo')
 				t.value =''
-				this.photo_file = null
+				this.photo_file = null;
 			}
 
 		else
@@ -450,7 +475,7 @@ onPhotoChange(event:any){
 			if(this.photo_file_name != null && this.aadharcard_file_name != null && this.marksheet_file_name != null)
 			{
 					this.flagged = false
-					this.emit.emit(this.message)	
+					this.emit.emit(this.message)
 			}
 		}
 	}
@@ -468,7 +493,8 @@ onSignatureChange(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 2MB") 
+		// window.alert("File size should be less than 2MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 		const t:any = document.getElementById('sign')
 		t.value =''
 		this.signature_file = null;
@@ -477,10 +503,11 @@ onSignatureChange(event:any){
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
+			// window.alert("File is not of metioned type");
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'})
 			const t:any = document.getElementById('sign')
 			t.value =''
-			this.signature_file = null
+			this.signature_file = null;
 		}
 			else
 	this.service.fileupload(this.signature_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_sign','7' )
@@ -503,15 +530,17 @@ onAppointmentorderChange(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.appointmentorder_file = null
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.appointmentorder_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.appointmentorder_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'});
+			this.appointmentorder_file = null;
 		}
 		else
 			this.service.fileupload(this.appointmentorder_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_appointmentorder_file','8' )
@@ -528,15 +557,17 @@ onDeclarationChange(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.declaration_file = null
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.declaration_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.declaration_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'});
+			this.declaration_file = null;
 		}
 		else
 			this.service.fileupload(this.declaration_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_declaration_file','9' )
@@ -553,15 +584,17 @@ onMedicalfitnessChange(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.medicalfitness_file = null
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.medicalfitness_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.medicalfitness_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned.'})
+			this.medicalfitness_file = null;
 		}
 		else
 			this.service.fileupload(this.medicalfitness_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_medicalfitness_file','10' )
@@ -578,15 +611,17 @@ onForma4Change(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.formA4_file = null
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.formA4_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.formA4_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'})
+			this.formA4_file = null;
 		}
 		else
 			this.service.fileupload(this.formA4_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_formA4_file','11' )
@@ -603,15 +638,17 @@ onForm11Change(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.form11_file = null
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.form11_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.form11_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'})
+			this.form11_file = null;
 		}
 		else
 			this.service.fileupload(this.form11_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_form11_file','12' )
@@ -628,15 +665,17 @@ onFormh2Change(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		this.formh2_file = null
-		window.alert("File size should be less than 1MB") 
+		this.formh2_file = null;
+		// window.alert("File size should be less than 1MB") 
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.formh2_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type is not mentioned'})
+			this.formh2_file = null;
 		}
 		else
 			this.service.fileupload(this.formh2_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_formh2_file','13' )
@@ -653,21 +692,20 @@ onNatxChange(event:any){
 	if(this.size > 1000000)
 	{
 		this.flag_for_size = true
-		window.alert("File size should be less than 1MB") 
-		this.natx_file = null
+		// window.alert("File size should be less than 1MB");
+		this.messageService.add({severity:'warn',summary:'File size should be less than 1MB'});
+		this.natx_file = null;
 	}
 	else
 	{
 		if(new_ != 'docx' && new_ != 'docs' && new_ != 'png'&& new_ != 'jpg' && new_!='jpeg'&& new_ != 'pdf')
 		{
-			window.alert("File is not of metioned type")
-			this.natx_file = null
+			// window.alert("File is not of metioned type")
+			this.messageService.add({severity:'warn',summary:'File Type not mentioned'})
+			this.natx_file = null;
 		}
 		else
 			this.service.fileupload(this.natx_file,this.uniqueId.mobile,this.uniqueId.company,  this.rollno+'_natx_file','14' )
 	}
 }
-
-//////////////////////////////////////////////////////////////////
-
 }

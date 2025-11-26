@@ -106,6 +106,9 @@ export class NavbarComponent implements OnInit {
   isUsermannualExpanded: boolean = false;
   /** payroll navigation */
   authToken:any = sessionStorage.getItem('token');
+  /** logged in user company code & plant code */
+  companyCode:any;
+  plantCode:any;
 
   constructor(
     private fb: FormBuilder,
@@ -126,7 +129,8 @@ export class NavbarComponent implements OnInit {
     this.cookie.delete("User_Name");
     this.cookie.delete("Password");
     sessionStorage.clear();
-    this.router.navigateByUrl('/first')
+    console.log('LOG OUT NAV URL:',`/${this.companyCode}/${this.plantCode}`)
+    this.router.navigateByUrl(`/${this.companyCode}/${this.plantCode}`);
   }
 
   ngOnInit(): void {
@@ -183,8 +187,11 @@ export class NavbarComponent implements OnInit {
       next: (response) => {
         console.log(response);
         this.ishrappr = response;
-
+        /** setting plant & company code from api response */
+        this.companyCode = this.ishrappr[0]?.company_code;
+        this.plantCode = this.ishrappr[0]?.plant_code;
         sessionStorage.setItem("all", JSON.stringify(this.ishrappr[0]));
+        /** company code & name session storage */
         sessionStorage.setItem('companyCode', JSON.stringify(this.ishrappr[0]?.company_code));
         sessionStorage.setItem('companyName', JSON.stringify(this.ishrappr[0]?.company_name));
         sessionStorage.setItem("ishr", this.ishrappr[0]?.Is_HR);

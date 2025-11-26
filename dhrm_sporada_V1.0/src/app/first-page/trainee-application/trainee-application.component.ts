@@ -96,7 +96,7 @@ export class TraineeApplicationComponent implements OnInit {
         this.companycode = response;
         this.companyCodeSno = this.companycode.filter((company:any) => company.company_code == this.companyCode);
         /** setting company sno */
-        this.traineeApplicationForms.controls['company'].setValue(this.companyCodeSno[0].sno)
+        this.traineeApplicationForms.controls['company'].setValue(this.companyCodeSno[0]?.sno)
        console.log("company",this.companyCodeSno);
       },
       error: (error) => this.messageService.add({severity:'error',summary:error.message})
@@ -191,7 +191,7 @@ export class TraineeApplicationComponent implements OnInit {
        this.plantcode = response;
        this.plantName = this.plantcode.filter((plant:any) => plant.plant_code == this.plantCode);
        console.log(this.plantcode);
-       this.traineeApplicationForms.controls['plant'].setValue(this.plantName[0].plant_name);
+       this.traineeApplicationForms.controls['plant'].setValue(this.plantName[0]?.plant_name);
        console.log(this.traineeApplicationForms.value);
        console.log(response);
       },

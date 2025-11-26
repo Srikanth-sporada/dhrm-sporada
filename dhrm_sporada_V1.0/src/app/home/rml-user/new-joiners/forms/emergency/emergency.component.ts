@@ -11,7 +11,6 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -35,7 +34,13 @@ uniqueId :any = {'mobile':''}
 
  form: FormGroup = new FormGroup({});  
   state: boolean;
-   constructor(private fb: FormBuilder, private http: HttpClient,private cookie:CookieService, private formservice : FormService, private active : ActivatedRoute,private messageService:MessageService) {
+   constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient,
+    private cookie:CookieService,
+    private formservice : FormService,
+    private active : ActivatedRoute,
+    private messageService:MessageService) {
     this.form = fb.group({
       contactNumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       contactName:['',Validators.required],

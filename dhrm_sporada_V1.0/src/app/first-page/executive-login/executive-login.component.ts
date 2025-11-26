@@ -43,7 +43,8 @@ export class ExecutiveLoginComponent implements OnInit {
                 next: (response) => {
                     console.log('user login message',response);
                     if(response.token) {
-                        sessionStorage.setItem('token', response.token)
+                        sessionStorage.setItem('token', response.token);
+                        // console.log('DECRYPTED TOKEN:',atob(response.token));
                     }
                     if(response.message == "Success") 
                     {

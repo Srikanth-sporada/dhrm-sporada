@@ -1,16 +1,10 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import {
-  FormBuilder,
   Validators,
   FormControl,
-  ValidationErrors,
-  AbstractControl,
-  AsyncValidatorFn,
 } from "@angular/forms";
 import { FormService } from "../../form.service";
 import { ActivatedRoute } from "@angular/router";
-import { get } from "http";
-import { ApiService } from "src/app/home/api.service";
 import { MessageService } from "primeng/api";
 @Component({
   selector: "app-category",
@@ -42,7 +36,6 @@ export class CategoryComponent implements OnInit {
   //constructor(private fromservice: FormService) {}
   constructor(private fromservice: FormService, 
     private route: ActivatedRoute,
-    private service: ApiService,
     private messageService:MessageService) {
     this.isHR = sessionStorage.getItem("ishr");
   }
@@ -55,14 +48,28 @@ export class CategoryComponent implements OnInit {
       this.company = params["company"];
       line_id: ['', Validators.required]
     });
-
-    this.fromservice.getCategories().subscribe((data: any) => {
-      this.categories = data;
+    /** get categories */
+    this.fromservice.getCategories().subscribe({
+      next: (data: any) => {
+       this.categories = data;
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
     });
-    this.fromservice.getContracts(this.mob).subscribe((data: any) => {
-      console.log(data.data);
-      this.contractors = data.data;
+    /** get contractors list */
+    this.fromservice.getContracts(this.mob).subscribe({
+      next: (data: any) => {
+        console.log(data.data);
+        this.contractors = data.data;
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
     });
+    /** get basics */
     this.fromservice
       .getdatabasic({ mobile: this.mob, company: this.company })
       .subscribe((data: any) => {
@@ -106,10 +113,10 @@ export class CategoryComponent implements OnInit {
           {
            this.line_Id.setValue(data[0].line_id);
            this.onchange();
-
           }
       }, (error) => {
-        console.log(error)
+         console.error("ERROR:",error);
+         this.messageService.add({severity:'error',summary:error?.message});
       });
   }
 
@@ -145,10 +152,12 @@ export class CategoryComponent implements OnInit {
     this.fromservice.getDepList(this.plant_Code).subscribe({
       next: (resp: any) => {
         console.log(resp);
-        
         this.dept_data = resp;
       },
-      error: (error) => console.log(error)
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
     });
   }
   onchange_Dept(event:any){
@@ -166,18 +175,11 @@ export class CategoryComponent implements OnInit {
     this.fromservice.getLineName(this.dept_Id.value).subscribe({
       next: (response: any) => {
         console.log(response);
-        
         this.line_data = response[0];
-  
-    // this.service.getLineName(dept).subscribe({
-    //   next: (resp: any) => {
-    //     this.line_data = resp[0];  
-    //     console.log(this.line_data);
-    //             // Line list
-    //      // Optional
       },
-      error: (err) => {
-        console.error('Failed to fetch line data', err);
+      error: (error) => {
+        console.error('ERROR', error);
+        this.messageService.add({severity:'error',summary:error?.message})
       }
     });
   }
@@ -187,12 +189,13 @@ export class CategoryComponent implements OnInit {
     this.fromservice.get_Indirect_dtls(this.plant_Code ,this.dept_Id.value).subscribe({
       next: (response: any) => {
         console.log(response);
-        
-        this.Role_data = response
-     
+        this.Role_data = response;
         //.filter((data: any) => data.dept_slno === this.selectedDept);
       },
-      error: (error) => console.log(error)
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
     });
   }
   onchange() {
@@ -229,6 +232,10 @@ export class CategoryComponent implements OnInit {
         this.requiredAge = response.requiredAge;
         this.currentAge = response.currentAge;
       },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
     });
   }
   isvalid() {

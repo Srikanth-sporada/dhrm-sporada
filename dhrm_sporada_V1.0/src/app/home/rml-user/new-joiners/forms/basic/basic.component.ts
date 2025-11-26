@@ -183,10 +183,12 @@ export class BasicComponent implements OnInit {
         this.uniqueId.mobile = this.active.snapshot.paramMap.get('mobile_no1')
         this.uniqueId.company = this.active.snapshot.paramMap.get('company')
         this.formservice.getdatabasic(this.uniqueId)
-            .subscribe((data) => {
-                this.basic = data
-
-                this.apln_status = this.basic[0]?.apln_status
+            .subscribe((data:any) => {
+                if(data?.message == 'failure'){
+                  this.messageService.add({severity:'error',summary:'Error Occured!'});
+                } else{
+                    this.basic = data
+                    this.apln_status = this.basic[0]?.apln_status
 
                 if (this.basic[0]?.title == null)
                     this.form.controls['pd'].setValue('No');
@@ -217,7 +219,7 @@ export class BasicComponent implements OnInit {
                     this.form.controls['aadhar2'].setValue(this.aadharsplitted[1])
                     this.form.controls['aadhar3'].setValue(this.aadharsplitted[2])
                 }
-                catch (err) { }
+                catch (err) { console.log('AADHAR SPLIT ERROR:',err)}
 
                 this.form.controls['pd'].setValue(this.basic[0]?.physical_disability)
                 this.form.controls['mar'].setValue(this.basic[0]?.marital_status)
@@ -251,8 +253,9 @@ export class BasicComponent implements OnInit {
                     this.emit.emit(this.message)
 
                 this.sendData()
+                }
             }, (error) => {
-                console.log(error);
+                console.error('ERROR:',error);
                 this.messageService.add({severity:'error',summary:error.message})
             })
     }
@@ -270,7 +273,10 @@ export class BasicComponent implements OnInit {
                 .subscribe(
                     {
                         next: (response: any) => {
-                            console.log(response);
+                            if(response?.message == 'failure'){
+                                this.messageService.add({severity:'error',summary:'Error Occured!'});
+                            }else{
+                                console.log(response);
                             if (response.mobile_no1 == this.active.snapshot.paramMap.get('mobile_no1') || response.mobile == 'null') {
                                 this.aadhar_invalid = false
 
@@ -278,11 +284,13 @@ export class BasicComponent implements OnInit {
                             else if (response.mobile != this.active.snapshot.paramMap.get('mobile_no1')) {
                                 this.aadhar_invalid = true
                             }
-                            else
+                            else{
                                 console.log("failed");
+                            }
+                            }
                         },
                         error: (error) => {
-                            console.log(error);
+                            console.error('ERROR:',error);
                             this.messageService.add({severity:'error',summary:error.message})
                         }
                     }
@@ -323,14 +331,18 @@ export class BasicComponent implements OnInit {
             }
             this.formservice.getpincode(pincode)
                 .subscribe({
-                    next: (response) => {
+                    next: (response:any) => {
+                        if(response?.message == 'failure'){
+                          this.messageService.add({severity:'error',summary:'Error Occured!'});
+                        }else{
                         console.log("pincode : ", response), this.pincodes = response;
                         this.form.controls['st'].setValue(this.pincodes[0]?.statename)
                         this.form.controls['city'].setValue(this.pincodes[0]?.dvisionname)
+                        }
                     },
                     error: (err) => {
-                        console.log(err);
-                        this.messageService.add({severity:'error',summary:err.message})
+                        console.error('ERROR:',err);
+                        this.messageService.add({severity:'error',summary:err.message});
                     }
                 })
         }
@@ -344,13 +356,17 @@ export class BasicComponent implements OnInit {
             }
             this.formservice.getpincode(pincode)
                 .subscribe({
-                    next: (response) => {
-                        console.log("pincode : ", response), this.pincodes = response;
+                    next: (response:any) => {
+                        if(response?.message == 'failure'){
+                            this.messageService.add({severity:'error',summary:'Error Occured!'});
+                        }else{
+                            console.log("pincode : ", response), this.pincodes = response;
                         this.form.controls['pres_st'].setValue(this.pincodes[0]?.statename)
                         this.form.controls['pres_city'].setValue(this.pincodes[0]?.dvisionname)
+                        }
                     },
                     error: (err) => {
-                        console.log(err);
+                        console.error('ERROR:',err);
                         this.messageService.add({severity:'error',summary:err.message})
                     }
                 })

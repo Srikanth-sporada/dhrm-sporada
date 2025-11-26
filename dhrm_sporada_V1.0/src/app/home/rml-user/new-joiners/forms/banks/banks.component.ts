@@ -81,9 +81,7 @@ flagger : any = false
         this.form.controls['bankName'].setValue(this.bank[0]?.bank_name == 'null' ? null : this.bank[0]?.bank_name)
         this.sendData()
         if(this.form.valid)
-            this.emit.emit(this.message)
-
-
+            this.emit.emit(this.message);
     }
 
     get account()

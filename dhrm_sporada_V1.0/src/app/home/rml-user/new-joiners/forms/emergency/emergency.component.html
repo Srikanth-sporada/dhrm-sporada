@@ -11,10 +11,12 @@
 
       <form [formGroup]="form" class="mt-3">
         <div class="row">
-            <!-- contact name -->
+        <!-- contact name -->
         <div class="col-sm-4">
         <div class="emergency-form">  
-            <label class="form-header text-blue-600 font-semibold"for="name">Contact Name<span class = "star-color">*</span></label>  
+            <label class="form-header text-blue-600 font-semibold"for="name">Contact Name
+                <span class = "star-color">*</span>
+            </label>  
             <input   
                 formControlName="contactName"
                 (ngModelChange)= "emitData()" (ngModelChange)="sendData()"  

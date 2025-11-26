@@ -148,7 +148,7 @@
 <div class="shadow-md rounded-md border border-gray-400 mx-3 mt-3 overflow-x-scroll" *ngIf="data.length!=0">
   <table id="table" class="table-auto !w-full">
       <thead>
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center rounded-s-lg">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
@@ -191,7 +191,9 @@
      class="rounded-xl" 
      (click)="updateData()"
      label="Update" 
-     [disabled]="checkAlreadyApplied()">
+     [disabled]="checkAlreadyApplied()"
+     >
+     <!-- [disabled]="checkAlreadyApplied()" -->
     </button>
   </div>
 </div>
