@@ -1,6 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder,Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import {UntypedFormControl, UntypedFormBuilder,Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormService } from '../form.service';
 import { DatePipe } from '@angular/common';
@@ -10,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-trainee-application-status',
   templateUrl: './trainee-application-status.component.html',
@@ -28,6 +27,8 @@ export class TraineeApplicationStatusComponent implements OnInit {
   itemToDelete: any;
   showDeleteModal = false;
   all:any;
+  /** hide delete btn */
+  hideTraineeApplicationDelBtn:boolean = environment?.hideTraineeApplicationDelBtn;
   userDetails:any;
   // status options
   statusOption=[
@@ -52,7 +53,6 @@ searchTypeOptions =[
     private fb: UntypedFormBuilder, 
     private service: FormService,
     public loader: LoaderserviceService, 
-    private active: ActivatedRoute,
     private messageService:MessageService,) {
     this.form = this.fb.group({
       status: new UntypedFormControl(''),

@@ -172,8 +172,11 @@
                 title="View Trainee Details">
                 <mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon>
               </button>
-              <button *ngIf="i.apln_status !== 'APPOINTED' && i.apln_status !== 'RELIEVED'" 
-               (click)="openDeleteModal(i.apln_slno);" title="Delete Trainee">
+              <button 
+               *ngIf="i.apln_status !== 'APPOINTED' && i.apln_status !== 'RELIEVED'" 
+               (click)="openDeleteModal(i.apln_slno);" 
+               title="Delete Trainee"
+               [hidden]="hideTraineeApplicationDelBtn">
                 <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
               </button>
             </td>

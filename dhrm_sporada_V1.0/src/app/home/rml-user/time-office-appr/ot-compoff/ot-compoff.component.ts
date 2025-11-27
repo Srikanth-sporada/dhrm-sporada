@@ -21,7 +21,11 @@ export class OtCompoffComponent implements OnInit {
   downlodData:any;
   all:any;
   userDetails:any;
-  constructor(private apiService: ApiService,private matdailog:MatDialog,private messageService:MessageService,private confirmationService:ConfirmationService) {}
+  constructor(
+    private apiService: ApiService,
+    private matdailog:MatDialog,
+    private messageService:MessageService,
+  ) {}
   
   ngOnInit() {
     /** logged in user information */

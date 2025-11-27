@@ -12,14 +12,14 @@ export const environment = {
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:false,
-  hideHrDashboard:false,
-  hideCanteenDashboard:false,
+  hideHrSummary:true,
+  hideHrDashboard:true,
+  hideCanteenDashboard:true,
   /** reports */
-  hideCumulativeReport:false,
-  hideLopReport:false,
-  hideMachineReport:false,
-  hideCanteenReport:false,
+  hideCumulativeReport:true,
+  hideLopReport:true,
+  hideMachineReport:true,
+  hideCanteenReport:true,
   /** attedance calander */
   shiftFullWidth:true,
   /** Trainee Login page */
@@ -31,7 +31,9 @@ export const environment = {
   hideOperatorCOffApproval:true,
   /** image path */
   noDataImgPath:'/assets/no-data.svg',
-  loaderLogoPath: '/assets/ranelogo.png', 
+  loaderLogoPath: '/assets/ranelogo.png',
+  /** trainee application */
+  hideTraineeApplicationDelBtn:true,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

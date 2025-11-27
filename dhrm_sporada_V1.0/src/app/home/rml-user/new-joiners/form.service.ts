@@ -55,8 +55,12 @@ submitbank(){
   this.http.put(this.url+'/hrOperation/bankforms', this.bank)
   .subscribe({
       next: (response:any) => {
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'});
+        }
         console.log(response);
-         this.res = response.message},
+        this.res = response.message
+      },
       error: (error) => {
         console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.message});
@@ -127,7 +131,10 @@ submitfamily(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+      error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
 })
 }
 
@@ -141,7 +148,10 @@ submitother(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+     error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
 })
 }
 
@@ -155,7 +165,10 @@ submitprev(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+     error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
 })
 }
 
@@ -168,7 +181,10 @@ sumbitlang(){
           this.messageService.add({severity:'error',summary:'Error Occured!'})
         }
       },
-      error: (error) => console.error(error),
+     error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      },
   })
 }
 
@@ -209,8 +225,10 @@ fileupload(file:any,uniqueId:any,company:any, id_no :any, fileno:any){
     this.http.post(this.url+'/image', formData).subscribe({
       next: (res:any) => {
         console.log(res);
-        if(res?.message == 'failure'){
-          this.messageService.add({severity:'error',summary:'Error Occured!'});
+        if(res?.status == 'error'){
+          this.messageService.add({severity:'error',summary:res?.message});
+        }else{
+          this.messageService.add({severity:'info',summary:'File Uploaded!'});
         }
       },
       error: (err) => {

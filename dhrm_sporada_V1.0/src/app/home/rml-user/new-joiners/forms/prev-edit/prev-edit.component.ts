@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { FormService } from '../../form.service';
-import { leadingComment } from '@angular/compiler';
-import { send } from 'process';
 import { ActivatedRoute } from '@angular/router';
 import {
   trigger,
@@ -12,8 +10,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
-
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-prev-edit',
@@ -80,13 +77,16 @@ export class PrevEditComponent implements OnInit {
   flag: any = true;
   state: boolean;
   
-    constructor(private http: HttpClient, private cookie: CookieService, private formservice: FormService, private active: ActivatedRoute ) { }
+    constructor(private http: HttpClient, private cookie: CookieService, private formservice: FormService, private active: ActivatedRoute, private messageService:MessageService ) { }
   
     ngOnInit(): void {
       
       this.formservice.getdatacareer(this.mobile_no1)
       .subscribe({
-        next : (response)=>{
+        next : (response:any) => { 
+          if(response?.message == 'failure'){
+            this.messageService.add({severity:'error',summary:'Error Occured!'});
+          }
           console.log("career", response);
          this.career = response;
         for(var i = 0; i<4; i++)
@@ -116,8 +116,11 @@ export class PrevEditComponent implements OnInit {
         this.prevData[i].reason =  this.career[i]?.leaving_reason
 
         }
-
-}
+        },
+        error: (error:any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message})
+        }
       })
       setTimeout(() => {
 
@@ -193,8 +196,6 @@ export class PrevEditComponent implements OnInit {
       if(event.target.value.length == 0)
         this.flag = true
     }
-  
-  
   }
 
   }

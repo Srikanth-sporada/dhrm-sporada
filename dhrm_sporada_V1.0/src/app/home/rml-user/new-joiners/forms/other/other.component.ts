@@ -6,12 +6,10 @@ import { FormService } from '../../form.service';
 import { ActivatedRoute } from '@angular/router';
 import {
   trigger,
-  state,
   style,
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-other',

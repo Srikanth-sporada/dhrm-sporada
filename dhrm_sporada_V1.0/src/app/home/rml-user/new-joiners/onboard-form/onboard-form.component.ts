@@ -12,18 +12,20 @@ import { Location } from "@angular/common";
 import { FormService } from "../form.service";
 import { RejectComponent } from "../hr-view-data/reject/reject.component";
 import { MatDialog } from "@angular/material/dialog";
+
 @Component({
   selector: "app-onboard-form",
   templateUrl: "./onboard-form.component.html",
   styleUrls: ["./onboard-form.component.css"],
 })
+
 export class OnboardFormComponent implements OnInit {
   @Input() applicationNumber:any = 'number';
   @Input() applicationStatus:any= 'status';
   @Input() applicationData:any= [];
   @Input() disbleApproveBtn:any;
   disableApproveBtn:any;
-  hideCostCenterInput:boolean = environment.hidecostCenterInput;
+  hideCostCenterInput:boolean = environment?.hidecostCenterInput;
   applicationStatusForBtn = 'PENDING'
   lockDate:any;
   form: any;
@@ -62,6 +64,7 @@ export class OnboardFormComponent implements OnInit {
   age:any;
   reason:any;
   DOJ:any;
+  /** pending & sumbitted false appointed true */
   readonly: boolean = this.status == "APPOINTED" ? true : false;
   obj: any = [];
   OnboardData = [];
@@ -172,18 +175,19 @@ export class OnboardFormComponent implements OnInit {
           this.setAge(response[0][0].birthdate);
           this.obj = response;
        //   console.log(response[0][0].doj);
-          this.setDOJ(response[0][0].doj)
-          this.getbackDate_Doj(response[0][0].created_dt)
+          this.setDOJ(response[0][0].doj);
+          /** DOJ min date max date is current date */
+          this.getbackDate_Doj(response[0][0].created_dt);
        //   console.log('4');
-          this.basic = this.obj[0];
-          this.designation = this.obj[1];
-          this.department = this.obj[2];
-          this.line = this.obj[3];
-          this.process_trained = this.obj[4]
-          this.reporting_to = this.obj[5];
-          this.category = this.obj[6];
-          this.oprn = this.obj[7]
-          this.DOJ = response[0][0].doj
+          this.basic = this?.obj[0] || [];
+          this.designation = this?.obj[1] || [];
+          this.department = this?.obj[2] || [];
+          this.line = this?.obj[3] || [];
+          this.process_trained = this?.obj[4] || []
+          this.reporting_to = this?.obj[5] || [];
+          this.category = this?.obj[6] || [];
+          this.oprn = this?.obj[7] || [];
+          this.DOJ = response[0][0]?.doj;
 
           // this.oprn = this.oprn.map((a: any) => a.oprn_desc);
           // this.cat = this.category.map((a: any) => a.categorynm);
@@ -192,9 +196,9 @@ export class OnboardFormComponent implements OnInit {
         // api call for geting roles data for 2nd approver
           this.getRolesFor2ndApporver();
         // contracts api call
-        this.getContractors(this.basic[0].mobile_no1)
+        this.getContractors(this?.basic[0]?.mobile_no1)
 
-          this.created_dt= response[0][0].created_dt
+          this.created_dt= response[0][0]?.created_dt
           this.form.controls["ifsc_code"].setValue(this.basic[0]?.ifsc_code=='null'?'':this.basic[0]?.ifsc_code);
           this.form.controls["account_number"].setValue(
             this.basic[0]?.bank_account_number=='null'?'':this.basic[0]?.bank_account_number
@@ -261,7 +265,8 @@ export class OnboardFormComponent implements OnInit {
               this.dolMinDate = new Date(this.dolMinDate)
               this.calMin_Max_DOL(this.lockDate)
               if(this.DOJ < this.lockDate){
-                this.minDate = moment(this.lockDate)
+                 this.minDate = new Date(this.lockDate)  //moment(this.lockDate)
+                console.log('LOCK DATE:',this.lockDate);
                 this.minDateCal= moment(this.lockDate).format('yyyy-MM-DD');
               }
             },
@@ -376,7 +381,12 @@ export class OnboardFormComponent implements OnInit {
     })
   }
 
+  /**
+   * 
+   * @param created_dt application created date
+   */
   getbackDate_Doj(created_dt:any){
+    console.log('CREATED DATE:',this.created_dt)
     this.service.getbackdate().subscribe((response:any)=>{
       if (response.status=='success'){
       //  console.log(response.data.doj_limit)
@@ -387,16 +397,15 @@ export class OnboardFormComponent implements OnInit {
      const backdate1 = moment().subtract(this.backdate - 1, 'days').format('YYYY-MM-DD');
 
      this.minDate = moment(created_dt).isAfter(backdate1) ? created_dt : backdate1;
-     this.minDate = new Date(this.minDate)
+     console.log('MIN DATE : ',this.minDate);
+     this.minDate = new Date(this.minDate);
      console.log('Final Min Date:', this.minDate);
-      }else{
+      } else{
         this.messageService.add({severity:'warn',summary:response.message})
       }
     },
-  (err) => this.messageService.add({severity:'error',summary:err.message}))
+   (err) => this.messageService.add({severity:'error',summary:err.message}))
   }
-
-
   setDOJ(doj:any){
   //  console.log('3');
     this.DOJ = doj
@@ -747,7 +756,7 @@ export class OnboardFormComponent implements OnInit {
    this.formservice.getContracts(mobileNumber).subscribe({
     next: (response:any) => {
       this.contractorData = response.data;
-      // console.log('CONTRACT:', response.data)
+      console.log('CONTRACTORS:', response.data)
     },
     error: (error) => {
       console.log(error);

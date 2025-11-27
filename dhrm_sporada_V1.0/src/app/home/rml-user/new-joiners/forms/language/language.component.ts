@@ -2,9 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { FormService } from '../../form.service';
-import { leadingComment } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
-import { threadId } from 'worker_threads';
 import {
   trigger,
   state,
@@ -12,7 +10,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { Timestamp } from 'rxjs';
+
 
 @Component({
   selector: 'app-language',
@@ -96,13 +94,11 @@ languageList = [
   state: boolean;
   disabled: boolean = true;
 
-  constructor(private http: HttpClient, private cookie: CookieService, private formservice: FormService , private active : ActivatedRoute) { }
+  constructor(private formservice: FormService , private active : ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    this.getdatabasic()
-    this.sendData()
-
+    this.getdatabasic();
+    this.sendData();
   }
 
   getdatabasic(){
@@ -157,7 +153,6 @@ languageList = [
           this.languageList[i].mothertongue = 0
           if(this.languageList[5].understand == null)
           this.languageList[i].understand = 0
-      
       }
 
       for(var i=0; i<this.languageList.length; i++)

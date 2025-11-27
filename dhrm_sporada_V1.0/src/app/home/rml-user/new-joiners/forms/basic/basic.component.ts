@@ -14,8 +14,6 @@ import {
     trigger
 } from '@angular/animations';
 import { ApiService } from 'src/app/home/api.service';
-import { settings } from "cluster";
-import { error, log } from "console";
 import { MessageService } from "primeng/api";
 
 @Component({
