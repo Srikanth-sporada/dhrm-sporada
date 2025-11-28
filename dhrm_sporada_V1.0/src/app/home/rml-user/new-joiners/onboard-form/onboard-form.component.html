@@ -124,7 +124,13 @@
                     optionLabel="dept_name"
                     optionValue="dept_slno"
                     styleClass="w-full" 
-                    placeholder="Select Department" ></p-dropdown>
+                    placeholder="Select Department">
+                    <ng-template let-dept pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+                        </div>
+                    </ng-template>
+                  </p-dropdown>
             </div>
             <!-- line -->
             <div class="font-poppins w-full">
@@ -137,7 +143,13 @@
                     optionLabel="line_name"
                     optionValue="line_code"
                     styleClass="w-full" 
-                    placeholder="Select Line" ></p-dropdown>
+                    placeholder="Select Line">
+                    <ng-template let-line pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ line?.line_code + '-' + line.line_name }}</span>
+                        </div>
+                    </ng-template>
+                  </p-dropdown>
             </div>
             </div>
              <!--  row four -->
@@ -154,7 +166,13 @@
                     optionLabel="Role_Name"
                     optionValue="Role_Id"
                     styleClass="w-full" 
-                    placeholder="Select Role"></p-dropdown>
+                    placeholder="Select Role">
+                    <ng-template let-role pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ role?.Role_Id + '-' + role.Role_Name }}</span>
+                        </div>
+                    </ng-template>
+                  </p-dropdown>
             </div>
             <!-- Reporting to -->
             <div class="font-poppins w-full">
@@ -165,7 +183,13 @@
                     optionLabel="emp_name"
                     optionValue="empl_slno"
                     styleClass="w-full" 
-                    placeholder="Select Employee" ></p-dropdown>
+                    placeholder="Select Employee">
+                    <ng-template let-employee pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ employee?.empl_slno + '-' + employee.emp_name }}</span>
+                        </div>
+                    </ng-template>
+                  </p-dropdown>
             </div>
             <!-- status -->
             <div class="font-poppins w-full">

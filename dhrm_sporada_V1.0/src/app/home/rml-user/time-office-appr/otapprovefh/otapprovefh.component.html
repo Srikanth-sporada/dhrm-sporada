@@ -160,7 +160,7 @@
               (click)="approve(item)"
               label="Approve"
               icon="pi pi-check-circle" 
-              [disabled]="loading"></button>
+              [disabled]="loading || item.bal == 0"></button>
           </td>
         </tr>
       </tbody>

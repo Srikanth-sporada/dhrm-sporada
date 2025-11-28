@@ -125,7 +125,7 @@ searchTypeOptions =[
     const ws = XLSX.utils.table_to_sheet(x);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Table');
-    XLSX.writeFile(wb, 'table.xlsx');
+    XLSX.writeFile(wb, 'trainee_application_status.xlsx');
     this.messageService.add({severity:'info',summary:'Data Exported!'});
   }
 
@@ -176,7 +176,7 @@ confirmDelete():any {
     error: (err) => {
       console.error(err);
       this.messageService.add({severity:'error',summary:'Failed To Delete Trainee!.'})
-      alert('Failed to delete trainee.');
+      // alert('Failed to delete trainee.');
       this.showDeleteModal = false;
     }
   });

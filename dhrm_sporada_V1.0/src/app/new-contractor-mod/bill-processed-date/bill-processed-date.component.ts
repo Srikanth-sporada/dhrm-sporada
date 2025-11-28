@@ -98,6 +98,7 @@ export class BillProcessedDateComponent implements OnInit {
       lock_date:[''],
       companyTraineeLock: ['',[Validators.required]],
       category:['T',{validators : [Validators.required]}],
+      weekoff_paid:['', Validators.required],
       // holidayName:['',{validators : [Validators.required],updateOn: 'blur',disabled: false}]
     });
   }
@@ -399,13 +400,14 @@ onSubmit(){
     // check box index value
     formData.category = this.billForm.value.category[0];
     formData.companyTraineeLock = this.billForm.value.companyTraineeLock[0];
+    formData.weekoff_paid = this.billForm.value.weekoff_paid[0];
     formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
     formData.process_start_date = this.formatDate(this.billForm.value.process_start_date);
     formData.process_end_date = this.formatDate(this.billForm.value.process_end_date);
     // formData.lock_date = this.formatDate(this.billForm.value.lock_date);
     /** lock date format */
     formData.lock_date = moment().format('YYYY-MM-DD');
-     console.log(formData);
+     console.log('BILL LOCK DATA:',formData);
     /** add new processed bill api call */
     this.api.add_Bill_date(formData,this.userEmpcode).subscribe( (res:any) => {
       this.hideForm();
@@ -415,7 +417,7 @@ onSubmit(){
       this.reset();
       },(error) => {
         if (error.status === 400) {
-          console.log(error);
+          console.error('ERROR:',error);
           // this.openAlertDialog(`${error.error}`,'error');
           this.messageService.add({severity:'error',summary:error.error});
           this.showForm()
@@ -437,7 +439,6 @@ exportExcel() : void{
     Object.keys(data).forEach(key => {
       const newKey = key.replace(/_/g, ' '); 
       transformedObj[newKey] = data[key];
-     
     });
     return transformedObj;
    

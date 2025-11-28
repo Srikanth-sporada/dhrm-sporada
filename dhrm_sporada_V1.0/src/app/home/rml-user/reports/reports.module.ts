@@ -36,6 +36,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { CummulativeReportComponent } from "./cummulative-report/cummulative-report.component";
 import { LopReportComponent } from "./lop-report/lop-report.component";
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { ReportsLoaderComponent } from "./reports-loader/reports-loader.component";
 @NgModule({
   declarations: [
     EvaluationDueReportComponent,
@@ -51,6 +52,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
     SkillMatrixReportComponent,
     CummulativeReportComponent,
     LopReportComponent,
+    ReportsLoaderComponent,
   ],
   imports: [
     CommonModule,

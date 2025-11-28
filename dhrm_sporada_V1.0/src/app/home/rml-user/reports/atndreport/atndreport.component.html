@@ -44,7 +44,13 @@
                 optionLabel="plant_name"
                 optionValue="plant_code"
                 styleClass="w-full" 
-                placeholder="Select Plant" ></p-dropdown>
+                placeholder="Select Plant" >
+                 <ng-template let-plant pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ plant?.plant_code+ '-' + plant.plant_name }}</span>
+                        </div>
+                </ng-template>
+              </p-dropdown>
           </div>
           <!-- month and year-->
         <div class="w-full">
@@ -91,15 +97,22 @@
                 optionLabel="Line_Name"
                 optionValue="Line_Name"
                 styleClass="w-full" 
-                placeholder="Select Line" ></p-dropdown>
+                placeholder="Select Line" >
+                 <ng-template let-line pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ line?.Line_code || '' + '-' + line.Line_Name }}</span>
+                        </div>
+                </ng-template>
+              </p-dropdown>
           </div>
         <!-- search btn -->
         <div class="w-full mt-8 ml-3">
-          <p-button 
+          <p-button
             icon="pi pi-search"
             styleClass="rounded-[1.5rem] mt-2"
             (onClick)="submit()"
-            label="Search"  
+            label="Search"
+            [disabled]="utils.containsWhitespace(genid) || utils.throttleBtnState"  
           >
         </p-button> 
         </div>
@@ -107,22 +120,22 @@
         </div>
         <!-- legends division -->
         <div class="!shadow-md !mt-2 !rounded-md  h-full !font-poppins sm:h-min border border-gray-400 flex items-center justify-around flex-col sm:flex-row">
-          <div class="monthdisplay text-center text-blue-600 font-semibold">Month: {{ date |date: 'MMMM' }}</div>
+          <div class="monthdisplay text-center text-blue-600 font-semibold">Month: {{ date | date: 'MMMM,y' }}</div>
           <div class="flex items-center justify-evenly gap-4">
             <div class="bg-green-200 text-green-600 present py-1 px-2 rounded-lg text-center">
               Present
             </div>
             <div class="bg-yellow-200 text-yellow-600 halfday py-1 px-2 rounded-lg text-center">
-              LC/EG
+              LC | EG
             </div>
             <div class="bg-red-200 text-red-600 absent py-1 px-2 rounded-lg text-center">
-              Not Present
+             Absent
             </div>
             <div class="bg-gray-200 text-gray-600 sunday py-1 px-2 rounded-lg text-center">
               Sunday
             </div>
             <div class="bg-purple-200 text-purple-600 weekoff py-1 px-2 rounded-lg text-center">
-              WeekOff
+              Week Off
             </div>
             <div class="bg-blue-200 text-blue-600 holiday py-1 px-2 rounded-lg text-center">
               Holiday
@@ -132,11 +145,11 @@
       </div>
       </div>
 <!-- attedance table -->
-<div class="h-[90svh] lg:h-[55vh] xl:h-[55vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+<div class="h-[90svh] lg:h-[55vh] xl:h-[55vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
   <table id="table" class="table-auto !w-full" id="atnddata">
   <!-- attedance table head -->
     <thead class="sticky top-0">
-      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
@@ -575,5 +588,7 @@
       </tr>
     </tbody>
   </table>
+   <!-- loader -->
+    <app-reports-loader *ngIf="loader.isLoding | async"></app-reports-loader>
 </div>
 

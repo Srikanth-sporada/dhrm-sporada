@@ -6,6 +6,7 @@ import * as XLSX from   'xlsx'
 import { CoffDetailsComponent } from "../coff-details/coff-details.component";
 import { ExcessHoursDetailsComponent } from '../excess-hours-details/excess-hours-details.component';
 import { MessageService,ConfirmationService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 
 @Component({
   selector: 'app-ot-compoff',
@@ -25,6 +26,7 @@ export class OtCompoffComponent implements OnInit {
     private apiService: ApiService,
     private matdailog:MatDialog,
     private messageService:MessageService,
+    public loader:LoaderserviceService,
   ) {}
   
   ngOnInit() {
@@ -43,12 +45,14 @@ export class OtCompoffComponent implements OnInit {
    */
   getLineByDept(){
       this.apiService.getlineBydept().subscribe((response: any) => {
-      this.lines = response;
-      this.lines.push({Line_Name:'All'});
-      this.lines.reverse();
-      /** line code need Line name */
-      // this.selectedLine = this.all.line_code.toString();
-      // console.log(this.selectedLine);
+         if(response?.message == 'failed'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+         }
+        this.lines = response;
+        this.lines.unshift({Line_Name:'All'});
+        /** line code need Line name */
+        // this.selectedLine = this.all.line_code.toString();
+        // console.log(this.selectedLine);
     }, (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
@@ -58,7 +62,7 @@ export class OtCompoffComponent implements OnInit {
   getData() {
     this.apiService.getApprovedExcessHours().subscribe((response: any) => {
       if (response.status == "failed") {
-        alert(response.message);
+        // alert(response.message);
         this.messageService.add({severity:'info',summary:response.message})
       } else {
         console.log(response.data);

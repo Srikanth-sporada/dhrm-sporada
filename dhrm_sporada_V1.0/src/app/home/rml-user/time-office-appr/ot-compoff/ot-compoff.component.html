@@ -37,7 +37,13 @@
             optionLabel="Line_Name"
             optionValue="Line_Name"
             styleClass="w-full" 
-            placeholder="Select Line" ></p-dropdown>
+            placeholder="Select Line">
+            <ng-template let-line pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ line?.line_slno || '' + '-' + line.Line_Name }}</span>
+                </div>
+            </ng-template>
+          </p-dropdown>
        </div>
    
      <!-- search btn -->
@@ -66,51 +72,53 @@
 </div> -->
 
 <div class="select_menu">
-
-<!-- ot comp off table -->
-<div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
-  <table id="table" class="table-auto !w-full">
-      <!-- table head -->
-      <thead class="sticky top-0">
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
-          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
-            Sno
-          </th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Gen ID</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0" >Name</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0" >Department</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0" >Line</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0" >Category</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Approved Excess Hrs</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Approved OT Hrs</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Adjusted for COFF</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Balance Hrs</th>
-          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" >Action</th>
-        </tr>
-      </thead>
-      <!-- table body -->
-      <tbody>
-        <tr
-          *ngFor="
-            let item of data | lineFilter : selectedLine;
-            let i = index
-          "
-          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
-        >
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.dept_name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ot }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.bal }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">
-            <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(item)">Apply Coff</button>
-          </td>
-        </tr>
-      </tbody>
-  </table>
+  <!-- ot comp off table -->
+  <div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
+    <table id="table" class="table-auto !w-full">
+        <!-- table head -->
+        <thead class="sticky top-0">
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+              Sno
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Gen ID</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0" >Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0" >Department</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0" >Line</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0" >Category</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Approved Excess Hrs</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Approved OT Hrs</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Adjusted for COFF</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" >Balance Hrs</th>
+            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" >Action</th>
+          </tr>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr
+            *ngFor="
+              let item of data | lineFilter : selectedLine;
+              let i = index
+            "
+            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+          >
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ item.dept_name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ot }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.bal }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">
+              <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(item)">Apply Coff</button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    <!-- loader -->
+     <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
+  </div>
 </div>

@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit ,ElementRef,ViewChild , AfterViewInit} from "@angular/core";
 import * as XLSX from 'xlsx';
 import moment from "moment";
 import { ApiService } from "src/app/home/api.service";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
+import { Utility } from "src/app/utils/utils";
 
 @Component({
   selector: "app-atndreport",
@@ -11,7 +13,7 @@ import { MessageService } from "primeng/api";
 })
 export class AtndreportComponent implements OnInit {
   date: any = new Date();
-  displayDate:any=moment().format("MM-yyyy");
+  displayDate:any = moment().format("MM-yyyy");
   plant: any;
   plantlist: any;
   isadmin: any;
@@ -24,7 +26,11 @@ export class AtndreportComponent implements OnInit {
   lines: any;
   all:any;
   userDetails:any;
-  constructor(private api: ApiService, private messageService:MessageService) {}
+  constructor(
+    private api: ApiService, 
+    private messageService:MessageService,
+    public loader:LoaderserviceService,
+    public utils:Utility) {}
 
   ngOnInit() {
      let details = sessionStorage.getItem("all");
@@ -40,10 +46,10 @@ export class AtndreportComponent implements OnInit {
     this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
-        this.plantlist.push({plant_name:'All',plant_code:''})
+        this.plantlist.unshift({plant_name:'All',plant_code:''})
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message});
       },
     });
@@ -54,17 +60,17 @@ export class AtndreportComponent implements OnInit {
     // get catgory api call
     this.api.getCategories().subscribe((data: any) => {
       this.categories = data;
-      this.categories.push({categorynm:'All'})
+      this.categories.unshift({categorynm:'All'});
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});
     });
     // get line api call
     this.api.getlineBydept().subscribe((response: any) => {
       this.lines = response;
-      this.lines.push({Line_Name:'All'})
+      this.lines.unshift({Line_Name:'All'});
     },(error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});
     });
     
@@ -78,23 +84,24 @@ export class AtndreportComponent implements OnInit {
       month: moment(this.date).format('MM'),
     };
     this.api.atndReport(data).subscribe((response: any) => {
-      
       if ((response.status = "success")) {
         this.atndData = response.data;
-        this.displayDate=moment(this.date).format("MMMM,yyyy")
+        this.displayDate = moment(this.date).format("MMMM,yyyy")
       } else {
         // alert(response.message);
         this.messageService.add({severity:'error',summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});
     });
   }
 
   submit(){
-    this.noOfDays=moment(this.date, "yyyy-MM").daysInMonth();
-    this.getData()
+    /** throttle function */
+    this.utils.throttledClick();
+    this.noOfDays = moment(this.date, "yyyy-MM").daysInMonth();
+    this.getData();
   }
 
   exportexcel() {
@@ -102,7 +109,7 @@ export class AtndreportComponent implements OnInit {
     const ws = XLSX.utils.table_to_sheet(x);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Table');
-    XLSX.writeFile(wb, 'attendance_data.xlsx');
-    this.messageService.add({severity:'info',summary:'Data Exported.'})
+    XLSX.writeFile(wb, `attendance_data_${this.plant}.xlsx`);
+    this.messageService.add({severity:'info',summary:'Data Exported.'});
   } 
 }

@@ -74,6 +74,8 @@ import  { CalendarModule as CalanderModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { SpeedDialModule } from "primeng/speeddial";
 import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component";
+/** time office loader component */
+import { TimeOfficeApprovalLoaderComponent } from "./time-office-approval-loader/time-office-approval-loader.component";
 @NgModule({
   declarations: [
     CompOffApprComponent,
@@ -115,7 +117,10 @@ import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component
     VanDelayRegularizationComponent,
     RouteMasterComponent,
     RejoinApprovalComponent,
+    /** new component */
     FullMonthLopComponent,
+    /** loader */
+    TimeOfficeApprovalLoaderComponent,
   ],
   imports: [
     MatNativeDateModule,

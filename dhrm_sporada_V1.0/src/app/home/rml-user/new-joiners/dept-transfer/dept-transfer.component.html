@@ -47,7 +47,13 @@
             optionLabel="dept_name"
             optionValue="dept_name"
             styleClass="w-full" 
-            placeholder="Select Department" ></p-dropdown>
+            placeholder="Select Department">
+            <ng-template let-dept pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+                </div>
+            </ng-template>
+          </p-dropdown>
        </div>
      </div>
     </div>

@@ -340,7 +340,10 @@ export class OnboardFormComponent implements OnInit {
           this.cat = this.category.map((a: any) => a.categorynm);
           this.oprn = this.oprn.map((a: any) => a.oprn_desc);
         },
-        (err) => {this.messageService.add({severity:'error',summary:err.message})}
+        (err) => {
+          console.log('ERROR:',err)
+          this.messageService.add({severity:'error',summary:err.message});
+        }
       );
       this.service.getreliveReason().subscribe((res:any)=>{
         this.rfr=res.data
@@ -404,7 +407,10 @@ export class OnboardFormComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     },
-   (err) => this.messageService.add({severity:'error',summary:err.message}))
+   (err) => {
+    console.log('ERROR:',err);
+    this.messageService.add({severity:'error',summary:err.message})
+   })
   }
   setDOJ(doj:any){
   //  console.log('3');
@@ -445,7 +451,7 @@ export class OnboardFormComponent implements OnInit {
 
   /**
    * 
-   * @param isFirstApprover define first approver
+   * @param isFirstApprover to fond first approver
    */
   submit(isFirstApprover:any) {
 
@@ -497,7 +503,10 @@ export class OnboardFormComponent implements OnInit {
                     this.down = response;
                     this.exportexcel();
                   },
-                  error:(err) => this.messageService.add({severity:'error',summary:err.message})
+                  error:(err) => {
+                    console.log('ERROR:',err)
+                    this.messageService.add({severity:'error',summary:err.message});
+                  }
                 });
             }
             if(isFirstApprover){
@@ -508,6 +517,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
+          console.error('ERROR:',err)
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -515,7 +525,8 @@ export class OnboardFormComponent implements OnInit {
     } else if (this.readonly == true) {
       /** DOL format */
       this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
-      console.log(this.form.value)
+      console.log('SEPERATION FORM:',this.form.value);
+      console.log('SEPERATION API DATA:',{...this.form.value,category:this.basic[0]?.apprentice_type });
       /** releive api call */
       this.service.relieve({...this.form.value,category:this.basic[0]?.apprentice_type }).subscribe({
         next: (response: any) => {
@@ -532,6 +543,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
+          console.error('ERROR:',err);
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -601,6 +613,9 @@ export class OnboardFormComponent implements OnInit {
       next: (response) => {
         // console.log(response);
       },
+      error: (error:any) => {
+        console.error('ERROR:',error)
+      }
     });
   }
 
@@ -620,7 +635,10 @@ export class OnboardFormComponent implements OnInit {
         this.reporting_to = response[1];
         // this.reporting_to = this.reporting_to.map((a:any) => a.emp_name)
       },
-      error: (err) => this.messageService.add({severity:'error',summary:err.message})
+      error: (err) => {
+        console.log('ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message})
+      }
     });
   }
 
@@ -631,7 +649,10 @@ export class OnboardFormComponent implements OnInit {
         // console.log('role',response);
         this.Role = response[0];
       },
-      error: (err) => this.messageService.add({severity:'error',summary:err.message})
+      error: (err) => {
+        console.log('ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message})
+      }
     });
   }
 
@@ -681,7 +702,7 @@ export class OnboardFormComponent implements OnInit {
     window.open(url.toString(), "_blank");
   }
 
-  // send for approval by hr function
+  // send for approval by hr function first approval
   sendForApprovalByHR(){
     const submitData = {
       mobile:this.applicationData.mobile_no1,
@@ -705,7 +726,7 @@ export class OnboardFormComponent implements OnInit {
       this.submit(true);
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.error?.message})
       }
      })
@@ -744,7 +765,7 @@ export class OnboardFormComponent implements OnInit {
               this.Role = response[0];
             },
             error: (error) => {
-              console.log(error);
+              console.error('ERROR:',error);
               this.messageService.add({severity:'error',summary:error.message})
             }
           })
@@ -759,7 +780,7 @@ export class OnboardFormComponent implements OnInit {
       console.log('CONTRACTORS:', response.data)
     },
     error: (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     }
    })
@@ -783,7 +804,7 @@ export class OnboardFormComponent implements OnInit {
        console.log(response)
       },
       error: (err) => {
-        console.log(err)
+        console.error('ERROR:',err)
         this.messageService.add({severity:'error',summary:err.error?.message})
       }
     })

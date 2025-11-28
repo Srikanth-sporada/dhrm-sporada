@@ -137,7 +137,33 @@
               </div>
             </div>
           <!-- fourth row -->
-           <div class="row mx-2 mt-3">
+           <div class="row mx-2 mt-3 mb-2">
+             <!-- paid week off -->
+              <div class="col-sm-6">
+                  <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
+                  <br>
+                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">event</mat-icon>
+                  Paid Week Off
+                </label>
+                <div class="flex items-center justify-start gap-10">
+                  <!-- company rainee -->
+                  <div class="flex items-center gap-2 ml-2 mb-2">
+                    <p-checkbox 
+                    formControlName="weekoff_paid"
+                    value="Y" 
+                    inputId="pay-week-off-yes" ></p-checkbox>
+                    <label for="pay-week-off-yes" class="mb-0 text-blue-600">Yes</label>
+                  </div>
+                  <!-- operator -->
+                  <div class="flex items-center gap-2 ml-2 mb-2">
+                    <p-checkbox
+                    formControlName="weekoff_paid"
+                    value="N" 
+                    inputId="pay-week-off-no" ></p-checkbox>
+                    <label for="pay-week-off-no" class="mb-0 text-blue-600">No</label>
+                  </div>
+                </div>
+              </div>
                <!-- category -->
               <div class="col-sm-6">
                   <label class="text-blue-600 flex items-center justify-start gap-1" for="name">

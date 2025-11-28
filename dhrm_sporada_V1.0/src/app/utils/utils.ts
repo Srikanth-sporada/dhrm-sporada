@@ -3,12 +3,13 @@ import { MessageService } from 'primeng/api';
 import { Injectable,OnInit } from '@angular/core';
 import { ApiService } from '../home/api.service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 @Injectable({
   providedIn: 'root' // Makes the service available globally
 })
 
 export class Utility {
-  
+    throttleBtnState:any = false;
     constructor (private messageService:MessageService, private apiService:ApiService){
 
     }
@@ -76,6 +77,26 @@ export class Utility {
             }
       })
     }
-      
+    
+    /**
+     * function to check white space
+     * @return {boolean}
+     */
 
+    containsWhitespace(str:any):boolean {
+     return /\s/.test(str);
+    }
+
+    /**
+     * Throttling handle function
+     * @property {*} milliSeconds
+     */
+
+  throttledClick() {
+    if (this.throttleBtnState) return;
+     this.throttleBtnState = true;
+     console.log('Clicked!');
+     // re-enable after 2s
+    setTimeout(() => this.throttleBtnState = false, environment.milliSeconds); 
+  }
 }
