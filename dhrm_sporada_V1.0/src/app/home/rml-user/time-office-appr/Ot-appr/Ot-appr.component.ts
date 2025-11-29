@@ -40,7 +40,11 @@ export class OtApprComponent implements OnInit {
               }
             }
   ];
-  constructor(private apiService:ApiService,private matdailog:MatDialog, private messageService:MessageService, private confirmationService:ConfirmationService) { }
+  constructor(
+    private apiService:ApiService,
+    private matdailog:MatDialog, 
+    private messageService:MessageService, 
+    private confirmationService:ConfirmationService) { }
 
   ngOnInit() {
     let details = sessionStorage.getItem("all");
@@ -60,27 +64,30 @@ export class OtApprComponent implements OnInit {
   getData(){
     this.apiService.getOtapperMapping(this.plant).subscribe((response:any)=>{
       if(response.status=='success'){
-        this.list=response.data
+        this.list = response.data
         this.approverList = response.data
       }else{
         // alert(response.messsage);
         this.messageService.add({severity:'warn',summary:response.message})
       }
+    }, (error) => {
+       console.error('ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.message});
     })
   }
 
   getPlant(){
     this.apiService.getplant().subscribe({
       next: (response:any) => {
-        if(!response){
-          this.messageService.add({severity:'info',summary:'No Plants'});
+        if(response?.message == 'failure' || response?.status == 'failed'){
+          this.messageService.add({severity:'info',summary:'Error Occured!'});
         }else{
           this.plantArray = response;
-          this.plantArray.push({plant_name:'All',plant_code:''})
+          this.plantArray.unshift({plant_name:'All',plant_code:''})
         }
       },
       error: (error) =>{
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
     })
@@ -120,10 +127,13 @@ export class OtApprComponent implements OnInit {
         this.messageService.add({severity:'info',summary:response.message})
         this.getData()
       }else{
-        alert(response.message);
+        // alert(response.message);
         this.messageService.add({severity:'error',summary:response.message})
         this.getData()
       }
+    },(error) => {
+       console.error('ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.message})
     })
   }
 

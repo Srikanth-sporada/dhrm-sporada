@@ -19,6 +19,10 @@
         <div class="relative">
             <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
               Filters <mat-icon>filter_alt</mat-icon>
+              <!-- total count -->
+               <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+                Total Count: {{list?.length || 0}}
+              </span>
             </h1>
           <!-- primeNG speedDial -->
             <p-speedDial 
@@ -42,7 +46,13 @@
                 styleClass="w-full py-1"
                 [disabled]="plant !== '' "
                 (onChange)="filterOtApproverByPlant()" 
-                placeholder="Select Plant"></p-dropdown>
+                placeholder="Select Plant">
+                 <ng-template let-plant pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                        </div>
+                </ng-template>
+              </p-dropdown>
             </div>
           </div>
       </div>
@@ -51,8 +61,8 @@
   <table id="table" class="table-auto !w-full">
      <!-- table head -->
       <thead class="sticky top-0">
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Executive Name</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Functional Head</th>
@@ -65,9 +75,9 @@
         <tr *ngFor="let item of list;let i=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.plant}}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{item.exec}}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{item.func_head}}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{item.hr}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{item?.exec_slno + '-'+ item.exec}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{item?.func_slno + '-'+ item.func_head}}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">{{item?.hr_slno + '-'+ item.hr}}</td>
             <!-- action btn -->
             <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
               <button  (click)="openEdit(item)">

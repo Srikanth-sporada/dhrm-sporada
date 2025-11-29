@@ -1,13 +1,12 @@
-import {Component,OnInit,ChangeDetectionStrategy,ViewEncapsulation,} from "@angular/core";
-import { MatMonthView } from "@angular/material/datepicker";
-import {CalendarEvent,CalendarMonthViewBeforeRenderEvent,CalendarWeekViewBeforeRenderEvent,CalendarDayViewBeforeRenderEvent,CalendarView,CalendarMonthViewDay,} from "angular-calendar";
-import { isSunday, isWednesday, isWeekend,setDefaultOptions } from "date-fns";
-import { HttpClient } from "@angular/common/http";
+import {Component,OnInit,ViewEncapsulation,} from "@angular/core";
+import {CalendarEvent,CalendarMonthViewBeforeRenderEvent,CalendarView,} from "angular-calendar";
+import { setDefaultOptions } from "date-fns";
 import { DatePipe } from "@angular/common";
 import { ApiService } from "src/app/home/api.service";
-import { MatDialog } from "@angular/material/dialog";
 import { MessageService } from "primeng/api";
 import { environment } from "src/environments/environment.prod";
+import { Utility } from "src/app/utils/utils";
+import { LoaderserviceService } from "src/app/loaderservice.service";
 
 interface MyEvent extends CalendarEvent {
   in_time: string;
@@ -61,10 +60,10 @@ export class CalComponent implements OnInit {
   a: any = "IN_OUT_TIME";
   date: string | null;
   constructor(
-    private http: HttpClient,
     private service: ApiService,
-    private dailog: MatDialog,
     private messageService:MessageService,
+    public utils:Utility,
+    public loader:LoaderserviceService,
   ) {}
 
   ngOnInit(): void {
@@ -76,9 +75,12 @@ export class CalComponent implements OnInit {
 
     this.firstDayOfWeek = 1; 
     this.service.getlockDate().subscribe((res:any)=>{
-      this.lockdate=res.date
+      this.lockdate = res.date;
+      if(res?.status == 'failed'){
+        this.messageService.add({severity:'error',summary:res?.message});
+      }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
   }
@@ -86,7 +88,6 @@ export class CalComponent implements OnInit {
   setView(view: CalendarView) {
     this.view = view;
     console.log(view);
-    
   }
 
   dayClicked({ date, events }: { date: Date; events: any }): void {
@@ -117,9 +118,10 @@ export class CalComponent implements OnInit {
 
   attData: any[] = [];
 
+  /**
+   * get attedance data for trainee
+   */
   getDates() {
-   
-  
     this.month = this.viewDate;
     this.date = new DatePipe("en-US").transform(this.viewDate, "yyyy/MM");
     console.log(this.date);
@@ -133,7 +135,7 @@ export class CalComponent implements OnInit {
             this.messageService.add({severity:'warn',summary:response.message})
           }else{
             console.log(response)
-            this.user=response.user
+            this.user = response.user
             this.attData = response.data;
             console.log(response.data);
             
@@ -195,7 +197,11 @@ export class CalComponent implements OnInit {
         var x = new Date(this.attData[i].att_date);
         var date = x.getDate();
         var month = x.getMonth();
-        /** checking if trainee is EC LG in week off & holiday */
+        /** 
+         * checking if trainee is EC LG in week off & holiday 
+         * set same clor fr holiday
+         * @property {*} _exceptLC_EG_values
+         * */
         if((this.attData[i]?.late_comeing > 0 || this.attData[i]?.early_going > 0) 
           && this._exceptLC_EG_values.indexOf(this.attData[i].present) == -1){
           if (month == monthofYear && date == dayOfMonth) {
@@ -203,6 +209,7 @@ export class CalComponent implements OnInit {
           }
         }
         else {
+          /** calendar day present type color codes */
           switch (this.attData[i].present) {
             case "Present": {
               if (month == monthofYear && date == dayOfMonth) {
@@ -277,12 +284,17 @@ export class CalComponent implements OnInit {
     });
   }
 
+  /** 
+   * get attedance data
+   */
   getData(){
     if(this.genid==''){
       // alert('Pleas Enter the Gen ID');
       this.messageService.add({severity:'warn',summary:'Please Enter Gen ID'})
     }
     else{
+      /** throttle function */
+      this.utils.throttledClick();
       this.getDates()
     }
   }

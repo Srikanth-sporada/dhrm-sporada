@@ -25,10 +25,15 @@
           [disabled]="!isadmin"
           (ngModelChange)="loadData()"
           placeholder="Select Plant" >
+          <ng-template let-plant pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                        </div>
+          </ng-template>
         </p-dropdown>
       </div>
        <!-- employee -->
-      <div class="mx-2">
+      <div class="mx-2 mt-3">
         <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
           <mat-icon class="text-2xl text-blue-600 h-0 w-0">assignment_ind</mat-icon>
           Employee
@@ -40,6 +45,11 @@
           optionValue="empl_slno"
           styleClass="w-full"
           placeholder="Select Employee" >
+          <ng-template let-employee pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <span>{{ employee?.empl_slno + '-' + employee.Emp_Name }}</span>
+            </div>
+          </ng-template>
         </p-dropdown>
       </div>
       <!-- funcitonal head -->
@@ -55,6 +65,11 @@
           optionValue="empl_slno"
           styleClass="w-full"
           placeholder="Select Functional Head" >
+           <ng-template let-employee pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <span>{{ employee?.empl_slno + '-' + employee.Emp_Name }}</span>
+            </div>
+          </ng-template>
         </p-dropdown>
       </div>
      <!-- HR  head -->
@@ -70,6 +85,11 @@
           optionValue="empl_slno"
           styleClass="w-full"
           placeholder="Select HR Head" >
+           <ng-template let-employee pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <span>{{ employee?.empl_slno + '-' + employee.Emp_Name }}</span>
+            </div>
+          </ng-template>
         </p-dropdown>
       </div>
         <br>

@@ -29,15 +29,21 @@ export class OtapprAddComponent implements OnInit {
   emp = new FormControl("");
   filteredEmp: Observable<any[]>;
 
-  constructor(private api: ApiService,private matDailog:MatDialogRef<OtapprAddComponent>, private messageService:MessageService) {}
+  constructor(
+    private api: ApiService,
+    private matDailog:MatDialogRef<OtapprAddComponent>, 
+    private messageService:MessageService) {}
 
   ngOnInit() {
     this.api.getplantcode(sessionStorage.getItem("plantcode")).subscribe({
       next: (response: any) => {
+        if(response?.message == 'failure' || response?.status == 'failed'){
+          this.messageService.add({severity:'error',summary:'Error Occured!'})
+        }
         this.plantList = response;
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       },
     });
@@ -76,7 +82,7 @@ export class OtapprAddComponent implements OnInit {
         this.messageService.add({severity:'warn', summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.response})
     });
   }
@@ -92,7 +98,7 @@ export class OtapprAddComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
@@ -108,7 +114,7 @@ export class OtapprAddComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
   });
   }
@@ -145,7 +151,7 @@ export class OtapprAddComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
   })
   }

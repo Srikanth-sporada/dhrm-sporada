@@ -41,7 +41,7 @@ export class OtapprEditComponent implements OnInit {
           this.messageService.add({severity:'warn',summary:response.message})
         }
       }, (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       });
   }
@@ -56,7 +56,7 @@ export class OtapprEditComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     },(error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       });
   }
@@ -78,12 +78,12 @@ export class OtapprEditComponent implements OnInit {
         this.messageService.add({severity:'info',summary:response.message})
         this.matDailog.close()
       }else{
-        alert(response.message);
+        // alert(response.message);
         console.log(response.message);
         this.messageService.add({severity:'warn',summary:response.message})
       }
     }, (error) => {
-        console.log(error);
+         console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       })
   }
