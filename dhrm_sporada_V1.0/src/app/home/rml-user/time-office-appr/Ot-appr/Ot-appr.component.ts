@@ -52,9 +52,11 @@ export class OtApprComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    this.plant=sessionStorage.getItem('isadmin')=='true'?'':sessionStorage.getItem('plantcode')
+    this.plant = sessionStorage.getItem('isadmin')=='true' ? '' : sessionStorage.getItem('plantcode')
     console.log(this.plant)
     this.getData();
+    this.getPlant();
+    this.selectedPlant = this.plant;
     if(!this.plant){
        this.getPlant();
     }

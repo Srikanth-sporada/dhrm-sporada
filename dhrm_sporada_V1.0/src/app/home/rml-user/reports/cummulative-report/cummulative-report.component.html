@@ -28,7 +28,7 @@
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="utility.exportexcel('table','cumulativereport','')"></p-button>
+         (click)="utility.exportexcel('table','cumulativereport',this.cummulativeReportForm.value.plantCode)"></p-button>
       </div>
    <form [formGroup]="cummulativeReportForm">
      <!-- filter first row -->
@@ -62,7 +62,7 @@
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full" 
-            (onChange)="getPayrollAreaByPlant()"
+            (onChange)="getPayrollAreaByPlant(false)"
             placeholder="Select Plant">
             <ng-template let-plant pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -121,7 +121,6 @@
       
      </div>
      <!-- search btn -->
-     
       <p-button 
         icon="pi pi-search"
         styleClass="rounded-[1.5rem] mt-9"
@@ -143,8 +142,8 @@
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Name</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Plant</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap" scope="col">Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0  text-nowrap">Plant</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Cal Days</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Off</th>
@@ -155,8 +154,8 @@
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OD</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">PR</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">COFF</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Late Hrs</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">OT Hrs</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">EC Days</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">LC Days</th>
              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">2 OT Hrs </th>
               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">3 OT Hrs</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Wrking Days</th>
@@ -176,9 +175,9 @@
            *ngFor="let i of cummulativeReportData"
            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
            >
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold" scope="row">{{i?.genId}}</td> 
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center text-blue-600 font-semibold" scope="row">{{i?.Gen_Id || '-' }}</td> 
             <td class="!px-4 !py-4 text-nowrap !rounded-s-md w-full">
-             {{i?.name}}
+             {{i?.Name || '-'}}
               <i 
                class="pi pi-info-circle text-xl text-blue-600 float-right" 
                (click)="op.toggle($event)" [hidden]="true"></i>
@@ -195,30 +194,30 @@
                  </div>
                </p-overlayPanel>
             </td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.calDays }}</td>
-            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.off }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.rh }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.pl }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.cl }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.sl }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.od }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.pr}}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.coff }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.lateHrs }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.otHrs }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.ot2Hrs }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.ot3Hrs }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkingDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkedDays }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.lop }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.g }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.n }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.s1 }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.s2 }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.fml }}</td>
-             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrkSun }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant_code + '-' + i?.plant_name }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea || '-' }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Calender_Days  || '0'}}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Off || '0'}}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.RH || '0'}}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Privilege_Leave || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Casual_Leave || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.SL || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.OD || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.PR || '9'}}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.COFF || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.LC_Days || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.EG_Days || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.OT_Hrs_Double || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.OT_Hrs_Trible || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Wrking_Days || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Wrked_Days || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.LOP || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.G || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.N || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.I || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.II || '0' }}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Full_Month_LOP || '0'}}</td>
+             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.wrk_sun || '0' }}</td>
           </tr>
         </tbody>
       </table>

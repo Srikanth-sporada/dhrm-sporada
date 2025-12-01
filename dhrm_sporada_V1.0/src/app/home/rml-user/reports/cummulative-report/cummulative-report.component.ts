@@ -1,13 +1,8 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl, UntypedFormBuilder,Validators} from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import { UntypedFormControl, UntypedFormBuilder,Validators, FormGroup} from '@angular/forms';
 import { ApiService } from 'src/app/home/api.service';
-import { FormService } from '../../new-joiners/form.service';
-import { DatePipe } from '@angular/common';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import * as XLSX from 'xlsx';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 import { MessageService } from 'primeng/api';
 import { Utility } from 'src/app/utils/utils';
@@ -28,64 +23,7 @@ export class CummulativeReportComponent implements OnInit {
     companyData:any = [];
     plantData:any = [];
     payrollAreaData:any = [];
-    cummulativeReportData:any = [
-      {
-    genId: "E001",
-    name: "John Doe",
-    plant: "Plant A",
-    payrollArea: "Area 1",
-    calDays: 30,
-    off: 4,
-    rh: 1,
-    pl: 2,
-    cl: 1,
-    sl: 0,
-    od: 0,
-    pr: 0,
-    coff: 0,
-    lateHrs: 2,
-    otHrs: 5,
-    ot2Hrs: 3,
-    ot3Hrs: 0,
-    wrkingDays: 26,
-    wrkedDays: 25,
-    lop: 1,
-    g: 0,
-    n: 0,
-    s1: 0,
-    s2: 0,
-    fml: 0,
-    wrkSun: 1
-  },
-  {
-    genId: "E002",
-    name: "Jane Smith",
-    plant: "Plant B",
-    payrollArea: "Area 2",
-    calDays: 31,
-    off: 5,
-    rh: 2,
-    pl: 1,
-    cl: 0,
-    sl: 1,
-    od: 0,
-    pr: 0,
-    coff: 1,
-    lateHrs: 0,
-    otHrs: 8,
-    ot2Hrs: 2,
-    ot3Hrs: 1,
-    wrkingDays: 26,
-    wrkedDays: 26,
-    lop: 0,
-    g: 0,
-    n: 0,
-    i: 0,
-    ii: 0,
-    fml: 0,
-    wrkSun: 2
-  }
-];
+    cummulativeReportData:any = [];
     isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
     companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
     plantCode:any = sessionStorage.getItem('plantcode');
@@ -100,10 +38,10 @@ export class CummulativeReportComponent implements OnInit {
       this.cummulativeReportForm = this.fb.group({
         companyCode: new UntypedFormControl(this.companyCode),
         plantCode: new UntypedFormControl(this.plantCode),
-        payrollArea: new UntypedFormControl(''),
+        payrollArea: new UntypedFormControl('', Validators.required),
         month: new UntypedFormControl(new Date()),
         year: new UntypedFormControl(new Date()),
-        genId: ['',Validators.pattern(/\S+/)],
+        genId: [null,Validators.pattern(/\S+/)],
       });
     }
 
@@ -116,8 +54,8 @@ export class CummulativeReportComponent implements OnInit {
       /** get company & plant & payroll area */
         this.getCompanyData();
         this.getplantByCompanyCode();
-        this.getPayrollAreaByPlant();
-     
+        /** passing true for component life clcle call */
+        this.getPayrollAreaByPlant(true);
     }
 
     /** Export HTML data to excel sheet
@@ -165,13 +103,22 @@ export class CummulativeReportComponent implements OnInit {
 
      /** get payroll area by plant code
      * @property {UntypedForm} form.plantCode
+     * @param {boolean} onComponentInit to get report data with default payrollArea
      */
 
-    getPayrollAreaByPlant(){
+    getPayrollAreaByPlant(onComponentInit:boolean){
       let plantCode = this.isAdmin ? this.cummulativeReportForm.value.plantCode : this.plantCode;
       this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
         next: (response) => {
           this.payrollAreaData = response;
+          console.log('PAYROLL AREA:',this.payrollAreaData);
+          /** checking ngOnInit lifecycle */
+          if(onComponentInit){
+           /** setting default payrollArea[0] */
+           this.cummulativeReportForm.controls['payrollArea'].setValue(this.payrollAreaData[0]?.PayrollArea);
+            /** get cumulative report data */
+           this.filterCummulativeReport();
+          }
         },
         error: (error:any) => {
           console.error('ERROR:',error);
@@ -203,13 +150,32 @@ export class CummulativeReportComponent implements OnInit {
      * @property {UntyperForm} form.value
      * @var formattedMonth user selected formatted  formattedMonth
      * @var formattedYear user selected formatted formattedYear
+     * @param {boolean} onComponentInit to get report data with default payrollArea
     */
     filterCummulativeReport(){
-      console.log({mo:this.cummulativeReportForm.value.month,yy:this.cummulativeReportForm.value.year})
-      const formattedMonth = moment(this.cummulativeReportForm.value.month).format('M');
+      // console.log({mo:this.cummulativeReportForm.value.month,yy:this.cummulativeReportForm.value.year})
+      const formattedMonth = moment(this.cummulativeReportForm.value.month).format('MM');
       const formattedYear = moment(this.cummulativeReportForm.value.year).format('YYYY');
       console.log({formattedMonth,formattedYear});
       const formData = {...this.cummulativeReportForm.value,month:formattedMonth,year:formattedYear}
-      console.log('FORM DATA', formData);
+      console.log(' FORMATTED FORM DATA', formData);
+      /**
+       * get cumulative report data API
+       * @param {*} formData
+       */
+      this.apiService.getCumulativeReportData(formData).subscribe({
+        next: (response:any) => {
+         this.cummulativeReportData = response;
+         console.log('REPORT DATA:',response);
+        },
+        error: (error:any) => {
+          console.error('ERRR:',error);
+          if(error?.error?.error){
+           this.messageService.add({severity:'error',summary:error?.error?.error});
+          }else{
+            this.messageService.add({severity:'error', summary:error?.error?.message})
+          }
+        }
+      })
     }
 }

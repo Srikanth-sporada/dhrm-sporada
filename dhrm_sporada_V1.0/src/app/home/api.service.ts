@@ -907,12 +907,20 @@ export class ApiService {
   /** new reports */
   
   /** LOP report
-   * @param {*} formData lopr report filter form
+   * @param {*} formData lop report filter form
    */
   getLopReportData(formData:any){
     return this.http.get(this.url + `/report/lopreport?companyCode=${formData.companyCode}&genId=${formData.genId}&month=${formData.month}&payrollArea=${formData.payrollArea}&plantCode=${formData.plantCode}&year=${formData.year}`);
   }
+  /** 
+   * cumulative report
+   * @param {*} formData cumulative report form
+   * lockMonth ==> formData.year + formData.month + 01
+   */
 
+  getCumulativeReportData(formData:any) {
+    return this.http.get(this.url + `/report/cumulativereport?plant=${formData.plantCode}&pArea=${formData.payrollArea}&lockMonth=${formData.year + '-' + formData.month + '-' + '01'}&company_code=${formData.companyCode}&genid=${formData.genId}`)
+  }
   arsReports(data: any) {
     return this.http.get(this.url + `/report/arsreports?type=${data.type}&plant=${data.plant}&from=${data.from}&to=${data.to}&cat=${data.cat}`
     );

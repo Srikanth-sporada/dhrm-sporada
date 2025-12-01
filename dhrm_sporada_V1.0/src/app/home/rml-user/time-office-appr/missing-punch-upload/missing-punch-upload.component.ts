@@ -1,15 +1,14 @@
 import { Component, OnInit,ViewChild ,ElementRef, Renderer2} from "@angular/core";
 import moment from "moment";
-import { MatInput } from '@angular/material/input';
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from 'xlsx'
-import {environment} from './../../../../../environments/environment.prod'
+import { environment } from "src/environments/environment.prod";
 import {ToastComponent} from 'src/app/new-contractor-mod/toast/toast.component'
 import {ClamAPIService} from 'src/app/new-contractor-mod/clam-api.service'
-// import { ToastComponent } from '../new-contractor-mod/toast/toast.component.ts'
 import { MatDialog } from '@angular/material/dialog';
-import { Subscriber } from "rxjs";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
+
 @Component({
   selector: "app-missing-punch-upload",
   templateUrl: "./missing-punch-upload.component.html",
@@ -31,7 +30,7 @@ export class MissingPunchUploadComponent implements OnInit {
   execeshours:any[] = [];
   oDdata:any
   dayType:any;
-
+  fpMaxDate:any = new Date();
 
   MaxIn:any
   MinIn:any
@@ -48,9 +47,6 @@ export class MissingPunchUploadComponent implements OnInit {
   fpin: any;
   fpout: any;
 
-
-
-
   submit: boolean = true;
   odSubmit: boolean = true
 
@@ -59,18 +55,27 @@ export class MissingPunchUploadComponent implements OnInit {
   file:any;
   reasonList:any[];
   show_od_temp=false
-  isadmin:any=sessionStorage.getItem('isadmin')=='true'?true:false;
-  userEmpcode:string |null = sessionStorage.getItem('user_name');
-  ishr:string |null = sessionStorage.getItem('ishr');
-  url=environment.path+'/'
+  /** checking user isAdmin */
+  isadmin:any = sessionStorage.getItem('isadmin') =='true' ? true : false;
+  userEmpcode:string | null = sessionStorage.getItem('user_name');
+  /** checking user isHr */
+  ishr:string | null = sessionStorage.getItem('ishr');
+  url = environment.path +'/';
 
   show_fp_temp: boolean = false;
   plant: any = sessionStorage.getItem("plantcode");
-present_type_before:any
+  present_type_before:any
   verifybtn:boolean=true
   uploadBtn:boolean=true
-  constructor(private api: ApiService,private dialog: MatDialog,private renderer: Renderer2,
-    private OpApi:ClamAPIService, private messageService:MessageService) {
+
+  constructor(
+    private api: ApiService,
+    private dialog: MatDialog,
+    private renderer: Renderer2,
+    private OpApi:ClamAPIService, 
+    private messageService:MessageService,
+    public loader:LoaderserviceService) {
+
     // this.form.controls['genid'].valueChanges.subscribe(()=>{
     //   console.log('Value Change')
     // })
@@ -95,7 +100,7 @@ present_type_before:any
     this.api.getFpreason().subscribe((res:any)=>{
       if(res.status='success'){
         console.log(res.data)
-        this.reasonList=res.data
+        this.reasonList = res.data;
         this.reason = ''
       }else{
         // alert(res.message)
@@ -344,9 +349,10 @@ submitDateTime() {
 
 
   verify_bulkData(){
-    this.api.verify_bulk({data:this.bulkData,plant:this.plant}).subscribe((res:any)=>{
+    this.api.verify_bulk({data:this.bulkData,plant:this.plant}).subscribe({
+      next: (res:any) => {
       console.log(res)
-      if(res.status=='failed'){
+      if(res.status == 'failed'){
         // alert(res.message);
         this.messageService.add({severity:'warn',summary:res.message})
         this.file=''
@@ -357,24 +363,35 @@ submitDateTime() {
         // alert(`Record's Verified Successfully`);
         this.messageService.add({severity:'info',summary:"Record's Verified Sucessfully."})
       }
-    })
+    },
+    error: (error:any) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error', summary:error?.error?.message})
+    }})
   }
 
 
   upload_bulkdData(){
-    this.api.insert_bulk_fp({data:this.bulkData,plant:this.plant,id:sessionStorage.getItem("user_name")}).subscribe((res:any)=>{
+    this.api.insert_bulk_fp({data:this.bulkData,plant:this.plant,id:sessionStorage.getItem("user_name")})
+    .subscribe({
+      next: (res:any) => {
       if(res.status=='failed'){
         this.messageService.add({severity:'warn',summary:res.message})
-        this.verifybtn=true
-        this.uploadBtn=true
+        this.verifybtn=true;
+        this.uploadBtn=true;
       }
       console.log(res.status)
       if(res.status=='successfull'){
-        this.verifybtn=true
-        this.uploadBtn=true
+        this.verifybtn=true;
+        this.uploadBtn=true;
         // alert(`Record's Inserted Successfully`)
         this.messageService.add({severity:'info',summary:"Record's Inserted Sucessfully."})
       }
+    },
+    error: (error:any) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.error?.message});
+    }
     })
   }
 
@@ -403,34 +420,32 @@ submitDateTime() {
   }
 
   this.odDate = moment(this.odDate).format('YYYY-MM-DD')
-console.log('this.odGgenid,this.odDate,this.plant',this.odGgenid,this.odDate,this.plant)
+  console.log('this.odGgenid,this.odDate,this.plant',this.odGgenid,this.odDate,this.plant)
 
-this.OpApi.getOperatorOD(this.odGgenid,this.odDate,this.plant).subscribe(res=>{
-console.log(res)
-this.oDdata = res
-this.FP_list= this.oDdata.FP_list.recordsets[0]
-this.execeshours= this.oDdata.execeshours.recordsets[0]
-this.ODList= this.oDdata.ODList.recordsets[0]
-this.trn_list= this.oDdata.trn_list.recordsets[0]
-this.existapln= this.oDdata.existapln.recordsets[0]
-this.present_type_before =this.trn_list[0].present_type
-console.log(this.trn_list)
-console.log(this.existapln)
-this.show_od_temp=true
-},(error:any) => {
-  if (error.status === 400) {
-    console.log(error)
-    // this.openAlertDialog(`${error.error}`,'error');
-    this.messageService.add({severity:'error', summary:error.error})
-  }
-   else {
-    // this.openAlertDialog('Error in connection','error');
-    this.messageService.add({severity:'error', summary:'Error in Connection'})
-  }
-})
-
-
-   
+  this.OpApi.getOperatorOD(this.odGgenid,this.odDate,this.plant).subscribe(res=>{
+      console.log(res)
+      this.oDdata = res
+      this.FP_list= this.oDdata.FP_list.recordsets[0]
+      this.execeshours= this.oDdata.execeshours.recordsets[0]
+      this.ODList= this.oDdata.ODList.recordsets[0]
+      this.trn_list= this.oDdata.trn_list.recordsets[0]
+      this.existapln= this.oDdata.existapln.recordsets[0]
+      this.present_type_before =this.trn_list[0].present_type
+      console.log(this.trn_list)
+      console.log(this.existapln)
+      this.show_od_temp=true
+  },(error:any) => {
+    if (error.status === 400) {
+      console.error('ERROR:',error)
+      // this.openAlertDialog(`${error.error}`,'error');
+      this.messageService.add({severity:'error', summary:error.error})
+    }
+    else {
+      // this.openAlertDialog('Error in connection','error');
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error', summary:'Error in Connection'})
+    }
+  });
   }
 
 
@@ -444,8 +459,6 @@ this.show_od_temp=true
     else{
       this.odSubmit=false
     }
-    
-
   }
 
 
@@ -506,12 +519,12 @@ this.show_od_temp=true
       this.messageService.add({severity:'info', summary:res})
     },(error:any) => {
       if (error.status === 400) {
-        // console.log(error)
+        console.error('ERROR:',error);
         // this.openAlertDialog(`${error.error}`,'error');
-      this.messageService.add({severity:'error', summary:error.error})
-       
+       this.messageService.add({severity:'error', summary:error.error}); 
       }
        else {
+        console.error('ERROR:',error);
         // this.openAlertDialog('Error in connection','error');
       this.messageService.add({severity:'error', summary:'Error in Connection'})
       }

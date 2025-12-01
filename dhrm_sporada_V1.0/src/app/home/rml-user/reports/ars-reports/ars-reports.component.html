@@ -32,7 +32,13 @@
             optionLabel="name"
             optionValue="code"
             styleClass="w-full"
-            placeholder="Select Report Type" ></p-dropdown>
+            placeholder="Select Report Type">
+             <ng-template let-reports let-i="index" pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ reports.index + '.' + reports.name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
        </div>
        <!-- from date-->
         <div class="w-full" *ngIf='!yearReport.includes(selectedReportType)'>

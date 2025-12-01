@@ -134,13 +134,14 @@ export class OtapprAddComponent implements OnInit {
     //   return this.emp.getRawValue()==item.Emp_Name
     // })
     // console.log(empl_details[0].empl_slno,this.selectedOtAppr,this.selectedHr)
-    let data={
+    let data = {
       exec:this.selectedEmployee,
       fh:this.selectedOtAppr,
       hr:this.selectedHr,
       plant:this.plant,
-      id:sessionStorage.getItem('user_name')
+      id:sessionStorage.getItem('user_name')?.trim()
     }
+    console.log('OT APPROVER DATA:',data);
     this.api.addOtMapping(data).subscribe((response:any)=>{
       if(response.status='success'){
         // alert(response.message)
