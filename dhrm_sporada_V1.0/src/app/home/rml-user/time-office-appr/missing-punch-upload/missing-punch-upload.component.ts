@@ -85,6 +85,7 @@ export class MissingPunchUploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('EXCELL DATE:',this.excelDateToJSDate(45954));
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -327,8 +328,6 @@ submitDateTime() {
     const minInTime = new Date(this.date);
     minInTime.setDate(minInTime.getDate() -1);
     this.MinIn = minInTime;
-    
-    
   }
  
 
@@ -340,9 +339,13 @@ submitDateTime() {
     fileReader.readAsBinaryString(file)
     fileReader.onload=(event:any)=>{
     let binaryData= event.target.result;
+    // console.log('BINARY DATA:',binaryData)
     let workbook=XLSX.read(binaryData,{type:'binary'})
-    let sheetname = workbook.SheetNames[0]
-    this.bulkData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetname])
+    console.log('WB:',workbook);
+    let sheetname = workbook.SheetNames[0];
+    console.log('SN:',sheetname)
+    this.bulkData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetname]);
+    console.log('BULK DATA:',this.bulkData);
     this.verifybtn = false
     }
   }
@@ -381,7 +384,7 @@ submitDateTime() {
         this.uploadBtn=true;
       }
       console.log(res.status)
-      if(res.status=='successfull'){
+      if(res.status =='successfull'){
         this.verifybtn=true;
         this.uploadBtn=true;
         // alert(`Record's Inserted Successfully`)
@@ -549,5 +552,20 @@ submitDateTime() {
 
   }
 
+  // converting excel date
+  excelDateToJSDate(serial: number): string {
+  const excelEpoch = new Date(1900, 0, 1);
+  const msPerDay = 86400000;
+
+  // Adjust for Excel's leap year bug
+  const jsDate = new Date(excelEpoch.getTime() + (serial - 2) * msPerDay);
+
+  // Format as YYYY-MM-DD
+  const year = jsDate.getFullYear();
+  const month = String(jsDate.getMonth() + 1).padStart(2, '0'); // months are 0-based
+  const day = String(jsDate.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`; // 2025-01-01
+}
 
 }

@@ -39,7 +39,7 @@
             optionValue="value"
             styleClass="w-full"
             (ngModelChange)="getLockDate(); data = []; selectedDept='';slectedLine = '';date=''" 
-            placeholder="Select Category" ></p-dropdown>
+            placeholder="Select Category"></p-dropdown>
        </div>
       <!-- Date-->
      <div class="w-full">
@@ -65,7 +65,13 @@
             optionValue="dept_slno"
             styleClass="w-full"
             (ngModelChange)="getLine(); data = []; slectedLine = ''" 
-            placeholder="Select Department" ></p-dropdown>
+            placeholder="Select Department">
+            <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ dept?.dept_slno + '-' + dept.dept_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
        </div>
      </div>
      <!-- filters second row -->
@@ -80,7 +86,13 @@
             optionLabel="line_name"
             optionValue="line_code"
             styleClass="w-full" 
-            placeholder="Select Line" ></p-dropdown>
+            placeholder="Select Line">
+            <ng-template let-line pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ line?.line_code + '-' + line.line_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
        </div> 
        <!-- Gen id search -->
        <div class="font-poppins w-1/3">
@@ -184,7 +196,8 @@
            </td> -->
         </tr>
       </tbody>
-    </table>
+  </table>
+  <!-- first bulk update btn -->
   <div style="display:flex;justify-content: flex-end;margin-right: 20px;">
     <button 
      pButton
@@ -196,4 +209,6 @@
      <!-- [disabled]="checkAlreadyApplied()" -->
     </button>
   </div>
+  <!-- loader -->
+   <app-time-office-approval-loader></app-time-office-approval-loader>
 </div>

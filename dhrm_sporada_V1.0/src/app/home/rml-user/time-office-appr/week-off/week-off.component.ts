@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from "src/app/home/api.service";
 import moment from 'moment'
-import { elementAt } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
-
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 @Component({
   selector: 'app-week-off',
   templateUrl: './week-off.component.html',
   styleUrls: ['./week-off.component.css']
 })
 export class WeekOffComponent implements OnInit {
-  date:any='';
+  date:any = new Date();
   departmentList:any[];
   selectedDept:any="";
   lineList:any[];
@@ -30,7 +29,11 @@ export class WeekOffComponent implements OnInit {
 
   all:any;
   userDetails:any;
-  constructor(private apiService: ApiService, private messageService:MessageService) { }
+  constructor(
+    private apiService: ApiService, 
+    private messageService:MessageService,
+    public loader:LoaderserviceService,
+  ) { }
 
   ngOnInit() {
      let details = sessionStorage.getItem("all");

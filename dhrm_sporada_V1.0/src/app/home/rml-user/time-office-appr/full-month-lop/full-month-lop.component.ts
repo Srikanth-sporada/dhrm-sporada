@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/home/api.service';
 import { Validators,UntypedFormBuilder} from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import moment from 'moment'
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 
 @Component({
   selector: 'app-full-month-lop',
@@ -28,7 +29,8 @@ export class FullMonthLopComponent implements OnInit {
   constructor(
     private service:ApiService, 
     private fb : UntypedFormBuilder, 
-    private messageService:MessageService) {
+    private messageService:MessageService,
+    public loader:LoaderserviceService) {
   /**
    * Apply Full Month LOP form
    * by default applied by value is set for form default value
@@ -68,7 +70,8 @@ export class FullMonthLopComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.messageService.add({severity:'error',summary:error.error.message})
+        console.error('ERROR:',error)
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
   }
@@ -86,8 +89,8 @@ export class FullMonthLopComponent implements OnInit {
         console.log('FORMATTED LOCK DATE', formattedLockDate);
       },
       error: (error) => {
-        this.messageService.add({severity:'error',summary:error.message});
-        console.log('ERROR:',error)
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+        console.error('ERROR:',error)
       }
     })
   }

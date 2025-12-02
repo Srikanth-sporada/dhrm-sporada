@@ -1,6 +1,6 @@
 <div class="mx-2">
   <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>analytics</mat-icon> Department Muster Report<hr/>
@@ -13,9 +13,7 @@
          </h1>
   </div>
 
-   <!-- tainee application filters -->
-   <div>
-    <!-- tainee application filters -->
+    <!-- dept muster filters -->
   <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
     <!-- filter header -->
       <div class="relative">
@@ -58,8 +56,11 @@
      </div>
      </div>
     </div>
+    <!-- loader -->
+     <app-time-office-approval-loader *ngIf="loader.isLoding | async">
+     </app-time-office-approval-loader>
   </div>
-   </div>
+
 
 
   <!-- <mat-form-field appearance="outline">

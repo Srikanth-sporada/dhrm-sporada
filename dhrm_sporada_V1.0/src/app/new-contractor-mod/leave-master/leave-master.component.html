@@ -47,7 +47,7 @@
             type="file" 
             accept=".xlsx, .xls .csv" 
             (change)="handleFileInput($event)"
-            class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"  />
+            class="block text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-400 py-2 px-2 rounded-md ng-untouched ng-pristine ng-valid"  />
        </div>
        <!-- verify -->
         <button
@@ -55,7 +55,7 @@
          label="Verify"
          icon="pi pi-check-circle"
          (click)="verifydata()"
-         class="mt-6"
+         class="mt-10"
          >
         </button>
         <!-- template -->
@@ -64,7 +64,7 @@
             pButton
             label="Templete"
             icon="pi pi-file-o"
-            class="mt-6">
+            class="mt-10">
             </button>
         </a>
      </div>
@@ -77,10 +77,10 @@
         <table  id="table" class="table-auto !w-full">
                <!-- table head -->
                 <thead class="sticky top-0">
-                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Employee Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Calender Year</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">CL</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">PL</th>
@@ -100,13 +100,13 @@
                     <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id }}</td>
                     <td class="!px-2 !py-4 !rounded-s-md ">{{data.fullname }}</td>
                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Calendar_Year }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.CL }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.PL }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Sick_Leave }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.ESI_Leave }}</td>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Adv_Leave }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.CL || 0 }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.PL || 0}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Sick_Leave || 0}}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.ESI_Leave || 0 }}</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center ">{{data.Adv_Leave || 0}}</td>
             
-                    <td class="flex items-center justify-center"> 
+                    <td class="flex items-center justify-center !px-2 !py-4"> 
                         <button (click)="edit(data)" >
                         <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
                       </button> 

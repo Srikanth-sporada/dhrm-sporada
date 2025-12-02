@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/home/api.service';
 import * as XLSX from 'xlsx'
 import moment from 'moment'
 import { MessageService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 
 @Component({
   selector: 'app-dept-att-report',
@@ -14,7 +15,12 @@ export class DeptAttReportComponent implements OnInit {
   to:any;
   all:any;
   userDetails:any;
-  constructor(public apiService:ApiService, private messageService:MessageService) { }
+  plantCode:any = sessionStorage.getItem('plantcode');
+  department:any = sessionStorage.getItem('dept_name');
+  constructor(
+    public apiService:ApiService, 
+    private messageService:MessageService,
+    public loader:LoaderserviceService) { }
 
   ngOnInit() {
     let details = sessionStorage.getItem("all");
@@ -22,8 +28,10 @@ export class DeptAttReportComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    this.from=moment().format("YYYY-MM-DD")
-    this.to=moment().format("YYYY-MM-DD")
+    /** past 6 month */
+    this.from = moment().subtract('M',6).format("YYYY-MM-DD")
+    /** current date */
+    this.to = moment().format("YYYY-MM-DD")
   }
   
 
@@ -35,12 +43,12 @@ export class DeptAttReportComponent implements OnInit {
     }
     this.apiService.getDeptReport(data).subscribe((response:any)=>{
       if(response.status='success'){
-        this.exportexcel(response.data)
+        this.exportexcel(response.data);
       }else{
         this.messageService.add({severity:'warn',summary:'Something went wrong!'})
       }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
   }
@@ -49,7 +57,7 @@ export class DeptAttReportComponent implements OnInit {
     var ws = XLSX.utils.json_to_sheet(data);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Report");
-    XLSX.writeFile(wb, `Atnd-report.xlsx`);
+    XLSX.writeFile(wb, `Attedance_report_${this.plantCode}_${this.department}.xlsx`);
     this.messageService.add({severity:'info',summary:'Downloaded!'})
   }
 }
