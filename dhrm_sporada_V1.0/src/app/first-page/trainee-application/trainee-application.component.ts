@@ -12,6 +12,7 @@ import { ToastService } from "angular-toastify";
 import { MessageService } from 'primeng/api';
 import { Input } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
+import { Utility } from 'src/app/utils/utils';
 @Component({
   selector: 'trainee-application',
   templateUrl: './trainee-application.component.html',
@@ -40,15 +41,13 @@ export class TraineeApplicationComponent implements OnInit {
   // traineeApplicationForms: FormGroup;
   traineeApplicationForms: FormGroup = new FormGroup({});
 
-  // TrianeeApplicationComponent constructor
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private cookie: CookieService,
     private router: Router,
     private service: ApiService,
-    private toastService: ToastService,
     private messageService: MessageService,
+    public utils:Utility
   ) {}
 
   // on component initialization
@@ -85,7 +84,10 @@ export class TraineeApplicationComponent implements OnInit {
         console.log(response);
         this.plantcode = response;
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message})
+      },
     });
   }
 
@@ -105,11 +107,13 @@ export class TraineeApplicationComponent implements OnInit {
 
   /** trainee application form api call */
   sendFormData() {
+    /** throttle handle function */
+    this.utils.throttledClick();
     // console.log(this.traineeApplicationForms.value)
     if (this.traineeApplicationForms.invalid) {
       this.messageService.add({severity:'error',summary:'Please fill all fields!'})
     } else {
-      console.log(this.traineeApplicationForms.value)
+      console.log('TRAINEE APPLICATION DATA:',this.traineeApplicationForms.value)
       this.service.traineeFormData(this.traineeApplicationForms.value).subscribe({
         next: (response: any) => {
           this.errmsg = response;
@@ -126,7 +130,7 @@ export class TraineeApplicationComponent implements OnInit {
                     this.isHrappr[0]?.Is_HRAppr
                   );
                   sessionStorage.setItem("user", "emp2");
-                  // navigating to trainee application form
+                  /** navigating to trainee application form */ 
                   this.router.navigate([
                     "/forms",
                     this.mobilenum,
@@ -147,6 +151,7 @@ export class TraineeApplicationComponent implements OnInit {
                     this.isHrappr[0]?.Is_HRAppr
                   );
                   sessionStorage.setItem("user", "emp2");
+                   /** navigating to trainee application form */
                   this.router.navigate([
                     "/forms",
                     this.mobilenum,
@@ -159,13 +164,17 @@ export class TraineeApplicationComponent implements OnInit {
             this.traineeApplicationForms.reset();
             console.log(this.traineeApplicationForms.value);
           }else if(this.errmsg.status == "failed"){
-           this.messageService.add({severity:'info',summary:this.errmsg.message})
+           this.messageService.add({severity:'info',summary:this.errmsg.message});
+          /** window reload function */
            setTimeout(() => {
              window.location.reload();
            }, 3100)
           }
         },
-        error: (error: any) => this.messageService.add({severity:'error',summary:error.message}),
+        error: (error: any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message})
+        },
       });
     }
   }
@@ -188,6 +197,9 @@ export class TraineeApplicationComponent implements OnInit {
   getPlantsByCompanyCode(compantCode:any){
     this.service.getPlantsByCompanyCode(compantCode).subscribe({
       next: (response:any) => {
+         if(response?.message == 'failed' || response?.message == 'failure'){
+        this.messageService.add({severity:'error',summary:'Error Occured!'})
+      }
        this.plantcode = response;
        this.plantName = this.plantcode.filter((plant:any) => plant.plant_code == this.plantCode);
        console.log(this.plantcode);
@@ -196,7 +208,7 @@ export class TraineeApplicationComponent implements OnInit {
        console.log(response);
       },
       error: (error) => {
-        console.error(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
     })

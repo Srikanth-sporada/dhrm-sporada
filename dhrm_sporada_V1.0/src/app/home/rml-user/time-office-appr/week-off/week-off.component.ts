@@ -41,20 +41,27 @@ export class WeekOffComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    this.apiService.getDeptByPlant().subscribe((data: any) => {
-      this.departmentList = data;
-    }, (error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    });
+    this.getDeptByPlant();
     this.getLockDate();
   }
 
+  /** get department by plant */
+  getDeptByPlant(){
+     this.apiService.getDeptByPlant().subscribe((data: any) => {
+      if(data?.message == 'failure' || data?.message == 'failed'){
+        this.messageService.add({severity:'warn',summary:'Error Occured!'});
+      }
+      this.departmentList = data;
+    }, (error) => {
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:error.message})
+    });
+  }
+  /** get week days */
   getDates(){
     this.apiService.getWeekdates(moment(this.date).format('YYYY-MM-DD')).subscribe((response: any) => {
       // console.log('response,response',response)
       if(response.status='success'){
-
         this.weekDates = response.data;
       }else{
         // alert(response.message);
@@ -62,21 +69,23 @@ export class WeekOffComponent implements OnInit {
       }
       
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
 
   getLine(){
-   
     if(this.selectedDept==''){
       this.lineList=[]
       this.slectedLine=''
     }else{
       this.apiService.getlineBydeptslno(this.selectedDept).subscribe((response: any) => {
+         if(response?.message == 'failure' || response?.message == 'failed'){
+          this.messageService.add({severity:'warn',summary:'Error Occured!'});
+        }
         this.lineList = response;
       }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
 
@@ -84,8 +93,12 @@ export class WeekOffComponent implements OnInit {
   }
 
   getData(){
+    /** get week days */
+    this.getDates();
+    /** get trainee week off data */
     this.data=[]
-    this.apiService.getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine).subscribe((response:any)=>{
+    this.apiService.getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine)
+    .subscribe((response:any) => {
       let data;
       if(response.status='success'){
         data = response.data.map((element:any) => {
@@ -98,7 +111,7 @@ export class WeekOffComponent implements OnInit {
           weekOfArrray.unshift('6');
             return {...element,week_off_day_arr:weekOfArrray}
           }else{
-               // constructing the respose data for mat multiselect
+            // constructing the respose data for mat multiselect
             return {...element,week_off_day_arr:element?.week_off_day.map((data:any) => {
             return data?.week_off_day.toString();
           })}
@@ -123,7 +136,7 @@ export class WeekOffComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
   }
@@ -138,7 +151,7 @@ export class WeekOffComponent implements OnInit {
       console.log(moment(this.lockDate,'yyyy-MM-DD').add(5,'weeks').format('yyyy-MM-DD'));
       console.log('Today:', this.today)
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
   }
@@ -295,7 +308,7 @@ onWeekOffChange(item: any, dayValue:any): void {
         }
       }
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
     })
@@ -316,8 +329,8 @@ onWeekOffChange(item: any, dayValue:any): void {
          }
       },
       error: (error) => {
-        console.error(error);
-        this.messageService.add({severity:'error',summary:error.message})
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
   }
@@ -365,7 +378,7 @@ onWeekOffChange(item: any, dayValue:any): void {
         this.loading=false
       }
    }, (error) => {
-    console.log(error);
+    console.error('ERROR:',error);
     this.messageService.add({severity:'error',summary:error.message})
    })
   }

@@ -95,7 +95,7 @@
       iconPos="right"
       class="font-poppins"
      (click)="sendFormData()"
-     [disabled]="!traineeApplicationForms.valid"
+     [disabled]="!traineeApplicationForms.valid || utils.throttleBtnState"
      (click)="setCookie()"
      
     ></p-button>

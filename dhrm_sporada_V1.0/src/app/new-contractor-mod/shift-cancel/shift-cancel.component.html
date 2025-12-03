@@ -1,6 +1,6 @@
 <div  class="mx-2">
      <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon> cancel_presentation</mat-icon> Shift cancel Re-Process<hr/>
@@ -20,6 +20,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+           <!-- total count -->
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{punchData?.length || 0}}
+          </span>
         </h1>
       </div>
    <div>
@@ -46,8 +50,13 @@
         [(ngModel)]="selected_Line"
         optionValue="Line_Name"
         optionLabel="Line_Name"
-        placeholder="Select Plant"
+        placeholder="Select Line"
         styleClass="w-full !font-poppins">
+         <ng-template let-line pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ line?.Line_code + '-' + line.Line_Name }}</span>
+              </div>
+          </ng-template>
         </p-dropdown>
       </div>
      <!-- gen id -->
@@ -69,6 +78,11 @@
         optionLabel="shift_desc"
         placeholder="Select Shift"
         styleClass="w-full !font-poppins">
+         <ng-template let-shift pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ shift?.shift_id + '-' + shift.shift_desc }}</span>
+              </div>
+          </ng-template>
         </p-dropdown>
       </div>
      </div>
@@ -117,82 +131,75 @@
           <br>
         </div>
     </div> -->
-
-    <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
-
-
-    <ng-template #show>
-        <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-3">
-        <table id="table" class="table-auto !w-full">
-            <!-- table head -->
-                <thead class="sticky top-0">
-                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                        <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 ">Name</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attandance date</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Time</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Time</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Shift</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Alternate Shift</th>
-                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
-                        
-                    </tr>
-                </thead>
-                <!-- table body -->
-                <tbody >
-                    <tr *ngFor="let data of punchData| GenFilter:genId | lineFilter:selected_Line |shiftFilter:shift; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                     <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ i + 1 }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.vardate |date:'dd-MM-yyyy'}}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Line_Name }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{data.in_time |date:'dd-MM-yyyy HH:mm:ss' }}</td>
-                     <td class="!px-2 !py-4 !rounded-s-md text-center text-red-500 font-semibold">{{data.out_time |date:'dd-MM-yyyy HH:mm:ss'}}</td>
-                     
-                     <td class="!px-2 !py-4  font-semibold">
-                         <p-dropdown
-                            [options]="NoshiftData"
-                            [(ngModel)]="data.shift_id"
-                            optionLabel="shift_desc"
-                            optionValue="shift_id"
-                            placeholder="Select Shift"
-                            styleClass="w-full !font-poppins">
-                        </p-dropdown>
-                        <!-- <mat-select id="inp" class="input2" [(ngModel)]="data.shift_id" >
-                            <mat-option *ngFor="let Shift of NoshiftData" [value]="Shift.shift_id"  >{{Shift.shift_desc}}</mat-option>
-                      </mat-select> -->
-                    </td>
-                     <td class="!px-2 !py-4 !rounded-s-md font-semibold" >
-                        <p-dropdown
-                            [options]="shiftData"
-                            [(ngModel)]="data.alt_shift_id"
-                            optionLabel="shift_desc"
-                            optionValue="shift_id"
-                            placeholder="Select Shift"
-                            styleClass="w-full !font-poppins">
-                        </p-dropdown>
-                        <!-- <mat-select id="inp" class="input2" [(ngModel)]="data.alt_shift_id">
-                            <mat-option *ngFor="let Shift of shiftData" [value]="Shift.shift_id" 
-                            [disabled]="data.shift_id === Shift.shift_id"
-                            >{{Shift.shift_desc}} </mat-option>
-                          </mat-select> -->
-                     </td>
-                     <td class="flex items-center justify-center" >
-                        <button 
-                          pButton label="Save"  
-                         (click)="CancelShift(data)"
-                         class="rounded-3xl"
-                        [disabled]="(data.shift_id === null &&  data.alt_shift_id !== null )||( data.alt_shift_id === null && data.shift_id !== null)">
-                          </button> 
-                     </td>
-                    </tr>
-                </tbody>
-            </table>
-</div>
-
-    </ng-template> 
-
-
-</div>
+<!-- <app-loader *ngIf="loader.isLoding | async;else show"></app-loader> -->
+        <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-3 relative">
+          <table id="table" class="table-auto !w-full">
+              <!-- table head -->
+                  <thead class="sticky top-0">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 ">Name</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attandance Date</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Time</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Time</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Shift</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Alternate Shift</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+                      </tr>
+                  </thead>
+                  <!-- table body -->
+                  <tbody >
+                      <tr *ngFor="let data of punchData | GenFilter:genId | lineFilter:selected_Line |shiftFilter:shift; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center ">{{ i + 1 }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.vardate |date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{data.Line_Name }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{data.in_time | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-red-500 font-semibold">{{data.out_time |date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                      
+                      <td class="!px-2 !py-4  font-semibold">
+                          <p-dropdown
+                              [options]="NoshiftData"
+                              [(ngModel)]="data.shift_id"
+                              optionLabel="shift_desc"
+                              optionValue="shift_id"
+                              placeholder="Select Shift"
+                              styleClass="w-full !font-poppins">
+                          </p-dropdown>
+                          <!-- <mat-select id="inp" class="input2" [(ngModel)]="data.shift_id" >
+                              <mat-option *ngFor="let Shift of NoshiftData" [value]="Shift.shift_id"  >{{Shift.shift_desc}}</mat-option>
+                        </mat-select> -->
+                      </td>
+                      <td class="!px-2 !py-4 !rounded-s-md font-semibold" >
+                          <p-dropdown
+                              [options]="shiftData"
+                              [(ngModel)]="data.alt_shift_id"
+                              optionLabel="shift_desc"
+                              optionValue="shift_id"
+                              placeholder="Select Shift"
+                              styleClass="w-full !font-poppins">
+                          </p-dropdown>
+                          <!-- <mat-select id="inp" class="input2" [(ngModel)]="data.alt_shift_id">
+                              <mat-option *ngFor="let Shift of shiftData" [value]="Shift.shift_id" 
+                              [disabled]="data.shift_id === Shift.shift_id"
+                              >{{Shift.shift_desc}} </mat-option>
+                            </mat-select> -->
+                      </td>
+                      <td class="flex items-center justify-center" >
+                          <button 
+                            pButton label="Save"  
+                          (click)="CancelShift(data)"
+                          class="rounded-3xl"
+                          [disabled]="(data.shift_id === null &&  data.alt_shift_id !== null )||( data.alt_shift_id === null && data.shift_id !== null)">
+                            </button> 
+                      </td>
+                      </tr>
+                  </tbody>
+          </table>
+          <!-- loader -->
+           <app-loader *ngIf="loader.isLoding | async"></app-loader>
+         </div>
+    </div>

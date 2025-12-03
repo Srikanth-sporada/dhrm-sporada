@@ -247,7 +247,7 @@ export class MonthFilterPipe implements PipeTransform {
     if (!items) return [];
     if (!filterValue) return items;
 
-    const monthMap = {
+    const monthMap:any = {
       'january': 1,
       'february': 2,
       'march': 3,
@@ -262,7 +262,7 @@ export class MonthFilterPipe implements PipeTransform {
       'december': 12
     };
 
-    const filterLower = filterValue.toLowerCase();
+    const filterLower = filterValue.toLowerCase().trim();
 
     // Try to get month number from input string (if input is a month)
     const selectedMonthNumber = monthMap[filterLower];

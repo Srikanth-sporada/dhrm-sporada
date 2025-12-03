@@ -21,6 +21,7 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
             Total Count: {{data?.length || 0}}
           </span>
@@ -132,14 +133,14 @@
 </div>
 
 <!-- week days table -->
-
-<div class="shadow-md rounded-md border border-gray-400 mx-3" *ngIf="date!=''">
+<div class="shadow-md rounded-md border border-gray-400 mx-3 mb-2" *ngIf="date!=''">
   <table id="table" class="table-auto !w-full">
       <thead>
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
           <th 
-           class="!text-white !px-2 !py-2 !border-none !border-0 text-center" 
-           *ngFor="let date of weekDates; let i = index">
+           class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+           [ngClass]="{'rounded-s-lg': idx == 0 , 'rounded-e-lg': idx == weekDates.length - 1}" 
+           *ngFor="let date of weekDates; let idx = index">
            {{date.days}}
           </th>
         </tr>
@@ -156,10 +157,10 @@
     </table>
 </div>
 
-<!-- week off approval -->
-<div class="shadow-md rounded-md border border-gray-400 mx-3 mt-3 overflow-x-scroll" *ngIf="data.length!=0">
+<!-- week off approval *ngIf="data.length!=0" -->
+<div class="h-[90svh] lg:h-[60vh] xl:h-[52vh] sm:h-[42vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative mx-3" >
   <table id="table" class="table-auto !w-full">
-      <thead>
+      <thead class="sticky top-0 z-10">
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center rounded-s-lg">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
@@ -170,10 +171,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of data; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-          <td  class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-          <td  class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
-          <td  class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-          <td  class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
+          <td  class="!px-2 !py-2 !rounded-s-md text-center">{{ i + 1 }}</td>
+          <td  class="!px-2 !py-2 !rounded-s-md">{{ item.fullname }}</td>
+          <td  class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+          <td  class="!px-2 !py-2 !rounded-s-md text-center flex items-center justify-center">
             <mat-button-toggle-group
               [(ngModel)]="item.week_off_day_arr"
               aria-label="Font Style"
@@ -198,7 +199,7 @@
       </tbody>
   </table>
   <!-- first bulk update btn -->
-  <div style="display:flex;justify-content: flex-end;margin-right: 20px;">
+  <div style="display:flex;justify-content: flex-end;margin-right: 20px;" *ngIf="data.length!=0">
     <button 
      pButton
      class="rounded-xl" 
@@ -210,5 +211,5 @@
     </button>
   </div>
   <!-- loader -->
-   <app-time-office-approval-loader></app-time-office-approval-loader>
+   <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
 </div>
