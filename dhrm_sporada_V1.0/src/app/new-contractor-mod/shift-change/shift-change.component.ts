@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {ClamAPIService} from '../clam-api.service'
-import { DatePipe } from '@angular/common';
-import { FormControl,FormBuilder } from '@angular/forms';
 import moment from 'moment';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
-import {MatDatepickerInputEvent} from '@angular/material/datepicker';
-import { NgForm } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {AttendanceReprocessResultDialogComponent } from '../attendance-reprocess-result-dialog/attendance-reprocess-result-dialog.component';
 import { MessageService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 
 @Component({
   selector: 'app-shift-change',
   templateUrl: './shift-change.component.html',
   styleUrls: ['./shift-change.component.css']
 })
+
 export class ShiftChangeComponent implements OnInit {
 
   all: any = JSON.parse(sessionStorage.getItem('all')!);
@@ -31,10 +29,12 @@ export class ShiftChangeComponent implements OnInit {
   shiftData:any
   minDate: any;
   maxDate: any;
-  Plant:any
-  Plant_id:any
-  gen_id:String
-  Attn_Date:any
+  Plant:any;
+  /** logged in user plant code */
+  Plant_id:any = sessionStorage.getItem('plantcode')
+  gen_id:String;
+  /** default yesterday date */
+  Attn_Date:any = moment().subtract(1,'days').toDate();
   shift_Id:number
   shift_data:any
   attn_data:any
@@ -48,10 +48,14 @@ verifyBtn:boolean=false
 button:boolean= false
 
 
-  constructor(private dialog: MatDialog,private fb:FormBuilder
-   ,private api:ClamAPIService,private datePipe: DatePipe, private messageService:MessageService) { }
+  constructor(
+    private dialog: MatDialog,
+    private api:ClamAPIService,
+    private messageService:MessageService,
+    public loader:LoaderserviceService) { }
 
   ngOnInit(): void {
+    /** logged in user details */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -62,16 +66,18 @@ button:boolean= false
     this.get_plant();
   }
 
+  /** get plant API */
   get_plant(){
     this.api.getPlant().subscribe(res =>{
-      this.Plant=res
+      this.Plant = res
       console.log(this.Plant);
       
     }, (error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
   })
   }
+  /** min & max date calculation */
   calculateMinMaxDates() {
     const currentDate = new Date();
     
@@ -90,21 +96,21 @@ button:boolean= false
       }
     });
   }
+  /** get plant shift
+   * @param plant_Code user selected plant code
+   */
   getShift( plant_Code:any){
     this.api.get_Shift(plant_Code).subscribe(res => {
-this.shiftData =res
-console.log(res)
-// console.log(this.shiftData)
-this.shiftData =  this.shiftData.filter((item:any) =>item.shift_id !== 0)
-
+    this.shiftData = res;
+    console.log(res)
+    // console.log(this.shiftData)
+     this.shiftData =  this.shiftData.filter((item:any) =>item.shift_id !== 0)
     },(error) => {
-      console.log(error);
+      console.log('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
   })
   }
-
-
-
+  /** shift re process API call */
   onSubmit() {
     if (this.validateForm()) {
       let plantcode
@@ -113,48 +119,43 @@ this.shiftData =  this.shiftData.filter((item:any) =>item.shift_id !== 0)
       }else{
         plantcode = this.plant_Code
       }
-      
       this.loading = true;
       const data ={
         gen_id:this.gen_id,
-        Attn_Date:moment(this.Attn_Date).format('YYYY-MM-DD'),
+        Attn_Date:moment(this.Attn_Date).format('YYYY-MM-DD'), // date format yyyy-mm-dd
         plant:plantcode
       }
       // console.log('GenID:', this.gen_id);
       // console.log('Date:', this.Attn_Date.format('yyyy-MM-DD'));
 
-this.button=true
-this.api.shiftChangedetails(data).subscribe( (res:any) =>{
-
-  this.attn_data=res[0]
-  this.in_data=res[1]
-  this.out_data=res[2]
-  this.shift_data=res[3]
-  this.verifyBtn=true
-this.button=false
-this.loading = false;
+    this.button=true
+    this.api.shiftChangedetails(data).subscribe( (res:any) =>{
+    this.attn_data=res[0]
+    this.in_data=res[1]
+    this.out_data=res[2]
+    this.shift_data=res[3]
+    this.verifyBtn=true
+    this.button=false
+    this.loading = false;
 } ,(error:any) => {
   if (error.status === 400) {
-    console.log(error)
+    console.error('ERROR:',error)
     // this.openAlertDialog(`${error.error}`,'error');
     this.messageService.add({severity:'warn', summary:`${error.error}`})
     this.button=false
     this.loading = false;
-
   }
    else {
     // this.openAlertDialog('Error in connection','error');
     this.messageService.add({severity:'error',summary:'Error In Connection'})
     this.button=false
     this.loading = false;
-
+    console.log('ERROR:',error);
   }
-})
-
-
+   })
     } else {
       //  this.openAlertDialog(`Please fill in all required fields`,'error');
-       this.messageService.add({severity:'warn',summary:'Please fill in all required fields'});
+       this.messageService.add({severity:'warn',summary:'Please fill in all required fields'}!);
     }
   }
 
@@ -166,7 +167,7 @@ this.loading = false;
   }
 
 
-
+// process attedance
   process_attn(){
     if (this.validateattn()) {
       let plantcode
@@ -188,56 +189,51 @@ this.loading = false;
       }
 
       this.api.shiftChangeProcess(data).subscribe((res:any) => {
-console.log(res);
-this.button=false
-this.loading = false;
-if (res.message === 'Attendance Re Processed successfully') {
-  // Open the dialog with the response data
-  this.dialog.open(AttendanceReprocessResultDialogComponent, {
-    data: res.data
-  });
-  this.verifyBtn=false
-  this.max_time=''
-  this.min_time=''
-  this.out_data=''
-  this.in_data=''
-  this.attn_data=''
-  this.shift_data=''
-  this.gen_id=''
-  this.maxDate=null
-  this.minDate=null
-  this.Plant_id=''
-  this.Attn_Date=''
+      console.log(res);
+      this.button=false
+      this.loading = false;
+    if (res.message === 'Attendance Re Processed successfully') {
+      // Open the dialog with the response data
+      this.dialog.open(AttendanceReprocessResultDialogComponent, {
+        data: res.data
+      });
+      this.verifyBtn=false
+      this.max_time=''
+      this.min_time=''
+      this.out_data=''
+      this.in_data=''
+      this.attn_data=''
+      this.shift_data=''
+      this.gen_id=''
+      this.maxDate=null
+      this.minDate=null
+      this.Plant_id=''
+      this.Attn_Date=''
 
 
-  
-} else {
-  // Handle other messages or errors
-  this.openAlertDialog(res.message, 'error');
-}
-
-
+      
+    } else {
+      // Handle other messages or errors
+      this.openAlertDialog(res.message, 'error');
+    }
       },(error:any) => {
         if (error.status === 400) {
-          console.log(error)
+          console.error('ERROR:',error)
           this.openAlertDialog(`${error.error}`,'error');
           this.button=false
           this.loading = false;
-      
         }
          else {
           this.openAlertDialog('Error in connection','error');
-          this.button=false
+          this.button=false;
           this.loading = false;
-      
+          console.log('ERROR:',error)
         }
-      }
-      
-      )
-
+      })
     }
     else {
-      this.openAlertDialog(`Please fill in all required fields for Attendance Reprocess`,'error');
+      this.messageService.add({severity:'warn',summary:'Please fill in all required fields for Attendance Reprocess!'})
+      // this.openAlertDialog(`Please fill in all required fields for Attendance Reprocess`,'error');
    }
   }
 

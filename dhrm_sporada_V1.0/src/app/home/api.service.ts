@@ -197,8 +197,8 @@ export class ApiService {
   /**
    * Full month LOP API service
    */
-  getTraineeDataForFML(genid:any){
-    return this.http.get(this.url + `/ars/applyFML?gen_id=${genid}`)
+  getTraineeDataForFML(data:any){
+    return this.http.get(this.url + `/ars/applyFML?gen_id=${data.genId}&plantcode=${data.plantCode}`)
   }
 
   applyfullMonthLOP(data:any){

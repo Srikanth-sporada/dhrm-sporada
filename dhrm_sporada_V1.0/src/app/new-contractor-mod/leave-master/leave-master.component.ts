@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
-import { FormBuilder,Validators,FormGroup} from '@angular/forms';
+import { FormBuilder} from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
-import { Location } from '@angular/common';
 import * as XLSX from'xlsx'
-import moment from 'moment';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ClamAPIService } from '../clam-api.service';
 import { MessageService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 
 @Component({
   selector: 'app-leave-master',
@@ -39,6 +37,7 @@ export class LeaveMasterComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private messageService:MessageService,
+    public loader:LoaderserviceService
   ) { 
 
 

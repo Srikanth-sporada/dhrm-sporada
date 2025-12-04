@@ -256,13 +256,17 @@ export class OnboardFormComponent implements OnInit {
             // }
             
           }
-          /** get lock date by category */
+          /** get lock date by category
+           * Min DOJ based on DOJ limit
+           * Min DOL based on DOJ & lockDate
+           */
           this.service.getlockdateByCategory(this.category=='OPREATOR'?'O':'T').subscribe({
-            next: (response:any) =>{
+            next: (response:any) => {
               this.lockDate = response?.date?.split('T')[0]
               //console.log(this.lockDate)
               this.dolMinDate = this.lockDate > this.DOJ? moment(this.lockDate).format('yyyy-MM-DD') :this.DOJ
-              this.dolMinDate = new Date(this.dolMinDate)
+              this.dolMinDate = new Date(this.dolMinDate);
+              console.log('DOL MIN LOCK > DOJ:',this.dolMinDate)
               this.calMin_Max_DOL(this.lockDate)
               if(this.DOJ < this.lockDate){
                  this.minDate = new Date(this.lockDate)  //moment(this.lockDate)
@@ -436,7 +440,6 @@ export class OnboardFormComponent implements OnInit {
       this.dolMinDate = this.DOJ
       this.dolMinDate = new Date(this.dolMinDate)
     }
-
     console.log('MAX DOL',this.dolMinDate)
   }
 

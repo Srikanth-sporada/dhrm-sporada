@@ -1,6 +1,6 @@
 <div>
       <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>calendar_today</mat-icon> Operator Leave Master<hr/>
@@ -20,6 +20,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <!-- loader -->
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{mst_leave_data?.length || 0}}
+          </span>
         </h1>
         <p-button
         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]"
@@ -73,7 +77,7 @@
     </div>
   </div>
     
-    <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+    <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
         <table  id="table" class="table-auto !w-full">
                <!-- table head -->
                 <thead class="sticky top-0">
@@ -113,20 +117,21 @@
                     </td> 
                     </tr>
                 </tbody>
-            </table>
+        </table>
+        <!-- loader -->
+         <app-loader *ngIf="loader.isLoding | async"></app-loader>
 </div>
 </div>
 
-
-
+<!-- leave upload verify popup -->
 <!-- [hidden]="!showForm" -->
 <div class="shadow-lg" [hidden]="!showForm">
 <!-- <div class="shadow-lg "    > -->
   <!-- <div class=" form-popup container mat-elevation-z8" > -->
   <div class=" form-popup container1 mat-elevation-z8" >
     <div style="display: flex; justify-content: flex-end">
-   <button mat-raised-button  (click)="clsoe()"  >
-    <mat-icon>close</mat-icon>
+   <button class="bg-white shadow rounded-md px-3 py-1.5" (click)="clsoe()">
+    x
   </button>
      </div>
 <!-- *ngIf="validatedRecords && validatedRecords.length > 0" -->
@@ -135,7 +140,7 @@
     <div>
         <table id="table" class="table-auto !w-full">
                 <thead class="sticky top-0">
-                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Calender Year</th>
@@ -267,9 +272,7 @@ style="display: flex; justify-content: space-around;padding-top:0.5em"
   </div>
 </div>
   
-
-
-
+<!-- singla leave update popup -->
   <div class="shadow-lg " [hidden]="!showsingleUpdt">
     <!-- <div class="shadow-lg "    > -->
       <!-- <div class=" form-popup container mat-elevation-z8" > -->

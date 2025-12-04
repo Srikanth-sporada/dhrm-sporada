@@ -1,6 +1,6 @@
 <div class="mx-2">
     <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon> change_history</mat-icon> Attedance Re Process<hr/>
@@ -12,7 +12,6 @@
           {{userDetails}}
          </h1>
   </div>
-
   <!-- shift change filter -->
    <div>
     <!-- shift change filter -->
@@ -21,6 +20,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Actions <mat-icon>call_to_action</mat-icon>
+           <!-- total count -->
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{ attn_data?.length || 0}}
+          </span>
         </h1>
       </div>
    <div>
@@ -28,7 +31,7 @@
      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
      <!-- gen id -->
        <div class="w-full p-fluid">
-      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen ID</label> <br>
+      <label for="date" class="text-gray-400 font-poppins mt-3 mb-1 !font-semibold">Gen ID</label> <br>
       <input 
        type="text" 
        pInputText
@@ -39,23 +42,26 @@
        </div>
       <!--  date-->
       <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
+        <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
         <p-calendar 
           dateFormat="yy-mm-dd"
           styleClass="w-full !font-poppins"
           [(ngModel)]="Attn_Date"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
           [showIcon]="true" >
       </p-calendar>
       </div>
         <!-- plant -->
       <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Plant</label> <br>
+        <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">Plant</label> <br>
         <p-dropdown
         [options]="Plant"
         [(ngModel)]="Plant_id"
         optionValue="plant_code"
         optionLabel="plant_name"
         placeholder="Select Plant"
+        [disabled]="is_admin !== 'true'"
         styleClass="w-full !font-poppins">
         <ng-template let-plant pTemplate="item">
           <div class="flex align-items-center gap-2">
@@ -76,11 +82,11 @@
         </p-button> 
         </div>
      </div>
-     <!-- second row -->
-     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2" *ngIf="verifyBtn==true" >
+     <!-- second row *ngIf="verifyBtn==true" -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2" *ngIf="verifyBtn==true">
         <!-- In time -->
       <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">In Time</label> <br>
+        <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">In Time</label> <br>
         <p-dropdown
         [options]="in_data"
         [(ngModel)]="min_time"
@@ -98,7 +104,7 @@
       </div>
         <!-- Out time -->
       <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Out Time</label> <br>
+        <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">Out Time</label> <br>
         <p-dropdown
         [(ngModel)]="max_time"
         [options]="out_data"
@@ -115,7 +121,7 @@
       </div>
         <!-- shift -->
       <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Shift</label> <br>
+        <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">Shift</label> <br>
         <p-dropdown
         [(ngModel)]="shift_Id"
         [options]="shift_data"
@@ -128,7 +134,7 @@
      <!-- process -->
         <div class="mt-8 ml-3">
           <p-button 
-            icon="pi pi-chevron-circle-right"
+            icon="pi pi-arrow-circle-right"
             iconPos="right"
             styleClass="rounded-[1.5rem] mt-2"
             (onClick)="process_attn()"
@@ -190,13 +196,13 @@
          <mat-label>IN Time</mat-label>
          <mat-select [(ngModel)]="min_time" required>
            <mat-option *ngFor="let p of in_data" [value]="p.MinVartime">
-             {{p.MinVartime |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}
+             {{p.MinVartime | date:'dd-MM-yyyy HH:mm:ss':'UTC' }}
            </mat-option>
          </mat-select>
       </mat-form-field>
       <br />
      </div>
-    <div >
+    <div>
       <mat-form-field appearance="outline">
          <mat-label>OUT Time</mat-label>
          <mat-select [(ngModel)]="max_time" required>
@@ -228,14 +234,14 @@
   </div> -->
 
 <!-- Current Attendance Table *ngIf="verifyBtn==true" -->
-<!-- <div  > <label>Attendance Data</label> </div> -->
- <div class="h-[90svh] lg:h-[65vh] xl:h-[65vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-3" *ngIf="verifyBtn==true">
+<!-- <div  > <label>Attendance Data</label> </div>  *ngIf="verifyBtn==true"-->
+ <div class="h-[90svh] lg:h-[65vh] xl:h-[65vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-3 relative">
      <table id="table" class="table-auto !w-full">
       <!-- table head -->
       <thead class="sticky top-0">
-      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">IN Time</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">OUT Time </th>
@@ -245,32 +251,31 @@
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late Coming</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Early Going</th>
         <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Extra Worked</th>
-        
       </tr>
     </thead>
     <!-- table body -->
     <tbody>
       <tr *ngFor="let item of attn_data" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.Gen_id}}</td>
-         <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.full_Name}}</td>
+         <td class="!px-2 !py-4 !rounded-s-md">{{item.full_Name}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Attn_Date | date:'dd-MM-yyyy'}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{item.In_time |date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{item.outime |date:'dd-MM-yyyy HH:mm:ss' :'UTC'}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.shift_Name}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.worked_hrs}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Present_type}}</td>
-         <td class="!px-2 !py-4 !rounded-s-md text-center text-yellow-400 font-semibold">{{item.LC}}</td>
-         <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.EG}}</td>
+         <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.LC}}</td>
+         <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.EG}}</td>
          <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.EH}}</td>
       </tr>
     </tbody>
     </table>
+    <!-- loader -->
+     <app-loader *ngIf="loader.isLoding | async"></app-loader>
  </div>
-    
-
   <!-- <ng-template *ngIf="loading"> -->
 
-    <div class="load"  *ngIf="loading" >
+    <div class="load" [hidden]="true">
       <div class="loader"></div>
     </div>
   <!-- </ng-template> -->

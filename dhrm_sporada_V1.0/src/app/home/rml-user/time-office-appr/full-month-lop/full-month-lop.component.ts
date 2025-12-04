@@ -23,6 +23,7 @@ export class FullMonthLopComponent implements OnInit {
   employeeId:any = sessionStorage.getItem('emp_id');
   fullMonthLopForm:any;
   traineeData:any = [];
+  plantCode:any = sessionStorage.getItem('plantcode');
   lastProcessedBillDate:any;
   traineeLopMonthData:any = [];
 
@@ -56,9 +57,16 @@ export class FullMonthLopComponent implements OnInit {
    * get data by gen id
    * @property {*} traineeData has trainee data
    * @property {*} fullMonthLopForm.gen_id 
+   * @var data api call data
    */
   searchTraineeByGenId(){
-    this.service.getTraineeDataForFML(this.fullMonthLopForm.value.gen_id).subscribe({
+    /** search data */
+    const data = {
+      genId:this.fullMonthLopForm.value.gen_id,
+      plantCode:this.plantCode
+    }
+    console.log('Data:',data);
+    this.service.getTraineeDataForFML(data).subscribe({
       next: (response:any) => {
         if(response.length){
           this.traineeData = response;
