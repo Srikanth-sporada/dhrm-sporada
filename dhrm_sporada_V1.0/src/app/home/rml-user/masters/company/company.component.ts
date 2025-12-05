@@ -189,7 +189,10 @@ export class CompanyComponent implements OnInit,AfterViewInit {
             console.log(this.form.value)
           }
         },
-        error: (err) => this.messageService.add({severity:'error', summary:err.message})
+        error: (err) => {
+          console.log('ERROR:',err);
+          this.messageService.add({severity:'error', summary:err.message})
+        }
       })
 
   }

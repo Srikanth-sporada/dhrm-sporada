@@ -68,7 +68,7 @@
 }
 
 /* Pulse animation */
-@keyframes pulse {
+/* @keyframes pulse {
   0%, 100% {
     box-shadow: 0 0 15px #00f6ff, 0 0 30px #00f6ff;
     opacity: 1;
@@ -77,4 +77,4 @@
     box-shadow: 0 0 25px #00f6ff, 0 0 50px #00f6ff;
     opacity: 0.8;
   }
-}
+} */

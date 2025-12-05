@@ -46,7 +46,7 @@ export class FirstPageComponent implements OnInit {
       style: { marginBottom: "8px" },
     },
     {
-      label: "Workmen Login",
+      label: "Trainee Login",
       link: "/rhrm/ars-login",
       image: "assets/Workmen.jpeg",
       sessionKey: "trainee",
@@ -92,7 +92,7 @@ export class FirstPageComponent implements OnInit {
     { user: "Trainee New Application",value:"trainee-application" },
     { user: "Trainee Test Login (DOJO)", value:"trainee-test-login" },
     { user: "Trainer Login (DOJO)", value:"trainer-login" },
-    { user: "Workmen Login", value:"workmen-login" },
+    { user: "Trainee Login", value:"workmen-login" },
     { user: "Executive Login",value:"executive-login" },
   ];
 

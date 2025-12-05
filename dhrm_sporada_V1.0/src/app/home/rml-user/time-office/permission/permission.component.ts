@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import {ConfirmDialogComponent} from 'src/app/new-contractor-mod/confirm-dialog/confirm-dialog.component'
 import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component';
 import { MessageService } from 'primeng/api';
-import { from } from 'rxjs';
 import moment from 'moment';
 @Component({
   selector: 'app-od',
@@ -378,11 +377,16 @@ if(res.status === 200){
       this.OpApi.get_leave_details(this.odGgenid, this.plant).subscribe(
         (res: any) => {
           // Check if res is not null or undefined before assigning to optr_leave_details
-          this.optr_leave_details = res || {};
+          this.optr_leave_details = res || null;
+          if(!res){
+            console.log('LEAVE DETAILS:', res);
+            this.messageService.add({severity:'warn', summary:"You Don't Have Leave!"})
+          }
           // console.log(this.optr_leave_details);
         },
         (error) => {
-          console.error(error);
+          console.error('Error',error);
+          this.messageService.add({severity:'warn',summary:error?.message});
         }
       );
     }
@@ -484,7 +488,7 @@ this.second=false
       if(this.fromdate > this.todate){
         this.openAlertDialog("From Date must be less than To Date", 'error');
       }
-      // else if( option.SAP_code =='1000'  ){
+      // else if( option.SAP_code =='1000'){
       //   this.halfCheck=false
 
 
@@ -523,19 +527,9 @@ this.second=false
       //       this.openAlertDialog(`${option.Leave_Type} can be applied for Min ${option.Min} days and Max ${option.Max} days`, 'error');
       //       return;
       //     }
-      //   }
-
-   
-      
-      
-
-
-        
+      //   }  
       // }
       else{
-
-
-
         if (this.fromdate && !this.todate) {
           this.todate = this.fromdate;
           this.halfCheck=false
@@ -569,18 +563,8 @@ this.second=false
             return;
           }
         }
-
-   
-      
-      } 
-
-
-     
+      }      
     }
-
-
-
-
 
     // submit
     leave_submit(){
@@ -616,25 +600,22 @@ this.second=false
   
   else{
 
-    const data ={
-      Empcode: this.userEmpcode,
+    const data = {
+    Empcode: this.userEmpcode,
     plant:this.plant,
     reason:this.leave_Reason,
-    fromdate:this.fromdate,
-    todate:this.todate,
+    fromdate:moment(this.fromdate).format('YYYY-MM-DD'),
+    todate:moment(this.todate).format('YYYY-MM-DD'),
     first_half:this.first_half,
     second_half:this.second_half,
     duartion:this.duration,
     leave_type:this.leave_type,
     gen_id:this.gen_id,
-    approver1: this.optr_leave_details.a1_alno  ,
-    approver2:  this.optr_leave_details.a2_alno ,
+    approver1: this.optr_leave_details.a1_alno ,
+    approver2:  this.optr_leave_details.a2_alno,
     }
-
-    console.log(data)
-
-
-    this.OpApi.submit_optr_leave(data).subscribe((res:any)=>{
+    console.log('LEAVE DATA:',data);
+    this.OpApi.submit_optr_leave(data).subscribe((res:any) => {
       this.openAlertDialog(res, 'check');
       this.leave_Reason=null
       this.leave_type=null
@@ -660,14 +641,6 @@ this.second=false
       }
     })
   }
-
-
-
-  
-
-
-
-
     }
 
     

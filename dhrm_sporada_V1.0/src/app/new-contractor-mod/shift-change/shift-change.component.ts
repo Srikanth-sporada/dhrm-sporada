@@ -40,13 +40,10 @@ export class ShiftChangeComponent implements OnInit {
   attn_data:any
   in_data:any
   out_data:any
-min_time:any
-max_time:any
-
-verifyBtn:boolean=false
-
-button:boolean= false
-
+  min_time:any
+  max_time:any
+  verifyBtn:boolean=false;
+  button:boolean= false;
 
   constructor(
     private dialog: MatDialog,
@@ -54,6 +51,7 @@ button:boolean= false
     private messageService:MessageService,
     public loader:LoaderserviceService) { }
 
+    /** gn lifecycle */
   ngOnInit(): void {
     /** logged in user details */
     let details = sessionStorage.getItem("all");

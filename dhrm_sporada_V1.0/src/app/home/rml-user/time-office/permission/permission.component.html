@@ -293,6 +293,7 @@
                           [(ngModel)]="leave_type" 
                           name="selectedOption"
                           styleClass="w-full"
+                          [disabled]="!optr_leave_details"
                           (ngModelChange)="checkleaveVerify()"
                         >
                         </p-dropdown>
@@ -304,7 +305,8 @@
                         [showIcon]="true"
                         dateFormat="yy-mm-dd"
                         styleClass="w-full"
-                        [(ngModel)]="fromdate" 
+                        [(ngModel)]="fromdate"
+                        [disabled]="!optr_leave_details" 
                         (onSelect)="updateDuration()">
                         </p-calendar>
                         </div>
@@ -315,7 +317,8 @@
                         [showIcon]="true"
                         dateFormat="yy-mm-dd"
                         styleClass="w-full"
-                        [(ngModel)]="todate" 
+                        [(ngModel)]="todate"
+                        [disabled]="!optr_leave_details" 
                         (onSelect)="updateDuration()">
 
                         </p-calendar>
@@ -331,6 +334,7 @@
                           styleClass="w-full"
                           [minlength]="10"
                           [(ngModel)]="leave_Reason" 
+                          [disabled]="!optr_leave_details"
                           placeholder="Reason (Min 10 Characters)"
                           (ngModelChange)="checkleaveSubmit()"
                         >
@@ -359,6 +363,7 @@
                           [disabled]="leaveSubmit"
                           styleClass="rounded-[1.5rem] mt-2"
                           (onClick)="leave_submit()"
+                          [disabled]="!optr_leave_details"
                           label="Submit"  
                         >
                       </p-button> 
@@ -368,51 +373,51 @@
                       </div>
                     </div>
                     <!-- leave details table -->
-                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-3 mb-2">
                       <table class="table-auto !w-full">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Leave Type</th>
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0">Leave Type</th>
                           <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Eligibility</th>
                           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Availed</th>
                           <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Balance</th>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">CL</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_CL }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_CL }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_CL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_CL || 0}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_CL || 0}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_CL || 0 }}</td>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">PL</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_PL }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_PL }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_PL }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_PL || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_PL || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_PL || 0 }}</td>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">ESI Leave</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_ESI_Leave }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_ESI_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave || 0}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_ESI_Leave || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_ESI_Leave || 0 }}</td>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Advance Leave</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_Adv_Leave }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_Adv_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_Adv_Leave || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_Adv_Leave || 0 }}</td>
                         </tr>
                       
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Sick Leave</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Availd_Sick_Leave }}</td> 
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Balnc_Sick_Leave }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave || 0 }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_Sick_Leave || 0 }}</td> 
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_Sick_Leave || 0 }}</td>
                         </tr>
                     
                       
                       </table>
                     </div>
                     <!-- approver details -->
-                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                     <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-3">
                       <table class="table-auto !w-full">
                         
                         <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
@@ -454,19 +459,19 @@
                   <!-- table head -->
                   <thead class="table-auto !w-full">
                     <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Req_Id</th>
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Req ID</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Leave Type</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">From Date</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">To Date</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Duration</th>
                     
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Reason</th>
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1</th>
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1 Status</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Reason</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Approver 1</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Approver 1 Status</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 1 Approved On</th>
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center" >Approver 2</th>
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 2 Status</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0" >Approver 2</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Approver 2 Status</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approver 2 Approved On</th>
                       <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Leave Cancel</th>
                     </tr>
@@ -481,17 +486,21 @@
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.duration}}</td>
                     
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.reason}}</td>
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Approver_1_name}}</td>
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.reason}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.Approver_1_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.L1_Approval_Status}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Approver_2_name}}</td>
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approval_Status}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.Approver_2_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.L2_Approval_Status}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L2_Approved_On  | date : 'dd-MM-yyyy'}}</td>
+                      <!--cancel btn -->
                       <td class="!px-2 !py-4 !rounded-s-md text-center flex items-vcenter justify-center">
                         <button 
                       (click)="leave_cancel_Popup(item)"
-                      [disabled]="item.Leave_Cancel_status === 'Cancelled' || item.Leave_Cancel_status === 'Rejected' || item.L2_Approval_Status ==  'Approved' " pButton label="Cancel" icon="pi pi-times"></button>
+                      [disabled]="item.Leave_Cancel_status === 'Cancelled' || item.Leave_Cancel_status === 'Rejected' || item.L2_Approval_Status ==  'Approved' " 
+                      pButton label="Cancel" 
+                      icon="pi pi-times"
+                      class="bg-red-400 border-none ring-0"></button>
                     </td>
                     </tr>
                   </tbody>

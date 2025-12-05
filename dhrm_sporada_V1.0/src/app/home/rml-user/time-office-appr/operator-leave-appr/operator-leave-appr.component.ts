@@ -44,8 +44,11 @@ export class OperatorLeaveApprComponent implements OnInit {
 ];
 // apprShow=true
 
-constructor(public loader: LoaderserviceService,
-  private dialog: MatDialog,private api:ClamAPIService,private messageService:MessageService) { }
+constructor(
+  public loader: LoaderserviceService,
+  private dialog: MatDialog,
+  private api:ClamAPIService,
+  private messageService:MessageService) { }
 
   ngOnInit(): void {
      let details = sessionStorage.getItem("all");
