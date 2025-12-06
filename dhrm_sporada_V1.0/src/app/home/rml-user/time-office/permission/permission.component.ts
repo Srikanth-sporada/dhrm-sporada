@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {environment} from '../../../../../environments/environment.prod'
 import {ToastComponent} from 'src/app/new-contractor-mod/toast/toast.component'
 import {ClamAPIService} from 'src/app/new-contractor-mod/clam-api.service'
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +7,7 @@ import {ConfirmDialogComponent} from 'src/app/new-contractor-mod/confirm-dialog/
 import {ConfirmDialogReasonComponent} from 'src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component';
 import { MessageService } from 'primeng/api';
 import moment from 'moment';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-od',
   templateUrl: './permission.component.html',
@@ -32,7 +32,9 @@ export class PermissionComponent implements OnInit {
   odSubmit: boolean = true
   show_od_temp=false
   odGgenid: any;
-
+ /** hide leave */
+ hideEsiLeave:boolean = environment?.hideEsiLeave
+ hideAdvanceLeave:boolean = environment?.hideAdvanceLeave
   // leave
   fromdate:any
   todate:any
@@ -403,17 +405,31 @@ if(res.status === 200){
     //   })
 
     // }
+    /**
+     * get trainee leave details
+     * @property {*} removeHiddenLeave
+     */
     get_leave_eligibility(){
-
-      this.OpApi.get_leave_elgibility(this.plant).subscribe((res:any) => {
-        this.optr_leave_eligibilty = res
-        // console.log(this.optr_leave_eligibilty)
+       this.OpApi.get_leave_elgibility(this.plant).subscribe((res:any) => {
+        this.optr_leave_eligibilty = this.removeHiddenLeave(res);
+        console.log(this.optr_leave_eligibilty);
       },(error)=>{
-        console.log(error)
-      })
-
-
-
+        console.error('ERROR:',error);
+      });
+    }
+    /**
+     * remove hidden leave
+     * remove leave element based on tha sap code
+     * @param leaveArray
+     */
+    removeHiddenLeave(leaveArray:any){
+      const esiSapCode:string = '1070';
+      const advanceSapCode:string = '1005';
+      if(this.hideAdvanceLeave && this.hideEsiLeave){
+        return leaveArray.filter((leave:any) => leave.SAP_code !== esiSapCode && leave.SAP_code !== advanceSapCode)
+      }else{
+        return leaveArray
+      }
     }
     // get_leave_balanace(){
 

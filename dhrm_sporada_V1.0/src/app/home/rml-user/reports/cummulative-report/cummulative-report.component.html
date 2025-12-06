@@ -140,11 +140,13 @@
       <table id="table" class="w-full">
         <!-- table head -->
         <thead class="sticky top-0">
-          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center text-nowrap" scope="col">Gen ID</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-nowrap" scope="col">Name</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0  text-nowrap">Plant</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Payroll Area</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Start Date</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">End Date</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Cal Days</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">Off</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center text-nowrap">RH</th>
@@ -196,6 +198,8 @@
             </td>
             <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant_code + '-' + i?.plant_name }}</td>
             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea || '-' }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.STARTDAY | date: 'dd-MMM-yyyy' }}</td>
+            <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.ENDDAY | date: 'dd-MMM-yyyy' }}</td>
             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Calender_Days  || '0'}}</td>
             <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.Off || '0'}}</td>
              <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.RH || '0'}}</td>

@@ -34,6 +34,9 @@ export const environment = {
   loaderLogoPath: '/assets/ranelogo.png',
   /** trainee application */
   hideTraineeApplicationDelBtn:true,
+  /** trainee leave */
+  hideEsiLeave:true,
+  hideAdvanceLeave:true,
   /** btn throttling time */
   milliSeconds:2250,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',

@@ -271,7 +271,7 @@
             </ng-template>
              <!-- content -->
             <ng-template pTemplate="content">
-              <!-- permission date select -->
+              <!-- leave actions -->
                     <div>
                       <!-- actions -->
                     <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
@@ -327,7 +327,7 @@
                        <!-- action row two -->
                         <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
                           <!-- reason -->
-                        <div class="w-full p-fluid">
+                        <div class="w-full p-fluid sm:w-1/3">
                           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Reason</label> <br>
                         <input
                           pInputText
@@ -347,7 +347,7 @@
                            <mat-checkbox [(ngModel)]="second_half" (change)="updateDuration();toggleCheckbox('second')"[disabled]="second" class="ml-3">2nd Half</mat-checkbox>
                         </div>
                            <!-- Duration-->
-                        <div class="w-full p-fluid">
+                        <div class="w-full p-fluid sm:w-1/3">
                           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Duration</label> <br>
                         <input
                           pInputText
@@ -382,24 +382,24 @@
                           <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Balance</th>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">CL</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Casual Leave</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_CL || 0}}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_CL || 0}}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_CL || 0 }}</td>
                         </tr>
                         <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">PL</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Privilege Leave</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_PL || 0 }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_PL || 0 }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_PL || 0 }}</td>
                         </tr>
-                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer" [hidden]="hideEsiLeave">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">ESI Leave</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_ESI_Leave || 0}}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_ESI_Leave || 0 }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_ESI_Leave || 0 }}</td>
                         </tr>
-                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer" [hidden]="hideAdvanceLeave">
                           <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">Advance Leave</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Adv_Leave || 0 }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_Adv_Leave || 0 }}</td>
@@ -454,14 +454,14 @@
             </ng-template>
              <!-- content -->
             <ng-template pTemplate="content">
-              <div class="h-[90svh] lg:h-[95vh] xl:h-[95vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+              <div class="h-[90svh] lg:h-[95vh] xl:h-[95vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
                 <table id="fpdata" class="table-auto w-full">
                   <!-- table head -->
                   <thead class="table-auto !w-full">
                     <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
                       <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Req ID</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Leave Type</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Leave Type</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">From Date</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">To Date</th>
                       <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Duration</th>
@@ -481,7 +481,7 @@
                     <tr *ngFor="let item of emp_LeaveList" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                       <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.slno}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.Gen_id}}</td>
-                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Leave_Type}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.Leave_Type}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.from_date | date:'dd-MM-yyyy'}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
                       <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.duration}}</td>

@@ -13,7 +13,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { ClamAPIService } from "../clam-api.service";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-leave-master",
@@ -79,6 +78,7 @@ export class LeaveMasterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** loged in user details */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -90,6 +90,7 @@ export class LeaveMasterComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
+    /** get leave data */
     this.get_mst_Leave_data();
   }
 
@@ -104,12 +105,14 @@ export class LeaveMasterComponent implements OnInit {
     });
   }
 
+  /** excel sheet bulk upload
+   * it converts sheet to json using FileReader
+   */
   handleFileInput(event: any): void {
-    const selectedFile = event.target.files[0];
-
+   try{
+     const selectedFile = event.target.files[0];
     // console.log(selectedFile)
     const fileReader = new FileReader();
-
     fileReader.onload = (event: any) => {
       const binaryData = event.target.result;
       const workbook = XLSX.read(binaryData, {
@@ -129,6 +132,9 @@ export class LeaveMasterComponent implements OnInit {
     };
 
     fileReader.readAsBinaryString(selectedFile);
+   }catch(err){
+    console.error('ERROR:',err);
+   }
   }
 
   resetFileInput() {
@@ -154,20 +160,31 @@ export class LeaveMasterComponent implements OnInit {
     });
   }
 
+  /** 
+   * get leave master data
+   * @property {*} mst_leave_Data
+  */
   get_mst_Leave_data() {
     this.api.get_Mst_Leave(this.plant_Code).subscribe(
       (res: any) => {
         this.mst_leave_data = res;
       },
       (error: any) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       }
     );
   }
+
+  /** 
+   * verify uploaded sheet data
+   * it seperated into valid,invalid,updated data
+   * @property {*} validatedRecords
+   * @property  {*} nonValidatedRecords
+   * @property  {*} updateRecords
+   */
   verifydata() {
     // console.log(this.parsedData);
-
     if (this.parsedData.length > 0) {
       const data = {
         mst_leave_Data: this.parsedData,
@@ -238,10 +255,16 @@ export class LeaveMasterComponent implements OnInit {
     this.updateReocrds = [];
     this.resetFileInput();
   }
+
   clsoe2() {
     this.showsingleUpdt = false;
   }
 
+  /**
+   * sumbit verified leave data
+   * @property {*} validatedRecords
+   * @var data api data
+   */
   submit() {
     // console.log(this.validatedRecords)
     const data = {
@@ -252,7 +275,8 @@ export class LeaveMasterComponent implements OnInit {
     this.api.submit_leave_mst(data).subscribe(
       (res: any) => {
         // console.log(res)
-        this.openAlertDialog(`${res}`, "check");
+        // this.openAlertDialog(`${res}`, "check");
+        this.messageService.add({severity:'info',summary:res})
         this.get_mst_Leave_data();
         this.validatedRecords = [];
 
@@ -268,14 +292,22 @@ export class LeaveMasterComponent implements OnInit {
       },
       (error) => {
         if (error.status === 400) {
-          console.log(error);
-          this.openAlertDialog(`${error.error}`, "error");
+          console.error('ERROR:',error);
+          // this.openAlertDialog(`${error.error}`, "error");
+          this.messageService.add({severity:'error',summary:error?.error})
         } else {
-          this.openAlertDialog("Error in connection", "error");
+          // this.openAlertDialog("Error in connection", "error");
+          this.messageService.add({severity:'error',summary:'Error In Connection!'})
         }
       }
     );
   }
+
+  /** 
+   * bulk updated leave data
+   * @property {*} updateReocrds
+   * @var data api data
+   *  */
   bulkUpdate() {
     const data = {
       updateReocrds: this.updateReocrds,
@@ -286,7 +318,8 @@ export class LeaveMasterComponent implements OnInit {
     this.api.update_bulk_leave_mst(data).subscribe(
       (res: any) => {
         // console.log(res)
-        this.openAlertDialog(`${res}`, "check");
+        // this.openAlertDialog(`${res}`, "check");
+        this.messageService.add({severity:'info',summary:res})
         this.updateReocrds = [];
         // this.resetFileInput();
         this.get_mst_Leave_data();
@@ -304,9 +337,11 @@ export class LeaveMasterComponent implements OnInit {
       (error) => {
         if (error.status === 400) {
           console.log(error);
-          this.openAlertDialog(`${error.error}`, "error");
+          // this.openAlertDialog(`${error.error}`, "error");
+          this.messageService.add({severity:'error',summary:error?.error})
         } else {
-          this.openAlertDialog("Error in connection", "error");
+          // this.openAlertDialog("Error in connection", "error");
+          this.messageService.add({severity:'error',summary:'Error In Connection!'})
         }
       }
     );
@@ -330,6 +365,11 @@ export class LeaveMasterComponent implements OnInit {
     /** open modal singleViewModal */
     this.openModal(this.singleUpdateView)
   }
+
+  /** 
+   * single leave update
+   * @property {*} leaveeave_mst_form
+   */
   single_Update() {
     // this.showsingleUpdt=true
     // console.log(this.leave_mst_form.value)
@@ -341,16 +381,19 @@ export class LeaveMasterComponent implements OnInit {
     this.api.update_leave_mst(data1).subscribe(
       (res: any) => {
         // console.log(res)
-        this.openAlertDialog(`${res}`, "check");
+        // this.openAlertDialog(`${res}`, "check");
+        this.messageService.add({severity:'info',summary:res})
         this.showsingleUpdt = false;
         this.get_mst_Leave_data();
       },
       (error) => {
         if (error.status === 400) {
           console.log(error);
-          this.openAlertDialog(`${error.error}`, "error");
+          // this.openAlertDialog(`${error.error}`, "error");
+           this.messageService.add({severity:'error',summary:error?.error})
         } else {
-          this.openAlertDialog("Error in connection", "error");
+          // this.openAlertDialog("Error in connection", "error");
+          this.messageService.add({severity:'error',summary:'Error In Connection!'})
         }
       }
     );
@@ -360,18 +403,25 @@ export class LeaveMasterComponent implements OnInit {
     this.exportExcel(
       this.nonValidatedRecords,
       "Invalid Data",
-      "Invalid_Leave_Mst.xlsx"
+      `Invalid_Leave_Mst_${this.plant_Code}.xlsx`
     );
   }
 
+  /** download function */
   download() {
     this.exportExcel(
       this.mst_leave_data,
       "Leave Master Data ",
-      "Leave_Mst.xlsx"
+      `Leave_Mst_${this.plant_Code}.xlsx`
     );
   }
 
+  /** 
+   * export to excel
+   * @param dataset
+   * @param sheetName
+   * @param fileName
+   */
   exportExcel(dataset: any, sheetName: any, fileName: any): void {
     const transformedArray: any = dataset.map((data: any) => {
       const transformedObj: any = {};
@@ -386,7 +436,7 @@ export class LeaveMasterComponent implements OnInit {
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, sheetName);
     XLSX.writeFile(wb, fileName);
-    this.messageService.add({ severity: "error", summary: "Data Converted!" });
+    this.messageService.add({ severity: "info", summary: "Data Downloaded!" });
   }
 
   /** 
@@ -401,7 +451,6 @@ export class LeaveMasterComponent implements OnInit {
   /** 
    * close dialog modal
    */
-
   closeModal(templateRef:any){
     this.modalService.closeAll();
     console.log('modal closed',templateRef)
