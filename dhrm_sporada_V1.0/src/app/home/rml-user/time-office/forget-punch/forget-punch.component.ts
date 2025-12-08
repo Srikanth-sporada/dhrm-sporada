@@ -8,17 +8,20 @@ import { ApiService } from 'src/app/home/api.service';
   templateUrl: './forget-punch.component.html',
   styleUrls: ['./forget-punch.component.css']
 })
+
 export class ForgetPunchComponent implements OnInit {
     selectedDate: Date = new Date();
     bio_time_A:any
     bio_time_B:any
     form:any
     disable:any = 0
-  disable1: number;
-  disable2: number;
-  canapply: number;
+    disable1: number;
+    disable2: number;
+    canapply: number;
 
-  constructor( private service: ApiService, private fb: UntypedFormBuilder ) {
+  constructor(
+    private service: ApiService, 
+    private fb: UntypedFormBuilder ) {
 
     this.form = this.fb.group(
       {

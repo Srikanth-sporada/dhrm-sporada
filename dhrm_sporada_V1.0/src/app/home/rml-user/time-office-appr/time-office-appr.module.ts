@@ -76,6 +76,10 @@ import { SpeedDialModule } from "primeng/speeddial";
 import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component";
 /** time office loader component */
 import { TimeOfficeApprovalLoaderComponent } from "./time-office-approval-loader/time-office-approval-loader.component";
+import { HrAppliedLeaveRecordComponent } from "./hr-applied-leave-record/hr-applied-leave-record.component";
+import { HrLeaveApplyComponent } from "./hr-leave-apply/hr-leave-apply.component";
+import { HrLopApplyComponent } from "./hr-lop-apply/hr-lop-apply.component";
+import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-lop-record.component";
 @NgModule({
   declarations: [
     CompOffApprComponent,
@@ -119,6 +123,10 @@ import { TimeOfficeApprovalLoaderComponent } from "./time-office-approval-loader
     RejoinApprovalComponent,
     /** new component */
     FullMonthLopComponent,
+    HrLopApplyComponent,
+    HrAppliedLopRecordComponent,
+    HrLeaveApplyComponent,
+    HrAppliedLeaveRecordComponent,
     /** loader */
     TimeOfficeApprovalLoaderComponent,
   ],

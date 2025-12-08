@@ -289,7 +289,7 @@
                           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Leave Type</label> <br>
                         <p-dropdown
                          [options]="optr_leave_eligibilty"
-                         optionLabel="Leave_Type"
+                          optionLabel="Leave_Type"
                           [(ngModel)]="leave_type" 
                           name="selectedOption"
                           styleClass="w-full"
@@ -411,9 +411,7 @@
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ optr_leave_balance?.Elgbl_Sick_Leave || 0 }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{ optr_leave_balance?.Availd_Sick_Leave || 0 }}</td> 
                           <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{ optr_leave_balance?.Balnc_Sick_Leave || 0 }}</td>
-                        </tr>
-                    
-                      
+                        </tr>  
                       </table>
                     </div>
                     <!-- approver details -->

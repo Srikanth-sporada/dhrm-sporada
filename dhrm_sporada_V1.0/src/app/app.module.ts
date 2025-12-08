@@ -65,6 +65,7 @@ import { ExecutiveLoginComponent } from "./first-page/executive-login/executive-
 import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filter.pipe";
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

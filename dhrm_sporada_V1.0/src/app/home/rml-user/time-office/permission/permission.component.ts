@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
 import {ToastComponent} from 'src/app/new-contractor-mod/toast/toast.component'
 import {ClamAPIService} from 'src/app/new-contractor-mod/clam-api.service'
 import { MatDialog } from '@angular/material/dialog';
@@ -14,7 +13,6 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./permission.component.css']
 })
 export class PermissionComponent implements OnInit {
-
   genid: any;
   date: any;
 //  permission
@@ -84,11 +82,11 @@ export class PermissionComponent implements OnInit {
   userDetails:any;
   // const previousDay = new Date(currentDate);
   // previousDay.setDate(previousDay.getDate() - 1);
-  constructor(private dialog: MatDialog,
-    private OpApi:ClamAPIService,private messageService:MessageService) { 
-
-this.odGgenid = this.gen_id
-
+  constructor(
+    private dialog: MatDialog,
+    private OpApi:ClamAPIService,
+    private messageService:MessageService) { 
+     this.odGgenid = this.gen_id;
     }
 
   ngOnInit(): void {
@@ -132,10 +130,11 @@ this.emp_permissionList =res
 // console.log(res)
   })
 }
+
 get_trn_emp_leave(){
   this.OpApi.getTrnLeave(this.gen_id).subscribe((res:any)=>{
-this.emp_LeaveList =res
-console.log(res)
+  this.emp_LeaveList =res
+  console.log(res)
   })
 }
 
@@ -466,8 +465,6 @@ if(res.status === 200){
       } else{
         this.leaveSubmit=false
       }
-      
-  
     }
 
     checkleaveVerify(){
@@ -497,54 +494,12 @@ this.second=false
    
 
     updateDuration(){
-     
       let duration = 0
       let option= this.leave_type
       console.log(option)
       if(this.fromdate > this.todate){
         this.openAlertDialog("From Date must be less than To Date", 'error');
       }
-      // else if( option.SAP_code =='1000'){
-      //   this.halfCheck=false
-
-
-
-      //   if (this.fromdate && !this.todate) {
-      //     this.todate = this.fromdate;
-          
-      //   }
-      //   if(this.fromdate === this.todate){
-      //     this.halfCheck=true
-      //     let fromDateObj = new Date(this.fromdate);
-      //     let toDateObj = new Date(this.todate);
-      //     console.log("same date= ", this.fromdate, this.todate)
-      //     let timeDiff = toDateObj.getTime() - fromDateObj.getTime();
-      //     duration = (timeDiff / (1000 * 3600 * 24)) +1;
-      //     duration = (this.first_half || this.second_half) ?(duration-0.5) : duration;
-         
-      //     console.log( (timeDiff / (1000 * 3600 * 24)) +1)
-      //     console.log(duration)
-      // this.duration = duration;
-
-      //     // duration += (timeDiff / (1000 * 3600 * 24)) ;
-      //   }else if(this.fromdate !== this.todate){
-      //     this.halfCheck=false
-      //     let fromDateObj = new Date(this.fromdate);
-      //     let toDateObj = new Date(this.todate);
-      //     console.log("different date= ", this.fromdate, this.todate)
-      //     const timeDiff = toDateObj.getTime() - fromDateObj.getTime();
-      //     duration += timeDiff === 0 ? 1 : (timeDiff / (1000 * 3600 * 24)) + 1;
-      //     duration = (this.first_half || this.second_half)?(duration-0.5) : duration;
-      
-      //     // duration += timeDiff === 0 ? 1 : (timeDiff / (1000 * 3600 * 24)) + 1;
-      //   console.log("duration",duration)
-      //   this.duration = duration;
-      //     if (option.Max > 0 && (duration > option.Max || duration < option.Min)) {
-      //       this.openAlertDialog(`${option.Leave_Type} can be applied for Min ${option.Min} days and Max ${option.Max} days`, 'error');
-      //       return;
-      //     }
-      //   }  
-      // }
       else{
         if (this.fromdate && !this.todate) {
           this.todate = this.fromdate;
@@ -615,7 +570,6 @@ this.second=false
   }
   
   else{
-
     const data = {
     Empcode: this.userEmpcode,
     plant:this.plant,
@@ -658,9 +612,6 @@ this.second=false
     })
   }
     }
-
-    
-
 
     openConfirmDialogWithReason(message: string ,data:any ,type:any): void {
       const dialogRef = this.dialog.open(ConfirmDialogReasonComponent, {

@@ -39,6 +39,8 @@ export const environment = {
   hideAdvanceLeave:true,
   /** btn throttling time */
   milliSeconds:2250,
+  /** primngTab panel scrollable */
+  tabViewScrollable: false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

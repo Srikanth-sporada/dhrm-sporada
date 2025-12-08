@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/home/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { Utility } from 'src/app/utils/utils';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 @Component({
   selector: 'app-five-days-mapping',
   templateUrl: './five-days-mapping.component.html',
@@ -22,7 +23,8 @@ export class FiveDaysMappingComponent implements OnInit {
     private apiService: ApiService, 
     private dialog: MatDialog, 
     private messageService:MessageService,
-    public utils:Utility) {}
+    public utils:Utility,
+    public loader:LoaderserviceService) {}
 
   ngOnInit(): void {
     /** logged in user details */

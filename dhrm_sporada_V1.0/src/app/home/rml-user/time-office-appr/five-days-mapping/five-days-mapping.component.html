@@ -85,7 +85,7 @@
 </div> -->
 <div
   *ngIf="!editDialogOpen && !selectedEmployee"
-  class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2"
+  class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative"
 >
   <table id="fiveDaysMapping" class="table-auto !w-full">
     <thead class="sticky top-0">
@@ -152,6 +152,7 @@
       </tr>
     </tbody>
   </table>
+  <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
 </div>
 
 <!-- material dialog edit employee -->

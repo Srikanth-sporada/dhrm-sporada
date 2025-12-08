@@ -16,6 +16,8 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
 })
 export class MissingPunchUploadComponent implements OnInit {
   @ViewChild('dateTimeInput') dateTimeInput: ElementRef;
+  /** primeng tab panel scrollable */
+  tablViewScrollable:boolean = environment.tabViewScrollable
   all:any;
   userDetails:any;
   genid: any;

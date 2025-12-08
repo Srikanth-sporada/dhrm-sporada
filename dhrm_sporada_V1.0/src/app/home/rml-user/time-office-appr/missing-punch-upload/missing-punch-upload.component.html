@@ -14,7 +14,7 @@
   </div>
   
   <!-- primeNg ng tab panel -->
-   <p-tabView>
+   <p-tabView [scrollable]="tablViewScrollable">
 
     <!-- forgot to punch -->
      <p-tabPanel>
@@ -22,7 +22,7 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">remove_done</mat-icon>
-                    <span>Forgot To Punch</span>
+                    <span class="white-space-nowrap text-nowrap">Forgot To Punch</span>
                   </div>
         </ng-template>
          <!-- content -->
@@ -213,7 +213,7 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">person</mat-icon>
-                    <span>Manual Punch</span>
+                    <span class="white-space-nowrap text-nowrap">Manual Punch</span>
                   </div>
         </ng-template>
         <!-- content -->
@@ -280,7 +280,7 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">work</mat-icon>
-                    <span>On Duty</span>
+                    <span class="white-space-nowrap text-nowrap">On Duty</span>
                   </div>
         </ng-template>
          <!-- content -->
@@ -473,7 +473,7 @@
             <ng-template pTemplate="header">
                       <div class="flex items-center justify-center gap-1">
                         <mat-icon class="icon-pad text-[1.5rem]">money_off</mat-icon>
-                        <span>Full Month LOP</span>
+                        <span class="white-space-nowrap text-nowrap">Full Month LOP</span>
                       </div>
             </ng-template>
             <!-- content -->
@@ -481,6 +481,62 @@
               <app-full-month-lop></app-full-month-lop>
              </ng-template>
         </p-tabPanel>
+        <!-- hr leave apply -->
+         <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                      <i class="pi pi-check-circle icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span class="white-space-nowrap text-nowrap">Apply Leave</span>
+                    </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+              <app-hr-leave-apply></app-hr-leave-apply>
+            </ng-template>
+         </p-tabPanel>
+          <!-- hr applied leave status -->
+         <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                       <i class="pi pi-history icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span class="white-space-nowrap text-nowrap">Leave Record</span>
+                    </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+             <app-hr-applied-leave-record></app-hr-applied-leave-record>
+            </ng-template>
+         </p-tabPanel>
+         <!-- hr lop apply -->
+          <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                       <i class="pi pi-check-circle icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span class="white-space-nowrap text-nowrap">Apply LOP</span>
+                    </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+             <app-hr-lop-apply></app-hr-lop-apply>
+            </ng-template>
+         </p-tabPanel>
+         <!-- hr applied lop record -->
+          <p-tabPanel>
+           <!-- header -->
+            <ng-template pTemplate="header">
+                    <div class="flex items-center justify-center gap-1">
+                        <i class="pi pi-history icon-pad text-[1.5rem]"></i>
+                        <!-- <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon> -->
+                        <span class="white-space-nowrap text-nowrap">LOP Records</span>
+                    </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+            <app-hr-applied-lop-record></app-hr-applied-lop-record>
+            </ng-template>
+         </p-tabPanel>
    </p-tabView>
   
 </div>

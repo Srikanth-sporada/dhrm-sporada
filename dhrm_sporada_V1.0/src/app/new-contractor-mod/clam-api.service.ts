@@ -8,9 +8,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClamAPIService {
-
-
-
   url: any = environment.path
   url2: any = environment.path2
 
@@ -723,7 +720,13 @@ export class ClamAPIService {
   get_leave_blnc(cemp_id: any) {
     return this.http.get(`${this.url}/optr/get_leave_blnc?cemp_id=${cemp_id}`)
   }
-
+  /** 
+   * hr leave apply api
+   * @param {*} data
+   *  */
+  applyTraineeLeaveByHR(data:any){
+    return this.http.post(this.url + '/optr/HR_leave_apply',data)
+  }
   // submit_optr_leave(data:any){
   //   return this.http.post(`${this.url}/optr/New_optr_leave`,data) 
   // }
