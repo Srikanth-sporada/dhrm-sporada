@@ -41,6 +41,7 @@ export const environment = {
   milliSeconds:2250,
   /** primngTab panel scrollable */
   tabViewScrollable: false,
+  /** trainee time office */
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

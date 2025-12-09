@@ -1,9 +1,7 @@
 <!-- leave actions -->
 <div>
   <!-- actions -->
-  <div
-    class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
-  >
+  <div class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 animate" @slowAnimate>
     <!-- action header -->
     <div class="flex item-center justify-between">
       <h1
@@ -157,7 +155,7 @@
             />
           </div>
           <!-- day -->
-          <div class="w-full" [hidden]="halfCheck">
+          <div class="w-full sm:w-1/3" [hidden]="halfCheck">
             <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
               >Day</label
             >
@@ -204,7 +202,7 @@
            <button
             pButton
             icon="pi pi-times"
-            class="rounded-[1.5rem] mt-2 bg-red-400 border-none ring-0"
+            class="rounded-[1.5rem] mt-2 bg-red-400 border-none outline-none hover:!bg-red-400"
             (click)="clearData()"
            ></button>
           </div>

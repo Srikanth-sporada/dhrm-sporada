@@ -1,1 +1,125 @@
-<p>hr-applied-leave-record works!</p>
+<div>
+  <!-- actions -->
+  <div class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 animate" @slowAnimate>
+    <!-- action header -->
+    <div class="flex item-center justify-between">
+      <h1
+        class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
+      >
+        Actions <mat-icon>call_to_action</mat-icon>
+      </h1>
+    </div>
+     <!-- trainee details div -->
+        <div
+        class="flex items-center justify-around shadow-md px-2 py-3 mt-2 rounded-md mx-auto animate"
+        *ngIf="showLeaveRecord"
+        @slowAnimate
+        >
+        <!-- gen id -->
+        <p class="text-blue-600 font-semibold">
+            Gen ID:
+            <span class="text-gray-400 ml-2">{{ traineeData[0]?.gen_id }}</span>
+        </p>
+        <p class="text-blue-600 font-semibold">
+            Plant:
+            <span class="text-gray-400 ml-2">
+            {{ traineeData[0]?.plant_name }} ({{ traineeData[0]?.plant_code }})
+            </span>
+        </p>
+        <!-- Name -->
+        <p class="text-blue-600 font-semibold">
+            Name:
+            <span class="text-gray-400 ml-2">{{ traineeData[0]?.fullname }}</span>
+        </p>
+        <!-- Category -->
+        <p class="text-blue-600 font-semibold">
+            Category:
+            <span class="text-gray-400 ml-2">{{
+            traineeData[0]?.apprentice_type
+            }}</span>
+        </p>
+        <!-- payroll area -->
+        <p class="text-blue-600 font-semibold">
+            Payroll Area:
+            <span class="text-gray-400 ml-2">{{
+            traineeData[0]?.payrollArea
+            }}</span>
+        </p>
+        </div>
+      
+    <!-- filter div gen id-->
+    <div>
+      <!-- gen id division -->
+      <div class="flex items-center justify-center sm:justify-start w-full gap-2">
+        <!-- gen id -->
+        <div class="w-full p-fluid sm:w-1/3">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+            >Gen ID</label
+          >
+          <br />
+          <input
+            type="text"
+            pInputText
+            styleClass="w-full !font-poppins"
+            placeholder="Enter Gen ID"
+            [(ngModel)]="userEnteredGenId"
+          />
+        </div>
+
+        <!-- search btn -->
+        <button
+          pButton
+          iconPos="right"
+          icon="pi pi-search"
+          class="mt-10 w-1/3"
+          (click)="searchTraineeByGenId()"
+        ></button>
+
+        <!-- download btn -->
+          <button
+            pButton
+            iconPos="right"
+            icon="pi pi-download"
+            class="mt-10 w-1/3"
+            [disabled]="!showLeaveRecord"
+            (click)="utils.exportexcel('leaveRecordTable','leaveRecord',traineeData[0].gen_id)"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- leave record data table -->
+   <div class="h-[90svh] lg:h-[60vh] xl:h-[63vh] sm:h-[80vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+                <table id="leaveRecordTable" class="table-auto w-full">
+                  <!-- table head -->
+                  <thead class="table-auto !w-full">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">ID</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Leave Type</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">From Date</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">To Date</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Duration</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Reason</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Approver</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Approved On</th>
+                    </tr>
+                  </thead>
+                  <!-- table body -->
+                  <tbody>  
+                    <tr *ngFor="let item of leaveRecordData" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.slno}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.Gen_id}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.Leave_Type}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.from_date | date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.to_date | date:'dd-MM-yyyy'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.duration}}</td>
+                    
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.reason}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item.Approver_1_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.L1_Approved_On | date : 'dd-MM-yyyy' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+    </div>
+</div>

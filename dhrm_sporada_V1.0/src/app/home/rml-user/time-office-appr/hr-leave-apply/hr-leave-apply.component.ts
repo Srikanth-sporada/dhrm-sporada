@@ -12,7 +12,7 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
   selector: "app-hr-leave-apply",
   templateUrl: "./hr-leave-apply.component.html",
   styleUrls: ["./hr-leave-apply.component.css"],
-   animations: [
+  animations: [
           trigger('slowAnimate', [
               transition(':enter', [style({ opacity: '0' }), animate(500)]),
               transition(':leave', [style({ opacity: '1' }), animate(500, style({ opacity: '0' }))]),
@@ -53,9 +53,7 @@ export class HrLeaveApplyComponent implements OnInit {
     public loader:LoaderserviceService
   ) {}
 
-  ngOnInit(): void {
-    console.log(this.toDate)
-  }
+  ngOnInit(): void {console.log(this.toDate)}
 
   /**
    * get trainee leave details
@@ -116,32 +114,40 @@ export class HrLeaveApplyComponent implements OnInit {
    */
   calculateLeaveDuration() {
     let duration = 0; // default duration
+    console.log('HALF CHECK:',this.halfCheck);
+    console.log('FROM DATE:',this.fromDate);
+    console.log('TO DATE:', this.toDate);
     let userSelectedLeave = this.selectedLeaveType;
     console.log("SELECTED LEAVE:", userSelectedLeave);
-    if (this.fromDate > this.toDate) {
+    if (this.fromDate > this.toDate && this.toDate) {
       this.messageService.add({
         severity: "warn",
         summary: "From Date must be less than To Date",
       });
+      /** set half check true */
+      this.halfCheck = true;
     } else {
       if (this.fromDate && !this.toDate) {
         this.toDate = this.fromDate;
+        /** set half check false */
         this.halfCheck = false;
       }
       if (this.fromDate === this.toDate) {
+        /** set half check false */
+        this.halfCheck = false;
         let fromDateObj = new Date(this.fromDate);
         let toDateObj = new Date(this.toDate);
         console.log("same date= ", this.fromDate, this.toDate);
         let timeDiff = toDateObj.getTime() - fromDateObj.getTime();
         duration = timeDiff / (1000 * 3600 * 24) + 1;
-        duration =
-          this.firstHalf || this.secondHalf ? duration - 0.5 : duration;
-
+        duration = this.firstHalf || this.secondHalf ? duration - 0.5 : duration;
         console.log("TIME DIFF", timeDiff / (1000 * 3600 * 24) + 1);
         console.log("DURATION:", duration);
         this.duration = duration;
         // duration += (timeDiff / (1000 * 3600 * 24)) ;
       } else if (this.fromDate !== this.toDate) {
+        /** set half check true */
+        this.halfCheck = true;
         let fromDateObj = new Date(this.fromDate);
         let toDateObj = new Date(this.toDate);
         console.log("different date= ", this.fromDate, this.toDate);
@@ -189,14 +195,17 @@ export class HrLeaveApplyComponent implements OnInit {
 
   /**
    * get trainee leave balance
-   * @param traineeAplnNo
+   * @param traineeAplnNo trainee aplno no is cempid
    * @property {*} traineeLeaveBalance
    */
   getTraineeleaveBalance(traineeAplnNo: any) {
     this.apiService.get_leave_blnc(traineeAplnNo).subscribe({
       next: (res: any) => {
         // Check if res is not null or undefined before assigning to traineeLeaveBalance
-        this.traineeLeaveBalance = res || {};
+        this.traineeLeaveBalance = res;
+        if(!res){
+        this.messageService.add({severity:'warn',summary:`There is no leave available for Gen ID: ${this.userEnteredGenId}`})
+        }
         console.log("TRAINEE LEAVE BALANCE:", this.traineeLeaveBalance);
       },
       error: (error) => {
@@ -219,35 +228,25 @@ export class HrLeaveApplyComponent implements OnInit {
   applyTraineeLeave() {
     let userSelectedLeave = this.selectedLeaveType;
     if (!this.selectedLeaveType) {
-      // this.openAlertDialog("Please select Leave Type", "error");
       this.messageService.add({severity:'warn',summary:'Please select Leave Type'});
       return;
     } else if (!this.fromDate || this.fromDate === "") {
       this.messageService.add({severity:'warn',summary:'Please select the  from date'});
-      // this.openAlertDialog("Please select the  from date", "error");
       return;
     } else if (!this.toDate || this.toDate === "") {
       this.messageService.add({severity:'warn',summary:'Please select the To date'});
-      // this.openAlertDialog("Please select the To date", "error");
       return;
     } else if (this.fromDate > this.toDate) {
       this.messageService.add({severity:'warn',summary:'From Date must be less than To Date'});
-      // this.openAlertDialog("From Date must be less than To Date", "error");
       return;
     } else if (!this.leaveReason || this.leaveReason.trim() === "") {
       this.messageService.add({severity:'warn',summary:'Reason cannot be empty'});
-      // this.openAlertDialog("Reason cannot be empty", "error");
       return;
     }else if (
       userSelectedLeave.Max > 0 &&
       (this.duration > userSelectedLeave.Max || this.duration < userSelectedLeave.Min)
     ) {
       this.messageService.add({severity:'warn',summary:`${userSelectedLeave.Leave_Type} can be applied for Min ${userSelectedLeave.Min} days and Max ${userSelectedLeave.Max} days`});
-
-      // this.openAlertDialog(
-      //   `${userSelectedLeave.Leave_Type} can be applied for Min ${userSelectedLeave.Min} days and Max ${userSelectedLeave.Max} days`,
-      //   "error"
-      // );
       return;
     } else {
       const data = {
@@ -280,15 +279,6 @@ export class HrLeaveApplyComponent implements OnInit {
         }
       })
     }
-
-    /**
-     * search trainee by genID
-     * @property {*} traineeData
-     * @property {*} showLeaveDetails
-     */
-   
-
-
   }
   
   /** 

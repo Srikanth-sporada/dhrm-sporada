@@ -495,30 +495,35 @@ this.second=false
 
     updateDuration(){
       let duration = 0
-      let option= this.leave_type
+      let option= this.leave_type;
       console.log(option)
-      if(this.fromdate > this.todate){
+      if(this.fromdate > this.todate && this.todate){
         this.openAlertDialog("From Date must be less than To Date", 'error');
+        /** set half check true */
+        this.halfCheck = true;
       }
       else{
         if (this.fromdate && !this.todate) {
           this.todate = this.fromdate;
-          this.halfCheck=false
+           /** set half check false */
+          this.halfCheck=false;
         }
-        if(this.fromdate === this.todate){
+        if(this.fromdate == this.todate){
+          /** set half check false */
+          this.halfCheck = false;
           let fromDateObj = new Date(this.fromdate);
           let toDateObj = new Date(this.todate);
           console.log("same date= ", this.fromdate, this.todate)
           let timeDiff = toDateObj.getTime() - fromDateObj.getTime();
           duration = (timeDiff / (1000 * 3600 * 24)) +1;
           duration = (this.first_half || this.second_half) ?(duration-0.5) : duration;
-         
           console.log( (timeDiff / (1000 * 3600 * 24)) +1)
           console.log(duration)
-      this.duration = duration;
-
+          this.duration = duration;
           // duration += (timeDiff / (1000 * 3600 * 24)) ;
         }else if(this.fromdate !== this.todate){
+          /** set half check true */
+          this.halfCheck = true;
           let fromDateObj = new Date(this.fromdate);
           let toDateObj = new Date(this.todate);
           console.log("different date= ", this.fromdate, this.todate)
