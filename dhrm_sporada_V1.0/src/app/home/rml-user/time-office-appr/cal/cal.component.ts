@@ -7,6 +7,7 @@ import { MessageService } from "primeng/api";
 import { environment } from "src/environments/environment.prod";
 import { Utility } from "src/app/utils/utils";
 import { LoaderserviceService } from "src/app/loaderservice.service";
+import { ActivatedRoute } from "@angular/router";
 
 interface MyEvent extends CalendarEvent {
   in_time: string;
@@ -38,6 +39,8 @@ export class CalComponent implements OnInit {
   user:any;
   all:any;
   userDetails:any;
+  /** route parama gen id */
+  routeGenID:any;
   evnt: CalendarEvent[] = [];
   _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff"];
   events: any[] = [
@@ -64,15 +67,18 @@ export class CalComponent implements OnInit {
     private messageService:MessageService,
     public utils:Utility,
     public loader:LoaderserviceService,
+    private route:ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    /** loged in used details */
+    this.routeGenID = this.route.snapshot.params['genId'];
+    console.log('ROUTE GEN ID:',this.routeGenID);
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-
     this.firstDayOfWeek = 1; 
     this.service.getlockDate().subscribe((res:any)=>{
       this.lockdate = res.date;
@@ -82,7 +88,13 @@ export class CalComponent implements OnInit {
     }, (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
-    })
+    });
+    /** get attedance data when route is not null */
+    if(this.routeGenID){
+      /** set gen id to route gen id */
+      this.genid = this.routeGenID;
+      this.getData();
+    }
   }
 
   setView(view: CalendarView) {

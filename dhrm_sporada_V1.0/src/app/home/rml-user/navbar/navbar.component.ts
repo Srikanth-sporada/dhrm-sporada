@@ -161,7 +161,22 @@ export class NavbarComponent implements OnInit {
     }else{
       this.messageService.add({severity:'warn',summary:'Access Denied!'});
     }
-   
+  }
+
+   /** 
+   * @description navigate to payroll function
+   * @var baseUrl base payroll url from env
+   * @var payrollURL js url object
+   * @var params params to append STOKEN
+   * @global window
+   */
+  navigateToHRMSReports(){
+      const baseUrl = environment.payroll + '/reports';
+      const payrollURL = new URL(baseUrl);
+      const params = payrollURL.searchParams;
+      params.append('STOKEN',this.authToken)
+      window.open(payrollURL.href);
+      console.log(payrollURL.toString());
   }
 
   isOperatorOrNot() {

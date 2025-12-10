@@ -1,5 +1,6 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { CommonModule } from "@angular/common";
+ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CategoryLinePipe } from './category-line.pipe';
 import { ReportsRoutingModule } from "./reports-routing.module";
 import { EvaluationDueReportComponent } from "./evaluation-due-report/evaluation-due-report.component";
@@ -56,6 +57,7 @@ import { ReportsLoaderComponent } from "./reports-loader/reports-loader.componen
   ],
   imports: [
     CommonModule,
+    ClipboardModule,
     ReportsRoutingModule,
     ScrollingModule,
     MatTableModule,

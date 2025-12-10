@@ -112,4 +112,8 @@ export class AtndreportComponent implements OnInit {
     XLSX.writeFile(wb, `attendance_data_${this.plant}.xlsx`);
     this.messageService.add({severity:'info',summary:'Data Exported.'});
   } 
+
+  copyGenIDToClipboard(genId:any){
+    this.messageService.add({severity:'info',summary:`${genId} Copied to clipboard.`})
+  }
 }

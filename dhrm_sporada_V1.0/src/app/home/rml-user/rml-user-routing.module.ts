@@ -18,6 +18,7 @@ import { CanteenBiRptComponent } from './dashboard/canteen-bi-rpt/canteen-bi-rpt
 import { HrSummaryComponent } from './dashboard/hr-summary/hr-summary.component';
 import {CorpHRDashboardComponent} from './dashboard/corp-hr-dashboard/corp-hr-dashboard.component'
 import { CompanyComponent } from "./masters/company/company.component";
+import { HrmsReportsComponent } from "./reports/hrms-reports/hrms-reports.component";
 
 const routes: Routes = [
   {
@@ -145,6 +146,10 @@ const routes: Routes = [
       {
         path: "corp_hrs",
         component: CorpHRDashboardComponent,
+      },
+      {
+        path: "hrms-reports",
+        component: HrmsReportsComponent,
       },
       {
         path: "pmpd",

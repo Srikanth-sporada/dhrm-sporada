@@ -12,9 +12,9 @@ export const environment = {
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
   /** power BI dashboard */
-  hideHrSummary:false,
-  hideHrDashboard:false,
-  hideCanteenDashboard:false,
+  hideHrSummary:true,
+  hideHrDashboard:true,
+  hideCanteenDashboard:true,
   /** reports */
   hideCumulativeReport:false,
   hideLopReport:false,
@@ -42,6 +42,8 @@ export const environment = {
   /** primngTab panel scrollable */
   tabViewScrollable: false,
   /** trainee time office */
+  hideApplyPermission:true,
+  hidePermissionStatus:true,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

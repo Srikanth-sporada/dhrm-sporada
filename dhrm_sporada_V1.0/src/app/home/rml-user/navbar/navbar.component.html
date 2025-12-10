@@ -36,6 +36,28 @@
             </mat-expansion-panel-header>
 
             <mat-nav-list  class="!mx-1 text-gray-600">
+               <!-- hrms reports -->
+              <div> 
+                <a
+                  mat-list-item
+                  class="rounded-sm"
+                  (click)="navigateToHRMSReports()"
+                  target="_blank"
+                  class="rounded-sm"
+                >
+                  <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports</a
+                >
+              </div>
+              <div> 
+                <a
+                  mat-list-item
+                  routerLink="/rhrm/hrms-reports"
+                  routerLinkActive="!text-blue-600 !font-semibold"
+                  class="rounded-sm"
+                >
+                  <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports 2</a
+                >
+              </div>
               <span *ngIf="!hideHrSumary">
                 <a
                 mat-list-item

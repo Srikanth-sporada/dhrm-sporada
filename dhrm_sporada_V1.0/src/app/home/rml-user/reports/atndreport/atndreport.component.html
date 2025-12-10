@@ -151,7 +151,7 @@
     <thead class="sticky top-0">
       <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Gen ID</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">1</th>
@@ -191,8 +191,18 @@
     <tbody>
       <tr *ngFor="let item of atndData |categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">
+        <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
             {{ item.gen_id }}
+            <!-- actions btn -->
+             <div class="flex items-center justity-center gap-2">
+              <!-- route with gen id to attednace component -->
+              <a [href]="'/rhrm/time-office-appr/calender/' + item.gen_id"><i class="pi pi-eye" style="color: slateblue"></i></a>
+              <i 
+                class="pi pi-clone" 
+                style="color: slateblue" 
+                [cdkCopyToClipboard]="item.gen_id"
+                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.gen_id)"></i>
+             </div>
         </td>
         <!-- [pTooltip]="item.dept_name + ' | ' + item.Line_Name"
             tooltipPosition="bottom" -->

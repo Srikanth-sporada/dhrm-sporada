@@ -54,7 +54,7 @@ export class CummulativeReportComponent implements OnInit {
       /** get company & plant & payroll area */
         this.getCompanyData();
         this.getplantByCompanyCode();
-        /** passing true for component life clcle call */
+        /** passing true for component life cycle call */
         this.getPayrollAreaByPlant(true);
     }
 
@@ -78,7 +78,10 @@ export class CummulativeReportComponent implements OnInit {
         next: (reponse:any) => {
           this.companyData = reponse;
         },
-        error: (error:any) => this.messageService.add({severity:'error',summary:error.message})
+        error: (error:any) => {
+          console.log('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error.message});
+        }
       })
     }
 

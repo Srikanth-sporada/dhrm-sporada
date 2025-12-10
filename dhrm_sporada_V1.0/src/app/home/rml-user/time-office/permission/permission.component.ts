@@ -15,6 +15,9 @@ import { environment } from 'src/environments/environment.prod';
 export class PermissionComponent implements OnInit {
   genid: any;
   date: any;
+  /** permission hide */
+  hideApplyPermission:boolean = environment?.hideApplyPermission;
+  hidePermissionStatus:boolean = environment?.hidePermissionStatus;
 //  permission
   odDate: any;
   odReason: any;

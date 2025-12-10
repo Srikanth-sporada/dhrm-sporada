@@ -81,6 +81,11 @@ const routes: Routes = [
     path: "calender",
     component: CalComponent,
   },
+  // with params
+  {
+    path: "calender/:genId",
+    component: CalComponent,
+  },
   {
     path: "weekoff",
     component: WeekOffComponent,

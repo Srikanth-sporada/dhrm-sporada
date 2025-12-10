@@ -656,10 +656,14 @@ export class ClamAPIService {
   getTrnPermission(gen_id: any) {
     return this.http.get(`${this.url}/optr/emp_perm_list?gen_id=${gen_id}`)
   }
+
   getTrnLeave(gen_id: any) {
     return this.http.get(`${this.url}/optr/emp_leave_list?gen_id=${gen_id}`)
   }
-
+  /** hr applied record api */
+  getHrAppliedLeaveRecord(data:any){
+    return this.http.get(this.url + `/report/trn_leave_details?companyCode=${data?.companyCode}&plantCode=${data?.plantCode}&payrollArea=${data?.payrollArea}&startDate=${data?.startDate}&endDate=${data?.endDate}&genId=${data?.genId}`)
+  }
   l1_approver(data: any, empl_slNo: any) {
     // console.log(data)
     // console.log(`${this.url}/optr/l1_approve`)
