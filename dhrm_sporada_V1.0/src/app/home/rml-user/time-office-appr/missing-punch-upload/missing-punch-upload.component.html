@@ -275,7 +275,7 @@
       </p-tabPanel>
 
       <!-- On Duty -->
-       <p-tabPanel *ngIf="isadmin || ishr==='true'">
+       <p-tabPanel *ngIf="isadmin || ishr">
           <!-- header -->
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
@@ -468,7 +468,7 @@
        </p-tabPanel>
 
        <!-- Full month LOP -->
-        <p-tabPanel *ngIf="isadmin || ishr==='true'">
+        <p-tabPanel *ngIf="isadmin || ishr">
             <!-- header -->
             <ng-template pTemplate="header">
                       <div class="flex items-center justify-center gap-1">
@@ -482,7 +482,7 @@
              </ng-template>
         </p-tabPanel>
         <!-- hr leave apply -->
-         <p-tabPanel>
+         <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
             <ng-template pTemplate="header">
                     <div class="flex items-center justify-center gap-1">
@@ -496,7 +496,7 @@
             </ng-template>
          </p-tabPanel>
           <!-- hr applied leave status -->
-         <p-tabPanel>
+         <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
             <ng-template pTemplate="header">
                     <div class="flex items-center justify-center gap-1">
@@ -510,7 +510,7 @@
             </ng-template>
          </p-tabPanel>
          <!-- hr lop apply -->
-          <p-tabPanel>
+          <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
             <ng-template pTemplate="header">
                     <div class="flex items-center justify-center gap-1">
@@ -524,7 +524,7 @@
             </ng-template>
          </p-tabPanel>
          <!-- hr applied lop record -->
-          <p-tabPanel>
+          <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
             <ng-template pTemplate="header">
                     <div class="flex items-center justify-center gap-1">

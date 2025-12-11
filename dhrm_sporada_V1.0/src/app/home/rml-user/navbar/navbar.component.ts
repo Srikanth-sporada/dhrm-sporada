@@ -41,6 +41,7 @@ export class NavbarComponent implements OnInit {
   hideLopReport = environment.hideLopReport;
   hideMachinePunchReport = environment.hideMachineReport;
   hideOperatorCoffApproval = environment.hideOperatorCOffApproval;
+  hideHrmsNewTab:boolean = environment?.hideHrmsNewTab
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;

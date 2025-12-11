@@ -660,7 +660,7 @@ export class ClamAPIService {
   getTrnLeave(gen_id: any) {
     return this.http.get(`${this.url}/optr/emp_leave_list?gen_id=${gen_id}`)
   }
-  /** hr applied record api */
+  /** hr applied record api #NEW */
   getHrAppliedLeaveRecord(data:any){
     return this.http.get(this.url + `/report/trn_leave_details?companyCode=${data?.companyCode}&plantCode=${data?.plantCode}&payrollArea=${data?.payrollArea}&startDate=${data?.startDate}&endDate=${data?.endDate}&genId=${data?.genId}`)
   }

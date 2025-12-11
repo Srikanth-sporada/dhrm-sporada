@@ -37,7 +37,7 @@
 
             <mat-nav-list  class="!mx-1 text-gray-600">
                <!-- hrms reports -->
-              <div> 
+              <div *ngIf="!hideHrmsNewTab"> 
                 <a
                   mat-list-item
                   class="rounded-sm"
@@ -48,14 +48,15 @@
                   <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports</a
                 >
               </div>
-              <div> 
+              <!-- hrms reports iframe -->
+              <div *ngIf="hideHrmsNewTab"> 
                 <a
                   mat-list-item
                   routerLink="/rhrm/hrms-reports"
                   routerLinkActive="!text-blue-600 !font-semibold"
                   class="rounded-sm"
                 >
-                  <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports 2</a
+                  <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports</a
                 >
               </div>
               <span *ngIf="!hideHrSumary">
@@ -474,7 +475,7 @@
             </mat-expansion-panel-header>
             <mat-nav-list  class="!mx-1 text-gray-600">
               <a
-                *ngIf="isadmin == 'true'"
+                *ngIf="isadmin == 'true' || istrainer == 'true'"
                 mat-list-item
                 routerLink="/rhrm/training_dojo/training-modules"
                 routerLinkActive="!text-blue-600 !font-semibold"
@@ -1704,9 +1705,7 @@
          </div> -->
       </div>
       <!-- Add Content Here -->
-      <div>
         <router-outlet></router-outlet>
-      </div>
     </mat-sidenav-content>
 
   </mat-sidenav-container>

@@ -106,3 +106,13 @@ tbody {
 ::ng-deep .mat-radio-outer-circle{
   border-color: #3B82F6 !important;
 }
+/* prime ng tab view scrollable style */
+::ng-deep .p-link{
+    background: #ffffff;
+    color: #3B82F6;
+    height: 3rem !important;
+    box-shadow: none !important;
+    border-radius: 50% !important;
+    margin-top: .25rem !important;
+    margin-inline: .5rem !important;
+}

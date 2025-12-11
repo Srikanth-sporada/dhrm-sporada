@@ -20,6 +20,7 @@ export const environment = {
   hideLopReport:false,
   hideMachineReport:false,
   hideCanteenReport:false,
+  hideHrmsNewTab:true,
   /** attedance calander */
   shiftFullWidth:true,
   /** Trainee Login page */
@@ -40,7 +41,7 @@ export const environment = {
   /** btn throttling time */
   milliSeconds:2250,
   /** primngTab panel scrollable */
-  tabViewScrollable: false,
+  tabViewScrollable: true,
   /** trainee time office */
   hideApplyPermission:true,
   hidePermissionStatus:true,

@@ -14,7 +14,9 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
   templateUrl: "./missing-punch-upload.component.html",
   styleUrls: ["./missing-punch-upload.component.css"],
 })
+
 export class MissingPunchUploadComponent implements OnInit {
+
   @ViewChild('dateTimeInput') dateTimeInput: ElementRef;
   /** primeng tab panel scrollable */
   tablViewScrollable:boolean = environment.tabViewScrollable
@@ -60,10 +62,10 @@ export class MissingPunchUploadComponent implements OnInit {
   /** checking user isAdmin */
   isadmin:any = sessionStorage.getItem('isadmin') =='true' ? true : false;
   userEmpcode:string | null = sessionStorage.getItem('user_name');
-  /** checking user isHr */
-  ishr:string | null = sessionStorage.getItem('ishr');
+  /** checking user isHr & hr approver */
+  ishr:boolean = sessionStorage.getItem('ishr') == 'true' ? true : false;
+  isHrApprover: boolean = sessionStorage.getItem('ishrappr') == 'true' ? true : false;
   url = environment.path +'/';
-
   show_fp_temp: boolean = false;
   plant: any = sessionStorage.getItem("plantcode");
   present_type_before:any

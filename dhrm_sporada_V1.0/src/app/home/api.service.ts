@@ -196,11 +196,23 @@ export class ApiService {
 
   /**
    * Full month LOP API service
+   * @param data
    */
   getTraineeDataForFML(data:any){
     return this.http.get(this.url + `/ars/applyFML?gen_id=${data.genId}&plantcode=${data.plantCode}`)
   }
-
+  /**
+   * Apply trainee LOP by HR API
+   * @param data
+   */
+  applyTraineeLopByHR(data:any){
+    return this.http.post(this.url + '/ars/insertTraineeLOP', data);
+  }
+  /**
+   * apply full month LOP for trainee
+   * @param data 
+   * @returns 
+   */
   applyfullMonthLOP(data:any){
     return this.http.post(this.url + '/ars/addTrnFML',data);
   }
