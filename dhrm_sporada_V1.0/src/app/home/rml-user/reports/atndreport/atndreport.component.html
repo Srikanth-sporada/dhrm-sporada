@@ -88,7 +88,7 @@
                 styleClass="w-full" 
                 placeholder="Select Category" ></p-dropdown>
           </div>
-        <!-- Line filer -->
+        <!-- Line filter -->
           <div class="font-poppins w-full">
               <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Line</label> <br>
               <p-dropdown 
@@ -100,7 +100,7 @@
                 placeholder="Select Line" >
                  <ng-template let-line pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ line?.Line_code || '' + '-' + line.Line_Name }}</span>
+                            <span>{{ line?.Line_code  + '-' + line?.Line_Name }}</span>
                         </div>
                 </ng-template>
               </p-dropdown>

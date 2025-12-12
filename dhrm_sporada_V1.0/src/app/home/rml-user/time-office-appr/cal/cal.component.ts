@@ -209,19 +209,29 @@ export class CalComponent implements OnInit {
         var x = new Date(this.attData[i].att_date);
         var date = x.getDate();
         var month = x.getMonth();
-        /** 
+         /** checking if present day lop applied */
+       if((this.attData[i]?.late_comeing > 0 || this.attData[i]?.early_going > 0) 
+          && this._exceptLC_EG_values.indexOf(this.attData[i].present) == -1 && this.attData[i].present_type == 0){
+          if (month == monthofYear && date == dayOfMonth && this.attData[i].present_type == 0) {
+                day.cssClass = "!bg-red-400 shadow-md m-1 rounded-md";
+          }
+        }
+         /** 
          * checking if trainee is EC LG in week off & holiday 
          * set same clor fr holiday
          * @property {*} _exceptLC_EG_values
          * */
-        if((this.attData[i]?.late_comeing > 0 || this.attData[i]?.early_going > 0) 
+        else if((this.attData[i]?.late_comeing > 0 || this.attData[i]?.early_going > 0) 
           && this._exceptLC_EG_values.indexOf(this.attData[i].present) == -1){
           if (month == monthofYear && date == dayOfMonth) {
                 day.cssClass = "!bg-yellow-300 shadow-md m-1 rounded-md";
           }
+          else if (month == monthofYear && date == dayOfMonth && this.attData[i].present_type == 0) {
+                day.cssClass = "!bg-red-400 shadow-md m-1 rounded-md";
+          }
         }
         else {
-          /** calendar day present type color codes */
+          /** calendara day cell color code based on response present */
           switch (this.attData[i].present) {
             case "Present": {
               if (month == monthofYear && date == dayOfMonth) {

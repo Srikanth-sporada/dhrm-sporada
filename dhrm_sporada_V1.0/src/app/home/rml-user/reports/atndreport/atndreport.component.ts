@@ -68,7 +68,7 @@ export class AtndreportComponent implements OnInit {
     // get line api call
     this.api.getlineBydept().subscribe((response: any) => {
       this.lines = response;
-      this.lines.unshift({Line_Name:'All'});
+      this.lines.unshift({Line_Name:'All', Line_code:''});
     },(error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});

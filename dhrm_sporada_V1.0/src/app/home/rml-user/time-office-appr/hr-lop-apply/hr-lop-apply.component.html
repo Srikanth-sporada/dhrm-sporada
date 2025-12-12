@@ -75,6 +75,8 @@
                 [showIcon]="true"
                 dateFormat="yy-mm-dd"
                 styleClass="w-full"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
                 [(ngModel)]="lopDate"
                 >
                 </p-calendar>
@@ -99,6 +101,7 @@
                 iconPos="right"
                 icon="pi pi-search"
                 class="mt-10 w-1/3"
+                [disabled]="!userEnteredGenId"
                 (click)="searchTraineeByGenId()"
             ></button>
             <!-- apply lop btn -->

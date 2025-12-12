@@ -13,7 +13,7 @@ export class ConfirmationComponent implements OnInit {
    * this function will be called when user click yes
    * */
   @Input() confirmFunction:any;
-
+  @Input() confirmText:any;
   // @ViewChild('ngbModal', {read: TemplateRef}) ngbModalTemplateRef: TemplateRef<unknown> | undefined;
   constructor(public activeModal:NgbActiveModal) { }
 

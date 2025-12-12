@@ -454,7 +454,7 @@ export class OnboardFormComponent implements OnInit {
 
   /**
    * 
-   * @param isFirstApprover to fond first approver
+   * @param isFirstApprover to identify first approver
    */
   submit(isFirstApprover:any) {
 
@@ -705,14 +705,16 @@ export class OnboardFormComponent implements OnInit {
     window.open(url.toString(), "_blank");
   }
 
-  // send for approval by hr function first approval
+  /** 
+   * send for approval by hr function first approval, Here trainee send for training based on Bodhi_training [SUBMITTED]
+   * */
   sendForApprovalByHR(){
     const submitData = {
       mobile:this.applicationData.mobile_no1,
       company:this.applicationData.company_code,
     }
     // console.log(this.applicationData)
-    // dojo training handling api
+    /** dojo training handling api */
     this.formservice.DojoTrainingProcess({
       cat: this.form.value.category,
       mob: this.applicationData.mobile_no1,

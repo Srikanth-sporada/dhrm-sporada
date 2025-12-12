@@ -157,6 +157,7 @@ openDeleteModal(apln_slno: any) {
   this.showDeleteModal = true;
   const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
   confirmModalRef.componentInstance.confirmFunction = () => this.confirmDelete();
+  confirmModalRef.componentInstance.confirmText = 'Are you sure you want to delete?'
   console.log('modal opened.');
 }
 
