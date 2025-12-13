@@ -1,4 +1,4 @@
-<div>
+<div class="animate" @slowAnimate>
   <!-- leave record filter -->
   <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
     <!-- filter header -->
@@ -14,7 +14,7 @@
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="utils.exportexcel('leaveRecordTable','leaveReport',this.lopRecordForm.value.plantCode)"></p-button>
+         (click)="utils.exportexcel('leaveRecordTable','LOP_REPORT',this.lopRecordForm.value.plantCode)"></p-button>
       </div>
     <form [formGroup]="lopRecordForm">
       <!-- filter first row -->
