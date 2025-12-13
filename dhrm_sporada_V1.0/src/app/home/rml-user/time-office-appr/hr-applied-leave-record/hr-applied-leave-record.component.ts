@@ -35,7 +35,7 @@ export class HrAppliedLeaveRecordComponent implements OnInit {
   isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
   companyCode:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
   plantCode:any = sessionStorage.getItem('plantcode');
-
+  noDataImgPath:any = environment?.noDataImgPath;
   constructor(
     private apiService:ClamAPIService,
     private apiService2:ApiService,
@@ -49,7 +49,7 @@ export class HrAppliedLeaveRecordComponent implements OnInit {
         companyCode: new UntypedFormControl(this.companyCode),
         plantCode: new UntypedFormControl(this.plantCode),
         payrollArea: new UntypedFormControl('', Validators.required),
-        startDate: new UntypedFormControl(new Date()),
+        startDate: new UntypedFormControl(moment().subtract(15,'days').toDate()), // 15 days back
         endDate: new UntypedFormControl(new Date()),
         genId: [null,Validators.pattern(/\S+/)],
       });
@@ -128,6 +128,7 @@ export class HrAppliedLeaveRecordComponent implements OnInit {
         }
       })
     }
+    
     /** get plant data by company code
      * @property {UntypedForm} form.companyCode
      */

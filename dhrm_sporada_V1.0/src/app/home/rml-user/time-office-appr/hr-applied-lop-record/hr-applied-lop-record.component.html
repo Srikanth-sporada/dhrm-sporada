@@ -1,1 +1,164 @@
-<p>hr-applied-lop-record works!</p>
+<div>
+  <!-- leave record filter -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{lopRecordData?.length || 0}}
+           </span>
+        </h1>
+       <!-- download btn-->
+        <p-button 
+         icon="pi pi-download" 
+         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
+         (click)="utils.exportexcel('leaveRecordTable','leaveReport',this.lopRecordForm.value.plantCode)"></p-button>
+      </div>
+    <form [formGroup]="lopRecordForm">
+      <!-- filter first row -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+        <!-- company-->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Company</label> <br>
+            <p-dropdown 
+              [options]="companyData"
+              [disabled]="!isAdmin"
+              formControlName="companyCode"
+              optionLabel="company_name"
+              optionValue="company_code"
+              styleClass="w-full" 
+              (onChange)="getplantByCompanyCode()"
+              placeholder="Select Company">
+              <ng-template let-company pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <span>{{ company.company_code + '-' + company.company_name }}</span>
+                </div>
+            </ng-template>
+            </p-dropdown>
+        </div>
+        <!-- plant -->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+            <p-dropdown 
+              [options]="plantData"
+              [disabled]="!isAdmin"
+              formControlName="plantCode"
+              optionLabel="plant_name"
+              optionValue="plant_code"
+              styleClass="w-full" 
+              (onChange)="getPayrollAreaByPlant(false)"
+              placeholder="Select Plant">
+              <ng-template let-plant pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+                </div>
+            </ng-template>
+            </p-dropdown>
+        </div>
+          <!-- payroll area-->
+        <div class="font-poppins w-full">
+            <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Payroll Area</label> <br>
+            <p-dropdown 
+              [options]="payrollAreaData"
+              formControlName="payrollArea"
+              optionLabel="PayrollArea"
+              optionValue="PayrollArea"
+              styleClass="w-full" 
+              placeholder="Select Payroll Area" ></p-dropdown>
+        </div>
+      
+      </div>
+      <!-- filters second row -->
+        <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+          <!-- start date -->
+          <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Start Date</label> <br>
+          <p-calendar 
+              formControlName="startDate"
+              styleClass="w-full !font-poppins"
+              dateFormat="yy-mm-dd"
+              [maxDate]="currentDate"
+              [showIcon]="true" >
+          </p-calendar>
+          </div>
+          <!-- end Date -->
+          <div class="w-full">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">End Date</label> <br>
+          <p-calendar 
+              formControlName="endDate"
+              dateFormat="yy-mm-dd" 
+              styleClass="w-full !font-poppins"
+              [maxDate]="currentDate"
+              [showIcon]="true" >
+          </p-calendar>
+          </div>
+        <!-- search value -->
+      <div class="w-full p-fluid">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen</label> <br>
+        <input 
+        type="text" 
+        pInputText
+        styleClass="w-full !font-poppins"
+        placeholder="Enter Gen ID" 
+        formControlName="genId"
+        />
+        
+      </div>
+      <!-- search btn -->
+        <p-button 
+          icon="pi pi-search"
+          styleClass="rounded-[1.5rem] mt-9"
+          (onClick)="filterLopRecords()"
+          [disabled]="!lopRecordForm.valid"
+        >
+      </p-button> 
+      
+      </div>
+    </form>
+  </div>
+
+  <!-- leave record data table -->
+  <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto relative">
+                <table id="leaveRecordTable" class="table-auto w-full">
+                  <!-- table head -->
+                  <thead class="!w-full sticky top-0">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">ID</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Name</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Category</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Plant</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Payroll Area</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">LOP Date</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Reason</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0">Applied By</th>
+                      <th class="!text-white px-2 !py-2 !border-none !border-0 text-center">Applied Date</th>
+                    </tr>
+                  </thead>
+                  <!-- table body -->
+                  <tbody>  
+                    <tr *ngFor="let item of lopRecordData" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.id}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.gen_id}}</td>
+                       <td class="!px-2 !py-4 !rounded-s-md  font-semibold">{{item?.name}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item?.apprentice_type}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item?.plant_code + ' | ' + item?.plant_name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item?.payroll_area}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center text-red-500 font-semibold">{{item?.att_date}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{item?.reason || '-'}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md">{{ item?.apply_by + ' | ' + item?.Emp_Name}}</td>
+                      <td class="!px-2 !py-4 !rounded-s-md text-center">{{item?.create_time | date : 'dd-MM-yyyy' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                  <!-- no data found div -->
+           <div *ngIf="lopRecordData.length == 0" [hidden]="loader.isLoding | async" class="flex items-center justify-center flex-col h-full">
+             <img [src]="noDataImgPath" alt="not-found" class="object-contain h-44 w-44">
+              <p class="text-xl font-semibold text-blue-600">Data Not Found !</p>
+           </div>
+           <!-- rane loader -->
+                <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
+    </div>
+</div>

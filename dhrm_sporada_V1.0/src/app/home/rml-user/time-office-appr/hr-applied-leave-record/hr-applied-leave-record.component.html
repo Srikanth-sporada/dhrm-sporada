@@ -79,6 +79,7 @@
               formControlName="startDate"
               styleClass="w-full !font-poppins"
               dateFormat="yy-mm-dd"
+              [maxDate]="currentDate"
               [showIcon]="true" >
           </p-calendar>
           </div>
@@ -87,7 +88,7 @@
           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">End Date</label> <br>
           <p-calendar 
               formControlName="endDate"
-              dateFormat="y-mm-dd" 
+              dateFormat="yy-mm-dd" 
               styleClass="w-full !font-poppins"
               [maxDate]="currentDate"
               [showIcon]="true" >
@@ -150,6 +151,12 @@
                     </tr>
                   </tbody>
                 </table>
+                <!-- no data found div -->
+           <div *ngIf="leaveRecordData.length == 0" [hidden]="loader.isLoding | async" class="flex items-center justify-center flex-col h-full">
+             <img [src]="noDataImgPath" alt="not-found" class="object-contain h-44 w-44">
+              <p class="text-xl font-semibold text-blue-600">Data Not Found !</p>
+           </div>
+           <!-- rane loader -->
                 <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
     </div>
 </div>
