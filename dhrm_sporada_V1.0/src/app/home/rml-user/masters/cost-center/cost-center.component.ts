@@ -27,7 +27,6 @@ import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from "src/environments/environment.prod";
 import * as XLSX from 'xlsx';
-
 @Component({
    selector: 'app-cost-center',
   templateUrl: './cost-center.component.html',
@@ -49,7 +48,9 @@ export class CostCenterComponent implements OnInit {
   costCenterCopy:any = this.costCenterList;
   companyList:any = [];
   companyListCopy:any = [];
-  selectedCompany:any = '';
+  selectedCompany:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
+  selectedPlant:any= sessionStorage.getItem('plantcode');
+  selectedDepartment:any = sessionStorage.getItem('dept_slno');
   plantList: any = [];
   plantData:any=[]; 
   departmentList:any[];
@@ -124,17 +125,17 @@ export class CostCenterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** logged in user details */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-
-    // get company data
-    this.getCompanyList()
-
-    // get cost center data
-    // this.getcostCenter();
+    /** get cost center and filter data */
+    this.getCompanyList();
+    this.getcostCenter();
+    this.getPlantDataByCompanyCode(this.selectedCompany);
+    this.getDepartmentByPlantCode(this.selectedPlant);
   }
   
   // open material modal function for add plant
@@ -155,13 +156,16 @@ export class CostCenterComponent implements OnInit {
    * @returns {void}
    */
   getcostCenter(): void {
-    this.service.getPayrollArea().subscribe({
+    const data = {
+      companyCode:this.selectedCompany,
+      plantCode:this.selectedPlant,
+      departmentCode:this.selectedDepartment
+    }
+    this.service.getCostCenter(data).subscribe({
       next:(response:any) => {
         console.log(response);
         this.costCenterList = response;
         this.costCenterCopy = response;
-        /** company filter function */
-        this.filterCostCenterByCompany();
       },
       error: (error) => {
         this.messageService.add({severity:'error',summary:error.message})
@@ -209,7 +213,7 @@ export class CostCenterComponent implements OnInit {
    // open material modal for update plant
   opentoedit(content:any){
     console.log("opening")
-    this.modalService.open(content, {centered: true})
+    this.modalService.open(content, {centered: true});
   }
 
   /** 
@@ -221,14 +225,17 @@ export class CostCenterComponent implements OnInit {
    **/
     patchUpdateValue(a:any){      
       this.editing_flag = true
-      this.costCenterForm.controls['companyCode'].setValue(this.costCenterList[a]?.company_code)    
-      this.costCenterForm.controls['costCenter'].setValue(this.costCenterList[a].cost_center)
-      this.costCenterForm.controls['departmentCode'].setValue(this.costCenterList[a].department_code)
-      this.costCenterForm.controls['plantCode'].setValue(this.costCenterList[a].plant_code);
+      this.costCenterForm.controls['companyCode'].setValue(this.costCenterList[a]?.CompanyCode)    
+      this.costCenterForm.controls['costCenter'].setValue(this.costCenterList[a]?.CostCenter)
+      this.costCenterForm.controls['departmentCode'].setValue(this.costCenterList[a].DepartmentCode)
+      this.costCenterForm.controls['plantCode'].setValue(this.costCenterList[a].PlantCode);
       this.costCenterForm.controls['InsertBy'].setValue(this.costCenterList[a].InsertBy);
       // while updating setting update use gen id
       this.costCenterForm.controls['UpdateBy'].setValue(this.all?.gen_id);
       console.log(this.costCenterForm.value);
+      /** get department & plant */
+      this.getPlantDataByCompanyCode(this.costCenterList[a].CompanyCode);
+      this.getDepartmentByPlantCode(this.costCenterList[a].PlantCode);
     }
 
 
@@ -398,7 +405,7 @@ export class CostCenterComponent implements OnInit {
     const searchTerm = event.target.value.toLowerCase();
     console.log(searchTerm)
     const foundcostCenter = this.costCenterCopy.filter((costCenter:any) => {
-      if(costCenter?.plant_name.toLowerCase() == searchTerm || costCenter.cost_center.toLowerCase() == searchTerm){
+      if(costCenter?.plant_name.toLowerCase() == searchTerm || costCenter.CostCenter.toLowerCase() == searchTerm){
         return costCenter;
       }
     });
@@ -441,7 +448,7 @@ export class CostCenterComponent implements OnInit {
   getPlantDataByCompanyCode(companyCode:any):void{
        this.service.getPlantByCompanyCode(companyCode).subscribe({
         next: (response) => {
-          this.plantList = response
+          this.plantList = response;
         },
         error: (error) => this.messageService.add({severity:'error',summary:error.message})
        })

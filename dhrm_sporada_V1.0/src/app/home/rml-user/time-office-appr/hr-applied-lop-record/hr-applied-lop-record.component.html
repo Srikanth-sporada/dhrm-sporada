@@ -14,7 +14,7 @@
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="utils.exportexcel('leaveRecordTable','LOP_REPORT',this.lopRecordForm.value.plantCode)"></p-button>
+         (click)="utils.exportexcel('lopRecordTable','LOP_REPORT',this.lopRecordForm.value.plantCode)"></p-button>
       </div>
     <form [formGroup]="lopRecordForm">
       <!-- filter first row -->
@@ -121,7 +121,7 @@
 
   <!-- leave record data table -->
   <div class="h-[90svh] lg:h-[63vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-x-auto relative">
-                <table id="leaveRecordTable" class="table-auto w-full">
+                <table id="lopRecordTable" class="table-auto w-full">
                   <!-- table head -->
                   <thead class="!w-full sticky top-0">
                     <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">

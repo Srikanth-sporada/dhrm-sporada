@@ -18,8 +18,8 @@ export const environment = {
   /** reports */
   hideCumulativeReport:false,
   hideLopReport:false,
-  hideMachineReport:false,
-  hideCanteenReport:false,
+  hideMachineReport:true,
+  hideCanteenReport:true,
   hideHrmsNewTab:true,
   /** attedance calander */
   shiftFullWidth:true,

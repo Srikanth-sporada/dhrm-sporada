@@ -190,6 +190,25 @@ export class ApiService {
    * Cost Center API Service
    * 
    */
+  /**
+   * get cost center by filters
+   * @param data
+   */
+  getCostCenter(data:any){
+    return this.http.get(this.url + `/master/GetCostCenter?companyCode=${data?.companyCode}&departmentCode=${data?.departmentCode}&plantCode=${data?.plantCode}`)
+
+  }
+
+  /** 
+   * update cost center
+   */
+  addCostCenter(data:any){
+    return this.http.post(this.url + '/master/insertorupdatecostcenter',data)
+  }
+  /** 
+   * get cost center by plant code
+   * @param plantcode
+   */
   getCostcenterByPlantcode(plantcode:any){
     return this.http.get(this.url + `/master/getCostcenterbyplant?PlantCode=${plantcode}`)
   }
