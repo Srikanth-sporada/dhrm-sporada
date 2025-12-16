@@ -27,6 +27,7 @@ import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { environment } from "src/environments/environment.prod";
 import * as XLSX from 'xlsx';
+import { Utility } from 'src/app/utils/utils';
 @Component({
    selector: 'app-cost-center',
   templateUrl: './cost-center.component.html',
@@ -50,11 +51,11 @@ export class CostCenterComponent implements OnInit {
   companyListCopy:any = [];
   selectedCompany:any = JSON.parse(sessionStorage.getItem('companyCode') || '');
   selectedPlant:any= sessionStorage.getItem('plantcode');
-  selectedDepartment:any = sessionStorage.getItem('dept_slno');
+  selectedDepartment:any = null;
   plantList: any = [];
   plantData:any=[]; 
   departmentList:any[];
-
+  updateCostcenterId:any;
   /**
    * editing_flag - Flag to indicate if the form is in edit mode
    * @type {boolean}
@@ -101,11 +102,12 @@ export class CostCenterComponent implements OnInit {
                 tooltipLabel: 'Download',
               },
               command: () => {
-                this.exportexcel();
-                this.messageService.add({ severity: 'info', summary: 'Data Exported.' });
+                // this.exportexcel();
+                this.utils.jsonToExcellExport(this.costCenterList,this.selectedPlant,'costcenter_master');
               }
             }
   ];
+
   constructor(
     private fb : UntypedFormBuilder, 
     private modalService : NgbModal, 
@@ -113,6 +115,7 @@ export class CostCenterComponent implements OnInit {
     public loader: LoaderserviceService, 
     private messageService:MessageService,
     private confirmationService:ConfirmationService,
+    private utils:Utility,
   ) { 
      this.costCenterForm = this.fb.group({
       companyCode:['',Validators.required],
@@ -131,7 +134,7 @@ export class CostCenterComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    /** get cost center and filter data */
+    /** get cost center and filter dropdown data */
     this.getCompanyList();
     this.getcostCenter();
     this.getPlantDataByCompanyCode(this.selectedCompany);
@@ -141,8 +144,8 @@ export class CostCenterComponent implements OnInit {
   // open material modal function for add plant
   open(content:any){
     this.costCenterForm.reset();
-    this.editing_flag = false
-    console.log("opening")
+    this.editing_flag = false;
+    console.log("opening add modal...");
     this.modalService.open(content, {centered: true})
   }
   
@@ -166,8 +169,12 @@ export class CostCenterComponent implements OnInit {
         console.log(response);
         this.costCenterList = response;
         this.costCenterCopy = response;
+        if(!response?.length){
+          this.messageService.add({severity:'info',summary:'Cost Center Not Found!'})
+        }
       },
       error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
     })
@@ -190,21 +197,24 @@ export class CostCenterComponent implements OnInit {
     // converting cost center to uppercase
     this.costCenterForm.controls['costCenter'].setValue(this.costCenterForm.value.costCenter.toUpperCase());
     // converting string into number
-    this.costCenterForm.controls['companyCode'].setValue(Number(this.costCenterForm.value.companyCode))
-    this.costCenterForm.controls['plantCode'].setValue(Number(this.costCenterForm.value.plantCode))
-
+    // this.costCenterForm.controls['companyCode'].setValue(Number(this.costCenterForm.value.companyCode))
+    // this.costCenterForm.controls['plantCode'].setValue(Number(this.costCenterForm.value.plantCode))
     console.log(this.costCenterForm.value);
-    // this.service.addNewPayrollArea(this.costCenterForm.value).subscribe({
-    //   next: (response:any) => {
-    //     console.log(response);
-    //     this.messageService.add({severity:'info',summary:response.message})
-    //     this.getcostCenter();
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //     this.messageService.add({severity:'error',summary:error.message})
-    //   }
-    // })
+    /** add cost center API */
+    this.service.addCostCenter(this.costCenterForm.value).subscribe({
+      next:(response:any) => {
+        console.log(response);
+        if(response?.success){
+          this.messageService.add({severity:'info',summary:response?.message});
+          /** get cost center after adding cost center */
+          this.getcostCenter();
+        }
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.error})
+      }
+    })
   }
 
   getValue(event:any){
@@ -212,7 +222,7 @@ export class CostCenterComponent implements OnInit {
   }
    // open material modal for update plant
   opentoedit(content:any){
-    console.log("opening")
+    console.log("opening edit modal....")
     this.modalService.open(content, {centered: true});
   }
 
@@ -221,6 +231,7 @@ export class CostCenterComponent implements OnInit {
    * @param a user selected data index 
    * @var costCenterForm
    * @var costCenterList
+   * @property {*} updateCostcenterId update cost center id
    * 1. patching user selected data to the update form
    **/
     patchUpdateValue(a:any){      
@@ -233,6 +244,8 @@ export class CostCenterComponent implements OnInit {
       // while updating setting update use gen id
       this.costCenterForm.controls['UpdateBy'].setValue(this.all?.gen_id);
       console.log(this.costCenterForm.value);
+      /** set update cost center ID */
+      this.updateCostcenterId = this.costCenterList[a].ID;
       /** get department & plant */
       this.getPlantDataByCompanyCode(this.costCenterList[a].CompanyCode);
       this.getDepartmentByPlantCode(this.costCenterList[a].PlantCode);
@@ -253,17 +266,18 @@ export class CostCenterComponent implements OnInit {
    */
   updatecostCenter(): void{
     this.costCenterForm.controls['costCenter'].setValue(String(this.costCenterForm.value.costCenter));
-    this.costCenterForm.controls['Grace_minutes'].setValue(String(this.costCenterForm.value.Grace_minutes));
     this.costCenterForm.controls['UpdateBy'].setValue(this.all?.gen_id || 'null');
-    console.log(this.costCenterForm.value);
-    this.service.updatePayrollArea(this.costCenterForm.value).subscribe({
+    console.log('UPDATE DATA:',{...this.costCenterForm.value,id:this.updateCostcenterId});
+    console.log('UPDATE ID:',this.updateCostcenterId);
+    this.service.updateCostCenter({...this.costCenterForm.value,id:this.updateCostcenterId}).subscribe({
       next: (response:any) => {
         console.log(response);
          this.messageService.add({severity:'info',summary:response.message});
+        /** get cost center after update API */
          this.getcostCenter();
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
     })
@@ -285,6 +299,7 @@ export class CostCenterComponent implements OnInit {
           target: event.target as EventTarget,
               message: 'Are you sure you want to Delete?',
               icon: 'pi pi-exclamation-triangle',
+              /** delete cost center API */
               accept: () => {this.deletecostCenterAPICall(a)},
               reject: () => {
                   this.messageService.add({ severity: 'error', summary: 'Rejected'});
@@ -306,18 +321,19 @@ export class CostCenterComponent implements OnInit {
    */
   deletecostCenterAPICall(a:any): void{
     const deleteData = {
-      PlantCode:this.costCenterList[a].PlantCode,
-      costCenter:this.costCenterList[a].costCenter
+      id:this.costCenterList[a]?.ID
     };
-    console.log(deleteData)
-    this.service.deletePayrollArea(deleteData).subscribe({
+    console.log('CC DATA:',deleteData)
+    this.service.deleteCostcenter(deleteData).subscribe({
       next: (response:any) => {
         console.log(response);
          this.messageService.add({severity:'info',summary:response.message});
+        /** get costcenter after delete */
          this.getcostCenter();
       },
       error: (error) => {
-        this.messageService.add({severity:'error',summary:error.message})
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
       }
     })
   }
@@ -402,10 +418,11 @@ export class CostCenterComponent implements OnInit {
    * @returns {void}
    */
   searchCostCenter(event:any): void{
-    const searchTerm = event.target.value.toLowerCase();
+   try{
+     const searchTerm = event.target.value.trim().toLowerCase();
     console.log(searchTerm)
     const foundcostCenter = this.costCenterCopy.filter((costCenter:any) => {
-      if(costCenter?.plant_name.toLowerCase() == searchTerm || costCenter.CostCenter.toLowerCase() == searchTerm){
+      if(costCenter?.plant_name.toLowerCase() == searchTerm || costCenter.CostCenter.toLowerCase() == searchTerm || costCenter?.PlantCode == searchTerm){
         return costCenter;
       }
     });
@@ -415,6 +432,10 @@ export class CostCenterComponent implements OnInit {
     }else{
       this.costCenterList = this.costCenterCopy;
     }
+   }catch(error){
+    console.error('ERROR:',error);
+    this.messageService.add({severity:'error',summary:'Error Occured!.'})
+   }
   }
 
   /**
@@ -433,7 +454,10 @@ export class CostCenterComponent implements OnInit {
         this.companyList.unshift({company_code:'',company_name:'All'});
         this.companyListCopy = response;
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message})
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     })
   }
 
@@ -449,8 +473,12 @@ export class CostCenterComponent implements OnInit {
        this.service.getPlantByCompanyCode(companyCode).subscribe({
         next: (response) => {
           this.plantList = response;
+          this.plantList.unshift({plant_name:'All',plant_code:''})
         },
-        error: (error) => this.messageService.add({severity:'error',summary:error.message})
+        error: (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error.message})
+        }
        })
   }
 /**
@@ -465,8 +493,12 @@ export class CostCenterComponent implements OnInit {
      this.service.getDeptForReport(plantCode).subscribe({
       next: (response:any) => {
        this.departmentList = response.data;
+       this.departmentList.unshift({dept_slno:'',dept_name:'All'})
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message})
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message});
+      }
     })
   }
 }

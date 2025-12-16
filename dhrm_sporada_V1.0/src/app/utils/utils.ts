@@ -99,4 +99,22 @@ export class Utility {
      // re-enable after 2s
     setTimeout(() => this.throttleBtnState = false, environment.milliSeconds); 
   }
+  /**
+   * export json data to excell sheet
+   * @param data
+   * @param plantCode
+   * @param sheetName
+   */
+  jsonToExcellExport(data:any,plantCode:any,sheetName:any){
+      try{
+        var ws = XLSX.utils.json_to_sheet(data);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, `${sheetName}_${plantCode}`);
+        XLSX.writeFile(wb, `${sheetName}_${plantCode}.xlsx`);
+        this.messageService.add({severity:'info',summary:'Data Exported!'});
+      }catch(error){
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:'Error Occured!'})
+      }
+  }
 }

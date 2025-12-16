@@ -584,7 +584,7 @@ export class ClamAPIService {
   }
   del_Bill_date(data: any) {
     console.log(data)
-    return this.http.post(`${this.url}/master/delBillProcess?lock_month=${data.lock_month}&plant_Code=${data.plant_Code}&category=${data.category}`, data)
+    return this.http.post(`${this.url}/master/delBillProcess?lock_month=${data.lock_month}&plant_Code=${data.plant_Code}&category=${data.category}&payrollArea=${data?.PayrollArea}`, data)
 
     // return this.http.post(url);
   }

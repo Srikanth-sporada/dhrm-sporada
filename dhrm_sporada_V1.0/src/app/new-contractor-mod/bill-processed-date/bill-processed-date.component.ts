@@ -81,6 +81,7 @@ export class BillProcessedDateComponent implements OnInit {
                 }
               }
     ];
+
   constructor(
     private fb: FormBuilder,
     private api : ClamAPIService
@@ -115,7 +116,7 @@ ngOnInit(): void {
     this.get_Bill_data();
     this.getPayrollArea(this.plant_Code)
 }
-//  on month selected area selected caluculate start,end day for selected month
+/** on month selected area selected caluculate start,end day for selected month */
 updateSelectedDate() {
     const selectedLockMonth = this.billForm.get('lock_month')?.value;
     console.log('SELECTED LOCK MONTH: ' + selectedLockMonth)
@@ -132,7 +133,7 @@ updateSelectedDate() {
           this.processedBillStartDate = startDate.format('YYYY-MM-DD');
           this.processedBillEndDate = endDate.format('YYYY-MM-DD');
         } else {
-          // Previous month start and current month end day in payroll area end date
+          /* Previous month start and current month end day in payroll area end date */
           const prevMonth = selected.clone().subtract(1, 'month');
           const startDate = moment({
             year: prevMonth.year(),
@@ -184,7 +185,10 @@ updateSelectedDate() {
       
        console.log(this.plantname)
        },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message});
+      },
     });
   }
   /** get payroll area by plant api call */
@@ -200,7 +204,7 @@ updateSelectedDate() {
         console.log(response);
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.error.message})
       }
     })
@@ -254,7 +258,8 @@ get_Bill_data(){
     this.api.get_Bill_date().subscribe(res =>{
       this.bill_data = res
       console.log(res);
-    },(error)=>{
+    },(error) => {
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
 }
@@ -307,17 +312,17 @@ confirmDelete(delData:any) {
         cancelText: 'Cancel',
       },
     });
-  
+    console.log('DELETE DATA',formData);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result)
+        console.log(result);
         this.api.del_Bill_date(formData).subscribe((res:any) =>{
         // this.openAlertDialog(`${res}`,'check');
         this.messageService.add({severity:'info',summary:res});
         this.get_Bill_data()
         },(error) => {
           if (error.status === 400) {
-            console.log(error)
+            console.error('ERROR:',error);
             // this.openAlertDialog(`${error.error}`,'error');
             this.messageService.add({severity:'error',summary:error?.error});
           }
@@ -420,12 +425,12 @@ onSubmit(){
           console.error('ERROR:',error);
           // this.openAlertDialog(`${error.error}`,'error');
           this.messageService.add({severity:'error',summary:error.error});
-          this.showForm()
+          this.showForm();
         }
          else {
           // this.openAlertDialog('Error in connection','error');
           this.messageService.add({severity:'error',summary:'Error In Connection'})
-          this.showForm()
+          this.showForm();
         }
     })
 }

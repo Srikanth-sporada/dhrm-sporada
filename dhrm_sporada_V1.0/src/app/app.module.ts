@@ -43,6 +43,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { ButtonModule } from "primeng/button";
 import { DropdownModule } from "primeng/dropdown";
 import { InputMaskModule } from "primeng/inputmask";
+import { RadioButtonModule } from "primeng/radiobutton";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { CheckboxModule } from "primeng/checkbox";
@@ -116,6 +117,7 @@ import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filte
     ButtonModule,
     DropdownModule,
     InputMaskModule,
+    RadioButtonModule,
     PasswordModule,
     CheckboxModule,
     InputTextModule,

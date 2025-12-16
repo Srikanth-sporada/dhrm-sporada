@@ -201,9 +201,24 @@ export class ApiService {
 
   /** 
    * update cost center
+   * @param data
    */
   addCostCenter(data:any){
     return this.http.post(this.url + '/master/insertorupdatecostcenter',data)
+  }
+  /** 
+   * update cost center
+   * @param data
+   */
+  updateCostCenter(data:any){
+    return this.http.post(this.url + '/master/updatecostcenter',data);
+  }
+  /** 
+   * delete cost center logical delete
+   * @param costCenterId OBJ
+   */
+  deleteCostcenter(costCenterId:any){
+    return this.http.post(this.url + '/master/dlcostcenter',costCenterId)
   }
   /** 
    * get cost center by plant code

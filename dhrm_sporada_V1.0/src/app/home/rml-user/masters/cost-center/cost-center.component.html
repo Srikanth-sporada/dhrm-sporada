@@ -76,7 +76,6 @@
             optionLabel="dept_name"
             optionValue="dept_slno"
             styleClass="w-full"
-            [disabled]="editing_flag"
             placeholder="Select Department">
             <ng-template let-dept pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -315,5 +314,5 @@
         <!-- loader -->
          <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
-
+   <app-loader></app-loader>
 </div>

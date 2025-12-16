@@ -80,6 +80,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
 // import { RequestDetailsDialogComponentComponent } from './request-details-dialog-component/request-details-dialog-component.component'
@@ -159,6 +160,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     InputTextModule,
     DropdownModule,
     CalendarModule,
+    RadioButtonModule,
     InputTextareaModule,
     ButtonModule,
     SpeedDialModule,

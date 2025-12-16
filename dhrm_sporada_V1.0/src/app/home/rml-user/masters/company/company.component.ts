@@ -321,7 +321,7 @@ export class CompanyComponent implements OnInit,AfterViewInit {
     var ws = XLSX.utils.json_to_sheet(transformedArray);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "company");
-    XLSX.writeFile(wb, "company.xlsx");
+    XLSX.writeFile(wb, "company_master.xlsx");
 
   }
 

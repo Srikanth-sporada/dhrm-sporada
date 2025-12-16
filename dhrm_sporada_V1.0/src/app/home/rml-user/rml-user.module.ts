@@ -56,6 +56,7 @@ import { SpeedDialModule } from "primeng/speeddial";
 import { TabViewModule } from "primeng/tabview";
 import { CalendarModule } from "primeng/calendar";
 import { DropdownModule } from "primeng/dropdown";
+import { RadioButtonModule } from "primeng/radiobutton";
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -139,6 +140,7 @@ import { TraineePresentTrendComponent } from "./dashboard/hr-dashboard/trainee-p
     TabViewModule,
     CalendarModule,
     DropdownModule,
+    RadioButtonModule,
     InputNumberModule,
     InputTextareaModule,
     FileUploadModule,
