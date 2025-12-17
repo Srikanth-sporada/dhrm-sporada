@@ -393,9 +393,6 @@ dialogRef.afterClosed().subscribe((result) => {
 //   }
 // }
 
-
-
-
 // add new processed bill
 
 onSubmit(){

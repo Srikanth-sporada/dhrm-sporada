@@ -60,6 +60,7 @@ export class OnboardFormComponent implements OnInit {
   basic: any;
   status: any = this.active.snapshot.paramMap.get("apln_status");
   apln_slno: any = this.active.snapshot.paramMap.get("id");
+  employeeID:any =  JSON.parse(sessionStorage.getItem('emp_id') || '');
   down: any;
   age:any;
   reason:any;
@@ -183,21 +184,21 @@ export class OnboardFormComponent implements OnInit {
           this.designation = this?.obj[1] || [];
           this.department = this?.obj[2] || [];
           this.line = this?.obj[3] || [];
+          /** list of process trained */
           this.process_trained = this?.obj[4] || []
           this.reporting_to = this?.obj[5] || [];
           this.category = this?.obj[6] || [];
+          /** trainee process trained value */
           this.oprn = this?.obj[7] || [];
           this.DOJ = response[0][0]?.doj;
 
           // this.oprn = this.oprn.map((a: any) => a.oprn_desc);
           // this.cat = this.category.map((a: any) => a.categorynm);
-        //  console.log(this.obj[0]);
-
-        // api call for geting roles data for 2nd approver
+          // console.log(this.obj[0]);
+          // api call for geting roles data for 2nd approver
           this.getRolesFor2ndApporver();
-        // contracts api call
+        /** get contractors */ 
         this.getContractors(this?.basic[0]?.mobile_no1)
-
           this.created_dt= response[0][0]?.created_dt
           this.form.controls["ifsc_code"].setValue(this.basic[0]?.ifsc_code=='null'?'':this.basic[0]?.ifsc_code);
           this.form.controls["account_number"].setValue(
@@ -453,11 +454,11 @@ export class OnboardFormComponent implements OnInit {
   }
 
   /**
-   * 
+   * First apporver API call
    * @param isFirstApprover to identify first approver
    */
   submit(isFirstApprover:any) {
-
+    console.log('FIRST APPROVER DATA:',{...this.form.getRawValue(),firstApproverId:this.employeeID})
     // if(this.form.controls["doj"].value < this.lockDate && this.readonly == false){
     //   this.messageService.add({severity:'warn',summary:'`DOJ should be within current payroll period'})
     //   return
@@ -482,12 +483,14 @@ export class OnboardFormComponent implements OnInit {
       this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
       this.form.controls['active_status'].setValue('ACTIVE');
       console.log('ONBOARD DATA',this.form.getRawValue());
+
       /** trainee send for approval & appoint[gen id generation] api call 
        * get form raw values for disabled fields
+       * send with first approver ID
       */
-      this.service.onboard_form(this.form.getRawValue()).subscribe({
+      this.service.onboard_form({...this.form.getRawValue(),firstApproverId:this.employeeID}).subscribe({
         next: (response: any) => {
-        //  console.log(response);
+         console.log('FIRST APPROVER RES:',response);
           if (response) {
             if(isFirstApprover){
               this.messageService.add({severity:'info',summary:'Application Send For Approval'});
@@ -512,11 +515,89 @@ export class OnboardFormComponent implements OnInit {
                   }
                 });
             }
+            /** based on first approver value */
             if(isFirstApprover){
               this.router.navigate(["/rhrm/new_joiners/trainee-application-status"])
             }else{
               this.router.navigate(["/rhrm/new_joiners/onboard"]);
             }
+          }
+        },
+        error: (err) => {
+          console.error('ERROR:',err)
+          this.messageService.add({severity:'error',summary:err.message})
+        },
+      });
+      /** trainee releive api call */
+    } else if (this.readonly == true) {
+      /** DOL format */
+      this.form.controls["dol"].setValue(moment(this.form.value.dol).format('YYYY-MM-DD'));
+      console.log('SEPERATION FORM:',this.form.value);
+      console.log('SEPERATION API DATA:',{...this.form.value,category:this.basic[0]?.apprentice_type });
+      /** releive api call */
+      this.service.relieve({...this.form.value,category:this.basic[0]?.apprentice_type }).subscribe({
+        next: (response: any) => {
+          if (response.message == "success") {
+            this.messageService.add({severity:'info',summary:'The Employee has been Relieve'});
+            this.router.navigate(["/rhrm/new_joiners/onboard"]);
+          }else if(response.message == "failure"){
+            this.messageService.add({severity:'error',summary:`${response.status}`});
+          }else{
+            this.messageService.add({severity:'error',summary:'An Error Occured!'});
+          }
+        },
+        error: (err) => {
+          console.error('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err.message})
+        },
+      });
+    }
+  }
+
+  /**
+   * second apporver API call
+   * sent with second apporver ID #NEW
+   */
+  traineeFinalApprove() {
+    console.log('SECOND APPORVER DATA:',{...this.form.getRawValue(),secondApproverId:this.employeeID});
+    if (this.readonly == false) {
+      this.form.get("grade").enable();
+      this.form.get('category').enable();
+      /** DOJ format */
+      this.form.controls["doj"].setValue(moment(this.form.value.doj).format('YYYY-MM-DD'));
+      /**  setting dojo training value to actual value */
+      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
+      this.form.controls['active_status'].setValue('ACTIVE');
+      console.log('ONBOARD DATA',this.form.getRawValue());
+      /**
+       * trainee final approval by hr
+       * sent with second approver ID
+      */
+      this.service.traineeFinalApprover({...this.form.getRawValue(),secondApproverId:this.employeeID}).subscribe({
+        next: (response: any) => {
+        //  console.log(response);
+          if (response) {
+             this.messageService.add({severity:'info',summary:response?.message})
+            if (this.setting == 1) {
+              this.form.controls["trainee_id"].setValue();
+              this.service
+                .getfiledrop({
+                  apln_slno: this.active.snapshot.paramMap.get("id"),
+                })
+                .subscribe({
+                  next: (response) => {
+                    // console.log("down", response);
+                    this.down = response;
+                    this.exportexcel();
+                  },
+                  error:(err) => {
+                    console.log('ERROR:',err)
+                    this.messageService.add({severity:'error',summary:err.message});
+                  }
+                });
+            }
+            /** navigate to onboard form */
+              this.router.navigate(["/rhrm/new_joiners/onboard"]);
           }
         },
         error: (err) => {
@@ -553,15 +634,16 @@ export class OnboardFormComponent implements OnInit {
     }
   }
 
+  /** DOL active status and reason enable */
   rel() {
     if (this.form.get("dol").value != "" && this.form.get("rfr").value != "")
       this.onboard = false;
     if (this.form.get("active_status").value == "ACTIVE") this.onboard = true;
   }
 
+  /** enable & disable DOL , reason */
   change(event: any) {
     // console.log(event.target.value);
-
     if (event.value == "INACTIVE") {
       this.form.controls["dol"].enable();
       this.form.controls["rfr"].enable();
@@ -571,11 +653,14 @@ export class OnboardFormComponent implements OnInit {
     }
   }
 
+  /** 
+   * generate genID C-apln_slno
+   * for company trainee apln_slno based on category file_drop
+   *   */
   gen_id(value: any) {
-    
     var value = this.form.controls['category'].value
     // console.log(value)
-    let cat = this.category.filter((cat:any)=>{
+    let cat = this.category.filter((cat:any) => {
       return cat.categorynm == value;
     })
     // console.log(cat[0].file_drop)
@@ -725,9 +810,11 @@ export class OnboardFormComponent implements OnInit {
     }).subscribe({
       next: (response:any) => {
        console.log('category submitted',response);
-      // HR APPROVAL API CALL
+      /** HR APPROVAL API CALL  SUBMITTED */ 
        this.formservice.submitted(submitData);
-      /** onboard form api call first approver */
+      /** 
+       * onboard form api call first approver
+       *  */
       this.submit(true);
       },
       error: (error) => {

@@ -62,10 +62,10 @@
               <!-- details btn -->
                 <button
                   pButton
-                  label="Details"
+                  label="Search"
                   iconPos="right"
-                  icon="pi pi-arrow-circle-right"
-                  class="mt-9"
+                  icon="pi pi-search"
+                  class="mt-10"
                   (click)="verify()" 
                   [disabled]="!genid">
                 </button>
@@ -73,104 +73,135 @@
             </div>
           </div>
         </div>
-          <div  *ngIf="userdtls.length > 0" class="mx-2" >
-            <h1 class="text-blue-600 text-2xl font-semibold text-center mb-2">User Details</h1>
-            <table id="fpdata" class="table-auto !w-full">
-              <!-- table head -->
-              <thead class="sticky top-0">
-                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left"> 
-                  <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category </th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Transporter</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Route</th>
-                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Pick up point</th>
-                  <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Status</th>
-                </tr>
-              </thead>
-              <!-- table body -->
-              <tbody>
-                <tr *ngFor="let item of userdtls" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.gen_Id}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.fullname}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.apprentice_type}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.dept_name }}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Line_Name}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.transporter_name}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.village_name}}</td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Route_Name}}</td>
-                  <td *ngIf="item.Van_Eligible == 1; else inactive">Active</td>
-                  <ng-template #inactive>
-                    <td>InActive</td>
-                </ng-template>     
-                </tr>
-              </tbody>
-            </table>
+         <div *ngIf="userdtls.length > 0" class="mx-2">
+
+  <!-- GRID: User Details + Van Facility -->
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mx-2">
+
+    <!-- USER DETAILS -->
+    <div class="bg-white border rounded-xl shadow-sm p-6">
+      <h2 class="text-blue-600 text-2xl font-semibold text-center mb-6 tracking-wide font-poppins">
+        User Details
+      </h2>
+
+      <div *ngFor="let item of userdtls" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm font-poppins">
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Gen ID</span>
+            <span class="text-gray-900">{{ item.gen_Id }}</span>
           </div>
-          <!-- van details -->
-          <div  *ngIf="userdtls.length > 0" class="mx-2">
-            <h1 class="text-blue-600 text-2xl font-semibold text-center mb-2">Van Facility</h1>
-         <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
-            <!-- route -->
-            <div class="w-full p-fluid">
-                <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Route</label> <br>
-              <p-dropdown
-              [options]="routelist"
-              [(ngModel)]="route"
-              optionValue="Route_Id"
-              optionLabel="Route_Name">
-              </p-dropdown> 
-            </div>
-             <!-- gen id -->
-              <div class="w-full p-fluid">
-              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Transport</label> <br>
-              <input 
-                type="text" 
-                pInputText
-                styleClass="w-full !font-poppins" 
-                [(ngModel)]="transport" />
-              </div>
-              <!-- pick up point -->
-              <div class="w-full p-fluid">
-              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Pick Up Point</label> <br>
-              <input 
-                type="text" 
-                pInputText
-                styleClass="w-full !font-poppins" 
-                [(ngModel)]="pickup" />
-              </div>
-            <!-- <mat-form-field appearance="outline"  style="margin-left: 1rem;">
-                <mat-label>Route</mat-label>
-              <mat-select [(ngModel)]="route" >
-                <mat-option value="">SELECT</mat-option>
-                <mat-option *ngFor="let plant of routelist" [value]="plant.Route_Id">{{plant.Route_Name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            
-              <mat-form-field appearance="outline" style="margin-left: 2rem;">
-                <mat-label>Transport</mat-label>
-                <input type="text" matInput [(ngModel)]="transport" />
-              </mat-form-field>
-            
-              <mat-form-field appearance="outline" style="margin-left: 2rem;">
-                <mat-label>Pick Up point</mat-label>
-                <input type="text" matInput [(ngModel)]="pickup" />
-              </mat-form-field> -->
-              <div>
-                <button 
-                pButton
-                icon="pi pi-save"
-                iconPos="right"
-                label="Save"
-                class="w-full mt-8"
-                [disabled]="!isSubmitFormValid()" 
-                (click)="submitVan()">
-              </button>
-              </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Name</span>
+            <span class="text-gray-900">{{ item.fullname }}</span>
           </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Category</span>
+            <span class="text-gray-900">{{ item.apprentice_type }}</span>
           </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Department</span>
+            <span class="text-gray-900">{{ item.dept_name }}</span>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Line</span>
+            <span class="text-gray-900">{{ item.Line_Name }}</span>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Transporter</span>
+            <span class="text-gray-900">{{ item.transporter_name }}</span>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Route</span>
+            <span class="text-gray-900">{{ item.village_name }}</span>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Pick Up Point</span>
+            <span class="text-gray-900">{{ item.Route_Name }}</span>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="text-gray-500 font-semibold">Status</span>
+            <span class="font-semibold"
+              [ngClass]="item.Van_Eligible == 1 ? 'text-green-600' : 'text-red-600'">
+              {{ item.Van_Eligible == 1 ? 'Active' : 'InActive' }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- VAN FACILITY -->
+    <div class="bg-white border rounded-xl shadow-sm p-6">
+      <h2 class="text-blue-600 text-xl font-semibold text-center mb-6 tracking-wide font-poppins">
+        Van Facility
+      </h2>
+
+      <div class="flex flex-col gap-6">
+
+        <!-- Route -->
+        <div class="w-full p-fluid">
+          <label class="font-semibold text-gray-500 mb-1 block">Route</label>
+          <p-dropdown
+            [options]="routelist"
+            [(ngModel)]="route"
+            optionValue="Route_Id"
+            optionLabel="Route_Name"
+            styleClass="w-full"
+          >
+          <ng-template let-route pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ route?.Route_Id + '-' + route.Route_Name }}</span>
+              </div>
+            </ng-template>
+        </p-dropdown>
+        </div>
+
+        <!-- Transport -->
+        <div class="w-full p-fluid">
+          <label class="font-semibold text-gray-500 mb-1 block">Transport</label>
+          <input
+            type="text"
+            pInputText
+            styleClass="w-full font-poppins"
+            [(ngModel)]="transport"
+          />
+        </div>
+
+        <!-- Pick Up Point -->
+        <div class="w-full p-fluid">
+          <label class="font-semibold text-gray-500 mb-1 block">Pick Up Point</label>
+          <input
+            type="text"
+            pInputText
+            styleClass="w-full font-poppins"
+            [(ngModel)]="pickup"
+          />
+        </div>
+        <div class="flex items-end justify-end">
+           <!-- Save Button -->
+        <button
+          pButton
+          icon="pi pi-save"
+          iconPos="right"
+          label="Save"
+          [disabled]="!isSubmitFormValid()"
+          (click)="submitVan()"
+        ></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
        </ng-template>
         </p-tabPanel>
 
@@ -189,14 +220,16 @@
                 <table id="table" class="table-auto !w-full">
                   <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
                             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Transporter</th> 
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Route</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Pick Up</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Transporter</th> 
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Route</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Pick Up</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
                             <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
                         </tr>
@@ -205,25 +238,31 @@
                      <tbody >
                         <tr *ngFor="let data of van_mapList ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Gen_id}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Name}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Category}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Transporter}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Route_Name }}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Pickup_Point}}</td>
-                            <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Van_Eligible }}</td> -->
-                            <td *ngIf="data.Van_Eligible == 1; else inactive" class="!px-2 !py-4 !rounded-s-md text-center">Active</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-blue-600">{{data.Gen_id}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Name}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Departmnet}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Line}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Category}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Transporter}}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Route_Name }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{data.Pickup_Point}}</td>
+                            <td *ngIf="data.Van_Eligible == 1; else inactive" 
+                            class="!px-2 !py-4 !rounded-s-md text-center">
+                              <span class="px-2 bg-green-200 rounded text-green-600">Active</span>
+                            </td>
                   <ng-template #inactive>
-                    <td class="!px-2 !py-4 !rounded-s-md text-center">InActive</td>
+                    <td class="!px-2 !py-4 !rounded-s-md text-center">
+                      <span class="px-2 bg-red-200 rounded text-red-500">
+                        InActive
+                      </span>
+                    </td>
                   </ng-template>
                           
-                  <td class="flex items-center justify-center">
+                  <td class="flex items-center justify-center !px-2 !py-4">
                     <button
                     *ngIf="data.Van_Eligible == 1 "
                       (click)="onView(data)"
                     >
-                      <!-- <button mat-mini-fab  color="basic" [routerLink]="['/rhrm/contra/mst_payscale', 'master',data.Effective_Date]" class="view-button" > -->
-    
                       <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
                     </button>
              
@@ -245,6 +284,7 @@
     </div>
 
 <!-- [hidden]="!viewPayscaleForm" -->
+ <!-- EDIT VAN MAPPING FORM -->
     <div class="shadow-lg" [hidden]="!viewPayscaleForm">
         <div class="form-popup container1 mat-elevation-z8 ">
             <!-- modal header -->

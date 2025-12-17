@@ -274,7 +274,7 @@ mat-radio-group {
         }
        
   
-        h4, h3 ,h2 {
+        /* h4, h3 ,h2 {
           margin: 0 0 30px 0;
           font-weight: 600;
           display: flex;
@@ -287,7 +287,7 @@ mat-radio-group {
       h5{
         font-weight: 600;
       }
-  
+   */
       :host ::ng-deep #firstBox mat-form-field {
         width: 35.5rem;
       }

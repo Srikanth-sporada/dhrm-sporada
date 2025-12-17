@@ -535,10 +535,18 @@ export class ApiService {
   getreliveReason() {
     return this.http.get(this.url + `/hrOperation/reliveReason`);
   }
+  /** first apporver API */
   onboard_form(form: any) {
     console.log(form);
     return this.http.post(this.url + "/hrOperation/onboard_form", form);
   }
+  /** HR finalApporver API
+   * @param onboardData
+   */
+   traineeFinalApprover(onboardData:any){
+    return this.http.post(this.url + '/hrOperation/onboard_form_new',onboardData)
+   }
+
   getfiledrop(form: any) {
     return this.http.post(this.url + "/hrOperation/getfiledrop", form);
   }
