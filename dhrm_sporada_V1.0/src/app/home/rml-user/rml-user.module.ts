@@ -64,6 +64,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChartModule } from 'primeng/chart';
 import {CardModule} from 'primeng/card';
+import { BadgeModule } from 'primeng/badge';
 import {TableModule} from 'primeng/table'
 import { FormatTimePipe } from "src/app/pipes/format-time.pipe";
 import { PayrollAreaComponent } from "./masters/payroll-area/payroll-area.component";
@@ -146,6 +147,7 @@ import { TraineePresentTrendComponent } from "./dashboard/hr-dashboard/trainee-p
     FileUploadModule,
     InputTextModule,
     CheckboxModule,
+    BadgeModule,
     ChartModule,
     CardModule,
     TableModule,

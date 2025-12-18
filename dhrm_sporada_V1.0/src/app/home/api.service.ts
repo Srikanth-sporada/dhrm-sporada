@@ -159,7 +159,7 @@ export class ApiService {
     return this.http.post(this.url + "/master/addplant", form);
   }
   /**
-   * Payroll Area API Service
+   * Payroll Area API Service #NEW
    * @param {*} data
    * @return {*} 
    * @memberof ApiService
@@ -187,7 +187,7 @@ export class ApiService {
   }
 
   /**
-   * Cost Center API Service
+   * Cost Center API Service #NEW
    * 
    */
   /**
@@ -540,7 +540,7 @@ export class ApiService {
     console.log(form);
     return this.http.post(this.url + "/hrOperation/onboard_form", form);
   }
-  /** HR finalApporver API
+  /** HR finalApporver API #NEW
    * @param onboardData
    */
    traineeFinalApprover(onboardData:any){
@@ -958,16 +958,16 @@ export class ApiService {
     );
   }
 
-  /** new reports */
+  /** new reports #new */
   
-  /** LOP report
+  /** LOP report #new
    * @param {*} formData lop report filter form
    */
   getLopReportData(formData:any){
     return this.http.get(this.url + `/report/lopreport?companyCode=${formData.companyCode}&genId=${formData.genId}&month=${formData.month}&payrollArea=${formData.payrollArea}&plantCode=${formData.plantCode}&year=${formData.year}`);
   }
   /** 
-   * cumulative report
+   * cumulative report #new
    * @param {*} formData cumulative report form
    * lockMonth ==> formData.year + formData.month + 01
    */

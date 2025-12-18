@@ -27,7 +27,7 @@ export class TraineeLoginComponent implements OnInit {
 
     // FORM BUILDER FOR TAINEE LOGIN
     this.traineeLoginForm = fb.group({
-      username: ["", Validators.required],
+      username: ["", [Validators.required]],
       pass: ["", Validators.required],
     });
 
@@ -41,11 +41,16 @@ export class TraineeLoginComponent implements OnInit {
   // TRAINEE LOGIN FUNCTION
   submitForm() {
     this.loading = true;
-    var username = this.traineeLoginForm.controls["username"].value;
+    var username = this.traineeLoginForm.controls["username"].value.trim();
     if (this.traineeLoginForm.invalid) {
       this.messageService.add({ severity: 'error', summary: 'Please fill all fields!',});
     } else {
-      this.service.traineeLogin(this.traineeLoginForm.value).subscribe({
+      /** trim user input */
+      const formData = this.traineeLoginForm.value;
+      formData.username = formData.username.trim();
+      formData.pass = formData.pass.trim();
+
+      this.service.traineeLogin(formData).subscribe({
         next: (response) => {
           console.log(response);
           this.message = response;
@@ -54,6 +59,7 @@ export class TraineeLoginComponent implements OnInit {
             sessionStorage.setItem("user", "test");
             sessionStorage.setItem("token", this.message.token);
             localStorage.setItem("token", this.message.token);
+            /** navigation to trainee test page */
             this.router.navigate(["/trainee-test", username]);
           } else if (this.message.status == "wrong_user") {
             this.loading = false;
@@ -66,7 +72,10 @@ export class TraineeLoginComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'You still haven\'t registered!', });
           }
         },
-        error: (err) => this.messageService.add({ severity: 'error', summary: err.message }),
+        error: (err) => {
+          console.error('ERROR:',err);
+          this.messageService.add({ severity: 'error', summary: err.message });
+        }
       });
     }
   }

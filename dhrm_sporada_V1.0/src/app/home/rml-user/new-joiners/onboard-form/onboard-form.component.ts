@@ -577,7 +577,7 @@ export class OnboardFormComponent implements OnInit {
         next: (response: any) => {
         //  console.log(response);
           if (response) {
-             this.messageService.add({severity:'info',summary:response?.message})
+             this.messageService.add({severity:'info',summary:response})
             if (this.setting == 1) {
               this.form.controls["trainee_id"].setValue();
               this.service
@@ -811,7 +811,7 @@ export class OnboardFormComponent implements OnInit {
       next: (response:any) => {
        console.log('category submitted',response);
       /** HR APPROVAL API CALL  SUBMITTED */ 
-       this.formservice.submitted(submitData);
+      //  this.formservice.submitted(submitData);
       /** 
        * onboard form api call first approver
        *  */

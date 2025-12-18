@@ -72,6 +72,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import  { CalendarModule as CalanderModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
+import { BadgeModule } from 'primeng/badge';
 import { SpeedDialModule } from "primeng/speeddial";
 import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component";
 /** time office loader component */
@@ -166,6 +167,7 @@ import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-
     CalanderModule,
     ButtonModule,
     TabViewModule,
+    BadgeModule,
     SpeedDialModule,
   ],
 })

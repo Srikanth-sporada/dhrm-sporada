@@ -270,4 +270,9 @@ export class VanFacilityMappingComponent implements OnInit {
       this.messageService.add({severity:'warn',summary:'Something went wrong!'})
     }
   }
+
+  /** convert number to string */
+  convertToString(number:any){
+    return String(number);
+  }
 }

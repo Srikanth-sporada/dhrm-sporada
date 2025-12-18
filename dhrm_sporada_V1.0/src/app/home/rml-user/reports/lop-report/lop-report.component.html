@@ -178,15 +178,15 @@
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md">{{ i?.plant_name || '-'}}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.payrollArea || '-'}}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">
-                  {{ i?.startDate | date:'dd-MM-yyyy' }}
+                  {{ i?.startDate | date:'dd-MMM-yyyy' }}
                 </td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">
-                  {{ i?.endDate | date:'dd-MM-yyyy'}}
+                  {{ i?.endDate | date:'dd-MMM-yyyy'}}
                 </td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md text-center">{{ i?.duration || '1' }}</td>
                 <td class="!px-2 !py-4 text-nowrap !rounded-s-md">
                 <span [ngClass]="
-                  {'bg-red-200':i.lop_type == 'Absent', 'bg-yellow-200':i.lop_type == 'Late Coming' || i.lop_type == 'Early Going'}
+                  {'bg-red-200':i.lop_type == 'Absent', 'bg-yellow-200':i.lop_type == 'Late Coming' || i.lop_type == 'Early Going','bg-orange-200':i.lop_type == 'MISS PUNCH'}
                   " class="!px-2 !py-1 rounded-md text-center">
                   {{ i?.lop_type || '-' }}
                 </span>

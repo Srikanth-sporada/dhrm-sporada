@@ -22,7 +22,8 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">horizontal_distribute</mat-icon>
-                    <span>Van Delay Regularization</span>
+                    <span>Van Delay Regularization</span> 
+                    <p-badge [value]="convertString(userList.length)"></p-badge>
                   </div>
         </ng-template>
         <!-- content -->
@@ -67,11 +68,16 @@
             <div class="w-full p-fluid">
                 <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Route</label> <br>
               <p-dropdown
-              [options]="routelist"
-              [(ngModel)]="route"  
-              [disabled]="!Category"
-              optionValue="Route_Id"
-              optionLabel="Route_Name">
+                [options]="routelist"
+                [(ngModel)]="route"  
+                [disabled]="!Category"
+                optionValue="Route_Id"
+                optionLabel="Route_Name">
+                <ng-template let-route pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <span>{{ route?.Route_Id + '-' + route.Route_Name }}</span>
+                  </div>
+                </ng-template>
               </p-dropdown> 
             </div>
               <!-- details btn -->
@@ -80,7 +86,7 @@
                   label="Details"
                   iconPos="right"
                   icon="pi pi-arrow-circle-right"
-                  class="mt-9 w-1/3"
+                  class="mt-10 w-1/3"
                   (click)="verify()" 
                    [disabled]="!isverifyValid()">
                 </button>
@@ -123,7 +129,7 @@
                   label="Submit"
                   iconPos="right"
                   icon="pi pi-send"
-                  class="mt-9 w-1/3"
+                  class="mt-10 w-1/3"
                   (click)="submit()" 
                   [disabled]="!issubmitValid()">
                 </button>
@@ -199,17 +205,17 @@
             </div> -->
             
             <!-- table -->
-            <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+            <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2 relative">
             <!-- <div   style="margin-top: 1rem;" class = "table-wrapper container3"> -->
                 <table id="table" class="table-auto !w-full">
                       <!-- table head -->
                         <thead class="sticky top-0">
-                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                                 <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                                <th class="!text-white !px-2 !py-2 !border-none !border-0">Route Name</th>
-                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen-ID</th>
-                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Shift</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0">Route</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+                                <th class="!text-white !px-2 !py-2 !border-none !border-0">Shift</th>
                                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
                                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">In Time</th>
                                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Out Time</th>
@@ -224,17 +230,19 @@
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md">{{data.Route_Name}}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.shift_desc }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md">{{data.in_time |date :'dd-MM-yyyy' }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md  text-center text-green-600 font-semibold">{{data.in_time |date :'HH:mm:ss' }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center  text-red-500 font-semibold">{{data.out_time |date :'HH:mm:ss' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{data.shift_desc }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.in_time |date :'dd-MM-yyyy' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md  text-center text-green-600 font-semibold">{{data.in_time | date :'HH:mm:ss' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center  text-red-500 font-semibold">{{data.out_time | date :'HH:mm:ss' }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.present_type }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.late_comeing }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Worked_Hrs }} / {{data.Shift_Duration}}</td>         
                                </tr>
                         </tbody> 
-                    </table>
+                </table>
+                <!-- loader -->
+                 <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
             </div>
          </ng-template>
       </p-tabPanel>
@@ -244,24 +252,25 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">info</mat-icon>
-                    <span>Regularization Details</span>
+                    <span>Regularization Details</span> 
+                    <p-badge [value]="convertString(AppliedList?.length)"></p-badge>
                   </div>
         </ng-template>
          <!-- content -->
        <ng-template pTemplate="content">
-        <div class="h-[90svh] lg:h-[90vh] xl:h-[95vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+        <div class="h-[90svh] lg:h-[90vh] xl:h-[95vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
            <table id="table" class="table-auto !w-full">
              <!-- table head -->
                 <thead class="sticky top-0">
                     <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
                         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Attedance Date</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center font-semibold">Gen ID</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Transport</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Driver</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Route Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Transport</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Driver</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Route Name</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Present Type Before</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Late coming Before(min)</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Worked Hrs Before(min)</th>
@@ -275,24 +284,35 @@
                  <tbody >
                     <tr *ngFor="let data of AppliedList ; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.attn_date |date :'dd-MM-yyyy'}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.attn_date | date :'dd-MM-yyyy'}}</td>
                         <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.fullname}}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.apprentice_type }}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Transport }}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Driver }}</td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Route_Name }}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon">{{data.Present_type_before }}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon"> {{data.Lc_min_before }}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightsalmon">{{data.Worked_hrs_before }} / {{data.Shift_Duration}}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightblue ;border: 1px solid white;">{{data.Applied_LC_min }}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightgreen">{{data.Present_type_after }}</td>
-                        <td class="!px-2 !py-4  text-center !font-semibold"  style="background-color: lightgreen">{{data.Lc_min_after }}</td>
-                        <td class="!px-2 !py-4  text-center font-semibold"  style="background-color: lightgreen">{{data.Worked_hrs_after }} / {{data.Shift_Duration}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md  text-purple-600 font-semibold">{{data.apprentice_type }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{data.Transport }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{data.Driver }}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md">{{data.Route_Name }}</td>
+                        <td class="!px-2 !py-4  text-center !font-semibold">
+                          <span class="px-2 bg-indigo-200 rounded text-indigo-600">{{data.Present_type_before }}</span>
+                        </td>
+                        <td class="!px-2 !py-4  text-center !font-semibold">  <span class="px-2 bg-indigo-200 rounded text-indigo-600">{{data.Lc_min_before }}</span></td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"> <span class="px-2 bg-indigo-200 rounded text-indigo-600">{{data.Worked_hrs_before }} / {{data.Shift_Duration}}</span></td>
+                        <td class="!px-2 !py-4  text-center !font-semibold">
+                          <span class="px-2 bg-blue-200 text-blue-600 rounded">{{data.Applied_LC_min }}</span>
+                        </td>
+                        <td class="!px-2 !py-4  text-center !font-semibold"> 
+                          <span class="px-2 rounded bg-green-200 text-green-600">{{data.Present_type_after }}
+
+                        </span></td>
+                        <td class="!px-2 !py-4  text-center !font-semibold">
+                          <span class="px-2 rounded bg-green-200 text-green-600">{{data.Lc_min_after }}</span>
+                        </td>
+                        <td class="!px-2 !py-4  text-center font-semibold"> 
+                          <span class="px-2 rounded bg-green-200 text-green-600">{{data.Worked_hrs_after }} / {{data.Shift_Duration}}</span></td>
                        </tr>
                 </tbody> 
-                  
           </table>
+          <!-- loader -->
+          <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
         </div>
          
        </ng-template>

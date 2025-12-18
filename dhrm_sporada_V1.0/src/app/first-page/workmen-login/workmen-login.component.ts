@@ -15,7 +15,12 @@ export class WorkmenLoginComponent implements OnInit {
   master: any;
   username: any = ''
   password:any = ''
-  constructor(public fb: UntypedFormBuilder, private router: Router, private authService: AuthService,  private service: ApiService, private messageService:MessageService) {}
+  constructor(
+    public fb: UntypedFormBuilder, 
+    private router: Router, 
+    private authService: AuthService,  
+    private service: ApiService, 
+    private messageService:MessageService) {}
 
   ngOnInit() {
       this.workmenLoginForm = new UntypedFormGroup({
@@ -38,8 +43,13 @@ export class WorkmenLoginComponent implements OnInit {
       if (this.workmenLoginForm.invalid) {
           return this.messageService.add({severity:'error', summary: 'Please Fill all fields',});
       }
-          console.log(this.workmenLoginForm.value)
-          this.service.ars_login(this.workmenLoginForm.value)
+          console.log(this.workmenLoginForm.value);
+          /** trim user input */   
+          const formData = this.workmenLoginForm.value;
+          formData.User_Name = formData?.User_Name?.trim();
+          formData.Password = formData?.Password?.trim();
+          /**  */  
+          this.service.ars_login(formData)
           .subscribe({
               next: (response:any) => {
                   // console.log(response, response.status);

@@ -38,7 +38,10 @@ export class ExecutiveLoginComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Please fill all the fields'});
         }
             this.authService
-            .login(this.executiveLoginForm.get('User_Name')?.value, this.executiveLoginForm.get('Password')?.value)
+            .login(
+                this.executiveLoginForm.get('User_Name')?.value.trim(), 
+                this.executiveLoginForm.get('Password')?.value.trim()
+            )
             .subscribe({
                 next: (response) => {
                     console.log('user login message',response);
@@ -58,7 +61,10 @@ export class ExecutiveLoginComponent implements OnInit {
                        this.messageService.add({ severity: 'error', summary: 'Invalid Credentials'});
                     }
                 },
-                error: (error) => this.messageService.add({ severity: 'error', summary: error.message })
+                error: (error) => {
+                    console.error('ERROR:',error);
+                    this.messageService.add({ severity: 'error', summary: error.message });
+                }
             });
     }
 

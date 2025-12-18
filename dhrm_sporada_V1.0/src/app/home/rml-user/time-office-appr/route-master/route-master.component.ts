@@ -237,4 +237,12 @@ export class RouteMasterComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, "Route Master list");
     XLSX.writeFile(wb, "Route_master.xlsx");
   }
+
+  /** 
+   * convert num to str
+   * @param number
+   *  */
+  convertToString(number:any){
+    return String(number);
+  }
 }

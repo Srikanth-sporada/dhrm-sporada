@@ -211,7 +211,7 @@
         <ng-template pTemplate="header">
                   <div class="flex items-center justify-center gap-1">
                     <mat-icon class="icon-pad text-[1.5rem]">airline_stops</mat-icon>
-                    <span>Van Mapped Details</span>
+                    <span>Van Mapped Details</span> <p-badge [value]="convertToString(van_mapList.length)"></p-badge>
                   </div>
         </ng-template>
         <!-- content -->

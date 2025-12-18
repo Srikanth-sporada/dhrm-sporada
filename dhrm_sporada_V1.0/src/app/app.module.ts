@@ -58,6 +58,7 @@ import { CalendarModule } from "primeng/calendar";
 import { InputNumberModule } from "primeng/inputnumber";
 import { FileUploadModule } from "primeng/fileupload";
 import { InputTextareaModule } from "primeng/inputtextarea";
+import { BadgeModule } from 'primeng/badge';
 import { TraineeApplicationComponent } from "./first-page/trainee-application/trainee-application.component";
 import { TraineeLoginComponent } from "./first-page/trainee-login/trainee-login.component";
 import { TrainerLoginComponent } from "./first-page/trainer-login/trainer-login.component";
@@ -127,6 +128,7 @@ import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filte
     ConfirmPopupModule,
     SpeedDialModule,
     TabViewModule,
+    BadgeModule,
     CalendarModule,
     FileUploadModule,
     InputTextareaModule,
