@@ -396,12 +396,13 @@ export class VanDelayRegularizationComponent implements OnInit {
         // }
       },
       (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       }
     );
   }
 
+  /** submit van delay regularization */
   submit() {
     if (
       this.transporter == "" ||
@@ -429,8 +430,8 @@ export class VanDelayRegularizationComponent implements OnInit {
       plant: this.plant,
       Category: this.Category,
     };
-    this.OpApi.Van_delay(data).subscribe(
-      (res: any) => {
+    this.OpApi.Van_delay(data).subscribe({
+      next:  (res: any) => {
         console.log(res);
 
         // this.openAlertDialog(res,'Check')
@@ -440,13 +441,14 @@ export class VanDelayRegularizationComponent implements OnInit {
         this.closeAllForms1();
         this.date = null;
       },
-      (error) => {
-        console.log(error.error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.error });
       }
-    );
+    });
   }
 
+  /** close form */
   closeAllForms1() {
     this.route = null;
     this.date = null;

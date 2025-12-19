@@ -27,7 +27,14 @@ export class TestEvaluationComponent implements OnInit {
 ];
 
 
-  constructor(private service: ApiService, private fb: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, public loader:LoaderserviceService,private messageService:MessageService) {
+  constructor(
+    private service: ApiService, 
+    private fb: UntypedFormBuilder, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    public loader:LoaderserviceService,
+    private messageService:MessageService) {
+
     this.form = this.fb.group({
       trainee: ['', Validators.required],
       test: ['', Validators.required],
@@ -41,6 +48,7 @@ export class TestEvaluationComponent implements OnInit {
       plant_code: ['']
     })
   }
+
   filterTrainee: Observable<any[]>;
 
   ngOnInit(): void {
@@ -50,51 +58,24 @@ export class TestEvaluationComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-
-    this.form.get('test').disable()
-    this.service.getTrainee()
-      .subscribe(
-        {
-          next: (response) => {
-            console.log('trainee : ', response)
-            this.trainee = response
-            this.filterTrainee = this.form.get('trainee').valueChanges.pipe(
-              startWith(''),
-              map((value: any) => this.filterOptions(value))
-            );
-          },
-          error: (error) => {
-             console.log(error);
-             this.messageService.add({severity:'error',summary:error?.error?.message})
-          }
-        }
-      )
-// get offline modules
-    this.service.getOfflineModules()
-      .subscribe(
-        {
-          next: (response) => { console.log('trainee : ', response), this.modules = response },
-          error: (error) => {
-             console.log(error);
-             this.messageService.add({severity:'error',summary:error.error.message})
-          }
-        }
-      )
-
+    /** disbale exam type */
+    this.form.get('test').disable();
+    this.getTrainee();
+    this.getOfflineModules();
   }
 
   filterOptions(value: any): any[] {
-    console.log(value, "/////////////////");
-
+    console.log(value);
     const filterValue = value?.toLowerCase();
     return this.trainee.filter((trainee: any) => trainee.fullname.toLowerCase().includes(filterValue));
   }
 
-  // submit evalution form
+  /** submit offline evaluation form */
   offline_page() {
     this.form.get('test').enable()
     if (this.form.controls['score'].value == '' || this.form.controls['score'].value == null) {
-      alert("please enter mark for the paper")
+      // alert("please enter mark for the paper")
+      this.messageService.add({severity:'warn',summary:'Please Enter Mark!'})
     }
     else {
       console.log('Before',this.form.value);
@@ -107,8 +88,10 @@ export class TestEvaluationComponent implements OnInit {
       this.form.controls['plant_code'].setValue(sessionStorage.getItem('plantcode'))
       this.form.controls['module'].setValue(this.form.controls['module'].value.module_name)
 
-      console.log('After',this.form.value)
+      console.log('OFLINE TEST FORM:',this.form.value)
+
       this.loading = true
+    /** offline upload API */
       this.service.offlineUpload(this.form.value)
         .subscribe({
           next: (res) => {
@@ -119,20 +102,29 @@ export class TestEvaluationComponent implements OnInit {
             this.router.navigate(['/rhrm/training_dojo/test-evaluation'], { relativeTo: this.route })
             this.form.reset()
           },
-          error: (err) => console.log(err)
+          error: (error:any) => {
+            console.error('ERRR:',error);
+            this.messageService.add({severity:'error',summary:error?.message});
+          }
         })
     }
 
   }
 
-  // store trainee id
+  /** 
+   * get trainee ID
+   * @property {*} trainee_id
+   */
   store_trainee(event: any) {
     this.trainee_id = event.value;
-    console.log(this.trainee_id);
+    console.log('SELECTED TRAINEE ID:',this.trainee_id);
 
   }
 
-  // get trainee test status
+  /** 
+   * get trainee test status 
+   * @param event change event
+   */
   get_test_status(event: any) {
     console.log(event);
     var value = event.value.module_name;
@@ -142,11 +134,12 @@ export class TestEvaluationComponent implements OnInit {
       .subscribe(
         {
           next: (response: any) => {
-            console.log(response)
+            console.log('TRAINEE TEST RES:',response)
             if (response.status == 'already') 
             {
               // alert("Trainee already finished evauation");
-              this.messageService.add({severity:'info',summary:'Trainee already finished evauation'})
+              this.messageService.add({severity:'info',summary:'Trainee already finished evaluation'});
+              /** reset form */
               this.form.reset()
               this.service.getTrainee()
                 .subscribe(
@@ -160,12 +153,13 @@ export class TestEvaluationComponent implements OnInit {
                       );
                     },
                     error: (error) => {
-                      console.log(error);
-                      this.messageService.add({severity:'error',summary:error?.error?.message})
+                      console.error('ERROR:',error);
+                      this.messageService.add({severity:'error',summary:error?.error?.message});
                     }
                   }
                 )
             }
+            /** based on trainee test status res */
             if (response.status == 'The trainee is not qualified for this exam' || response.status == 'Please select the Trainee') 
             {
               // alert(response.status)
@@ -183,12 +177,13 @@ export class TestEvaluationComponent implements OnInit {
                       );
                     },
                     error: (error) => {
-                      console.log(error);
+                      console.error('ERROR:',error);
                       this.messageService.add({severity:'error',summary:error?.error?.message})
                     }
                   }
                 )
             }
+            /** set exam type based on response */
             if (response.status == 'exam failed') {
               this.form.controls['test'].setValue('post-test')
             }
@@ -199,7 +194,7 @@ export class TestEvaluationComponent implements OnInit {
             }
           },
           error: (error) => {
-            console.log(error);
+            console.error('ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.error?.message})
           }
         }
@@ -207,7 +202,10 @@ export class TestEvaluationComponent implements OnInit {
 
   }
 
-  // test file upload
+  /** 
+   * trainee ofline test file uplaod
+   * @param event 
+   */
   offline_upload(event: any) {
     if (this.form.invalid){
       // alert('select the above requirements');
@@ -216,7 +214,10 @@ export class TestEvaluationComponent implements OnInit {
       
     else {
       var exten = event.target.files[0].name.split('.')
-      exten = exten.pop()
+      exten = exten.pop();
+      /** offline test file name */
+      console.log('FILE NAME:', this.trainee_id + '_' + this.form.controls['module'].value.module_name + '_' + this.form.controls['test'].value + '.' + exten);
+
       var formData = new FormData()
 
       formData.append("file", event.target.files[0], this.trainee_id + '_' + this.form.controls['module'].value + '_' + this.form.controls['test'].value + '.' + exten)
@@ -224,16 +225,61 @@ export class TestEvaluationComponent implements OnInit {
       this.service.offline_test(formData)
         .subscribe({
           next: (res) => {
-            console.log(res)
-            this.form.controls['file'].setValue(this.trainee_id + '_' + this.form.controls['module'].value + '_' + this.form.controls['test'].value + '.' + exten)
+            console.log('OFFLINE TEST RES:',res);
+            /** file rename */
+            this.form.controls['file'].setValue(this.trainee_id + '_' + this.form.controls['module'].value.module_name.trim() + '_' + this.form.controls['test'].value + '.' + exten)
           },
           error: (err) => { 
-            console.log(err);
+            console.error('ERROR:',err);
             this.messageService.add({severity:'error',summary:err?.error?.message})
            }
         })
     }
+  }
 
+  /** 
+   * get offline modules
+   * @property {*} modules
+   */
+  getOfflineModules(){
+    // get offline modules
+    this.service.getOfflineModules()
+      .subscribe(
+        {
+          next: (response) => { 
+            console.log('trainee : ', response), 
+            this.modules = response 
+          },
+          error: (error) => {
+             console.error('ERROR:',error);
+             this.messageService.add({severity:'error',summary:error.error.message})
+          }
+        }
+      )
+  }
 
+  /** 
+   * get offline test trainees
+   * @property {*} trainee
+   * @property {*} filterTrainee
+   */
+  getTrainee(){
+    this.service.getTrainee()
+      .subscribe(
+        {
+          next: (response) => {
+            console.log('TRAINEE DATA:', response)
+            this.trainee = response
+            this.filterTrainee = this.form.get('trainee').valueChanges.pipe(
+              startWith(''),
+              map((value: any) => this.filterOptions(value))
+            );
+          },
+          error: (error) => {
+             console.log(error);
+             this.messageService.add({severity:'error',summary:error?.error?.message})
+          }
+        }
+      )
   }
 }

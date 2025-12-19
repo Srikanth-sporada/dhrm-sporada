@@ -121,8 +121,7 @@
       *ngIf="editing_flag == false"
       [disabled]="!form.valid"
       class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
-      (click)="save()"
-      (click)="modal.close('Close click')"
+      (click)="save(); modal.close('add close')"
     >
       Add Module
     </button>
@@ -131,8 +130,7 @@
       *ngIf="editing_flag == true"
       type="button"
       class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
-      (click)="editSave()"
-      (click)="modal.close('Close click')"
+      (click)="editSave(); modal.close('update close')"
     >
       Update Module
     </button>
@@ -140,8 +138,7 @@
     <button
       type="button"
       class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
-      (click)="reset()"
-      (click)="modal.close('Close click')"
+      (click)="reset(); modal.close('close click')"
     >
       Cancel
     </button>
@@ -170,6 +167,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+            <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{dummy?.length || 0}}
+           </span>
         </h1>
        <!-- primeNG speedDial -->
         <p-speedDial 
@@ -198,16 +199,16 @@
      </div>
   </div>
     
-    <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+    <!-- <app-loader *ngIf="loader.isLoding | async; else show"></app-loader> -->
 
-    <ng-template #show>
-      <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+      <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
+        <!-- modules table -->
         <table  id="table" class="table-auto !w-full">
             <!-- table head -->
             <thead class="sticky top-0">
-              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
                 <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
-                  SNo
+                  Sno
                 </th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0">
                   Module name
@@ -262,7 +263,9 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+        </table>
+
+        <!-- loader -->
+         <app-loader *ngIf="loader.isLoding | async"></app-loader>
       </div>
-    </ng-template>
 </div>
