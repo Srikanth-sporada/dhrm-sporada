@@ -194,7 +194,7 @@ export class HrLopApplyComponent implements OnInit {
    * @property {*}  loggedInUserID
    */
   getLockDateByCategory(){
-    this.apiService.getlockDateByEmp(this.loggedInUserID).subscribe({
+    this.apiService.getlockdateByCategory('T').subscribe({
       next: (response:any) => {
         console.log('LOCK DATE:',response);
         if(response?.date){

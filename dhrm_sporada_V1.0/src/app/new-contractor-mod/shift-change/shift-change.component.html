@@ -97,7 +97,7 @@
         </p-dropdown>
         <ng-template let-inData pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <span>{{ inData.MinVartime | date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</span>
+            <span>{{ inData.MinVartime}}</span>
           </div>
        </ng-template>
 
@@ -114,7 +114,8 @@
         styleClass="w-full !font-poppins">
          <ng-template let-maxData pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <span>{{ maxData.MaxOuttime | date:'dd-MM-yyyy HH:mm:ss':'UTC' }}</span>
+            <!-- | date:'dd-MM-yyyy HH:mm:ss':'UTC'  -->
+            <span>{{ maxData.MaxOuttime }}</span>
           </div>
        </ng-template>
         </p-dropdown>

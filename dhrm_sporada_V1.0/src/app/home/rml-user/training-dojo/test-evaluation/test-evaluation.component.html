@@ -30,11 +30,16 @@
                         <p-dropdown 
                             formControlName="trainee"
                             [options]="trainee"
-                            optionLabel="fullname"
+                            optionLabel="trainee_idno"
                             optionValue="trainee_idno"
                             styleClass="w-full"
                             (onChange)="store_trainee($event)"
                             placeholder="Select Trainee">
+                             <ng-template let-trainee pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <span>{{ trainee.trainee_idno + '-' + trainee.fullname }}</span>
+                                </div>
+                            </ng-template>
                         </p-dropdown>
                         </div>
                          <!-- module -->

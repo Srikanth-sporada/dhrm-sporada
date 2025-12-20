@@ -98,7 +98,8 @@ export class TestEvaluationComponent implements OnInit {
             console.log(res);
             this.loading = false
             this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-            this.router.onSameUrlNavigation = 'reload'
+            this.router.onSameUrlNavigation = 'reload';
+            this.messageService.add({severity:'info',summary:'Trainee offline test uploaded successfully.'})
             this.router.navigate(['/rhrm/training_dojo/test-evaluation'], { relativeTo: this.route })
             this.form.reset()
           },

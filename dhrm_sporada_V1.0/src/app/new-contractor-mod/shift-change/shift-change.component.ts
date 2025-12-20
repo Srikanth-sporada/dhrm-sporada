@@ -128,9 +128,9 @@ export class ShiftChangeComponent implements OnInit {
 
     this.button=true
     this.api.shiftChangedetails(data).subscribe( (res:any) =>{
-    this.attn_data=res[0]
-    this.in_data=res[1]
-    this.out_data=res[2]
+    this.attn_data = res[0]
+    this.in_data = res[1]
+    this.out_data = res[2]
     this.shift_data=res[3]
     this.verifyBtn=true
     this.button=false
@@ -177,7 +177,7 @@ export class ShiftChangeComponent implements OnInit {
       this.loading = true;
       const data ={
         gen_id:this.gen_id,
-        Attn_Date:this.Attn_Date.format('yyyy-MM-DD'),
+        Attn_Date:moment(this.Attn_Date).format('YYYY-MM-DD'),
         Attn_data:this.attn_data,
         plantcode:plantcode,
         min_time:this.min_time,
@@ -185,7 +185,7 @@ export class ShiftChangeComponent implements OnInit {
         shift_Id:this.shift_Id,
         Applied_by:this.username
       }
-
+      console.log('CHANGE DATA:',data);
       this.api.shiftChangeProcess(data).subscribe((res:any) => {
       console.log(res);
       this.button=false
