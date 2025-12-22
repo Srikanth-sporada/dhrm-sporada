@@ -1,6 +1,6 @@
 <div class="mx-2">
     <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>question_mark</mat-icon> Question Bank<hr/>
@@ -32,7 +32,13 @@
             (onChange)="getquestions($event)"
             styleClass="w-full py-1" 
             placeholder="Select Module" >
+            <ng-template let-trainingModules pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <span>{{ trainingModules.slno + '-' + trainingModules.module_name }}</span>
+                 </div>
+             </ng-template>
         </p-dropdown>
+        
        </div>
        <!-- save btn -->
      <div class="mt-8 ml-3">
@@ -56,13 +62,15 @@
      </div>
      </div>
   </div>
+
    <!-- question table -->
-    <div *ngIf ="offline_flag" class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+    <div *ngIf ="offline_flag" class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
+      <!-- question bank table -->
          <table id="table" class="table-auto !w-full">
             <!-- table head -->
             <thead class="sticky top-0">
                 <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                    <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Q.NO</td>
+                    <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Q.no</td>
                     <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Question</td>
                     <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Correct Answer</td>
                     <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Image File</td>
@@ -72,8 +80,8 @@
             <!-- table body -->
             <tbody>
                 <tr *ngFor = "let i of questions; let a = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                    <td class="px-2 py-4 text-center">{{a+1}}.</td>
-                    <td class="!font-poppins px-2 py-4 text-center">
+                    <td class="px-2 py-2 text-center">{{a+1}}.</td>
+                    <td class="!font-poppins px-2 py-2 text-center">
                         <!-- question -->
                         <textarea
                            [rows]="1"
@@ -82,11 +90,11 @@
                             [readonly] ="flag" 
                             pInputTextarea
                             (change)="question($event, a)"  
-                            (click) ="addrow(a)">
+                            (click)="addrow(a)">
                             {{i.question}}
                         </textarea>
                     </td>
-                    <td class="qb-input px-2 py-4 text-center">
+                    <td class="qb-input px-2 py-2 text-center">
                         <!-- answer -->
                         <input
                             pInputText
@@ -99,21 +107,24 @@
                         
                     </td>
                     <!-- question image link -->
-                    <td class="px-2 py-4 text-center">
+                    <td class="px-2 py-2 text-center">
                         <div> 
                             <a [href] = 'this.url+this.questions[a].image_filename' target = "_blank" style="border-color: white;white-space: pre-wrap">{{this.questions[a].image_filename != null ? this.questions[a].image_filename : ''}}</a>
                         </div>
                     </td>
                     <!-- image upload btn -->
-                    <td class="px-2 py-4 text-center">
-                        <input [disabled] = 'flag' name ="file" type="file" (change)="file($event,a)" class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400">
+                    <td class="px-2 py-2">
+                        <input [disabled]='flag' name ="file" type="file" (change)="file($event,a)" class="block w-full p-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-300 rounded-md">
                     </td>
                 </tr>
             </tbody>
          </table>
+        <!-- loader -->
+         <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
     <!-- offline module  -->
     <div>
-        <p *ngIf = '!offline_flag' ><b>This module is offline module. You can't upload questions for this module.</b> </p>
+        <p *ngIf='!offline_flag' class="text-center"><b>This module is offline module. You can't upload questions for this module.</b> 
+        </p>
     </div>
 </div>

@@ -69,8 +69,8 @@ export class OtCompoffComponent implements OnInit {
         this.downlodData = response.data
         this.data = response.data.map((element: any) => {
           return { ...element, approvedHr: null, reason: "" };
-        }).filter((element:any)=>{
-          return element.bal !=0
+        }).filter((element:any) => {
+          return element.bal != 0;
         });
 
         console.log(this.data);

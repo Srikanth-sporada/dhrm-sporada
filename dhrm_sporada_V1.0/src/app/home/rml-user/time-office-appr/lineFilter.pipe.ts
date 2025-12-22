@@ -6,10 +6,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class LineFilterPipe implements PipeTransform {
 
   transform(items: any, line: any): any {
+    console.log('LINE FLTR:', line, items);
     if (!items) {
       return [];
     }
-    if (!line||line=='All') {
+    if (!line || line=='All') {
       return items;
     }
     return items.filter((item:any) => {

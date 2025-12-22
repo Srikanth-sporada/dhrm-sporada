@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { ApiService } from 'src/app/home/api.service';
-import { LoaderserviceService } from 'src/app/loaderservice.service';
-import { environment } from 'src/environments/environment.prod';
-import { MessageService } from 'primeng/api';
-@Component({
-  selector: 'app-skill-question',
-  templateUrl: './skill-question.component.html',
-  styleUrls: ['./skill-question.component.css']
-})
-export class SkillQuestionComponent implements OnInit {
+import { Component, OnInit } from "@angular/core";
+import { FormGroup, UntypedFormBuilder } from "@angular/forms";
+import { ApiService } from "src/app/home/api.service";
+import { LoaderserviceService } from "src/app/loaderservice.service";
+import { environment } from "src/environments/environment.prod";
+import { MessageService } from "primeng/api";
 
+@Component({
+  selector: "app-skill-question",
+  templateUrl: "./skill-question.component.html",
+  styleUrls: ["./skill-question.component.css"],
+})
+
+export class SkillQuestionComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   flag: any = true;
   loading: any = false;
@@ -19,73 +20,97 @@ export class SkillQuestionComponent implements OnInit {
   inserted: any = 1;
   offline_flag: boolean = true;
   qsize: any;
-  url = environment.path +'/qbank/';
+  url = environment.path + "/qbank/";
   img: any;
-  all:any;
+  all: any;
   levelOptions = [
-  { value: '2', label: 'Level 2' },
-  { value: '3', label: 'Level 3' },
-  { value: '4', label: 'Level 4' }
-];
+    { value: "2", label: "Level 2" },
+    { value: "3", label: "Level 3" },
+    { value: "4", label: "Level 4" },
+  ];
 
-  userDetails:any;
-  username = { 'username': sessionStorage.getItem('plantcode') };
+  userDetails: any;
+  username = { username: sessionStorage.getItem("plantcode") };
 
-  constructor(private fb: UntypedFormBuilder, private service: ApiService, public loader: LoaderserviceService,private messageService:MessageService) {
+  constructor(
+    private fb: UntypedFormBuilder,
+    private service: ApiService,
+    public loader: LoaderserviceService,
+    private messageService: MessageService
+  ) {
     this.form = fb.group({
-      module: [''],
-      username: [sessionStorage.getItem('user_name')],
-      plantcode: [sessionStorage.getItem('plantcode')],
-      level: ['']
+      module: [""],
+      username: [sessionStorage.getItem("user_name")],
+      plantcode: [sessionStorage.getItem("plantcode")],
+      level: [""],
     });
   }
 
   ngOnInit(): void {
+    /** logged in user details */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
-    this.service.getOperationsSkill(this.username)
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          this.modules = response;
-        },
-        error: (error) => {
-          console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-      });
+    /** get operation modules */
+    this.getOperationModules();
   }
 
-  // Method triggered when the 'module' is changed
+  /** 
+   * get operation modules
+   * @property {*} modules
+   */
+  getOperationModules(){
+    this.service.getOperationsSkill(this.username).subscribe({
+      next: (response) => {
+        console.log('MODULES:',response);
+        this.modules = response;
+      },
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+
+  /** 
+   * get operation questions
+   * @param event
+   */
   getquestions(event: any) {
     // Get selected module (oprn_slno) and level
-    const selectedOpSlno = this.form.controls['module'].value;
-    const selectedLevel = this.form.controls['level'].value;
-
+    console.log('EVENT',event);
+    const selectedOpSlno = this.form.controls["module"].value;
+    const selectedLevel = this.form.controls["level"].value;
     // Ensure both module and level are selected before making the API call
     if (selectedOpSlno && selectedLevel) {
       this.flag = false;
       const selectedModule = this.modules.find((module: any) => module.oprn_slno == selectedOpSlno);
 
       // Determine if the module is 'OFFLINE'
-      if (selectedModule?.category === 'OFFLINE') {
+      if (selectedModule?.category === "OFFLINE") {
         this.offline_flag = false;
       } else {
         this.offline_flag = true;
       }
 
-      console.log('Selected Module:', selectedOpSlno);
-      console.log('Selected Level:', selectedLevel);
+      console.log("Selected Module:", selectedOpSlno);
+      console.log("Selected Level:", selectedLevel);
 
       // Call the API only if both values are selected
-      this.service.getSkillQs_trn({
-        module: selectedOpSlno,
-        plant: sessionStorage.getItem('plantcode'),
-        level: selectedLevel
-      })
+      this.service
+        .getSkillQs_trn({
+          module: selectedOpSlno,
+          plant: sessionStorage.getItem("plantcode"),
+          level: selectedLevel,
+        })
         .subscribe({
           next: (response: any) => {
             console.log(response);
@@ -95,9 +120,12 @@ export class SkillQuestionComponent implements OnInit {
             this.img = `${this.url}${this.questions.image_filename}`;
           },
           error: (error) => {
-            console.error(error);
-            this.messageService.add({severity:'error',summary:error.message})
-          }
+            console.error('ERROR:',error);
+            this.messageService.add({
+              severity: "error",
+              summary: error.message,
+            });
+          },
         });
     }
   }
@@ -105,139 +133,195 @@ export class SkillQuestionComponent implements OnInit {
   // Method triggered when the 'level' is changed
   getLevel(event: any): void {
     const selectedLevel = event.value;
-    console.log('Selected level:', selectedLevel);
+    console.log("Selected level:", selectedLevel);
 
     // Call getquestions if both level and module are selected
-    const selectedOpSlno = this.form.controls['module'].value;
+    const selectedOpSlno = this.form.controls["module"].value;
 
     if (selectedOpSlno && selectedLevel) {
       this.getquestions(event);
     }
   }
 
+  /** 
+   * add new row
+   * @param i
+   * @property {*} question
+   * @property {*} inserted
+   */
   addrow(i: any) {
-    if (this.form.controls['module'].value == '') {
-      alert('Please select a Operation');
+    if (this.form.controls["module"].value == "") {
+      // alert("Please select a Operation");
+      this.messageService.add({severity:'warn',summary:'Please Select a Operation!'});
     } else {
       if (i == this.questions.length - 1) {
         this.questions.push({});
         this.inserted += 1;
-        console.log(this.inserted);
+        console.log('INSERTED:',this.inserted);
       }
     }
   }
 
+  /**
+   * @property {*} question
+   * @param event
+   * @param i
+   */
   question(event: any, i: any) {
     this.questions[i].question = event.target.value;
-    console.log(this.questions[i]);
+    console.log('QUESTION:',this.questions[i]);
   }
 
+  /** 
+   * answer sheet
+   * @param event
+   * @param i
+   */
   answers(event: any, i: any) {
     const selectedAnswer = event.target.value;
     if (!selectedAnswer) {
       // alert('Please select an answer');
-      this.messageService.add({severity:'warn',summary:'Please Select Answer'})
+      this.messageService.add({
+        severity: "warn",
+        summary: "Please Select Answer",
+      });
       return; // Prevent further processing if no answer is selected
     }
-  
     // Update the correct_answer if a valid selection is made
     this.questions[i].correct_answer = selectedAnswer.toUpperCase();
-    console.log(this.questions);
+    console.log('QUESTION:',this.questions);
   }
-  
-  
 
+  /** 
+   * operation question
+   * @param event
+   * @param i
+   * @var exten 
+   * @var formData
+   */
   file(event: any, i: any) {
-    const exten = event.target.files[0].name.split('.');
+    const exten = event.target.files[0].name.split(".");
     const fileExtension = exten.pop();
     const formData = new FormData();
 
-    formData.append("file", event.target.files[0], this.form.controls['module'].value + '_' + (i + 1) + '_picture.' + fileExtension);
+    /** form DATA */
+    formData.append(
+      "file",
+      event.target.files[0],
+      this.form.controls["module"].value +
+        "_" +
+        (i + 1) +
+        "_picture." +
+        fileExtension
+    );
 
-    this.questions[i].image_filename = this.form.controls['module'].value + '_' + (i + 1) + '_picture.' + fileExtension;
-
-    this.service.questionbankupload(formData)
-      .subscribe({
-        next: (res:any) => { 
-          console.log(res);
-          if(res.message == "success") {
-            this.messageService.add({severity:'info',summary:'Question Uploaded Successfully'})
-          }
-        },
-        error: (err) => { 
-          console.log(err); 
-          this.messageService.add({severity:'error',summary:err.message})
+    /** question  */
+    this.questions[i].image_filename =
+      this.form.controls["module"].value +
+      "_" +
+      (i + 1) +
+      "_picture." +
+      fileExtension;
+      /** question bank API  */
+    this.service.questionbankupload(formData).subscribe({
+      next: (res: any) => {
+        console.log('response:',res);
+        if (res.message == "success") {
+          this.messageService.add({
+            severity: "info",
+            summary: "Question Uploaded Successfully",
+          });
         }
-      });
+      },
+      error: (err) => {
+        console.error('ERROR:',err);
+        this.messageService.add({ severity: "error", summary: err.message });
+      },
+    });
   }
 
+  /**
+   * submit operation question module
+   * @property 
+   */
   submit() {
     // Get the selected values from the form
-    const selectedModule = this.form.controls['module'].value.toString();
-    const selectedLevel = this.form.controls['level'].value;
-  
+    const selectedModule = this.form.controls["module"].value.toString();
+    const selectedLevel = this.form.controls["level"].value;
+
     // Validate if both module and level are selected
     if (!selectedModule || !selectedLevel) {
-      this.messageService.add({severity:'info',summary:'Please select both Module and Level before saving.'})
-      // alert('Please select both Module and Level before saving.');
+      this.messageService.add({
+        severity: "info",
+        summary: "Please select both Module and Level before saving.",
+      });
       return; // Do not proceed with the submission if validation fails
     }
-
-
     // Validate that all questions have a 'correct_answer'
     for (let i = 0; i < this.questions.length - 1; i++) {
       if (!this.questions[i].correct_answer) {
-        this.messageService.add({severity:'info',summary:`Please select a correct answer for question ${i + 1}`})
+        this.messageService.add({
+          severity: "info",
+          summary: `Please select a correct answer for question ${i + 1}`,
+        });
         // alert(`Please select a correct answer for question ${i + 1}`);
-        return; 
+        return;
       }
     }
-  
+
     // Add the module and other data to the last question object
     this.questions[this.questions.length - 1] = {
       module: selectedModule,
-      plantcode: sessionStorage.getItem('plantcode'),
+      plantcode: sessionStorage.getItem("plantcode"),
       levl: selectedLevel,
-      inserted: this.inserted
+      inserted: this.inserted,
     };
-  
-    // Call the service to save the questions
-    this.service.skillQuestionBank(this.questions)
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-          if (res.message === 'success') {
-            this.messageService.add({severity:'info',summary:"The questions have been successfully saved."})
-            // alert("The questions have been successfully saved.");
-             // Optionally reload the page after saving
-             this.getquestions(event);
-          } else {
-            this.messageService.add({severity:'error',summary:"There was an issue saving the questions. Please try again."})
-            // alert("There was an issue saving the questions. Please try again.");
-          }
-        },
-        error: (err) => {
-          console.log(err);
-          this.messageService.add({severity:'error',summary:err.message})
-          // alert("There was an error while saving the questions.");
+   console.log('QUESTIONS:',this.questions);
+    /**  operation question API */
+    this.service.skillQuestionBank(this.questions).subscribe({
+      next: (res: any) => {
+        console.log('QSTN API RES:',res);
+        if (res.message === "success") {
+          this.messageService.add({
+            severity: "info",
+            summary: "The questions have been successfully saved.",
+          });
+          // Optionally reload the page after saving
+          this.getquestions(event);
+        } else {
+          this.messageService.add({
+            severity: "error",
+            summary: "There was an issue saving the questions. Please try again.",
+          });
+          // alert("There was an issue saving the questions. Please try again.");
         }
-      });
-  } 
-  
-
-  clearForm(): void {
-    this.form.controls['module'].setValue('');
-    this.form.controls['level'].setValue('');
-    this.offline_flag = true;
-    this.questions = [{}];  
-    this.inserted = 1;
-    console.log('Form cleared');
+      },
+      error: (err) => {
+        console.error('ERROR:',err);
+        this.messageService.add({ severity: "error", summary: err.message });
+        // alert("There was an error while saving the questions.");
+      },
+    });
   }
 
+  /** reset form data */
+  clearForm(): void {
+    this.form.controls["module"].setValue("");
+    this.form.controls["level"].setValue("");
+    this.offline_flag = true;
+    this.questions = [{}];
+    this.inserted = 1;
+    console.log("Form cleared");
+  }
+
+  /** 
+   * delete animation
+   */
   delete(i: any) {
     console.log(this.questions[i].question);
     if (this.questions.length != 1 && this.questions.length != i + 1) {
-      this.service.questionBankDelete({ qslno: this.questions[i].qslno })
+      this.service
+        .questionBankDelete({ qslno: this.questions[i].qslno })
         .subscribe({
           next: (res: any) => {
             console.log("qdel", res);
@@ -246,11 +330,10 @@ export class SkillQuestionComponent implements OnInit {
               console.log(this.inserted, this.qsize);
             }
           },
-          error: (err) => {
-          console.log(err);
-          this.messageService.add({severity:'error',summary:err.message})
-          // alert("There was an error while saving the questions.");
-        }
+          error: (error:any) => {
+            console.log('ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message});
+          }
         });
       this.questions.splice(i, 1);
     }
