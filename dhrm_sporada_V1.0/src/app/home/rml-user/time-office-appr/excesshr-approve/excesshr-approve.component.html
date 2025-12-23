@@ -69,8 +69,9 @@
   </div>
    </div>
 
-<div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
-  <table id="table" class="table-auto !w-full">
+<div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
+
+  <table id="table" class="table-auto !w-full" >
     <!-- table head -->
       <thead class="sticky top-0 !z-10">
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
@@ -80,9 +81,9 @@
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Worked Date</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">IN Time</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">OUT Time</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">IN</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">OUT</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Excess Work Hrs</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Actual Worked Hrs</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
@@ -91,18 +92,18 @@
       </thead>
       <!-- table body | datefilter:filterDate | lineFilter:selectedLine;-->
       <tbody>
-        <tr *ngFor="let item of data | datefilter:filterDate | lineFilter:selectedLine let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.biometric_no}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md">{{ item.apprentice_type }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-blue-600">{{ item.att_date | date:'dd-MM-yyyy'}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-green-500">{{item.in_time}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold text-red-500">{{item.out_time}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ item.expect_othr }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">
+        <tr *ngFor="let item of data | datefilter:filterDate | lineFilter:selectedLine  let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+          <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i + 1 }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.biometric_no}}</td>
+          <td class="!px-2 !py-2 !rounded-s-md">{{ item.fullname }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md">{{ item.Line_Name }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md">{{ item.apprentice_type }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-blue-600">{{ item.att_date | date:'dd-MM-yyyy'}}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-green-500">{{item.in_time}}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-red-500">{{item.out_time}}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold">{{ item.expect_othr }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center">
             <input
                 class="text-center w-[100px] h-[40px]"
                 type="number"
@@ -121,19 +122,17 @@
             <p *ngIf="item.approvedHr > item.expect_othr " style="color:red" >Invalid worked Hours</p>
             <p *ngIf=" item.approvedHr > getMaxHours(item)" style="color:red" >OT  Cannot be Greater Then {{max_hrs}} Hours</p>
           </td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">
+          <td class="!px-2 !py-2 !rounded-s-md text-center">
             <input type='text' pInputText [(ngModel)]="item.reason" class="w-[100px] h-[40px]"/>
             <!-- <mat-form-field>
               <input matInput [(ngModel)]="item.reason" />
             </mat-form-field> -->
           </td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">
+          <td class="!px-2 !py-2 !rounded-s-md text-center">
             <p *ngIf="item.expired == 1" class="text-red-500 font-semibold">Expired</p>
             <button *ngIf="item.expired==0"
               pButton
               icon="pi pi-check-circle"
-              label="Verify"
-              class="rounded-3xl"
               [disabled]="
                 item.approvedHr > item.expect_othr ||
                 item.approvedHr == null ||
@@ -149,5 +148,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+  </table>
+  <!-- loader -->
+   <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
 </div>

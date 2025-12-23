@@ -1,7 +1,7 @@
 <div class="mx-2">
   <!-- Header -->
   <div
-    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row"
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -19,12 +19,13 @@
       {{ userDetails }}
     </h1>
   </div>
-  <div>
+  <!-- score card table -->
+  <div class="mx-2">
     <!-- export to excel -->
     <p-button
           icon="pi pi-download"
-          label="Dowload"
-          styleClass="rounded-[1.5rem] mt-2 mb-2"
+          label="Download"
+          styleClass="mt-2 mb-2"
           (onClick)="exportexcel()"
         >
     </p-button>
@@ -32,33 +33,31 @@
     <p-button
           icon="pi pi-arrow-left"
           label="Back"
-          styleClass="rounded-[1.5rem] mt-2 bg-purple-500 !outline-none !border-none ml-4 mb-2"
+          styleClass="mt-2 bg-purple-500 !outline-none !border-none ml-4 mb-2"
           (onClick)="goback()"
         >
     </p-button>
-
-    <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
     <!-- test details table -->
-    <ng-template #show>
-      <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[70vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+      <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[70vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
+
         <table id="table" class="table-auto !w-full">
             <!-- table head -->
               <thead class="sticky top-0">
-                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                   <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
                     Sno
                   </th>
-                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                 <th class="!text-white !px-2 !py-2 !border-none !border-0">
                     Module Name
                   </th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                     Test Date
                   </th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                    Minimum Pass(%)
+                    Minimum Pass (%)
                   </th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                   Test Scored(%)
+                   Test Scored (%)
                   </th>
                   <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                     Results
@@ -85,16 +84,22 @@
                     </a>
                   </td>
                   <td class="px-2 py-4 text-center">
-                    {{ i.date | date : "dd-MM-yyyy" }}
+                    {{ (i.date | date : "dd-MM-yyyy") || '-'}}
                   </td>
                   <td class="px-2 py-4 text-center">
-                    {{ i.pass_percent }}
+                    {{ (i.pass_percent + '%') || '-' }}
                   </td>
                   <td class="px-2 py-4 text-center">
-                    {{ i.posttraining_percent }}
+                    {{ (i.posttraining_percent + '%') || '-' }}
                   </td>
                   <td class="px-2 py-4 text-center">
-                    {{ i.posttraining_pf }}
+                    <span 
+                     class="px-2 rounded font-semibold" 
+                     [ngClass]="{
+                    'bg-green-200 text-green-500':i.posttraining_pf == 'Pass' || i.posttraining_pf == 'pass',
+                      'bg-red-200 text-red-500':i.posttraining_pf == 'Fail' || i.posttraining_pf == 'fail'}">
+                       {{ i?.posttraining_pf || '-' }}
+                    </span>
                   </td>
                    <!-- action btn -->
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
@@ -113,8 +118,9 @@
                     </td>
                 </tr>
               </tbody>
-          </table>
+        </table>
+        <!-- loader -->
+         <app-loader *ngIf="loader.isLoding | async"></app-loader>
       </div>
-    </ng-template>
   </div>
 </div>

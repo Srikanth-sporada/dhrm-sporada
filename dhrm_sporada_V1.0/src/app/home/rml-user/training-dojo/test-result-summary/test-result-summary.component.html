@@ -1,7 +1,7 @@
 <div class="mx-2">
   <!-- Header -->
   <div
-    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row"
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -10,12 +10,11 @@
         <mat-icon>cloud_done</mat-icon> Test Result Summary
         <hr />
       </h1>
-      <p class="mt-1 text-gray-400">View DOJO Training Test Results</p>
+      <p class="mt-1 text-gray-400">View DOJO Training Test Results</p>  <!-- total count -->
+           
     </div>
     <!-- user details -->
-    <h1
-      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
-    >
+    <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
       {{ userDetails }}
     </h1>
   </div>
@@ -26,6 +25,9 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Actions <mat-icon>filter_alt</mat-icon>
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{data?.length || 0}}
+           </span>
         </h1>
       </div>
     <!-- actions divison -->
@@ -83,18 +85,15 @@
   </div>
 
   <div>
-    <!-- loader -->
-    <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
-
     <!-- test summary table -->
-    <ng-template #show>
-      <div  class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+      <div  class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
+        <!-- test result summary table -->
         <table id="table" class="table-auto !w-full">
             <!-- tbale head -->
             <thead class="sticky top-0">
-              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                 <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
-                  SNo
+                  Sno
                 </th>
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                   Application
@@ -102,17 +101,17 @@
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                   Gen ID
                 </th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                <th class="!text-white !px-2 !py-2 !border-none !border-0">
                   Trainee Name
                 </th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                <th class="!text-white !px-2 !py-2 !border-none !border-0">
                   Trainee ID 
                 </th>
                 <!-- <t class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                 Pre-Training Score
                 </th> -->
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                  Training Score(%)
+                  Score (%)
                 </th>
 
                 <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -142,11 +141,11 @@
                     >{{ i.fullname }}</a
                   >
                 </td>
-                <td class="px-2 py-4 text-center text-purple-600 font-semibold">{{ i.trainee_idno }}</td>
+                <td class="px-2 py-4  text-purple-600 font-semibold">{{ i.trainee_idno }}</td>
                 <!-- <td class="px-2 py-4 text-center">{{i.mark1 > 100 ? 100 : i.mark1}}%</td> -->
-                <td class="px-2 py-4 text-center">{{ i.mark2 > 100 ? 100 : i.mark2 }}%</td>
+                <td class="px-2 py-4 text-center">{{ i.mark2 > 100 ? 100 : i?.mark2 ? i.mark2 + '%' : '-'  }}</td>
                 <td style="text-transform: uppercase" class="px-2 py-4 text-center">
-                  {{ i.posttraining_pf }}
+                  {{ i.posttraining_pf || '-' }}
                 </td>
                 <!-- action btn -->
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
@@ -165,7 +164,8 @@
               </tr>
             </tbody>
           </table>
+          <!-- loader -->
+           <app-loader *ngIf="loader.isLoding | async"></app-loader>
       </div>
-    </ng-template>
   </div>
 </div>

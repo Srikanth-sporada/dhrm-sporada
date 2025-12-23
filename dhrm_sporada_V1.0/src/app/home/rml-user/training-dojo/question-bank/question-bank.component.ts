@@ -266,23 +266,23 @@ export class QuestionBankComponent implements OnInit {
     };
    console.log('QUESTION OBJ:',this.questions);
 
-    // this.service.questionbank(this.questions).subscribe({
-    //   next: (res: any) => {
-    //     console.log(res);
-    //     if (res.message == "success") {
-    //       this.messageService.add({
-    //         severity: "info",
-    //         summary: "Question Updated Successfully.",
-    //       });
-    //       // alert("The questions have been updated.");
-    //       location.reload();
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.error('ERROR:',err);
-    //     this.messageService.add({ severity: "error", summary: err.message });
-    //   },
-    // });
+    this.service.questionbank(this.questions).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.message == "success") {
+          this.messageService.add({
+            severity: "info",
+            summary: "Question Updated Successfully.",
+          });
+          // alert("The questions have been updated.");
+          location.reload();
+        }
+      },
+      error: (err) => {
+        console.error('ERROR:',err);
+        this.messageService.add({ severity: "error", summary: err.message });
+      },
+    });
     } catch(error:any){
       console.error('ERROR:',error);
       this.messageService.add({severity:'warn',summary:'Oops! something went wrong.'});

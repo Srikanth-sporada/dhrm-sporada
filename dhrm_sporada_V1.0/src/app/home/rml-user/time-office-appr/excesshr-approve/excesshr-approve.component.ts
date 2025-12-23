@@ -2,7 +2,7 @@ import { Component, OnInit,ChangeDetectionStrategy} from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
-
+import { LoaderserviceService } from "src/app/loaderservice.service";
 @Component({
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
@@ -11,8 +11,8 @@ import { MessageService } from "primeng/api";
 })
 
 export class ExcesshrApproveComponent implements OnInit {
-  data: any;
-  filterDate: any = new Date();
+  data: any = [];
+  filterDate: any = '';
   lines: any;
   selectedLine: any = "All";
   userEnteredGenID:any;
@@ -21,7 +21,11 @@ export class ExcesshrApproveComponent implements OnInit {
   all:any;
   userDetails:any;
   excessHourData:any;
-  constructor(private apiService: ApiService, private messageService:MessageService) {}
+
+  constructor(
+    private apiService: ApiService, 
+    private messageService:MessageService,
+    public loader:LoaderserviceService) {}
 
   ngOnInit() {
     let details = sessionStorage.getItem("all");
@@ -29,15 +33,17 @@ export class ExcesshrApproveComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    this.getData();
-    this.apiService.getlineBydept().subscribe((response: any) => {
+     this.apiService.getlineBydept().subscribe((response: any) => {
       this.lines = response;
-      this.lines.push({Line_Name:'All'})
+      this.lines.unshift({Line_Name:'All'})
       console.log(response);
     }, (error) => {
       console.log(error);
       this.messageService.add({severity:'error',summary:error.message})
     });
+    //get excess hour
+    this.getData();
+    // get allowedot hours
     this.apiService.getAllowedOtHours().subscribe((response:any)=>{
       if(response.status=='success'){
         this.max_hrs = response.data.day

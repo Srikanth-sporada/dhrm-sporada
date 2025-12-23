@@ -10,7 +10,7 @@ export class LineFilterPipe implements PipeTransform {
     if (!items) {
       return [];
     }
-    if (!line || line=='All') {
+    if (!line || line== 'All') {
       return items;
     }
     return items.filter((item:any) => {

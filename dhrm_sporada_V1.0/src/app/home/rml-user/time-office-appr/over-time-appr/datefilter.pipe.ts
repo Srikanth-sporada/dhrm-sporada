@@ -1,23 +1,25 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import * as moment from "moment";
+import moment from "moment";
 
 @Pipe({
   name: "datefilter",
 })
 export class DatefilterPipe implements PipeTransform {
   transform(items: any, date: any): any {
-    // format date for filter
-    date = moment(date).format('YYYY-MM-DD')
-    console.log(date)
+    console.log('FILTER DATE',date , items)
     if (!items) {
       return [];
     }
     // if date is empty a return all data
-    if (!date||date=='') {
+    if (!date || date=='') {
       return items;
-    }
-    return items.filter((item:any) => {
+    }else{
+      // format date for filter
+    date = moment(date).format('YYYY-MM-DD');
+     return items.filter((item:any) => {
       return item.att_date == date || item.ot_dt ==date 
     });
+    }
+   
   }
 }
