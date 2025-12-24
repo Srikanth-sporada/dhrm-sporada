@@ -7,7 +7,7 @@ import moment from 'moment';
 import { ToastComponent } from '../toast/toast.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-shift-cancel',
@@ -80,10 +80,13 @@ export class ShiftCancelComponent implements OnInit {
     console.log(this.isHr);
   }
 
-  /** date filter using angular pipe */
-  onDateFilterChange(event: any): void {
-    this.selected_Date = event.value;
-    const formattedDate = this.datePipe.transform(this.selected_Date, 'yyyy-MM-dd');
+  /** 
+   * date filter using angular pipe
+   * @param event // prime ng date change event
+   *  */
+  onDateFilterChange(event:any): void {
+    this.selected_Date = event;
+    const formattedDate = moment(this.selected_Date).format('YYYY-MM-DD')
     console.log(formattedDate);
     this.getpunchData(this.plant_Code, formattedDate, this.dept,this.isHr);
   }

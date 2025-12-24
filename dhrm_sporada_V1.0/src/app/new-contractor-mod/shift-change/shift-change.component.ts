@@ -200,7 +200,7 @@ export class ShiftChangeComponent implements OnInit {
       this.min_time=''
       this.out_data=''
       this.in_data=''
-      this.attn_data=''
+      this.attn_data= []; // default state
       this.shift_data=''
       this.gen_id=''
       this.maxDate=null

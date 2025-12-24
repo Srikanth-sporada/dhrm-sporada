@@ -26,6 +26,7 @@ export class TraineeScoreCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -37,16 +38,25 @@ export class TraineeScoreCardComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
+    /** trainee ID & name  */
     this.idno = this.active.snapshot.paramMap.get("trainee_idno");
     this.fullname = this.active.snapshot.paramMap.get("fullname");
+    /** get trainee score card API */
+    this.getTraineeScoreCard();
+  }
 
-    this.service.traineeScorecard({ trainee_idno: this.idno }).subscribe({
+  /** 
+   * get trainee score card
+   * @property {*} idno
+   */
+  getTraineeScoreCard(){
+     this.service.traineeScorecard({ trainee_idno: this.idno }).subscribe({
       next: (response) => {
-        console.log("score", response);
+        console.log("Trainee Score Card:", response);
         this.data = response;
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -58,15 +68,17 @@ export class TraineeScoreCardComponent implements OnInit {
     // Create a new worksheet
     const ws = XLSX.utils.table_to_sheet(x);
     // Add the worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, ws, "Table");
+    XLSX.utils.book_append_sheet(wb, ws, "Trainee Score Card");
     // Save the workbook as an Excel file
     XLSX.writeFile(wb, `${this.idno}.xlsx`);
     this.messageService.add({ severity: "info", summary: "Data Converted." });
   }
 
+  /** go back fn */
   goback() {
     this.location.back();
   }
+
   dummy: any = [
     {
       module_attended: "Induction Training",

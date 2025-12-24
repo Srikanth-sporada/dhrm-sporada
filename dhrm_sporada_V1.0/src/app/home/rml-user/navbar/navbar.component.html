@@ -512,9 +512,9 @@
                 class="rounded-sm"
                 *ngIf="istrainer == 'true'"
               >
-                <mat-icon class="icon-pad">how_to_vote</mat-icon>Test
-                Evaluation</a
-              >
+                <mat-icon class="icon-pad">how_to_vote</mat-icon>Offline Test
+                Evaluation </a 
+              > 
               <a
                 mat-list-item
                 routerLink="/rhrm/training_dojo/test-result-summary"
@@ -876,7 +876,9 @@
                 *ngIf="
                   ishr == 'true' || ishrappr == 'true' || isadmin == 'true'
                 "
-                ><mat-icon>supervisor_account</mat-icon>Week Off</a
+                ><mat-icon>supervisor_account</mat-icon>
+                <span>Week Off</span>
+               </a
               >
               <a
                 mat-list-item

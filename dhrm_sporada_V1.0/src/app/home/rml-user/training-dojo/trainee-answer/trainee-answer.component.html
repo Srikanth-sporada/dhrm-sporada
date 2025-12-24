@@ -1,7 +1,7 @@
 <div class="mx-2">
     <!-- Header -->
   <div
-    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row"
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -23,8 +23,8 @@
     <!-- export to excel -->
     <p-button
           icon="pi pi-download"
-          label="Dowload"
-          styleClass="rounded-[1.5rem] mt-2 mb-2"
+          label="Download"
+          styleClass="mt-2 mb-2"
           (onClick)="exportexcel()"
         >
     </p-button>
@@ -32,13 +32,10 @@
     <p-button
           icon="pi pi-arrow-left"
           label="Back"
-          styleClass="rounded-[1.5rem] mt-2 bg-purple-500 !outline-none !border-none ml-4 mb-2"
+          styleClass="mt-2 bg-purple-500 !outline-none !border-none ml-4 mb-2"
           (onClick)="goback()"
         >
     </p-button>
-
-        <div >
-           
             <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
             <!-- table -->
             <ng-template #show>
@@ -46,11 +43,11 @@
                     <table id="table" class="table-auto !w-full">
                                <!-- table head -->
                                 <thead class="sticky top-0">
-                                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                                         <th  class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
                                             Sno
                                         </th>
-                                        <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                        <th  class="!text-white !px-2 !py-2 !border-none !border-0">
                                             Question
                                         </th>
                                         <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
@@ -72,18 +69,17 @@
                                 </thead>
                                 <!-- table body -->
                                 <tbody >
-                                    <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer" *ngFor="let i of data; let a = index">
-                                        <td class="px-2 py-4 text-center">{{a+1}}</td>
-                                        <td class="px-2 py-4" style="white-space: pre;">{{i.question.trim()}}</td>
-                                        <td class="px-2 py-4 text-center">{{i.correct_answer}}</td>
-                                        <!-- <td class="px-2 py-4 text-center">{{i.pretraining_result}}</td> -->
-                                        <td class="px-2 py-4 text-center">{{i.posttraining_result}}</td>
-                                        <!-- <td class="px-2 py-4 text-center">{{i.pretraining_score}}</td> -->
-                                        <td class="px-2 py-4 text-center">{{i.posttraining_score}}</td>
+                                    <tr class="!border-none !border-0 hover:bg-blue-100 !font-poppins cursor-pointer" *ngFor="let i of data; let a = index">
+                                        <td class="px-2 py-3 text-center">{{a+1}}</td>
+                                        <td class="px-2 py-3" style="white-space: pre;">{{i.question.trim()}}</td>
+                                        <td class="px-2 py-3 text-center">{{i.correct_answer}}</td>
+                                        <!-- <td class="px-2 py-3 text-center">{{i.pretraining_result}}</td> -->
+                                        <td class="px-2 py-3 text-center">{{i.posttraining_result}}</td>
+                                        <!-- <td class="px-2 py-3 text-center">{{i.pretraining_score}}</td> -->
+                                        <td class="px-2 py-3 text-center">{{i.posttraining_score}}</td>
                                     </tr>
                                 </tbody>
                     </table>
                 </div>
             </ng-template>
-        </div>
   </div>
