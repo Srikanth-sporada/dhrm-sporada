@@ -135,7 +135,7 @@ export class TraineeTestComponent implements OnInit {
     });
     console.log("qualified event", event.value);
 
-    this.answers[0].module = this.form.controls["module"].value.module_name;
+    this.answers[0].module = this.form.controls["module"].value.module_name.trim();
     this.ind = this.modules.findIndex(
       (module: any) => module.module_name == event.value.module_name
     );
@@ -200,8 +200,8 @@ export class TraineeTestComponent implements OnInit {
 
   submit() {
     this.answers[0].curr_total = this.mark;
-    this.answers[0].pf =
-      this.modules[this.ind].pass_criteria <= this.mark ? "p" : "f";
+    /** pf training */
+    this.answers[0].pf = this.modules[this.ind].pass_criteria <= this.mark ? "p" : "f";
     this.answers[0].percent = Math.round(
       (this.mark / this.modules[this.ind].total_marks) * 100
     );
@@ -291,7 +291,6 @@ export class TraineeTestComponent implements OnInit {
 
   load_answers(event: any, i: any, qslno: any, correct_answer: any) {
     this.count.add(i);
-    this.count.remove()
     console.log(event.value, ":", correct_answer);
 
     if (correct_answer == event.value) this.mark = this.mark + 1;

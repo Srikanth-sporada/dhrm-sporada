@@ -45,6 +45,11 @@ export const environment = {
   /** trainee time office */
   hideApplyPermission:true,
   hidePermissionStatus:true,
+  /** application environment */
+  prodBg:'',
+  devBg:'',
+  uatBg:'',
+  appEnvironment:'PROD', // PROD DEV UAT
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 
 };

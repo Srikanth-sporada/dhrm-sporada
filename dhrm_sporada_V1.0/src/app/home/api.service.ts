@@ -423,10 +423,21 @@ export class ApiService {
     return this.http.put(this.url + "/training/deletemodule", formvalue);
   }
   getQuestions(testData: any) {
-    return this.http.get(
-      this.url +
-      "/training/getQuestions?module=1." + testData.module.module_name +"&username=" + testData.username
-    );
+    /** using urlSearchParams */
+    const baseUrl = this.url + '/training/getQuestions';
+    const url:any = new URL(baseUrl);
+    const params = url.searchParams;
+    params.append('module',`1.${testData.module.module_name}`);
+    params.append('username',testData.username);
+    console.log(url.toString());
+    return this.http.get(url.toString());
+    /** using encode uri component */
+    // const module = encodeURIComponent(testData.module_name);
+    // const username = encodeURIComponent(testData.username);
+    // return this.http.get(
+    //   this.url +
+    //   "/training/getQuestions?module=1." + module +"&username=" + username
+    // );
   }
   getQuestions_tnr(form: any) {
     return this.http.get(this.url + "/training/getQuestions_tnr?module=" + encodeURIComponent(form.module) + "&plant_code=" + form.plant_code);
@@ -487,8 +498,19 @@ export class ApiService {
       encodeURIComponent(form.module_name)
     );
   }
-  getOfflineModules() {
-    return this.http.get(this.url + "/training/getOfflineModule?plantcode=" + sessionStorage.getItem("plantcode"));
+  getOfflineModules(traineeId:any) {
+    // + sessionStorage.getItem("plantcode"));
+    return this.http.get(this.url + "/training/getOfflineModule?id=" + traineeId)
+  }
+ 
+  /** 
+   * check previous test module
+   * @param data
+   * #NEW
+   */
+  checkTrainingModule(data:any){
+    console.log('check data:',data);
+    return this.http.get(this.url + `/training/checkPreviousModule?id=${data.idno}&module_name=${data.module_name}`)
   }
 
   offlineUpload(formvalue: any) {

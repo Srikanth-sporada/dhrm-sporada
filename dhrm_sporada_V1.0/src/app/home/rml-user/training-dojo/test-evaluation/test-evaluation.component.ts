@@ -6,7 +6,8 @@ import { map, startWith } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { MessageService } from 'primeng/api';
-
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-test-evaluation',
   templateUrl: './test-evaluation.component.html',
@@ -21,6 +22,7 @@ export class TestEvaluationComponent implements OnInit {
   all:any;
   userDetails:any;
   trainee_id: any = ''
+  moduleStatus:any;
   examTypeOptions = [
   { label: 'Pre-Test', value: 'pre-test' },
   { label: 'Post-Test', value: 'post-test' }
@@ -33,6 +35,7 @@ export class TestEvaluationComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router, 
     public loader:LoaderserviceService,
+    private modal:NgbModal,
     private messageService:MessageService) {
 
     this.form = this.fb.group({
@@ -61,7 +64,8 @@ export class TestEvaluationComponent implements OnInit {
     /** disbale exam type */
     this.form.get('test').disable();
     this.getTrainee();
-    this.getOfflineModules();
+
+    // this.getOfflineModules();
   }
 
   filterOptions(value: any): any[] {
@@ -104,7 +108,7 @@ export class TestEvaluationComponent implements OnInit {
             this.form.reset()
           },
           error: (error:any) => {
-            console.error('ERRR:',error);
+            console.error('ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.message});
           }
         })
@@ -115,22 +119,28 @@ export class TestEvaluationComponent implements OnInit {
   /** 
    * get trainee ID
    * @property {*} trainee_id
+   * trainee drop down change event
    */
   store_trainee(event: any) {
     this.trainee_id = event.value;
     console.log('SELECTED TRAINEE ID:',this.trainee_id);
-
+    /** get trainee offline */
+    this.getOfflineModules();
   }
 
   /** 
    * get trainee test status 
    * @param event change event
+   * check trainee modules
    */
   get_test_status(event: any) {
     console.log(event);
     var value = event.value.module_name;
     var obj = { module_name: value, idno: this.trainee_id }
-    console.log(obj)
+    console.log(obj);
+    /** check trainee modules */
+    this.checkTraineeModules(obj);
+    /** get test status */
     this.service.get_test_status(obj)
       .subscribe(
         {
@@ -200,7 +210,6 @@ export class TestEvaluationComponent implements OnInit {
           }
         }
       )
-
   }
 
   /** 
@@ -239,12 +248,13 @@ export class TestEvaluationComponent implements OnInit {
   }
 
   /** 
-   * get offline modules
+   * get offline modules based in selected trainee
    * @property {*} modules
+   * @property {*} trainee_id
    */
   getOfflineModules(){
     // get offline modules
-    this.service.getOfflineModules()
+    this.service.getOfflineModules(this.trainee_id)
       .subscribe(
         {
           next: (response) => { 
@@ -282,5 +292,29 @@ export class TestEvaluationComponent implements OnInit {
           }
         }
       )
+  }
+
+  /** 
+   * check trainee module 
+   * @param data
+   */
+  checkTraineeModules(data:any){
+    this.service.checkTrainingModule(data).subscribe({
+      next: (response:any) => {
+        /** set module status */
+        this.moduleStatus = response.status;
+        console.log('CHECK:',response);
+        /** open confirm component */
+        if(response.status == 'false'){
+          const componentInstance = this.modal.open(ConfirmationComponent, {centered:true})
+          componentInstance.componentInstance.confirmFunction = () => {console.log('yes clicked!.')}
+          componentInstance.componentInstance.confirmText = response.message;
+        }
+      },
+      error: (error:any) => {
+        console.log('ERROR:', error);
+        this.messageService.add({severity:'error',summary:error?.error?.message})
+      }
+    })
   }
 }

@@ -19,11 +19,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { environment } from "src/environments/environment.prod";
 import { homeImages } from "src/app/imageList";
+
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.css"],
 })
+
 export class NavbarComponent implements OnInit {
   url = environment.path + "/";
   news:any = [];
@@ -156,7 +158,7 @@ export class NavbarComponent implements OnInit {
       const baseUrl = environment.payroll;
       const payrollURL = new URL(baseUrl);
       const params = payrollURL.searchParams;
-      params.append('STOKEN',this.authToken)
+      params.append('STOKEN',this.authToken);
       window.open(payrollURL.href);
       console.log(payrollURL.toString());
     }else{
