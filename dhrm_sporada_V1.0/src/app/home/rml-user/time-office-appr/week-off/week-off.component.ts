@@ -3,6 +3,7 @@ import { ApiService } from "src/app/home/api.service";
 import moment from 'moment'
 import { MessageService } from 'primeng/api';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
+import { Utility } from 'src/app/utils/utils';
 @Component({
   selector: 'app-week-off',
   templateUrl: './week-off.component.html',
@@ -33,6 +34,7 @@ export class WeekOffComponent implements OnInit {
     private apiService: ApiService, 
     private messageService:MessageService,
     public loader:LoaderserviceService,
+    public utils:Utility,
   ) { }
 
   ngOnInit() {

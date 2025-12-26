@@ -1,6 +1,6 @@
 <div class="mx-2">
          <!-- header -->
-        <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+        <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
             <div class="flex items-start justify-start flex-col">
             <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
             <mat-icon>supervised_user_circle</mat-icon>Supervisor Abservent Questions<hr/>
@@ -34,6 +34,11 @@
             (onChange)="getquestion($event)"
             styleClass="w-full py-1" 
             placeholder="Select Department" >
+             <ng-template let-dept pTemplate="item">
+                 <div class="flex align-items-center gap-2">
+                    <span>{{ dept.dept_slno + '-' + dept.dept_name }}</span>
+                 </div>
+            </ng-template>
         </p-dropdown>
        </div>
        <!-- save btn -->
@@ -65,7 +70,7 @@
                 <!-- table head -->
                 <thead class="sticky top-0">
                     <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                        <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sl.NO</td>
+                        <td class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</td>
                         <td class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Supervisor Abservent Points</td>
                         <td class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Active Status</td>
                     </tr>
@@ -73,8 +78,8 @@
                 <!-- table body -->
                 <tbody>
                     <tr *ngFor="let q of questions; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                        <td class="px-2 py-4 text-center">{{ i + 1 }}</td>
-                        <td class="!font-poppins px-2 py-4 text-center">
+                        <td class="px-2 py-3 text-center">{{ i + 1 }}</td>
+                        <td class="!font-poppins px-2 py-3 text-center">
                             <!-- question -->
                         <textarea
                            [rows]="1"
@@ -91,7 +96,7 @@
                                 (change)="question($event, i)" (click)="addrow(i)" type='text'
                                 class="qb-group">{{q.question}}</textarea> -->
                         </td>
-                        <td class="px-2 py-4 text-center">
+                        <td class="px-2 py-3 text-center">
                             <label class="switch">
                               <input 
                                 type="checkbox" 

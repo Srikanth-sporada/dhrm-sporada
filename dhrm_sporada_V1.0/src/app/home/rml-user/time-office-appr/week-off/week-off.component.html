@@ -126,6 +126,17 @@
           >
         </p-button> 
         </div>
+        <!-- download btn -->
+         <!-- clear btn -->
+        <div class="mt-8 ml-1">
+          <p-button 
+            icon="pi pi-download"
+            styleClass="rounded-[1.5rem] mt-2 ml-2"
+            [hidden]="true"
+            (onClick)="utils.jsonToExcellExport(data,'','WeekOff')"
+          >
+        </p-button> 
+        </div>
      </div>
      </div>
     </div>
