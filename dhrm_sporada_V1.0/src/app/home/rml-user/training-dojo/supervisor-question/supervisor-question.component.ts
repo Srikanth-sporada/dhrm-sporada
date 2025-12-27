@@ -181,7 +181,6 @@ export class SupervisorQuestionComponent implements OnInit {
     const selectedDept = this.form.controls["module"].value;
 
     if (!selectedDept) {
-      // alert("Please select a Department.");
       this.messageService.add({
         severity: "warn",
         summary: "Please Select Department",

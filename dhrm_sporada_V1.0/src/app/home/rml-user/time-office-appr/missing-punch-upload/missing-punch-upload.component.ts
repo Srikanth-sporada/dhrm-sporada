@@ -377,7 +377,6 @@ submitDateTime() {
     }})
   }
 
-
   upload_bulkdData(){
     this.api.insert_bulk_fp({data:this.bulkData,plant:this.plant,id:sessionStorage.getItem("user_name")})
     .subscribe({
