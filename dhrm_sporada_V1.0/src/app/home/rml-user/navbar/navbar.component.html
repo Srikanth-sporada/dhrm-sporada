@@ -4,7 +4,7 @@
     <!-- left side navbar menus -->
     <mat-sidenav
       #drawer
-      class="sidenav !font-poppins shadow-md ml-2 px-2 my-3 rounded-[1rem] lg:!z-0"
+      class="sidenav !font-poppins shadow-md ml-2 px-2 mt-2 mb-2 rounded-[1rem] lg:!z-0"
       fixedInViewport
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -12,13 +12,18 @@
     >
       <!-- navbar logo -->
       <mat-toolbar 
-       class="bg-[var(--secondary)] text-white h-24 py-2 rounded-[1rem] hover:cursor-pointer" 
+       class="bg-[var(--secondary)] text-white h-24 py-2 hover:cursor-pointer sticky top-0 z-30 border-b-2 border-gray-400" 
        (click)="navigateToHome()">
           <img src="assets/ranelogo.png" alt="rane" class="!object-fill !rounded-md"/>
+          <!-- <hr> -->
       </mat-toolbar>
-      <hr>
+      
       <!-- material side nav list -->
-      <mat-nav-list class="bg-[var(--secondary)] text-gray-400 pt-4">
+      <mat-nav-list 
+      [class]="appEnvironment == 'UAT' ? 'text-gray-400 pt-4 h-full' +  uatBg 
+      : appEnvironment == 'DEV' ? 'text-gray-400 pt-4 h-full' + devBg
+      : 'text-gray-400 pt-4 h-full' + prodBg"
+      >
         <!-- dashboard menu -->
         <div>
           <mat-expansion-panel
@@ -29,7 +34,7 @@
           >
             <mat-expansion-panel-header 
               *ngIf="isRA" 
-              [ngClass]="isDashboardExpanded ? 'text-gray-600 font-semibold border-2 border-blue-600 bg-[var(--transparent)]' : 'text-gray-600 font-semibold'"
+              [ngClass]="isDashboardExpanded ? 'text-gray-600 font-semibold border-2  border-blue-600 bg-[var(--transparent)]' : 'text-gray-600 font-semibold'"
             >
               <mat-icon class="icon-pad" [ngClass]="isDashboardExpanded ? 'text-blue-600' : 'text-gray-600'"> dashboard </mat-icon>
               Dashboard Menu
@@ -1592,10 +1597,11 @@
               </mat-nav-list>
             </mat-expansion-panel>
           </div>
-           <hr>
+          
 
          <!-- user details divison -->
-          <div class="flex items-center justify-evenly h-20 text-wrap gap-[.1rem]">
+          <div class="flex items-center justify-evenly h-20 text-wrap gap-[.1rem] sticky bottom-0 bg-white border-t-2 border-gray-400">
+             <!-- <hr> -->
             <mat-icon class="text-blue-600">account_circle</mat-icon>
             <div>
 
@@ -1648,6 +1654,14 @@
         >
           <mat-icon class="text-blue-600">notes</mat-icon>
       </button>
+      <!-- environment -->
+        <span 
+          *ngIf="appEnvironment !== 'PROD'" 
+          class="px-2 py-2 bg-blue-200 text-blue-600 rounded font-poppins font-semibold absolute 
+          right-1 z-50 top-1">
+          {{appEnvironment}}
+        </span>
+          
       <!-- dhrm dashboard image -->
       <div *ngIf="router.url === '/rhrm'" class="w-full flex justify-center items-center h-full">
         <!-- <img [src]="homepageImgURL" alt="dhrm-image" class="h-full rounded-sm object-cover" /> -->

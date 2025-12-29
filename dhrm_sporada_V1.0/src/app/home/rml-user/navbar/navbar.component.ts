@@ -47,6 +47,11 @@ export class NavbarComponent implements OnInit {
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;
+  /** ENV based nav menu bg */
+  prodBg:any = environment?.prodBg;
+  uatBg:any = environment?.uatBg;
+  devBg:any = environment?.devBg;
+  appEnvironment:any = environment?.appEnvironment;
   homepageImgURL:any;
   /** permission properties */
   ishrappr: any;
@@ -142,6 +147,7 @@ export class NavbarComponent implements OnInit {
     this.getHr();
     /** new Images */
     this.news = homeImages;
+    // console.log('NEW BG:',this.appEnvironment,this.uatBg,this.devBg,this.prodBg)
     // console.log(this.payrollNavLink);
   }
 

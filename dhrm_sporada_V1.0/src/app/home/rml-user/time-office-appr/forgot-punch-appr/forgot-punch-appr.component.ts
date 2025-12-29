@@ -21,48 +21,7 @@ export class ForgotPunchApprComponent implements OnInit {
   dates: any;
   data: any = [""];
   table_temp: any;
-  table_data: any = [
-  {
-    gen_id: "EMP001",
-    EmpName: "Arun Kumar",
-    attDate: "2025-12-20",
-    actualIn: "09:05 AM",
-    actualOut: "06:15 PM",
-    requestedIn: null,
-    requestedOut: null,
-    reason: "-"
-  },
-  {
-    gen_id: "EMP002",
-    EmpName: "Priya Sharma",
-    attDate: "2025-12-20",
-    actualIn: "09:30 AM",
-    actualOut: "06:00 PM",
-    requestedIn: "09:00 AM",
-    requestedOut: "05:30 PM",
-    reason: "Doctor appointment"
-  },
-  {
-    gen_id: "EMP003",
-    EmpName: "Ravi Singh",
-    attDate: "2025-12-20",
-    actualIn: null,
-    actualOut: null,
-    requestedIn: "10:00 AM",
-    requestedOut: "04:00 PM",
-    reason: "Work from home"
-  },
-  {
-    gen_id: "EMP004",
-    EmpName: "Meena Joseph",
-    attDate: "2025-12-20",
-    actualIn: "08:55 AM",
-    actualOut: "05:45 PM",
-    requestedIn: null,
-    requestedOut: null,
-    reason: "-"
-  }
-];
+  table_data: any
   temp_a: any;
   disable: number = 1;
   emp_id: any;
