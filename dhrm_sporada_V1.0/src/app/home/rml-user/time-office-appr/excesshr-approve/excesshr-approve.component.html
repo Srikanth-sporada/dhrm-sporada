@@ -4,7 +4,7 @@
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>more_time</mat-icon>Excess Hours Supervisor Confirmation<hr/>
     </h1>
-    <p class="mt-1 text-gray-400">View and Manage Excess Hours Approval</p>
+    <p class="mt-1 text-gray-400">View and Approve Excess Hours</p>
     </div>
     <!-- user details -->
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
@@ -99,7 +99,12 @@
           <td class="!px-2 !py-2 !rounded-s-md">{{ item.fullname }}</td>
           <td class="!px-2 !py-2 !rounded-s-md">{{ item.Line_Name }}</td>
           <td class="!px-2 !py-2 !rounded-s-md">{{ item.apprentice_type }}</td>
-          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-blue-600">{{ item.att_date | date:'dd-MM-yyyy'}}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-blue-600">
+            {{ item.att_date | date:'dd-MM-yyyy'}}
+            <!-- attendance type -->
+               <p-badge [value]="item?.type" severity="warning">
+               </p-badge>
+          </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-green-500">{{item.in_time}}</td>
           <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-red-500">{{item.out_time}}</td>
           <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold">{{ item.expect_othr }}</td>
@@ -119,8 +124,8 @@
                 pInputText
               />
             </mat-form-field> -->
-            <p *ngIf="item.approvedHr > item.expect_othr " style="color:red" >Invalid worked Hours</p>
-            <p *ngIf=" item.approvedHr > getMaxHours(item)" style="color:red" >OT  Cannot be Greater Then {{max_hrs}} Hours</p>
+            <p *ngIf="item.approvedHr > item.expect_othr " class="text-red-500" >Invalid worked Hours</p>
+            <p *ngIf=" item.approvedHr > getMaxHours(item)" class="text-red-500" >OT  Cannot be Greater Than {{max_hrs}} Hours</p>
           </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center">
             <input type='text' pInputText [(ngModel)]="item.reason" class="w-[100px] h-[40px]"/>
@@ -129,18 +134,18 @@
             </mat-form-field> -->
           </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center">
-            <p *ngIf="item.expired == 1" class="text-red-500 font-semibold">Expired</p>
+            <p *ngIf="item.expired == 1" class="text-red-500 font-semibold px-2 bg-red-200 rounded">Expired</p>
             <button *ngIf="item.expired==0"
               pButton
               icon="pi pi-check-circle"
               [disabled]="
-                item.approvedHr > item.expect_othr ||
-                item.approvedHr == null ||
-                item.reason == '' ||
-                item.reason.length < 10 ||
-                item.approvedHr > getMaxHours(item.type)  || loading
-             
-                ||item.approvedHr<0 
+                item.approvedHr > item.expect_othr 
+                || item.approvedHr == null 
+                || item.reason == '' 
+                || item.reason.length < 10 
+                || item.approvedHr > getMaxHours(item.type)  
+                || loading
+                || item.approvedHr <0 
               "
               (click)="approve(item)"
             >

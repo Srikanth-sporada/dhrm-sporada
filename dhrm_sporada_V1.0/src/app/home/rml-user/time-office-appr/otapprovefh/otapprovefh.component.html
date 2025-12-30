@@ -4,7 +4,7 @@
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>browse_gallery</mat-icon>OT Request FH Approval<hr/>
     </h1>
-    <p class="mt-1 text-gray-400">View and Manage OT Request FH Approval</p>
+    <p class="mt-1 text-gray-400">View and Approve Over Time Hours</p>
     </div>
     <!-- user details -->
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
@@ -52,22 +52,25 @@
             optionLabel="dept_name"
             optionValue="dept_name"
             styleClass="w-full" 
-            placeholder="Select Department" ></p-dropdown>
+            placeholder="Select Department" >
+            <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ dept.dept_slno + '-' + dept.dept_name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
        </div>
        <!-- clear btn -->
-        <div class="w-full">
+        <div>
            <button
            pButton
-           label="Clear"
            icon="pi pi-times"
-           class="mt-9"
+           class="mt-10 bg-red-500 outline-none border-none hover:!bg-red-500"
            (click)="clear()">
-
            </button>
         </div>
-     </div>
-     <!-- row two -->
-      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+         <!-- row two -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2 mt-10">
             <mat-checkbox
               [(ngModel)]="selectAll"
               color="primary"
@@ -83,6 +86,24 @@
                 >
                 </button>
       </div>
+     </div>
+     <!-- row two -->
+      <!-- <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+            <mat-checkbox
+              [(ngModel)]="selectAll"
+              color="primary"
+              class="font-poppins"
+              (ngModelChange)="handelSelectAll()"
+              >Select All</mat-checkbox>
+                <button
+                  (click)="submit()"
+                  pButton
+                  label="Approve"
+                  icon="pi pi-check-circle"
+                  [disabled]="loading"
+                >
+                </button>
+      </div> -->
      </div>
   </div>
    </div>
@@ -107,7 +128,7 @@
 </div> -->
 
 <!-- approval table -->
-<div class="h-[90svh] lg:h-[70vh] xl:h-[70vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+<div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[65vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
 
     <table id="table" class="table-auto !w-full">
       <!-- table head -->
@@ -115,10 +136,10 @@
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
           <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
+          <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approved Excess Hrs</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Adjusted for COFF</th>
           <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Approved OT Hrs</th>
@@ -137,20 +158,28 @@
             <mat-checkbox
               [(ngModel)]="item.selected"
               color="primary"
-              (ngModelChange)="checkItems()"
-              >{{ i + 1 }}</mat-checkbox
-            >
+              (ngModelChange)="checkItems(item)"
+              >{{ i + 1 }}</mat-checkbox>
           </td>
           <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.fullname }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.dept_name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Line_Name }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.dept_name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
+          <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.excess_hr }}
-            <button class="text-blue-600 font-[20px]" (click)="openExcessHourDetais(item)"><mat-icon>visibility</mat-icon></button>
+            <button 
+               class="text-blue-600 font-[20px]" 
+               (click)="openExcessHourDetais(item)">
+               <mat-icon>visibility</mat-icon>
+              </button>
           </td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.coff }}
-            <button class="text-blue-600 font-[20px]" (click)="openCoffDeatisl(item)"><mat-icon>visibility</mat-icon></button></td>
+            <button 
+              class="text-blue-600 font-[20px]" 
+              (click)="openCoffDeatisl(item)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ot }}</td>
           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.bal }}</td>
           <!-- action btn -->
@@ -158,7 +187,6 @@
             <button 
               pButton 
               (click)="approve(item)"
-              label="Approve"
               icon="pi pi-check-circle" 
               [disabled]="loading || item.bal == 0"></button>
           </td>

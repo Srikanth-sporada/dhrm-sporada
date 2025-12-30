@@ -50,6 +50,10 @@
   padding: 0 !important;
   margin-bottom: 1rem;
 }
+/* nav list padding */
+::ng-deep .mat-list-base {
+  padding-top:0 !important;
+}
 
 .mat-expansion-indicator::after, .mat-expansion-panel-header-description { color: white;}
 

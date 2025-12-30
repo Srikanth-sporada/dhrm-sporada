@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectionStrategy} from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
@@ -8,92 +8,143 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
   styleUrls: ["./excesshr-approve.component.css"],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ExcesshrApproveComponent implements OnInit {
   data: any = [];
-  filterDate: any = '';
+  filterDate: any = "";
   lines: any;
   selectedLine: any = "All";
-  userEnteredGenID:any;
-  loading:any=false;
-  max_hrs:any;
-  all:any;
-  userDetails:any;
-  excessHourData:any;
+  userEnteredGenID: any;
+  loading: any = false;
+  max_hrs: any;
+  all: any;
+  userDetails: any;
+  excessHourData: any;
 
   constructor(
-    private apiService: ApiService, 
-    private messageService:MessageService,
-    public loader:LoaderserviceService) {}
+    private apiService: ApiService,
+    private messageService: MessageService,
+    public loader: LoaderserviceService
+  ) {}
 
   ngOnInit() {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
-     this.apiService.getlineBydept().subscribe((response: any) => {
-      this.lines = response;
-      this.lines.unshift({Line_Name:'All'})
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    });
-    //get excess hour
+     /** get allowed OT hours */
+    this.getAllowedOtHours();
+    /** get lines by dept */
+    this.getLineByDepartment();
+    /** get EH data */
     this.getData();
-    // get allowedot hours
-    this.apiService.getAllowedOtHours().subscribe((response:any)=>{
-      if(response.status=='success'){
-        this.max_hrs = response.data.day
-      }else{
-        // alert(respone.message)
-        this.messageService.add({severity:'warn',summary:response.message})
-      }
-    },(error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    })
-  }
-
-  getData() {
-    this.apiService.getExcessHours().subscribe((response: any) => {
-      if (response.status == "failed") {
-        // alert(response.message);
-        this.messageService.add({severity:'warn',summary:response.message})
-      } else {
-        console.log(response.data);
-        this.data = response.data.map((element: any) => {
-          return { ...element, approvedHr: null, reason: "" };
-        });
-        /** excess hour data copy */
-        this.excessHourData = this.data;
-        console.log(this.data);
-      }
-    },(error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    });
-  }
-
-  getMaxHours(type: any) {
-
-    if (type === 'W' || type === 'N' || type === 'F') {
    
-      return type.expect_othr; // 12 default value
-    } else if (type === 'R') {
+  }
 
+  /**
+   * get Allowed OT hours
+   * @property {*} max_hrs allowed ot hours day
+   */
+  getAllowedOtHours(){
+     this.apiService.getAllowedOtHours().subscribe(
+      (response: any) => {
+        if (response.status == "success") {
+          console.log('ALLOWED OT HRS:', response.data);
+          this.max_hrs = response.data.day;
+        } else {
+          this.messageService.add({
+            severity: "warn",
+            summary: response.message,
+          });
+        }
+      },
+      (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      }
+    );
+  }
+
+  /**
+   * get line by department
+   * @property {*} lines 
+   */
+  getLineByDepartment(){
+    this.apiService.getlineBydept().subscribe(
+      (response: any) => {
+        this.lines = response;
+        this.lines.unshift({ Line_Name: "All" });
+        console.log(response);
+      },
+      (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      }
+    );
+  }
+  /**
+   * get EH data
+   * @property {*} data mapped with approverHr & reason
+   */
+  getData() {
+    this.apiService.getExcessHours().subscribe(
+      (response: any) => {
+        if (response.status == "failed") {
+          // alert(response.message);
+          this.messageService.add({
+            severity: "warn",
+            summary: response.message,
+          });
+        } else {
+          console.log('EH DATA:',response.data);
+          this.data = response.data.map((element: any) => {
+            return { ...element, approvedHr: null, reason: "" };
+          });
+          /** excess hour data copy for filters */
+          this.excessHourData = this.data;
+          console.log('MAPPED EH DATA:',this.data);
+        }
+      },
+      (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      }
+    );
+  }
+
+  /**
+   * get Max hours for show message
+   * @property {*} max_hrs
+   * @param type  EH data
+   *  */ 
+  getMaxHours(type: any) {
+    if (type === "W" || type === "N" || type === "F") {
+      return type.expect_othr; // 12 default value
+    } else if (type === "R") {
       return this.max_hrs;
     } else {
-    
       return this.max_hrs;
     }
   }
 
+  /** 
+   * approve EH 
+   * @property {boolean} loading
+   * @var data approve data
+   * @param item trainee EH data
+   */
   approve(item: any) {
-    this.loading=true
+    this.loading = true;
+
     let data = {
       plant: sessionStorage.getItem("plantcode"),
       emp_id: item.cemp_id,
@@ -102,31 +153,54 @@ export class ExcesshrApproveComponent implements OnInit {
       flag: "I", // default flag COFF || OT flag O
       approved_by: sessionStorage.getItem("user_name"),
       reason: item.reason,
-      shift_id:item.shift,
-      type:item.type
+      shift_id: item.shift,
+      type: item.type,
     };
-    console.log(data);
-    this.apiService.approveExcessHr(data).subscribe((response: any) => {
-      this.getData();
-      // alert(response.message);
-      this.messageService.add({severity:'warn',summary:response.message})
-      this.loading = false;
-    },(error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    });
+
+    console.log('APPROVE DATA:',data);
+    /** EH approval API */
+    this.apiService.approveExcessHr(data).subscribe(
+      (response: any) => {
+        /** get EH data refresh */
+        this.getData();
+        // alert(response.message);
+        this.messageService.add({
+          severity: "warn",
+          summary: response.message,
+        });
+        this.loading = false;
+      },
+      (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      }
+    );
   }
 
+  /** 
+   * Export Excell sheet EH data
+   * @var sheetsData
+   * @var sheetNames
+   * @var wb
+   * @var headerStyles
+   * @var ws
+   */
   exportexcel() {
     this.apiService.getExcessHours_Report().subscribe((response: any) => {
       if (response.status == "failed") {
-        alert(response.message);
+        // alert(response.message);
+        this.messageService.add({severity:'warn', summary:response?.message});
       } else {
         let sheetsData = response.data;
-        let sheetNames = ["Trainee OT Summary", "Trainee OT Details", "Operator OT Summary", "Operator OT Details"];
-  
+        let sheetNames = [
+          "Trainee OT Summary",
+          "Trainee OT Details",
+          "Operator OT Summary",
+          "Operator OT Details",
+        ];
+
         let wb = XLSX.utils.book_new();
-  
+
         // Define header style
         const headerStyle = {
           font: { bold: true, color: { rgb: "000000" } }, // Black text
@@ -139,21 +213,23 @@ export class ExcesshrApproveComponent implements OnInit {
             right: { style: "thin", color: { rgb: "000000" } },
           },
         };
-  
+
         sheetsData.forEach((data: any[], index: number) => {
           if (data.length > 0) {
             // Remove "apln_slno" from data
             let cleanedData = data.map(({ apln_slno, ...rest }) => rest);
-  
+
             // Get headers and format them
-            let headers = Object.keys(cleanedData[0]).map(header => header.replace(/_/g, " "));
-  
+            let headers = Object.keys(cleanedData[0]).map((header) =>
+              header.replace(/_/g, " ")
+            );
+
             // Convert cleaned data to worksheet (start from A2, since headers will go in A1)
             let ws = XLSX.utils.json_to_sheet(data);
 
             // Add formatted headers at the top
             XLSX.utils.sheet_add_aoa(ws, [headers], { origin: "A1" });
-  
+
             // Apply styles to header row
             headers.forEach((header, colIndex) => {
               const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex }); // Row 0 (A1, B1, etc.)
@@ -161,34 +237,39 @@ export class ExcesshrApproveComponent implements OnInit {
               ws[cellAddress].v = header; // Set formatted header text
               ws[cellAddress].s = headerStyle; // Apply styling
             });
-  
+
             // Append worksheet to workbook
             XLSX.utils.book_append_sheet(wb, ws, sheetNames[index]);
           }
         });
-  
+
         // Write file and trigger download
         XLSX.writeFile(wb, "Excess_Hours_Report.xlsx");
-        this.messageService.add({severity:'info',summary:'Data Exported!'})
+        this.messageService.add({
+          severity: "info",
+          summary: "Data Exported!",
+        });
       }
     });
   }
-  
-  /** 
+
+  /**
    * filter excess hours by gen id
    * @var filteredEhData
    * @property {*} data actual EH data
    * @property {*} excessHourData copy data
    *  */
 
-  filterExcessHourByGenID(){
+  filterExcessHourByGenID() {
     this.userEnteredGenID = this.userEnteredGenID.trim();
-   const filteredEhData = this.excessHourData.filter((trainee:any) => trainee.gen_id.includes(this.userEnteredGenID));
+    const filteredEhData = this.excessHourData.filter((trainee: any) =>
+      trainee.gen_id.includes(this.userEnteredGenID)
+    );
 
-   if(filteredEhData.length){
-    this.data = filteredEhData;
-   }else{
-    this.data = this.excessHourData;
-   }
+    if (filteredEhData.length) {
+      this.data = filteredEhData;
+    } else {
+      this.data = this.excessHourData;
+    }
   }
 }

@@ -13,57 +13,143 @@ import { MessageService } from "primeng/api";
   styleUrls: ["./otapprovefh.component.css"],
 })
 export class OtapproveComponent implements OnInit {
-  data:any = [];
+  data:any = [
+  {
+    selected: false,
+    gen_id: "EMP001",
+    fullname: "John Doe",
+    dept_name: "Production",
+    Line_Name: "Line A",
+    apprentice_type: "Technical",
+    excess_hr: 5,
+    coff: 2,
+    ot: 3,
+    bal: 10
+  },
+  {
+    selected: true,
+    gen_id: "EMP002",
+    fullname: "Jane Smith",
+    dept_name: "Quality",
+    Line_Name: "Line B",
+    apprentice_type: "Graduate",
+    excess_hr: 8,
+    coff: 1,
+    ot: 4,
+    bal: 12
+  },
+  {
+    selected: false,
+    gen_id: "EMP003",
+    fullname: "Michael Johnson",
+    dept_name: "Maintenance",
+    Line_Name: "Line C",
+    apprentice_type: "Diploma",
+    excess_hr: 3,
+    coff: 0,
+    ot: 2,
+    bal: 5
+  }
+];
   date: any;
   categories: any[];
   cat: any = "All";
   departmentList: any;
   selectedDept: any = "All";
   loading: any = false;
-  constructor(private apiService: ApiService, private matdailog: MatDialog, private messageService:MessageService) {}
+
+  constructor(
+    private apiService: ApiService, 
+    private matdailog: MatDialog, 
+    private messageService:MessageService) {
+
+    }
+
   selectAll: any = false;
   all:any;
   userDetails:any;
 
   ngOnInit() {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
+    /** get OT data */
     this.getData();
-    this.apiService.getCategories().subscribe((data: any) => {
-      this.categories = data;
-      this.categories.push({categorynm:"All"})
-    });
-    this.apiService.getDeptByPlant().subscribe((data: any) => {
-      this.departmentList = data;
-      this.departmentList.push({dept_name:'All'})
-    });
+    /** get categories */
+    this.getCategories();
+    /** get department */
+    this.getDepartment();
   }
 
+  /** 
+   * get categories
+   * @property {*} categories
+   */
+  getCategories(){
+     this.apiService.getCategories().subscribe({
+      next: (data: any) => {
+        this.categories = data;
+        this.categories.unshift({categorynm:"All"})
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
+     });
+  }
+  /** 
+   * get department
+   * @property {*} departmentList
+   */
+  getDepartment(){
+    this.apiService.getDeptByPlant().subscribe({
+      next: (data: any) => {
+        this.departmentList = data;
+        /* adding all for filter */
+        this.departmentList.unshift({dept_slno:'',dept_name:'All'})
+      },
+      error: (error:any) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+    });
+  }
+  /**
+   * get OT data
+   * @property {*} data
+   */
   getData() {
-    this.apiService.getFhOt().subscribe((response: any) => {
+    this.apiService.getFhOt().subscribe({
+      next: (response: any) => {
       if ((response.status = "success")) {
         console.log(response.data);
-        this.data = response.data
-          .map((element: any) => {
-            return { ...element, selected: false };
-          })
-          .filter((element: any) => {
-            return element.bal >= 0;
-          });
-        console.log(response.data);
+        // this.data = response.data
+        //   .map((element: any) => {
+        //     return { ...element, selected: false };
+        //   })
+        //   .filter((element: any) => {
+        //     return element.bal >= 0;
+        //   });
+        console.log('OT DATA:',response.data);
       } else if (response.status == "failed") {
         // alert(response.message);
         this.messageService.add({severity:'warn',summary:response.message})
       }
-    }, (error) => {
-      console.log(error);
+    },
+    error:(error) => {
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
+    }
     });
   }
 
+  /** 
+   * approve OT
+   * @var data api request body
+   * */
   approve(item: any) {
     this.loading = true;
     console.log("trigger");
@@ -71,54 +157,70 @@ export class OtapproveComponent implements OnInit {
       data: [item],
       sup_id: sessionStorage.getItem("user_name"),
     };
-
-    this.apiService.approveFhOt(data).subscribe((res: any) => {
+    /** approve API */
+    this.apiService.approveFhOt(data).subscribe({
+      next: (res: any) => {
       if (res.status == "success") {
         this.getData();
-        // alert(res.message);
-        this.messageService.add({severity:'info',summary:res.message})
-        // this.getData();
+        this.messageService.add({severity:'info',summary:res.message});
         this.loading = false;
       } else {
-        // alert(res.message);
         this.messageService.add({severity:'warn',summary:res.message})
         this.getData();
         this.loading = false;
       }
-    },(error) => {
-      console.log(error);
+    },
+    error: (error) => {
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
+    }
     });
   }
 
+  /** 
+   * aprrove selected OT
+   * @var filtered_data selected OT data
+   * @var data
+   */
   submit() {
     this.loading = true;
+    /** filter selected OT Data */
     let filtered_data = this.data.filter((element: any) => {
       return element.selected == true;
     });
+
     if (filtered_data.length == 0) {
       this.loading = false;
       // alert("Please select At least one OT request");
       this.messageService.add({severity:'warn',summary:'Please select At least one OT request'});
       return 
     }
+
     let data = {
       data: filtered_data,
       sup_id: sessionStorage.getItem("user_name"),
     };
+    /** approve OT API */
     this.apiService.approveFhOt(data).subscribe((response: any) => {
-      alert(response.message);
+      // alert(response.message);
       this.messageService.add({severity:'warn',summary:response.message})
       this.getData();
       this.selectAll = false;
       this.loading = false;
     },(error) => {
-      console.log(error);
+      console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     });
   }
 
-  checkItems() {
+  /**
+   * @param item checked OT data
+   * used to check select all check box
+   * @property {*} data
+   * @var count identity all data is checked
+   */
+  checkItems(item:any) {
+    console.log('SELECTED DATA:',item);
     let count = 0;
     for (let element of this.data) {
       if (element.selected == true) {
@@ -133,6 +235,10 @@ export class OtapproveComponent implements OnInit {
     }
   }
 
+  /**
+   * handle select All
+   * @property {boolean} selectAll
+   */
   handelSelectAll() {
     if (this.selectAll) {
       if (this.cat != "" && this.selectedDept == "") {
@@ -187,6 +293,7 @@ export class OtapproveComponent implements OnInit {
           })
         );
         return;
+
       }
 
       this.data = this.data.map((element: any) => {
@@ -209,20 +316,29 @@ export class OtapproveComponent implements OnInit {
     }
   }
 
-  // coff component dialog
+  /** open C-Off details component */
   openCoffDeatisl(data: any) {
     this.matdailog.open(CoffDetailsComponent, {
       data: data,
     });
   }
 
-  //  excess hour dialog
+  /** 
+   * open Excess Hours Details
+   */
   openExcessHourDetais(data: any) {
     this.matdailog.open(ExcessHoursDetailsComponent, {
       data: data,
     });
   }
 
+  /** 
+   * clear all
+   * @property {*} date
+   * @property {*} cat
+   * @property {*} selectedDept
+   * @property {*} data
+   */
   clear() {
     this.date = "";
     this.cat = "";
@@ -244,7 +360,8 @@ export class OtapproveComponent implements OnInit {
   exportexcel() {
     this.apiService.getExcessHours_Report().subscribe((response: any) => {
       if (response.status == "failed") {
-        alert(response.message);
+        // alert(response.message);
+        this.messageService.add({severity:'error',summary:response?.message})
       } else {
         let sheetsData = response.data;
         let sheetNames = ["Trainee OT Summary", "Trainee OT Details", "Operator OT Summary", "Operator OT Details"];
