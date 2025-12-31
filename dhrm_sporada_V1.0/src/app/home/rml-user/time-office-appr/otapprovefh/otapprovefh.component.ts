@@ -6,6 +6,7 @@ import { ExcessHoursDetailsComponent } from "../excess-hours-details/excess-hour
 import { elements } from "chart.js";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
 
 @Component({
   selector: "app-otapprove",
@@ -13,44 +14,7 @@ import { MessageService } from "primeng/api";
   styleUrls: ["./otapprovefh.component.css"],
 })
 export class OtapproveComponent implements OnInit {
-  data:any = [
-  {
-    selected: false,
-    gen_id: "EMP001",
-    fullname: "John Doe",
-    dept_name: "Production",
-    Line_Name: "Line A",
-    apprentice_type: "Technical",
-    excess_hr: 5,
-    coff: 2,
-    ot: 3,
-    bal: 10
-  },
-  {
-    selected: true,
-    gen_id: "EMP002",
-    fullname: "Jane Smith",
-    dept_name: "Quality",
-    Line_Name: "Line B",
-    apprentice_type: "Graduate",
-    excess_hr: 8,
-    coff: 1,
-    ot: 4,
-    bal: 12
-  },
-  {
-    selected: false,
-    gen_id: "EMP003",
-    fullname: "Michael Johnson",
-    dept_name: "Maintenance",
-    Line_Name: "Line C",
-    apprentice_type: "Diploma",
-    excess_hr: 3,
-    coff: 0,
-    ot: 2,
-    bal: 5
-  }
-];
+  data:any = []
   date: any;
   categories: any[];
   cat: any = "All";
@@ -61,7 +25,8 @@ export class OtapproveComponent implements OnInit {
   constructor(
     private apiService: ApiService, 
     private matdailog: MatDialog, 
-    private messageService:MessageService) {
+    private messageService:MessageService,
+    public loader:LoaderserviceService) {
 
     }
 
@@ -126,13 +91,13 @@ export class OtapproveComponent implements OnInit {
       next: (response: any) => {
       if ((response.status = "success")) {
         console.log(response.data);
-        // this.data = response.data
-        //   .map((element: any) => {
-        //     return { ...element, selected: false };
-        //   })
-        //   .filter((element: any) => {
-        //     return element.bal >= 0;
-        //   });
+        this.data = response.data
+          .map((element: any) => {
+            return { ...element, selected: false };
+          })
+          .filter((element: any) => {
+            return element.bal >= 0;
+          });
         console.log('OT DATA:',response.data);
       } else if (response.status == "failed") {
         // alert(response.message);
