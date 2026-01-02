@@ -68,20 +68,22 @@ export class LeaveFilterPipe1 implements PipeTransform {
 @Pipe({
   name: 'leaveFilte2'
 })
+
 export class LeaveFilterPipe2 implements PipeTransform {
+
   transform(leaves: any[] | undefined | null, genId: string, a2_status: string): any[] {
     leaves = leaves ?? []; 
     if (!genId && !a2_status) {
       return leaves; 
     }
 
-    // console.log(leaves, genId, a2_status);
+    // console.log('FILTER DATA:',leaves, genId, a2_status);
 
     return leaves.filter(leave => {
       const matchesGenId = leave.Gen_id?.toLowerCase().includes(genId);
       const matchesA2Status =  leave.L2_Approval_Status === a2_status;
 
-      //console.log(matchesGenId || matchesA2Status);
+      // console.log('FILTER DATA:',matchesGenId || matchesA2Status);
 
       return matchesGenId || matchesA2Status;
     });

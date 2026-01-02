@@ -118,9 +118,9 @@ mat-select#inp {
   }
   
   .legend-item:first-child {
-    background-color: #e6ffe6; /* Light green */
+    /* background-color: #e6ffe6; Light green */
   }
   
   .legend-item:last-child {
-    background-color: rgb(155, 212, 225); /* Light red */
+    /* background-color: rgb(155, 212, 225); Light red */
   }

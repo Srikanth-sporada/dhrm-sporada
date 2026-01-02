@@ -40,6 +40,7 @@ export class OptrApprComponent implements OnInit {
       L1_Approval_Status: "Pending",
       Approver_2_name: "Priya Menon",
       L2_Approval_Status: "Not Started",
+      Mid_Permission:'TRUE'
     },
     {
       Gen_id: "EMP002",
@@ -53,6 +54,7 @@ export class OptrApprComponent implements OnInit {
       L1_Approval_Status: "Approved",
       Approver_2_name: "Priya Menon",
       L2_Approval_Status: "Approved",
+      Mid_Permission:'TRUE'
     },
     {
       Gen_id: "EMP003",
@@ -66,12 +68,13 @@ export class OptrApprComponent implements OnInit {
       L1_Approval_Status: "Rejected",
       Approver_2_name: "Priya Menon",
       L2_Approval_Status: "Not Applicable",
+      Mid_Permission:'FALSE'
     },
   ];
   apprShow = true;
   genId: any;
-  a1_status: any = "Waiting for Approval";
-  a2_status: any = "Waiting for Approval";
+  a1_status: any = "Waiting for Approval"; // deafult status
+  a2_status: any = "Waiting for Approval"; // default status
   statusOptions = [
     { value: "", label: "All" },
     { value: "Pending", label: "Pending" },
@@ -101,6 +104,7 @@ export class OptrApprComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
+    /** get permission data */
     this.getOptrPermission();
     this.l1_status = "Waiting for Approval";
     this.l2_status = "Waiting for Approval";
@@ -113,7 +117,6 @@ export class OptrApprComponent implements OnInit {
     //   console.log(false)
     // }
   }
-  // console
 
   openAlertDialog(message: string, icon: string): void {
     this.dialog.open(ToastComponent, {
@@ -124,59 +127,69 @@ export class OptrApprComponent implements OnInit {
     });
   }
 
+  /** 
+   * get permission data
+   * @property {*} optr_Data
+   */
   getOptrPermission() {
     this.api
       .get_optr_permission_data(this.plant, this.empl_slNo, this.ishrappr)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           console.log(res);
-          // this.optr_Data = res;
-
-          // this.l2_status=this.optr_Data.L2_Approval_Status
+          this.optr_Data = res;
+          // this.l2_status = this.optr_Data.L2_Approval_Status
         },
-        (error) => {
-          console.log(error);
+        error: (error) => {
+          console.error('ERROR:',error);
           this.messageService.add({
             severity: "error",
             summary: error.message,
           });
         }
-      );
+      });
   }
 
+  /** 
+   * First Approver API
+   */
   l1_Approver(data: any) {
-    console.log(data);
-    this.api.l1_approver(data, this.empl_slNo).subscribe(
-      (res: any) => {
+    console.log('A1 DATA:',data);
+    this.api.l1_approver(data, this.empl_slNo).subscribe({
+      next: (res: any) => {
         // this.openAlertDialog(res,'check');
+        console.log('A1 RES:',res);
         this.messageService.add({ severity: "info", summary: res });
         this.getOptrPermission();
       },
-      (error: any) => {
+      error: (error: any) => {
+        console.error('ERROR:',error)
         if (error.status === 400) {
-          // this.openAlertDialog(`${error.error}`,'error');
           this.messageService.add({ severity: "error", summary: error.error });
         } else {
-          // this.openAlertDialog('Error in connection','error');
           this.messageService.add({
             severity: "error",
             summary: "Error In Connection",
           });
         }
       }
-    );
+    });
   }
+
+  /** 
+   * Second Approver API
+   */
   l2_Approver(data: any) {
     // console.log(data)
-    this.api.l2_approver(data).subscribe(
-      (res: any) => {
-        // this.openAlertDialog(res,'check');
+    this.api.l2_approver(data).subscribe({
+      next: (res: any) => {
+        console.log('A2 RES:',res);
         this.messageService.add({ severity: "info", summary: res });
         this.getOptrPermission();
       },
-      (error: any) => {
+      error: (error: any) => {
+        console.error('ERROR:',error);
         if (error.status === 400) {
-          // this.openAlertDialog(`${error.error}`,'error');
           this.messageService.add({ severity: "error", summary: error.error });
         } else {
           // this.openAlertDialog('Error in connection','error');
@@ -186,6 +199,6 @@ export class OptrApprComponent implements OnInit {
           });
         }
       }
-    );
+    });
   }
 }

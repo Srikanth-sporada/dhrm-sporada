@@ -13,7 +13,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { ClamAPIService } from "../clam-api.service";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
-
+import { Utility } from "src/app/utils/utils";
 @Component({
   selector: "app-leave-master",
   templateUrl: "./leave-master.component.html",
@@ -62,6 +62,7 @@ export class LeaveMasterComponent implements OnInit {
     private messageService: MessageService,
     public loader: LoaderserviceService,
     private modalService: MatDialog,
+    public utils:Utility,
   ) {
     this.leave_mst_form = this.fb.group({
       plant: [""],
@@ -167,7 +168,7 @@ export class LeaveMasterComponent implements OnInit {
   get_mst_Leave_data() {
     this.api.get_Mst_Leave(this.plant_Code).subscribe(
       (res: any) => {
-        this.mst_leave_data = res;
+        this.mst_leave_data = this.utils.removeDuplicateObjects(res);
       },
       (error: any) => {
         console.error('ERROR:',error);

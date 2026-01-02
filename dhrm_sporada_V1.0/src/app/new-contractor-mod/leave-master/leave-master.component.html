@@ -126,6 +126,7 @@
   <!-- Valid records view -->
   <!-- *ngIf="validatedRecords && validatedRecords.length > 0" -->
    <ng-template #validRecords let-modal>
+    <div class="h-dvh overflow-y-scroll">
           <table id="table" class="table-auto !w-full">
                   <thead class="sticky top-0">
                       <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
@@ -156,6 +157,7 @@
                       </tr>
                   </tbody>  
           </table>
+      </div>
           <!-- submit btn -->
            <div class="modal-footer">
                <button 
@@ -179,6 +181,7 @@
       </div>
       </div> -->
       <!-- *ngIf="updateReocrds && updateReocrds.length > 0" id="validate"-->
+        <div class="h-dvh overflow-y-scroll">
           <table id="table" class="table-auto !w-full">
                         <thead class="sticky top-0">
                             <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
@@ -211,6 +214,7 @@
                             </tr>
                         </tbody>
           </table>
+          </div>
           <!-- modal footer -->
           <div class="modal-footer">
             <button 
@@ -225,6 +229,7 @@
    <!-- invalid records view -->
    <ng-template #invalidRecords let-modal>
       <!-- *ngIf="nonValidatedRecords && nonValidatedRecords.length > 0" -->
+        <div class="h-dvh overflow-y-scroll">
               <table id="table" class="table-auto !w-full">
                       <thead class="sticky top-0">
                           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  *:xl:!text-left">
@@ -257,6 +262,7 @@
                           </tr>
                       </tbody>
               </table>
+        </div>
               <!-- modal footer -->
                <div class="modal-footer">
                  <!-- download btn -->
