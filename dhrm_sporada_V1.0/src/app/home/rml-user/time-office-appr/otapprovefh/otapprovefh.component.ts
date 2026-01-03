@@ -17,9 +17,9 @@ export class OtapproveComponent implements OnInit {
   data:any = []
   date: any;
   categories: any[];
-  cat: any = "All";
+  cat: any = "";
   departmentList: any;
-  selectedDept: any = "All";
+  selectedDept: any = "";
   loading: any = false;
 
   constructor(
@@ -57,7 +57,7 @@ export class OtapproveComponent implements OnInit {
      this.apiService.getCategories().subscribe({
       next: (data: any) => {
         this.categories = data;
-        this.categories.unshift({categorynm:"All"})
+        // this.categories.unshift({categorynm:"All"})
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -74,7 +74,7 @@ export class OtapproveComponent implements OnInit {
       next: (data: any) => {
         this.departmentList = data;
         /* adding all for filter */
-        this.departmentList.unshift({dept_slno:'',dept_name:'All'})
+        // this.departmentList.unshift({dept_slno:'',dept_name:'All'})
       },
       error: (error:any) => {
         console.log('ERROR:',error);
@@ -206,6 +206,7 @@ export class OtapproveComponent implements OnInit {
    */
   handelSelectAll() {
     if (this.selectAll) {
+      /** select only selected cat */
       if (this.cat != "" && this.selectedDept == "") {
         console.log(`cat filter`);
         this.data = this.data.map((element: any) => {
@@ -222,7 +223,7 @@ export class OtapproveComponent implements OnInit {
         );
         return;
       }
-
+      /** select only selected dept */
       if (this.selectedDept != "" && this.cat == "") {
         console.log(`dept filter`);
         this.data = this.data.map((element: any) => {
@@ -239,7 +240,7 @@ export class OtapproveComponent implements OnInit {
         );
         return;
       }
-
+      /** select only selected dep & cat */
       if (this.selectedDept != "" && this.cat != "") {
         console.log(`cat dept filter`);
         this.data = this.data.map((element: any) => {
@@ -260,7 +261,7 @@ export class OtapproveComponent implements OnInit {
         return;
 
       }
-
+      /** select all OT */
       this.data = this.data.map((element: any) => {
         return { ...element, selected: true };
       });

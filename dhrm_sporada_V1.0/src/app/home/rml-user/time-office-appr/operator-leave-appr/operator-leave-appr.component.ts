@@ -27,60 +27,7 @@ export class OperatorLeaveApprComponent implements OnInit {
   gen_id: any = sessionStorage.getItem("gen_id");
   l1_status: any;
   l2_status: any;
-  optr_Data: any = [
-  {
-    Gen_id: "EMP001",
-    fullname: "John Doe",
-    Leave_Type: "Casual Leave",
-    from_date: "2026-01-05",
-    to_date: "2026-01-07",
-    duration: 3,
-    reason: "Family function",
-    Approver_1_name: "Manager A",
-    L1_Approval_Status: "Pending",
-    Approver_2_name: "HR Head",
-    L2_Approval_Status: "Waiting for Approval"
-  },
-  {
-    Gen_id: "EMP002",
-    fullname: "Jane Smith",
-    Leave_Type: "Sick Leave",
-    from_date: "2026-01-02",
-    to_date: "2026-01-04",
-    duration: 2,
-    reason: "Medical rest",
-    Approver_1_name: "Manager B",
-    L1_Approval_Status: "Approved",
-    Approver_2_name: "HR Head",
-    L2_Approval_Status: "Pending"
-  },
-  {
-    Gen_id: "EMP003",
-    fullname: "Michael Johnson",
-    Leave_Type: "Earned Leave",
-    from_date: "2026-01-10",
-    to_date: "2026-01-15",
-    duration: 5,
-    reason: "Vacation trip",
-    Approver_1_name: "Manager C",
-    L1_Approval_Status: "Waiting for Approval",
-    Approver_2_name: "HR Head",
-    L2_Approval_Status: "Waiting for Approval"
-  },
-  {
-    Gen_id: "EMP004",
-    fullname: "Emily Davis",
-    Leave_Type: "Maternity Leave",
-    from_date: "2026-01-01",
-    to_date: "2026-03-31",
-    duration: 90,
-    reason: "Childbirth",
-    Approver_1_name: "Manager D",
-    L1_Approval_Status: "Approved",
-    Approver_2_name: "HR Head",
-    L2_Approval_Status: "Approved"
-  }
-];
+  optr_Data: any;
   genId: any;
   a1_status: any = "Waiting for Approval";
   a2_status: any = "Waiting for Approval";
@@ -131,6 +78,7 @@ export class OperatorLeaveApprComponent implements OnInit {
     });
   }
 
+  /** opne Reject Dialog */
   openConfirmDialogWithReason(message: string, data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogReasonComponent, {
       data: {
@@ -141,6 +89,9 @@ export class OperatorLeaveApprComponent implements OnInit {
       },
     });
 
+    /** 
+     * leave reject API #dialog
+     */
     dialogRef.afterClosed().subscribe((result) => {
       if (result.result) {
         console.log(result);
@@ -153,13 +104,15 @@ export class OperatorLeaveApprComponent implements OnInit {
           Reject_reason: result.reason,
           rejected_by: this.userEmpcode,
         };
-        this.api.reject_optr_Leave(reject).subscribe(
-          (res: any) => {
+        /** reject API */
+        this.api.reject_optr_Leave(reject).subscribe({
+          next: (res: any) => {
             // this.openAlertDialog(res,'check');
             this.messageService.add({ severity: "info", summary: res });
             this.getOptrleave();
           },
-          (error: any) => {
+          error: (error: any) => {
+            console.error('ERROR:',error);
             if (error.status === 400) {
               // this.openAlertDialog(`${error.error}`,'error');
               this.messageService.add({
@@ -174,7 +127,7 @@ export class OperatorLeaveApprComponent implements OnInit {
               });
             }
           }
-        );
+        });
       } else {
         // this.openAlertDialog(`You Cancelled Leave`,'error');
 
@@ -217,33 +170,37 @@ export class OperatorLeaveApprComponent implements OnInit {
     );
   }
 
+  /** get leave  */
   getOptrleave() {
     this.api
       .get_optr_leave_data(this.plant, this.empl_slNo, this.ishrappr)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           console.log(res)
-          // this.optr_Data = res;
+          this.optr_Data = res;
           // this.l2_status=this.optr_Data.L2_Approval_Status
         },
-        (error) => {
-          console.log(error);
+       error: (error) => {
+          console.error('ERROR:',error);
           this.messageService.add({
             severity: "error",
             summary: error.message,
           });
         }
-      );
+      });
   }
 
+  /** first approver */
   l1_Approver(data: any) {
-    console.log(data);
-    this.api.l1_Leave_approver(data, this.empl_slNo).subscribe(
-      (res: any) => {
-        this.openAlertDialog(res, "check");
+    console.log('LEAVE DATA:',data);
+    this.api.l1_Leave_approver(data, this.empl_slNo).subscribe({
+      next: (res: any) => {
+        // this.openAlertDialog(res, "check");
+        this.messageService.add({severity:'info',summary:res});
         this.getOptrleave();
       },
-      (error: any) => {
+      error: (error: any) => {
+        console.log('ERROR:',error)
         if (error.status === 400) {
           this.messageService.add({ severity: "error", summary: error.error });
         } else {
@@ -253,18 +210,20 @@ export class OperatorLeaveApprComponent implements OnInit {
           });
         }
       }
-    );
+    });
   }
   
+  /** second approver */
   l2_Approver(data: any) {
     // console.log(data)
-    this.api.l2_Leave_approver(data).subscribe(
-      (res: any) => {
+    this.api.l2_Leave_approver(data).subscribe({
+      next: (res: any) => {
         // this.openAlertDialog(res,'check');
         this.messageService.add({ severity: "info", summary: res });
         this.getOptrleave();
       },
-      (error: any) => {
+      error: (error: any) => {
+        console.error('ERROR',error);
         if (error.status === 400) {
           // this.openAlertDialog(`${error.error}`,'error');
           this.messageService.add({ severity: "warn", summary: error.error });
@@ -275,7 +234,7 @@ export class OperatorLeaveApprComponent implements OnInit {
           });
         }
       }
-    );
+    });
   }
 
   submit() {
@@ -295,12 +254,12 @@ export class OperatorLeaveApprComponent implements OnInit {
       return;
     }
 
-    this.api.l2_Leave_approver_Selected(selectedItems).subscribe(
-      (res: any) => {
+    this.api.l2_Leave_approver_Selected(selectedItems).subscribe({
+      next: (res: any) => {
         this.messageService.add({ severity: "info", summary: res });
         this.getOptrleave();
       },
-      (error: any) => {
+      error: (error: any) => {
         if (error.status === 400) {
           this.messageService.add({ severity: "warn", summary: error.error });
         } else {
@@ -310,7 +269,7 @@ export class OperatorLeaveApprComponent implements OnInit {
           });
         }
       }
-    );
+    });
   }
 
   reject_leave(data: any) {

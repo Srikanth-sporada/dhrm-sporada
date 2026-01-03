@@ -37,6 +37,7 @@ export class RejoinApprovalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -46,25 +47,42 @@ export class RejoinApprovalComponent implements OnInit {
     this.created = sessionStorage.getItem('emp_id');
     this.ishr = sessionStorage.getItem('ishrappr') === 'true';
     this.is_Chr = sessionStorage.getItem('Is_CHR') === 'true';
-
-    this.initialLoad()
+    /* get rejoin requests */
+    this.initialLoad();
   }
 
+  /** 
+   * get rejoin requests based on HR
+  */
   initialLoad() {
-
     console.log('hr', this.ishr, 'chr', this.is_Chr)
     if (this.ishr) {
-      console.log('hr table running')
+      console.log('hr table running');
+      /** get PHR requests */
       this.service.GetPhrTable(this.plant).subscribe({
         next: (res: any) => {
+          // for(let i=0; i <= 10; i++){
+          //   this.tableData.push(res.data[0])
+          // }
+          console.log('PHR:',res.data)
           this.tableData = res.data;
+        },
+        error:(error:any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message})
         }
       })
     } else if (this.is_Chr) {
-      console.log('chr table running')
+      console.log('chr table running');
+      /** get CHR Requests */
       this.service.GetChrTable(this.plant).subscribe({
         next: (res: any) => {
+          console.log('CHR:',res.data)
           this.tableData = res.data;
+        },
+        error:(error:any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message})
         }
       })
     }
@@ -80,16 +98,19 @@ export class RejoinApprovalComponent implements OnInit {
     this.selectAll = this.tableData.every((item:any) => item.selected);
   }
 
+  /** PHR approve API */
   approve() {
     const selectedRows = this.tableData.filter((item:any)=> item.selected);
 
     if (!this.comment || this.comment.trim() === '') {
-      alert('Comment is mandatory before submitting.');
+      // alert('Comment is mandatory before submitting.');
+      this.messageService.add({severity:'warn',summary:'Comment is mandatory before submitting'})
       return;
     }
 
     if (!this.decision) {
-      alert('Please select Approve or Reject.');
+      // alert('Please select Approve or Reject.');
+      this.messageService.add({severity:'warn',summary:'Please select Approve or Reject'})
       return;
     }
 
@@ -106,14 +127,16 @@ export class RejoinApprovalComponent implements OnInit {
     this.service.UpdatePHRApproval(payload).subscribe({
       next: (res: any) => {
         console.log('Update PHR Response', res);
-        alert(res.message);
+        // alert(res.message);
+        this.messageService.add({severity:'info',summary:res.message})
         this.initialLoad();
         this.clear();
         this.showModal = false;
       },
       error: (err) => {
         console.error('Request Error', err);
-        alert(err?.error?.message);
+        // alert(err?.error?.message);
+        this.messageService.add({severity:'error',summary:err?.error?.message})
         this.initialLoad();
         this.clear();
         this.showModal = false;
@@ -126,12 +149,12 @@ export class RejoinApprovalComponent implements OnInit {
     const selectedRows = this.tableData.filter( (item:any) => item.selected);
 
     if (!this.comment || this.comment.trim() === '') {
-      alert('Comment is mandatory before submitting.');
+      this.messageService.add({severity:'warn',summary:'Comment is mandatory before submitting'})
       return;
     }
 
     if (!this.decision) {
-      alert('Please select Approve or Reject.');
+      this.messageService.add({severity:'warn',summary:'Please select Approve or Reject'})
       return;
     }
 
@@ -147,14 +170,14 @@ export class RejoinApprovalComponent implements OnInit {
     this.service.UpdateCHRApproval(payload).subscribe({
       next: (res: any) => {
         console.log('Update PHR Response', res);
-        alert(res.message);
+         this.messageService.add({severity:'info',summary:res.message})
         this.initialLoad();
         this.clear();
         this.showModal = false;
       },
       error: (err) => {
         console.error('Request Error', err);
-        alert(err?.error?.message);
+         this.messageService.add({severity:'error',summary:err?.error?.message})
         this.initialLoad();
         this.clear();
         this.showModal = false;
@@ -163,14 +186,14 @@ export class RejoinApprovalComponent implements OnInit {
 
   }
 
+  /** show approve modal */
   submit() {
     const selectedRows = this.tableData.filter( (item:any) => item.selected);
-
     if (selectedRows.length === 0) {
-      alert('Please select at least one row to submit.');
+      // alert('Please select at least one row to submit.');
+      this.messageService.add({severity:'warn',summary:'Please select at least one row to submit'})
       return;
     }
-
     this.showModal = true;
   }
 
