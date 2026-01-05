@@ -76,7 +76,7 @@
   <div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
     <table id="table" class="table-auto !w-full">
         <!-- table head -->
-        <thead class="sticky top-0">
+        <thead class="sticky top-0 z-10">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
               Sno
@@ -102,17 +102,17 @@
             "
             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
           >
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1}}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ item.fullname }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ item.dept_name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ item.Line_Name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ot }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.bal }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i + 1}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ item.fullname }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ item.dept_name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ item.Line_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-purple-600 font-semibold">{{ item.apprentice_type }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.ot }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.bal }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
               <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(item)">Apply Coff</button>
             </td>
           </tr>

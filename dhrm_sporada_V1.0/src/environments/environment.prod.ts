@@ -49,6 +49,8 @@ export const environment = {
   prodBg:' !bg-white',
   devBg:' !bg-blue-100',
   uatBg:' !bg-green-100',
+  /** enable CC filter dept transfer */
+  enableCCFilter:false,
   appEnvironment:'PROD', // PROD DEV UAT
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
