@@ -97,6 +97,7 @@
   --id-card-height:72.5px;
   --trainee-img-width:150px;
   --trainee-img-height:150px;
+  --scrollbar-color:#bad0ff
   /* 60B5FF sec*/
   /* AFDDFF asc */
 }
@@ -266,4 +267,29 @@ a{
 
 th,td{
   text-wrap: nowrap;
+}
+
+/* For Firefox */
+.scrollbar {
+  scrollbar-width: thin; /* auto or thin */
+  scrollbar-color: var(--scrollbar-color) #ffffff; /* thumb color track color */
+}
+
+/* For Chrome, Safari, Edge, and Opera */
+.scrollbar::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #C2D2E4; /* color of the tracking area */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color); /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid #f7f7f7; /* creates padding around scroll thumb */
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb{
+   background-color: var(--scrollbar-color);
 }

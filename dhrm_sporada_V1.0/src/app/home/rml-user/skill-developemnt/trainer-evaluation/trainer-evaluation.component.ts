@@ -13,6 +13,7 @@ import { MessageService } from "primeng/api";
   templateUrl: "./trainer-evaluation.component.html",
   styleUrls: ["./trainer-evaluation.component.css"],
 })
+
 export class TrainerEvaluationComponent implements OnInit {
   someSubscription: any;
   filterinfo: any = [];
@@ -20,7 +21,7 @@ export class TrainerEvaluationComponent implements OnInit {
   id: any;
   form: any;
   searchText: any;
-  year: {year:Number}[] = [];
+  year: { year: Number }[] = [];
   options = [
     { label: "0 to 60 days", value: "0-60" },
     { label: "61 to 120 days", value: "61-120" },
@@ -28,62 +29,82 @@ export class TrainerEvaluationComponent implements OnInit {
     { label: "181 to 270 days", value: "181-270" },
   ];
   evaluationOptions = [
-  { value: '1', label: 'First Evaluation' },
-  { value: '2', label: 'Second Evaluation' },
-  { value: '3', label: 'Third Evaluation' },
-  { value: '4', label: 'Fourth Evaluation' }
-];
+    { value: "1", label: "First Evaluation" },
+    { value: "2", label: "Second Evaluation" },
+    { value: "3", label: "Third Evaluation" },
+    { value: "4", label: "Fourth Evaluation" },
+  ];
 
-statusOptions = [
-  { value: 'PENDING', label: 'PENDING' },
-  { value: 'APPROVED', label: 'COMPLETED' }
-];
+  statusOptions = [
+    { value: "PENDING", label: "PENDING" },
+    {value:'PENDING_APPROVAL',label:'PENDING APPROVAL'},
+    { value: "APPROVED", label: "COMPLETED" },
+  ];
 
-  all:any;
-  userDetails:any;
+  all: any;
+  userDetails: any;
   constructor(
     private fb: UntypedFormBuilder,
-    private http: HttpClient,
     private service: ApiService,
     private active: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
     public loader: LoaderserviceService,
-    private messageService:MessageService
+    private messageService: MessageService
   ) {
     this.form = this.fb.group({
       status: ["1"],
       plantcode: [sessionStorage.getItem("plantcode")],
       id: ["1"],
-      filter: ["PENDING"],
-      year: [new Date().getFullYear()],
+      filter: ["PENDING"], // default status
+      year: [new Date().getFullYear()], // current year
     });
   }
 
   ngOnInit(): void {
-      let details = sessionStorage.getItem("all");
+    /** logged in user data */
+    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
+    /** year dropdown values */
     const currentYear = new Date().getFullYear();
     const oldestYear = currentYear - 45;
     for (let i = currentYear; i >= oldestYear; i--) {
-      this.year.push({year:i});
+      this.year.push({ year: i });
     }
-    console.log(this.year)
-    this.service.evaluationdays(this.form.value).subscribe({
+    console.log('YEAR:',this.year);
+    this.getEvaluationData();
+  }
+
+  /**
+   *  get evaluation data
+   * @property {*} form
+   *  */
+  getEvaluationData(){
+     this.service.evaluationdays(this.form.value).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log('EVALUATION DAYS:',response);
         this.filterinfo = response;
       },
       error: (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
+  /** 
+   * Format DOJ date
+   * @param dateString 
+   */
   formatDate(dateString: string): string {
     const formattedDate = dateString.split("T")[0].replace(/\./g, "-");
     return formattedDate
@@ -95,16 +116,21 @@ statusOptions = [
       : "Invalid Date";
   }
 
+  /** 
+   * Filter Evalauation days
+   * @property {*} form
+   */
   filter() {
+    console.log('FILTER DATA:',this.form.value);
     this.service.evaluationdays(this.form.value).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log('FILTER RESPOSNE:',response);
         this.filterinfo = response;
       },
-       error: (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
@@ -112,12 +138,13 @@ statusOptions = [
     console.log(this.form.value);
   }
 
+  /** export data */
   exportexcel() {
     const x = document.querySelector("#table");
     const ws = XLSX.utils.table_to_sheet(x);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Table");
     XLSX.writeFile(wb, "table.xlsx");
-    this.messageService.add({severity:'info',summary:'Data Exported!'})
+    this.messageService.add({ severity: "info", summary: "Data Exported!" });
   }
 }

@@ -1,5 +1,5 @@
 <!-- header -->
-<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
 >
   <div class="flex items-start justify-start flex-col">
     <h1
@@ -11,8 +11,7 @@
     <p class="mt-1 text-gray-400">View and Manage Test Evaluation</p>
   </div>
   <!-- user details -->
-  <h1
-    class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+  <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
   >
     {{ userDetails }}
   </h1>
@@ -25,10 +24,12 @@
   >
     <!-- filter header -->
     <div class="relative">
-      <h1
-        class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
-      >
+      <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
         Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
+          <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+              Total Count: {{filterinfo?.length || 0}}
+          </span>
       </h1>
       <!-- download btn-->
       <p-button
@@ -129,37 +130,38 @@
   </div>
 </div>
 
-<app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
-
-<ng-template #show>
-  <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+<!-- skill dev table -->
+  <div class="h-[90svh] lg:h-[63vh] xl:h-[63vh] sm:h-[50vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
     <table id="table" class="table-auto !w-full">
        <!-- table head -->
         <thead class="sticky top-0">
-          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Date of Joining</th>
+          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Mobile No</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line Name</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept Name</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reporting To</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Reporting To</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Aging</th>
             <th class="!text-white rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Evaluate</th>
           </tr>
         </thead>
         <!-- table body -->
         <tbody>
-          <tr *ngFor="let i of filterinfo | filter : searchText" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ formatDate(i.doj) }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.gen_id }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md ">{{ i.fullname }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md ">{{ i.line_Name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md ">{{ i.dept_name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md ">{{ i.Emp_Name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.diff }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">
+          <tr *ngFor="let i of filterinfo | filter : searchText; let idx = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ idx + 1 }}</td>
+             <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.gen_id }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md ">{{ i.fullname }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ formatDate(i.doj) }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i.mobile_no1 }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md ">{{ i.line_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md ">{{ i.dept_name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md ">{{ i.Emp_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i.diff }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+               <!-- pending navigation with status -->
                 <button
                   *ngIf="this.form.get('filter').value == 'PENDING'"
                   [routerLink]="[
@@ -169,8 +171,9 @@
                     1
                   ]"
                 >
-                  <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
+                  <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
                 </button>
+                <!-- approved navigatio with status -->
                 <button
                   *ngIf="
                     this.form.get('filter').value == 'APPROVED' ||
@@ -183,11 +186,13 @@
                     3
                   ]"
                 >
-                  <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
+                  <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
                 </button>
             </td>
           </tr>
         </tbody>
-      </table>
+    </table>
+    <!-- loader -->
+     <app-loader *ngIf="loader.isLoding | async"></app-loader>
   </div>
-</ng-template>
+

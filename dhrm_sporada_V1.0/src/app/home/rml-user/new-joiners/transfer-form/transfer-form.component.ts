@@ -131,7 +131,6 @@ export class TransferFormComponent implements OnInit {
           this.changedepartment = this.obj[1];
           this.payrollAreaList = this.obj[4];
           this.costCenterList = this.obj[3];
-          this.costCenterList[0].DepartmentCode = 199;
           // this.changeline = this.obj[2]
         },
         error: (err) => {

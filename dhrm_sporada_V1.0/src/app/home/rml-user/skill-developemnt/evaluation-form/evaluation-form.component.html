@@ -19,17 +19,16 @@
 </div>
 
 <!-- evaluation details -->
- <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+ <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto overflow-scroll">
   <!-- user information -->
   <div class="flex items-start justify-start gap-3">
     <!-- image -->
     <img
-          [src]="this.image"
-          alt="Avatar"
-          style="display: flex; justify-content: center; align-items: center"
-          class="object-fit h-24 w-24 rounded-full"
-
-        />
+      [src]="this.image"
+      alt="Avatar"
+      style="display: flex; justify-content: center; align-items: center"
+      class="object-fit h-24 w-24 rounded-full"
+    />
         <!-- table -->
         <table class="table-auto">
           <thead>
@@ -52,12 +51,40 @@
           </tbody>
         </table>
   </div>
+  <!-- Evaluation document -->
+     <div>
+        <!-- table -->
+        <table class="table-auto" *ngIf="fileDetails.length != 0">
+          <thead>
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+               <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Evaluation No</th>
+               <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Trainer File</th>
+               <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Supervisor File</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer" *ngFor="let item of fileDetails">
+              <td class="!px-2 !py-4 !rounded-s-md text-center">
+                Evaluation-{{ item.curr_skill_level }}
+              </td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-500">
+                 <a [href]="getUrl(item.tnr_filename)" target="_blank">Test Doc</a>
+              </td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-500">
+                <a [href]="getUrl(item.sup_filename)" target="_blank">Evaluation Doc</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+     </div>
     <!-- skill desc -->
      <div>
       <table>
       <thead class="table_header">
-        <th class="cell1">Level</th>
-        <th class="cell1">Skill Description</th>
+        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
+          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Level</th>
+          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Skill Description</th>
+        </tr>
       </thead>
       <tbody>
         <tr class="yellow">
@@ -77,36 +104,34 @@
           <td class="cell1">Setting Change & Advance CNC Programming</td>
         </tr>
       </tbody>
-    </table>
+      </table>
      </div>
   </div>
 
   <!-- evaluation form -->
 <div>
-  <div
-    class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
-  >
+  <div class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
     <!-- forms -->
     <div class="relative">
-      <h1
-        class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
-      >
+      <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
         Evaluation Form<mat-icon>article</mat-icon>
       </h1>
+      <button
+      pButton
+      icon="pi pi-arrow-circle-left"
+      class="absolute right-0 top-0 rounded-3xl"
+       [routerLink]="[this.nav]"
+      ></button>
     </div>
-    <div>
+    <!-- form rows -->
+    <div [formGroup]="form">
       <!-- row one -->
-      <div
-        class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2"
-        [formGroup]="form"
-      >
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
         <!-- Evaluation date -->
         <div class="font-poppins w-full">
-          <label
-            for="status"
-            class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
-            >Evaluation Date</label
-          >
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">
+            Evaluation Date
+            </label>
           <br />
           <p-calendar
           formControlName="evaluation_date"
@@ -170,34 +195,6 @@
       </div>
       <!-- filters second row -->
       <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
-        <!-- training document -->
-        <div class="w-full p-fluid">
-          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
-            >Training Document</label
-          >
-          <br />
-          <input
-                class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"
-                type="file"
-                id="filetre"
-                (change)="files($event)"
-                [disabled]="appr"
-              />
-        </div>
-        <!-- Supervisor Evaluation Document -->
-        <div class="w-full p-fluid">
-          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
-            >Supervisor Document</label
-          >
-          <br />
-           <input
-                class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400"
-                type="file"
-                id="filesup"
-                (change)="filessup($event)"
-                [disabled]="appr"
-              />
-        </div>
          <!--new skill level -->
         <div class="font-poppins w-full">
           <label
@@ -233,18 +230,72 @@
             placeholder="Enter Processed Trained"
           ></p-dropdown>
         </div>
+         <!-- training document -->
+        <div class="w-full p-fluid">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+            >Training Document</label
+          >
+          <br />
+          <input
+                class="block text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-400 py-2 px-2 rounded-md ng-untouched ng-pristine ng-valid w-full"
+                type="file"
+                id="filetre"
+                (change)="files($event)"
+                [disabled]="appr"
+              />
+        </div>
+        <!-- Supervisor Evaluation Document -->
+        <div class="w-full p-fluid">
+          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+            >Supervisor Document</label
+          >
+          <br />
+           <input
+                class="block text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-400 py-2 px-2 rounded-md ng-untouched ng-pristine ng-valid w-full"
+                type="file"
+                id="filesup"
+                (change)="filessup($event)"
+                [disabled]="appr"
+              />
+        </div>
+        <button
+              pButton
+              [label]="save"
+              icon="pi pi-save"
+              *ngIf="!appr"
+              [disabled]="form.invalid"
+              type="submit"
+              [routerLink]="[this.nav]"
+              (click)="submit()"
+              class="mt-2"
+            >
+            </button>
       </div>
-      <!-- back btn *ngIf="appr"-->
-        <div class="w-full">
-          <p-button
+      <!-- BACK BTN *ngIf="appr"-->
+          <!-- <p-button
             icon="pi pi-angle-left"
-            styleClass="rounded-[1.5rem] mt-2"
-             
+            *ngIf="!appr"
             [routerLink]="[this.nav]"
             label="Back"
+            class="mt-2"
           >
-          </p-button>
+          </p-button> -->
+        <!-- SUBMIT BTN -->
+         <div class="w-full flex item-center justify-end">
+          <button
+              pButton
+              [label]="save"
+              icon="pi pi-save"
+              *ngIf="!appr"
+              [disabled]="form.invalid"
+              type="submit"
+              [routerLink]="[this.nav]"
+              (click)="submit()"
+              class="mt-2"
+            >
+            </button>
         </div>
+
     </div>
   </div>
 </div>
@@ -407,7 +458,7 @@
     <thead class="sticky top-0">
       <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
       <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+      <th class="!text-white !px-2 !py-2 !border-none !border-0">Operations</th>
       <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
       <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
       <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
