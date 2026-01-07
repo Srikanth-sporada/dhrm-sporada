@@ -35,7 +35,8 @@ export class BillProcessedDateComponent implements OnInit {
   processedBillEndDate:any;
   /** hide processed bill */
   hideHeader:boolean = environment.hideProcessedBillTabMenu;
-  currentYear = new Date().getFullYear();
+  /** checking current month based for year */
+  currentYear = new Date().getMonth() == 0 ? new Date().getFullYear() -1 : new Date().getFullYear();
   all:any;
   userDetails:any;
   // months: string[] = [
@@ -105,6 +106,7 @@ export class BillProcessedDateComponent implements OnInit {
   }
 
 ngOnInit(): void {
+  /** logged in user data */
    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -120,6 +122,7 @@ ngOnInit(): void {
 updateSelectedDate() {
     const selectedLockMonth = this.billForm.get('lock_month')?.value;
     console.log('SELECTED LOCK MONTH: ' + selectedLockMonth)
+    console.log('MONTH:',new Date().getMonth())
     if (selectedLockMonth){
       /** bill process start date & end date as calaulation based on start of the month */
        const selected = moment(selectedLockMonth, 'YYYY-MM'); // e.g. '2025-11']

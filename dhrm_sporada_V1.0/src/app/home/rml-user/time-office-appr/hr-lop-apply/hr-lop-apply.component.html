@@ -60,9 +60,11 @@
             <input
                 type="text"
                 pInputText
-                styleClass="w-full !font-poppins"
+                class="w-full !font-poppins"
+                [class]="showTraineeDetails ? '!bg-gray-200' : ''"
                 placeholder="Enter Gen ID"
                 [(ngModel)]="userEnteredGenId"
+                [readOnly]="showTraineeDetails"
             />
             </div>
           <!-- lop date -->
@@ -111,8 +113,17 @@
                 iconPos="right"
                 label="Apply"
                 icon="pi pi-check-circle"
-                class="mt-10 xl:w-1/12"
+                class="mt-10 xl:w-1/12 rounded-3xl"
                 (click)="applyLopForTrainee()"
+                [disabled]="lopDate ? false : true"
+            ></button>
+            <!-- apply lop btn -->
+            <button
+                pButton
+                *ngIf="showTraineeDetails"
+                icon="pi pi-times"
+                class="mt-10  rounded-3xl bg-red-400 outline-none border-none hover:!bg-red-400"
+                (click)="resetData()"
             ></button>
         </div>
       </div>

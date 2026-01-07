@@ -42,7 +42,7 @@
           </thead>
           <tbody>
             <tr class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-              <td class="!px-2 !py-4 !rounded-s-md text-center">{{name}}</td>
+              <td class="!px-2 !py-2 !rounded-s-md text-center">{{name}}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{id}}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{cat}}</td>
               <td class="!px-2 !py-4 !rounded-s-md text-center">{{ dept }}</td>
@@ -258,18 +258,19 @@
                 [disabled]="appr"
               />
         </div>
-        <button
-              pButton
-              [label]="save"
-              icon="pi pi-save"
-              *ngIf="!appr"
-              [disabled]="form.invalid"
-              type="submit"
-              [routerLink]="[this.nav]"
-              (click)="submit()"
-              class="mt-2"
-            >
-            </button>
+        <!-- save btn -->
+        <!-- <button
+          pButton
+          [label]="save"
+          icon="pi pi-save"
+          *ngIf="!appr"
+          [disabled]="form.invalid"
+          type="submit"
+          [routerLink]="[this.nav]"
+          (click)="submit()"
+          class="mt-10"
+          >
+            </button> -->
       </div>
       <!-- BACK BTN *ngIf="appr"-->
           <!-- <p-button
@@ -300,7 +301,7 @@
   </div>
 </div>
 
-<!-- <div class="container">
+<div class="container">
   <div class="row1">
     <div class="col">
       <br />
@@ -449,7 +450,7 @@
   </div>
 
   <br /><br />
-</div> -->
+</div>
 
 <!-- skill table -->
 <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[100vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
@@ -467,24 +468,24 @@
     </thead>
     <!-- table body -->
     <tbody>
-      <tr *ngFor="let oprn of curr_oprn; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-        <td class="!px-2 !py-4 text-center">{{ i + 1 }}</td>
-        <td class="!px-2 !py-4">{{ oprn.oprn_desc }}</td>
+      <tr *ngFor="let oprn of curr_oprn; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer !border-spacing-y-4">
+        <td class="!px-2 !py-3 text-center">{{ i + 1 }}</td>
+        <td class="!px-2 !py-3">{{ oprn.oprn_desc }}</td>
         <td
           [ngClass]="{ yellow: oprn.oprn_trained == 1 ? true : false }"
-          class="!px-2 !py-4"
+          class="!px-2 py-3"
         ></td>
         <td
           [ngClass]="{ blue: oprn.oprn_trained == 2 ? true : false }"
-          class="!px-2 !py-4"
+          class="!px-2 py-3"
         ></td>
         <td
           [ngClass]="{ green: oprn.oprn_trained == 3 ? true : false }"
-          class="!px-2 !py-4"
+          class="!px-2 py-3"
         ></td>
         <td
           [ngClass]="{ darkgreen: oprn.oprn_trained == 4 ? true : false }"
-          class="!px-2 !py-4"
+          class="!px-2 py-3"
         ></td>
       </tr>
     </tbody>

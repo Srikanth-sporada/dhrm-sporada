@@ -48,7 +48,6 @@
                   class="rounded-sm"
                   (click)="navigateToHRMSReports()"
                   target="_blank"
-                  class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports</a
                 >
@@ -58,7 +57,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/hrms-reports"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">dashboard</mat-icon>HRMS Reports</a
@@ -68,7 +67,7 @@
                 <a
                 mat-list-item
                 routerLink="/rhrm/hrs"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-md"
                 *ngIf="
                   isFin == true ||
@@ -85,7 +84,7 @@
                 <a
                 mat-list-item
                 routerLink="/rhrm/corp_hrs"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isFin == true ||
@@ -101,7 +100,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/dashboard"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isFin == true ||
@@ -119,7 +118,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/planvsactual"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isFin == true ||
@@ -136,7 +135,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/ocm"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isFin == true ||
@@ -154,7 +153,7 @@
                 <a
                 mat-list-item
                 routerLink="/rhrm/Cnt"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isFin == true ||
@@ -181,7 +180,7 @@
           >
             <mat-expansion-panel-header 
              routerLink="/rhrm/masters"
-             [ngClass]="isMasterExpanded ? '!text-blue-600 !font-semibold border-2 border-blue-600 bg-[var(--transparent)]' : 'py-4 text-gray-600 font-semibold'"
+             [ngClass]="isMasterExpanded ? '!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600 border-2 border-blue-600 bg-[var(--transparent)]' : 'py-4 text-gray-600 font-semibold'"
             >
               <mat-icon class="icon-pad" 
                 [ngClass]="router.url == '/rhrm/masters' || isMasterExpanded ? 'text-blue-600' : 'text-gray-600'"
@@ -207,7 +206,7 @@
                  *ngIf = "isadmin == 'true' " 
                   mat-list-item 
                   routerLink="/rhrm/contra/bill_pros_dt"
-                  routerLinkActive="!text-blue-600 !font-semibold" 
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600" 
                   class="rounded-sm">
                     <mat-icon class="icon-pad">currency_rupee</mat-icon>Processed Bill's
               </a>
@@ -234,7 +233,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/new_joiners/trainee-application-status"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">assignment_ind</mat-icon>Trainee
@@ -245,7 +244,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/new_joiners/hr-approval"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">how_to_reg</mat-icon>HR Approval</a
@@ -255,7 +254,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/new_joiners/onboard"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">how_to_reg</mat-icon
@@ -266,7 +265,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/new_joiners/dept_transfer"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">how_to_reg</mat-icon>Department
@@ -278,7 +277,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/new_joiners/Rejoin-process"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">assignment_ind</mat-icon>Rejoin
@@ -322,7 +321,7 @@
                   isadmin == 'true'
                 "
                 routerLink="/rhrm/contra/conemp"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">recent_actors</mat-icon>Contract
@@ -332,7 +331,7 @@
                 mat-list-item
                 *ngIf="isadmin == 'true'"
                 routerLink="/rhrm/contra/newCon"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">device_hub</mat-icon>Contractor
@@ -362,7 +361,7 @@
                 mat-list-item
                 *ngIf="isadmin == 'true'"
                 routerLink="/rhrm/contra/payroll"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">layers</mat-icon>Pay Role Master
@@ -372,7 +371,7 @@
                 mat-list-item
                 *ngIf="isadmin == 'true' || isFin == 'true' || isFin"
                 routerLink="/rhrm/contra/sal_header"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">view_list</mat-icon>Payscale Header
@@ -388,7 +387,7 @@
                   ishrappr == 'true'
                 "
                 routerLink="/rhrm/contra/payscale"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">layers</mat-icon>Pay Scale Master
@@ -400,7 +399,7 @@
                   (ishr == 'true' && ishrappr == 'false') || isadmin == 'true'
                 "
                 routerLink="/rhrm/contra/upt_payscale"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">recent_actors</mat-icon>Update
@@ -411,7 +410,7 @@
                 mat-list-item
                 *ngIf="ishrappr == 'true' || isadmin == 'true'"
                 routerLink="/rhrm/contra/apprl_salary"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">device_hub</mat-icon>Approve Salary
@@ -423,7 +422,7 @@
                   ishr == 'true' || isadmin == 'true' || ishrappr == 'true'
                 "
                 routerLink="/rhrm/contra/ont_salary"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">visibility</mat-icon>One Time Ear &
@@ -439,7 +438,7 @@
                   isFin
                 "
                 routerLink="/rhrm/contra/Emp_Sal_Master"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">assessment</mat-icon>Emp Salary
@@ -454,7 +453,7 @@
                   isFin
                 "
                 routerLink="/rhrm/contra/CL_Sal_Master"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">list_alt</mat-icon>CL Salary Report
@@ -483,7 +482,7 @@
                 *ngIf="isadmin == 'true' || istrainer == 'true'"
                 mat-list-item
                 routerLink="/rhrm/training_dojo/training-modules"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 >
                 <mat-icon class="icon-pad">file_copy</mat-icon>Training
                 Modules</a
@@ -491,7 +490,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/training_dojo/question-bank"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="istrainer == 'true'"
               >
@@ -502,7 +501,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/training_dojo/skill-question"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="istrainer == 'true'"
               >
@@ -513,7 +512,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/training_dojo/test-evaluation"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="istrainer == 'true'"
               >
@@ -523,7 +522,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/training_dojo/test-result-summary"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="istrainer == 'true' || isRA"
               >
@@ -535,7 +534,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/training_dojo/Supervisor_Question"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
 
                 >
@@ -547,7 +546,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/training_dojo/trainee-score-card"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
 
                 >
@@ -577,7 +576,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time_office/calender"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">calendar_today</mat-icon
@@ -617,7 +616,7 @@
                 *ngIf="this.isOperator"
                 mat-list-item
                 routerLink="/rhrm/time_office/comp-off"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
@@ -634,7 +633,7 @@
                 
                 mat-list-item
                 routerLink="/rhrm/time_office/per_leave"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">work_history</mat-icon
@@ -662,7 +661,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/skill-developement/skill-test"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 
               >
@@ -706,7 +705,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time_office-status/excess-hrs"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Excess Hours</a
@@ -764,7 +763,7 @@
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/ot-compoff"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Comp-Off</a
@@ -781,7 +780,7 @@
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/reports/atndReport"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">how_to_reg</mat-icon>Present/Absent
@@ -791,7 +790,7 @@
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/calender"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">calendar_today</mat-icon>
@@ -840,7 +839,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/time-office-appr/missing-punch"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   *ngIf="ishr == 'true' || ishrappr == 'true'"
                 ><mat-icon>cloud_upload</mat-icon>Missing Punch - HR
@@ -850,7 +849,7 @@
                 <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/mid-day-permission"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isadmin == 'true' || (ishr == 'true' && ishrappr == 'false')
@@ -861,7 +860,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/otapprmapping"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true'"
                 ><mat-icon>supervisor_account</mat-icon>OT Approver Mapping</a
@@ -869,14 +868,14 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/deptReport"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon>supervisor_account</mat-icon>Dept Muster Report</a
               >
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/weekoff"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   ishr == 'true' || ishrappr == 'true' || isadmin == 'true'
@@ -888,7 +887,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/trn/shft_cancel"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> cancel_presentation</mat-icon>Shift Cancel
                 Re-Process</a
@@ -896,7 +895,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/trn/shft_change"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="isadmin == 'true' || ishr == 'true'"
                 ><mat-icon> change_history</mat-icon>Attendance Re-Process</a
@@ -905,7 +904,7 @@
                 *ngIf="isadmin == 'true'"
                 mat-list-item
                 routerLink="/rhrm/trn/trnsf_post"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Transfer Post</a
               >
@@ -915,7 +914,7 @@
                 "
                 mat-list-item
                 routerLink="/rhrm/contra/mst_leave"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">calendar_today</mat-icon>Trainee
@@ -928,7 +927,7 @@
                 "
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/five-days-mapping"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">filter_5</mat-icon>Five days Trainee
@@ -938,7 +937,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/route"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isadmin == 'true' || (ishr == 'true' && ishrappr == 'false')
@@ -948,7 +947,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/van-mapping"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isadmin == 'true' || (ishr == 'true' && ishrappr == 'false')
@@ -959,7 +958,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/van-delay-regularization"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="
                   isadmin == 'true' || (ishr == 'true' && ishrappr == 'false')
@@ -993,7 +992,7 @@
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/forgot-punch-appr"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">browse_gallery</mat-icon>Forget Punch
@@ -1004,7 +1003,7 @@
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/excesshrAppr"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Excess Hour
@@ -1015,7 +1014,7 @@
                 *ngIf="isOtAppr == true"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/otapprove"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>FH OT Approval</a
@@ -1025,7 +1024,7 @@
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-appr-exec"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Permission Approval</a
               >
@@ -1033,7 +1032,7 @@
                 *ngIf="ishrappr === 'true'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-appr-hrmng"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon> Permission Approval</a
               >
@@ -1041,7 +1040,7 @@
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-leave-exec"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Leave Approval</a
               >
@@ -1049,7 +1048,7 @@
                 *ngIf="ishrappr === 'true'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-leave-hrmng"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Leave Approval</a
               >
@@ -1058,7 +1057,7 @@
                 *ngIf="isRA && ishrappr === 'false'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/optr-Coff-exec"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> polymer</mat-icon>Operator Coff Approval
               </a>
@@ -1069,7 +1068,7 @@
                 "
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/Rejoin_Approval"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 ><mat-icon> assignment_ind</mat-icon> Rejoin Approval</a
               >
@@ -1100,7 +1099,7 @@
                 <a
                   mat-list-item
                   [routerLink]="['/rhrm/skill-developement/trainer-evaluation']"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">people</mat-icon>Skill
@@ -1119,7 +1118,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/skill-developement/Operations"
-                 routerLinkActive="!text-blue-600 !font-semibold"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">business_center</mat-icon
@@ -1138,7 +1137,7 @@
                 <a
                   mat-list-item
                   [routerLink]="['/rhrm/skill-developement/Skill-Matrix']"
-                 routerLinkActive="!text-blue-600 !font-semibold"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">people</mat-icon>Skill Matrix</a
@@ -1157,7 +1156,7 @@
                 <a
                   mat-list-item
                   [routerLink]="['/rhrm/skill-developement/skill-view']"
-                 routerLinkActive="!text-blue-600 !font-semibold"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">people_outline</mat-icon>View Skill
@@ -1172,7 +1171,7 @@
                 <a
                   mat-list-item
                   [routerLink]="['/rhrm/skill-developement/evaluation-due']"
-                 routerLinkActive="!text-blue-600 !font-semibold"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">plus_one</mat-icon>Skill Evaluation
@@ -1185,7 +1184,7 @@
                   [routerLink]="[
                     '/rhrm/skill-developement/Supervisor_Evaluation'
                   ]"
-                 routerLinkActive="!text-blue-600 !font-semibold"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">supervisor_account</mat-icon
@@ -1202,7 +1201,7 @@
                 "
                 mat-list-item
                 routerLink="/rhrm/reports/Skill-Matrix-Report"
-               routerLinkActive="!text-blue-600 !font-semibold"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad"> fastfood</mat-icon>Skill Matrix
@@ -1231,7 +1230,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/people-planning/monthly"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
               >
@@ -1241,7 +1240,7 @@
               <a
                 mat-list-item
                 routerLink="/rhrm/people-planning/shift"
-                routerLinkActive="!text-blue-600 !font-semibold"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
                 *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin"
               >
@@ -1277,7 +1276,7 @@
               <mat-nav-list  class="!mx-1 text-gray-600">
                 <a
                   routerLink="pmpd/master"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   mat-list-item
                 >
@@ -1287,7 +1286,7 @@
               <mat-nav-list dense>
                 <a
                   routerLink="pmpd/actual"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm !text-[16px]"
                   mat-list-item
                 >
@@ -1338,7 +1337,7 @@
                   <a
                   mat-list-item
                   routerLink="/rhrm/reports/cummulativereport"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                  >
                   <mat-icon class="icon-pad">payments</mat-icon>Cumulative
@@ -1350,7 +1349,7 @@
                   <a
                   mat-list-item
                   routerLink="/rhrm/reports/lopreport"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   >
                   <i class="pi pi-calendar-minus mr-3" style="font-size: 1.75rem"></i>LOP Report
@@ -1361,7 +1360,7 @@
                   <a
                   mat-list-item
                   routerLink="/rhrm/reports/rawpunch"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">access_time</mat-icon>Machine Punch
@@ -1371,7 +1370,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/reports/arsreports"
-                   routerLinkActive="!text-blue-600 !font-semibold"
+                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">assessment</mat-icon>ARS Report</a
@@ -1379,7 +1378,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/reports/atndReport"
-                   routerLinkActive="!text-blue-600 !font-semibold"
+                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">how_to_reg</mat-icon>Attendance
@@ -1388,7 +1387,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/reports/trainee-apln-report"
-                   routerLinkActive="!text-blue-600 !font-semibold"
+                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">person_search</mat-icon>Employee
@@ -1398,7 +1397,7 @@
                 <a
                   mat-list-item
                   routerLink="/rhrm/contra/emp_rec2"
-                   routerLinkActive="!text-blue-600 !font-semibold"
+                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad">person_search</mat-icon>Employee
@@ -1414,7 +1413,7 @@
                   "
                   mat-list-item
                   routerLink="/rhrm/reports/cntRpt"
-                   routerLinkActive="!text-blue-600 !font-semibold"
+                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                 >
                   <mat-icon class="icon-pad"> fastfood</mat-icon>Canteen
@@ -1511,7 +1510,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/New Joiners.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1521,7 +1520,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/Bodhi Training.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1531,7 +1530,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/Skill Development & People Planning.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1541,7 +1540,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/Reports & Dashboards_R2.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1551,7 +1550,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/Time Office.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1577,7 +1576,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/DHRM-Masters.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >
@@ -1587,7 +1586,7 @@
                 <a
                   mat-list-item
                   [href]="url + 'sop/cl_onboard.pdf'"
-                  routerLinkActive="!text-blue-600 !font-semibold"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
                   target="_blank"
                 >

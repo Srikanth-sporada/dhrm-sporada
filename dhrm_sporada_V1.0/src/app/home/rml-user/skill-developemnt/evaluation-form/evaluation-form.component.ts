@@ -1,13 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
 import { UntypedFormBuilder, Validators } from "@angular/forms";
 import { environment } from "src/environments/environment.prod";
 import { ApiService } from "src/app/home/api.service";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { of } from "rxjs";
-import { isThisSecond } from "date-fns";
 import { MessageService } from "primeng/api";
 @Component({
   selector: "app-evaluation-form",
@@ -81,8 +78,8 @@ export class EvaluationFormComponent implements OnInit {
       curr_dept: [""],
       curr_line: [""],
       curr_skill_level: [""],
-      apln_slno: [this.active.snapshot.paramMap.get("id")],
-      eval_days: [this.active.snapshot.paramMap.get("eval")],
+      apln_slno: [this.active.snapshot.paramMap.get("id")], // apln-slno
+      eval_days: [this.active.snapshot.paramMap.get("eval")], // evaluation stage
       emp_slno: [sessionStorage.getItem("emp_id")],
       emp_name: [sessionStorage.getItem("emp_name")],
       line_name: [""],
@@ -92,6 +89,7 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -103,47 +101,15 @@ export class EvaluationFormComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
-    console.log("ng on init");
-    this.service
-      .getoperations(this.active.snapshot.paramMap.get("id"))
-      .subscribe(
-        (response) => {
-          console.log(response);
-          this.curr_oprn = response;
-        },
-        (error) => {
-          console.log(error);
-          this.messageService.add({
-            severity: "error",
-            summary: error.message,
-          });
-        }
-      );
-    this.service
-      .getFileDetails(this.active.snapshot.paramMap.get("id"))
-      .subscribe(
-        (response: any) => {
-          if ((response.status = "success")) {
-            this.fileDetails = response.data;
-            console.log(this.fileDetails);
-          } else {
-            // alert(response.status)
-            this.messageService.add({
-              severity: "warn",
-              summary: response?.message,
-            });
-          }
-        },
-        (error) => {
-          console.log(error);
-          this.messageService.add({
-            severity: "error",
-            summary: error.message,
-          });
-        }
-      );
+    // console.log("ng on init");
+    /** get operations */
+    this.getOperations();
+    /** get evaluation file data */
+    this.getEvaluationFileData();
+    
     this.appr = this.active.snapshot.paramMap.get("nav") == "3" ? true : false;
 
+    /** creating nav link based on URL param */
     if (this.active.snapshot.paramMap.get("nav") == "3") {
       this.nav = "/rhrm/skill-developement/supervisor-evaluation";
       this.readable = true;
@@ -169,14 +135,78 @@ export class EvaluationFormComponent implements OnInit {
       this.form.controls["process_trained"].disable();
     } else this.nav = "/rhrm/skill-developement/evaluation-due";
 
+    /** get Eval form */
+    this.getEvalForm()
+    if (
+      this.active.snapshot.paramMap.get("nav") == "2" ||
+      this.active.snapshot.paramMap.get("nav") == "3"
+    ) {
+      /** get eval supervisor data */
+      this.getEvalSupervisor();
+    }
+  }
+
+  /** 
+   * get operations
+   */
+  getOperations(){
     this.service
+      .getoperations(this.active.snapshot.paramMap.get("id"))
+      .subscribe(
+        (response) => {
+          console.log('RESPONSE:',response);
+          this.curr_oprn = response;
+        },
+        (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        }
+      );
+  }
+
+  /** get evaluation file details */
+  getEvaluationFileData(){
+    this.service
+      .getFileDetails(this.active.snapshot.paramMap.get("id"))
+      .subscribe(
+        (response: any) => {
+          if ((response.status = "success")) {
+            this.fileDetails = response.data;
+            console.log(this.fileDetails);
+          } else {
+            // alert(response.status)
+            this.messageService.add({
+              severity: "warn",
+              summary: response?.message,
+            });
+          }
+        },
+        (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        }
+      );
+  }
+
+  /**
+   *  get eval form
+   * @property {*} getEvalLineName
+   *  */
+  getEvalForm(){
+     this.service
       .get_eval_form({
         apln_slno: this.active.snapshot.paramMap.get("id"),
         skill: this.active.snapshot.paramMap.get("eval"),
       })
       .subscribe({
         next: (response: any) => {
-          console.log(response);
+          console.log('EVAL FORM DATA:',response);
           this.obj = response;
           this.image = this.url + "/uploads/" + this.obj[0][0]?.other_files6;
           console.log(this.image);
@@ -210,8 +240,26 @@ export class EvaluationFormComponent implements OnInit {
               this.obj[0][0]?.curr_skill
             );
             this.form.controls["line_name"].setValue(this.obj[0][0]?.line_name);
+            /** get line name */
+            this.getEvalLineName();
+          } catch (error) {
+            console.error('ERROR:',error);
+          }
+        },
+        error: (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        },
+      });
 
-            this.service
+  }
+
+  /** get Line name */
+  getEvalLineName(){
+     this.service
               .getLineName({ dept_slno: this.obj[0][0]?.dept_slno })
               .subscribe({
                 next: (response: any) => {
@@ -224,41 +272,28 @@ export class EvaluationFormComponent implements OnInit {
                   this.form.controls["line"].disable();
                 },
                 error: (error) => {
-                  console.log(error);
+                  console.error('ERROR:',error);
                   this.messageService.add({
                     severity: "error",
                     summary: error.message,
                   });
                 },
               });
-          } catch (error) {
-            console.log(error);
-          }
-        },
-        error: (error) => {
-          console.log(error);
-          this.messageService.add({
-            severity: "error",
-            summary: error.message,
-          });
-        },
-      });
+  }
 
-    if (
-      this.active.snapshot.paramMap.get("nav") == "2" ||
-      this.active.snapshot.paramMap.get("nav") == "3"
-    ) {
-      this.service
+  /** get eval supervisor data */
+  getEvalSupervisor(){
+     this.service
         .get_eval_sup({
           apln_slno: this.active.snapshot.paramMap.get("id"),
           skill: this.active.snapshot.paramMap.get("eval"),
         })
         .subscribe({
           next: (response: any) => {
-            console.log(response);
+            console.log('SUP EVAL RESPONSE:',response);
 
             this.pt = response[3];
-
+            /** map operation as process trained */
             this.pt = this.pt.map((a: any) => a.oprn_desc);
 
             this.form.controls["evaluation_date"].setValue("2023-02-02");
@@ -285,19 +320,24 @@ export class EvaluationFormComponent implements OnInit {
             this.sup_file = response[0][0]?.sup_filename;
           },
           error: (error) => {
-            console.log(error);
+            console.error('ERROR:',error);
             this.messageService.add({
               severity: "error",
               summary: error.message,
             });
           },
         });
-    }
   }
 
+  /** 
+   * get file URL
+   * @param file_name
+   *  */
   getUrl(file_name: any) {
     return this.url + "/skill_dev/" + file_name;
   }
+
+  /** submit  evaluation form*/
   submit() {
     this.form.get("department").enable();
     this.form.get("line").enable();
@@ -322,6 +362,7 @@ export class EvaluationFormComponent implements OnInit {
         next: (response: any) => {
           console.log(response);
           if (response.message == "success") {
+            /** evaluation email */
             this.service
               .evaluation_mail({
                 plant_code: sessionStorage.getItem("plantcode"),
@@ -329,21 +370,26 @@ export class EvaluationFormComponent implements OnInit {
               })
               .subscribe({
                 next: (response: any) => {
-                  console.log(response);
+                  console.error('EVAL RESPONSE:',response);
                 },
+                error: (error:any) => {
+                  console.error('ERROR:',error);
+                  this.messageService.add({severity:'error',summary:'Error sending email!'})
+                }
               });
             // alert("Trainee has been Evaluated");
             this.messageService.add({
               severity: "info",
               summary: "Trainee has been Evaluated",
             });
-            this.router.navigate([
-              "/rhrm/skill-developement/trainer-evaluation",
-            ]);
+            /** route to trainee evaluation form */
+            setTimeout(() => {
+              this.router.navigate(["/rhrm/skill-developement/trainer-evaluation",]);
+            }, 2100);
           }
         },
         error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({
             severity: "error",
             summary: error.message,
@@ -361,7 +407,7 @@ export class EvaluationFormComponent implements OnInit {
             this.new
         );
       } catch (err) {
-        console.log(err);
+        console.log('FILE ERROR:',err);
       }
       this.service
         .eval_form_sup({
@@ -371,7 +417,7 @@ export class EvaluationFormComponent implements OnInit {
         })
         .subscribe({
           next: (response: any) => {
-            console.log(response);
+            console.log('EVAL SUP RESPONSE:',response);
             if (response.message == "success") {
               // alert("Trainee has been Evaluated");
               this.messageService.add({
@@ -383,17 +429,23 @@ export class EvaluationFormComponent implements OnInit {
               ]);
             }
           },
+          error: (error:any) => {
+            console.log('ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message});
+          }
         });
     }
-    console.log(this.form.value);
+    console.log('EVAL FORM DATA:',this.form.value);
   }
+
+  /** handle file upload */
   files(event: any) {
     this.file = event.target.files[0];
     if (this.file?.size > 2000000) {
       this.form.get("upload_file_tra").setValue(null);
       // alert("FileSize Should be less Than 2MB");
       this.messageService.add({
-        severity: "info",
+        severity: "warn",
         summary: "FileSize Should be less Than 2MB",
       });
       const file: any = document.getElementById("filetre");
@@ -402,7 +454,7 @@ export class EvaluationFormComponent implements OnInit {
     }
     var file_local = this.file?.name.split(".");
     this.new = file_local?.pop();
-    console.log(this.new);
+    console.log('FILE EXT:',this.new);
     var formData = new FormData();
 
     formData.append(
@@ -420,23 +472,24 @@ export class EvaluationFormComponent implements OnInit {
 
     this.service.skill_dev(formData).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log('FILE UPLOAD RESPONSE:',response);
         console.log("test");
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
   }
 
+  /** file upload supervisor */
   filessup(event: any) {
     this.filesup = event.target.files[0];
     console.log(this.filesup.size);
     if (this.filesup.size > 2000000) {
       this.form.get("upload_file_sup").setValue(null);
       this.messageService.add({
-        severity: "info",
+        severity: "warn",
         summary: "FileSize Should be less Than 2MB",
       });
       const file: any = document.getElementById("filesup");
@@ -463,15 +516,17 @@ export class EvaluationFormComponent implements OnInit {
 
     this.service.skill_dev(formData).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log('FILE UPLOAD RES:',response);
         console.log("test");
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
   }
+
+  /** calculate training process scrore */
   cal() {
     var a = this.form.controls["score_for"].value;
     var b = this.form.controls["score_obtained"].value;
@@ -479,6 +534,9 @@ export class EvaluationFormComponent implements OnInit {
     this.form.controls["percentage"].setValue(c);
   }
 
+  /** 
+   * @param event
+   */
   getLineName(event: any) {
     var x = event.target.value.split(":")[0] - 1;
     console.log(x);
@@ -489,10 +547,11 @@ export class EvaluationFormComponent implements OnInit {
         next: (response: any) => {
           console.log(response);
           this.line = response[0];
+          /** line mappings only line name */
           this.line = this.line.map((a: any) => a.line_name);
         },
         error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({
             severity: "error",
             summary: error.message,

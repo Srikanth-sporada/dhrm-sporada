@@ -61,7 +61,7 @@ export class HrLopApplyComponent implements OnInit {
           this.traineeData = response;
           /** set leave details to true */
           this.showTraineeDetails = true;
-          console.log(response);
+          console.log('TRAINEE DATA:',response);
         }else{
           this.messageService.add({severity:'warn',summary:'Gen ID not found!'})
         }
