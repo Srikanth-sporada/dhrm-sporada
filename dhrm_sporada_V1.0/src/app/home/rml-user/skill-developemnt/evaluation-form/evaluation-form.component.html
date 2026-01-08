@@ -301,7 +301,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="false">
   <div class="row1">
     <div class="col">
       <br />
@@ -453,7 +453,8 @@
 </div>
 
 <!-- skill table -->
-<div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[100vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar">
+<div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[100vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar relative">
+  <!-- table -->
   <table id="table" class="table-auto !w-full">
     <!-- table head -->
     <thead class="sticky top-0">
@@ -490,4 +491,6 @@
       </tr>
     </tbody>
   </table>
+  <!-- loader -->
+   <app-loader *ngIf="loader.isLoding | async"></app-loader>
 </div>

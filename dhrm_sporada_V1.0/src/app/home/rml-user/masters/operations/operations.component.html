@@ -30,6 +30,11 @@
                     styleClass="w-full"
                     (onChange)="onPlantChange($event)"
                     placeholder="Select Plant">
+                    <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
                 </p-dropdown>
                 </div>
                 <!-- plant code -->
@@ -46,6 +51,11 @@
                     optionValue="plant_code"
                     styleClass="w-full"
                    [placeholder]="selectedPlantCode">
+                   <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
                 </p-dropdown>
                 </div>
                 <!-- description -->
@@ -128,7 +138,7 @@
                 </div>
             </div>
             <!-- row  four -->
-            <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+            <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid my-3">
                  <!-- status -->
                 <div class="w-full px-2" >
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -147,7 +157,7 @@
                  <!-- critical process -->
                 <div class="w-full px-2" >
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">draft</mat-icon>
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">file_copy</mat-icon>
                     Training File
                 </label><br />
                 <input type="file" #fileInput (change)="onFileSelected($event)" class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400" />
@@ -195,6 +205,10 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+           <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{dummy?.length || 0}}
+           </span>
         </h1>
        <!-- primeNG speedDial -->
         <p-speedDial 
@@ -216,27 +230,32 @@
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full py-1"
-            placeholder="Select Plant" ></p-dropdown>
+            placeholder="Select Plant">
+             <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+            </ng-template>
+        </p-dropdown>
 
        </div>
      </div>
   </div>
 
-    <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
-
-    <ng-template #show>
-        <div class="h-[90svh] lg:h-[75vh] xl:h-[78vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+        <div class="h-[90svh] lg:h-[75vh] xl:h-[78vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
+            <!-- table -->
             <table id="table" class="table-auto !w-full">
                <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
                                 Sno</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                                Plant Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">
+                                Plant
+                            </th>
 
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
-                                Description
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">
+                                Operation
                             </th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
                                 Skill level
@@ -252,13 +271,15 @@
                     <!-- table body -->
                     <tbody>
                         <tr *ngFor="let i of dummy; let a = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{a+1}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.plant_name}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md">{{i.oprn_desc}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.skill_level}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.critical_oprn == true ? 'YES' : 'NO'}}</td>
+                            <td class="!px-2 !py-3 !rounded-s-md text-center">{{a+1}}</td>
+                            <td class="!px-2 !py-3 !rounded-s-md">
+                                {{i.plant_code + ' | ' +i.plant_name}} 
+                            </td>
+                            <td class="!px-2 !py-3 !rounded-s-md">{{i.oprn_desc}}</td>
+                            <td class="!px-2 !py-3 !rounded-s-md text-center">{{i.skill_level}}</td>
+                            <td class="!px-2 !py-3 !rounded-s-md text-center">{{i.critical_oprn == true ? 'YES' : 'NO'}}</td>
                             <!-- actions -->
-                            <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                            <td class="!px-2 !py-3 !rounded-e-md flex items-center justify-center">
                                 <button (click)="edit(a, i.oprn_slno);opentoedit(content);">
                                     <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
                                 </button>
@@ -268,8 +289,8 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+            </table>
+            <!-- loader -->
+             <app-loader></app-loader>
         </div>
-
-    </ng-template>
 </div>

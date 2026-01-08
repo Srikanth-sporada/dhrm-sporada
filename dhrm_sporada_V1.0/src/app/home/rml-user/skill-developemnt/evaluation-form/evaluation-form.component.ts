@@ -6,6 +6,7 @@ import { ApiService } from "src/app/home/api.service";
 import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
 @Component({
   selector: "app-evaluation-form",
   templateUrl: "./evaluation-form.component.html",
@@ -62,7 +63,8 @@ export class EvaluationFormComponent implements OnInit {
     private active: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public loader:LoaderserviceService
   ) {
     this.form = this.fb.group({
       evaluation_date: ["", Validators.required],
@@ -534,7 +536,8 @@ export class EvaluationFormComponent implements OnInit {
     this.form.controls["percentage"].setValue(c);
   }
 
-  /** 
+  /**
+   * get line name
    * @param event
    */
   getLineName(event: any) {

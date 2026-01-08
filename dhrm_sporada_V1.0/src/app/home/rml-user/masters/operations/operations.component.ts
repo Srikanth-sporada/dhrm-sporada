@@ -91,30 +91,16 @@ export class OperationsComponent implements OnInit {
     });
   }
 
-  // ngOnInit(): void {
-
-  //   this.plant = sessionStorage.getItem('plantcode');
-
-  //   this.getplantcode();
-  //   if (this.plant) {
-  //     this.service.getoperation(this.plant).subscribe({
-  //       next: (response: any) => {
-  //         console.log('open response', response);
-  //         this.dummy = response.operations;
-  //       }
-  //     });
-  //   }
-
-  // }
-
   ngOnInit(): void {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
+    /** user plant code */
     this.plant = sessionStorage.getItem('plantcode');
-
+    /** get company plant code */
     this.getplantcode();
 
     if (this.is_admin === 'false') {
@@ -122,37 +108,56 @@ export class OperationsComponent implements OnInit {
     }
 
     if (this.plant) {
-      this.service.getoperation(this.plant, this.is_admin).subscribe({
+      /** get plant operations */
+      this.getPlantOperation();
+    }
+  }
+  /** 
+   * get plant operations
+   * @property {*} plant 
+   * @property {*} admin
+   *  */
+  getPlantOperation(){
+     this.service.getoperation(this.plant, this.is_admin).subscribe({
         next: (response: any) => {
-          console.log('open response', response);
+          console.log('OPERATION:', response);
           this.dummy = response.operations;
+          /** operation data cp */
           this.operationData = response.operations
           // ✅ Save the plant code and name
           this.selectedPlantCode = response.PlName.plant_code;
           this.selectedPlantName = response.PlName.plant_name;
+          /** mapping plant name = RML SLD-HO-Chennai for all plant */
+        this.dummy = this.dummy.map((plant:any) => {
+          return {...plant,plant_name:'RML SLD-HO-Chennai'}
+        })
         },
         error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
       });
-    }
   }
 
-
+  /**
+   *  get plant code
+   * @property {*}
+   *  */
   getplantcode() {
+    /** user company code */
     const company = { company_name: sessionStorage.getItem('companycode') };
     this.service.plantcodelist(company).subscribe({
-      next: (response) => {
-        this.plantname = response;
+      next: (response:any) => {
+        this.plantname = [...response];
         this.plantData = response;
-        this.plantData.push({plant_name:'All',plant_code:''})
+        this.plantData.unshift({plant_name:'All',plant_code:''})
+        /** filter only plant name */
         for (const o in this.plantname) {
           this.array.push(this.plantname[o].plant_name);
         }
       },
      error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
@@ -165,6 +170,10 @@ export class OperationsComponent implements OnInit {
   //   this.modalService.open(content, { centered: true });
   // }
 
+  /**
+   *  open modal 
+   * @param content
+   * */
   open(content: any) {
     this.form.reset();
     this.editing_flag = false;
@@ -173,32 +182,35 @@ export class OperationsComponent implements OnInit {
     // ✅ Set and disable plant name field
     this.form.get('plant_name').setValue(this.selectedPlantCode);
     this.onPlantSelect(this.selectedPlantName);
-
+    /** opening modal content */
     this.modalService.open(content, { centered: true });
   }
-
-
+  /** open edit modal ref */
   openForEdit(index: number, slno: any, content: any) {
     this.edit(index, slno);
     this.opentoedit(content);
   }
-
+ /** open edit modal ref */
   opentoedit(content: any) {
     this.modalService.open(content, { centered: true });
   }
 
+  /** 
+   * get departments for plant
+   * @param event plantcode
+   * 
+   */
   onPlantSelect(event: any) {
     const selectedPlantCode = event;
     if (selectedPlantCode) {
       this.service.getoprnDept(selectedPlantCode).subscribe({
         next: (response) => {
-
           console.log('Departments response:', response);
-          console.log('Type:', typeof response);
+          // console.log('Type:', typeof response);
           this.departments = response;
         },
          error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
       });
@@ -207,6 +219,9 @@ export class OperationsComponent implements OnInit {
     }
   }
 
+  /** handle plant change
+   * @param event
+   */
   onPlantChange(event: any) {
     const selectedPlantCode = event.value;
 
@@ -234,21 +249,31 @@ export class OperationsComponent implements OnInit {
     this.onPlantSelect(selectedPlantName);
   }
 
+  /** 
+   * get line while department change
+   * @param event
+   */
   get_dep_no(event: any) {
     // const fulldep = event.value;
     // const selectedDep = fulldep.split(':')[1]?.trim();
 
     this.service.getoprnLine(event.value).subscribe({
       next: (response) => {
+        console.log('LINE:',response)
         this.Lines = response;
       },
       error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
   }
 
+  /**
+   * edit operation
+   * @param a index
+   * @param slno
+   */
   edit(a: number, slno: any) {
     this.form.get('plant_name').disable();
     this.form.get('Department').disable();
@@ -280,6 +305,10 @@ export class OperationsComponent implements OnInit {
     console.log('EDIT FORM',this.form.value, 'USER VALUE', this.dummy[a])
   }
 
+  /** 
+   * add operation
+   * @param modal
+   */
   save(modal: any) {
     console.log('coming')
     const requiredFields = [
@@ -325,7 +354,7 @@ export class OperationsComponent implements OnInit {
       ...this.form.value,
       file_name: this.selectedFileName || ''
     };
-
+    /** add operation API */
     this.service.addoperation(formData).subscribe({
       next: (response: any) => {
         if (response.message === 'inserted') {
@@ -336,16 +365,20 @@ export class OperationsComponent implements OnInit {
           this.messageService.add({severity:'warn',summary:'Error While Adding Operation'})
 
         }
-
+        /** close modal */
         modal.close('Close click');
         this.refreshData();
       },error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
   }
 
+  /** 
+   * @param modal
+   * update operation
+   */
   editSave(modal: any) {
     this.form.get('plant_name').enable();
     const departmentValue = this.form.value.Department;
@@ -375,6 +408,7 @@ export class OperationsComponent implements OnInit {
       }
     }
 
+    /** after file upload */
     const afterUpload = (fileName: string) => {
       const updatedFormData = {
         ...this.form.value,
@@ -382,7 +416,7 @@ export class OperationsComponent implements OnInit {
         Line: lineValue,
         file_name: fileName
       };
-
+      /** update operation API */
       this.service.updateoperation(updatedFormData).subscribe({
         next: (response: any) => {
           if (response.message === 'updated') {
@@ -414,7 +448,8 @@ export class OperationsComponent implements OnInit {
         }
       });
     } else {
-      afterUpload(this.selectedFileName); // Proceed without file upload
+      // Proceed without file upload
+      afterUpload(this.selectedFileName); 
     }
   }
 
@@ -425,7 +460,7 @@ export class OperationsComponent implements OnInit {
         this.dummy = response.operations;
       },
       error: (error) => {
-          console.log(error);
+          console.error('ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
@@ -433,6 +468,12 @@ export class OperationsComponent implements OnInit {
     this.index = -1;
   }
 
+  /**
+   * @param event
+   * @param a
+   * @param slno
+   * delete operation
+   */
   delete(event:Event,a: any, slno: any) {
     this.confirmationService.confirm({
         target: event.target as EventTarget,
@@ -454,7 +495,7 @@ export class OperationsComponent implements OnInit {
         }
       },
       error: (error) => {
-          console.log(error);
+          console.error('error:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
@@ -530,8 +571,8 @@ export class OperationsComponent implements OnInit {
 
 
   triggerFileInput() {
-    console.log("Button clicked!");  // Log button click event
-
+    // Log button click event
+    console.log("Button clicked!");  
     // Trigger file input click
     if (this.fileInput?.nativeElement) {
       this.fileInput.nativeElement.click();
@@ -543,6 +584,11 @@ export class OperationsComponent implements OnInit {
     this.form.reset();
   }
   
+  /**
+   * filter operation
+   * @property {*} dummy
+   * @property {*} filteredData
+   */
   filterPlant(){
     if(this.selectedPlant == '') {
       this.dummy = this.operationData;
