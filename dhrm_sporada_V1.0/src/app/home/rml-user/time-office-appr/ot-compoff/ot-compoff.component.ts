@@ -59,6 +59,7 @@ export class OtCompoffComponent implements OnInit {
     });
   }
 
+  /** */
   getData() {
     this.apiService.getApprovedExcessHours().subscribe((response: any) => {
       if (response.status == "failed") {
