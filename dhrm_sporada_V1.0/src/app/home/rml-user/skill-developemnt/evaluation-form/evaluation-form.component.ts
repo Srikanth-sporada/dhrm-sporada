@@ -343,6 +343,9 @@ export class EvaluationFormComponent implements OnInit {
   submit() {
     this.form.get("department").enable();
     this.form.get("line").enable();
+    this.form.controls['process_trained'].setValue([this.form.value.process_trained])
+    console.log('PROCESS:',this.form.value.process_trained);
+    console.log('FORM:',this.form.value);
     if (this.active.snapshot.paramMap.get("nav") == "1") {
       this.form.controls["upload_file_tra"].setValue(
         this.trainee_idno +
