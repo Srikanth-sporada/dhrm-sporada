@@ -72,16 +72,20 @@ export class SkillMatrixComponent implements OnInit {
 
 
     this.service.skillmatrix(this.plant).subscribe({
-      next: (response) => {
-        console.log('SKILL MATRIX:',response);
-        this.filterinfo = response;
-        this.fullData = response;
-        this.lineOptions = this.utils.removeDuplicateObjects(Array.from(this.filterinfo.map( (item:any) => new Object({value: item.Line_Name}))));
-        /** add all */
-        this.lineOptions.unshift({value:'All'})
-        this.departments = this.utils.removeDuplicateObjects(Array.from(this.filterinfo.map((item:any) => new Object({value: item.dept_name}))))
-        /** add all */
-        this.departments.unshift({value:'All'});
+      next: (response:any) => {
+        if(response?.message == 'failure'){
+          this.messageService.add({severity:'error',summary:'Oops! Error Occured'})
+        }else{
+          console.log('SKILL MATRIX:',response);
+          this.filterinfo = response;
+          this.fullData = response;
+          this.lineOptions = this.utils.removeDuplicateObjects(Array.from(this.filterinfo.map( (item:any) => new Object({value: item.Line_Name}))));
+          /** add all */
+          this.lineOptions.unshift({value:'All'})
+          this.departments = this.utils.removeDuplicateObjects(Array.from(this.filterinfo.map((item:any) => new Object({value: item.dept_name}))))
+          /** add all */
+          this.departments.unshift({value:'All'});
+        }
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -202,6 +206,7 @@ export class SkillMatrixComponent implements OnInit {
     const table = document.querySelector("#table") as HTMLTableElement;
     if (!table) {
       console.error("Table element not found.");
+      this.messageService.add({severity:'warn',summary:'table not found!'})
       return;
     }
   
@@ -226,7 +231,7 @@ export class SkillMatrixComponent implements OnInit {
     const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Skill Matrix");
-    XLSX.writeFile(wb, "Skill Matrix.xlsx");
+    XLSX.writeFile(wb, "Skill_Matrix.xlsx");
   }
   
   

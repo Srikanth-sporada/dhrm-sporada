@@ -5,11 +5,13 @@ import { Router } from '@angular/router';
 import { environment } from "src/environments/environment.prod";
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-hr-evalform',
   templateUrl: './hr-evalform.component.html',
   styleUrls: ['./hr-evalform.component.css']
 })
+
 export class HREvalformComponent implements OnInit {
 
   username: any;
@@ -46,18 +48,24 @@ export class HREvalformComponent implements OnInit {
 
   ngOnInit(): void {
     this.aplnNo = this.route.snapshot.paramMap.get('peval');
+    console.log('aplnNo', this.aplnNo);
+  }
 
-    console.log('aplnNo', this.aplnNo)
-
-    this.service.getSkillTestHr(this.aplnNo).subscribe(
-      (response: any) => {
+  /**
+   * @property {*} aplnNo
+   * @property {*} skillTestData
+   * @property {*} operationsData
+   */
+  getSkillTest(){
+     this.service.getSkillTestHr(this.aplnNo).subscribe({
+      next: (response: any) => {
         console.log('response', response);
 
         // Assigning skillTestData and operationsData
         this.skillTestData = response[0][0];
         this.operationsData = response[1];
         this.genid = this.skillTestData.gen_id;
-
+        /** check profile */
         if (this.skillTestData.photo_filename) {
           this.photo = this.photoLink + "/uploads/" + this.skillTestData.photo_filename;
         } else {
@@ -71,28 +79,33 @@ export class HREvalformComponent implements OnInit {
         console.log('skillTestData', this.skillTestData);
         console.log('operationsData', this.operationsData);
         console.log('genid for answersheet', this.genid);
-
-        // ✅ Now safe to call answer sheet API
-        this.service.answersheet(this.genid).subscribe(
-          (response2: any) => {
-            console.log('response2', response2);
-            this.paperData = response2;
-            console.log('paperdata', this.paperData);
-          },
-          (error) => {
-            console.error('Error fetching answersheet', error);
-            this.messageService.add({severity:'error',summary:error.message})
-          }
-        );
-
+        /** get trainee answer sheet */
+        this.getAnswerSheet();
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching skill test data', error);
         this.messageService.add({severity:'error',summary:error.message})
       }
-    );
-
-
+     });
   }
 
+  /**
+   * get trainee answer sheet
+   * @property {*} gen_id
+   * @property {*} paperData
+   */
+  getAnswerSheet(){
+     // ✅ Now safe to call answer sheet API
+        this.service.answersheet(this.genid).subscribe({
+          next: (response: any) => {
+            console.log('response', response);
+            this.paperData = response;
+            console.log('answerSheet:', this.paperData);
+          },
+          error: (error) => {
+            console.error('Error fetching answersheet', error);
+            this.messageService.add({severity:'error',summary:error.message})
+          }
+        });
+  }
 }
