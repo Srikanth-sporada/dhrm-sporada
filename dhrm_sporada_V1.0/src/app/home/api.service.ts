@@ -1012,7 +1012,7 @@ export class ApiService {
   }
 
   atndReport(data: any) {
-    return this.http.get(this.url + `/report/presentAbsentReport?plant=${data.plant}&year=${data.year}&month=${data.month}&id=${data.id}&dept=${sessionStorage.getItem("ishr") == "true" ? "" : sessionStorage.getItem("dept_slno")}`
+    return this.http.get(this.url + `/report/presentAbsentReport?plant=${data.plant}&year=${data.year}&month=${data.month}&id=${data.id}&dept=${sessionStorage.getItem("ishr") == "true" ? undefined : sessionStorage.getItem("dept_slno")}`
     );
   }
 

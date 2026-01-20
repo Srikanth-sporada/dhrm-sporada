@@ -156,7 +156,8 @@ export class OnboardFormComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('form:',this.form.value)
-    console.log('DATA FROM APPLICATION', this.applicationNumber)
+    console.log('DATA FROM APPLICATION', this.applicationNumber);
+    console.log('APPLICATION STATUS:',this.applicationStatus)
     this.form.get("bnum").setValue(this.active.snapshot.paramMap.get("id"));
     this.form.controls["bio_id"].setValue(false);
     this.service.getonboard({apln_slno: this.active.snapshot.paramMap.get("id") || this.applicationNumber,readonly: this.readonly,})
@@ -238,17 +239,22 @@ export class OnboardFormComponent implements OnInit {
             // 
             this.form.controls["wcontract"].setValue("DIRECT");
             this.form.controls["doj"].setValue(this.basic[0]?.doj);
-           
+            /** 
+             * set DOL , status , reason when application status relived
+             * */
+            if(this.applicationStatus == 'RELIEVED'){
+              this.form.controls['dol'].setValue(this.basic[0]?.dol);
+              this.form.controls['active_status'].setValue(this.basic[0]?.activestat);
+              this.form.controls['rfr'].setValue(this.basic[0]?.rejectionreason);
+            }
           // before trainee onboard
-          if (this.readonly == false) {
+          if (this.readonly == false && this.applicationStatus != 'RELIEVED') {
             this.form.controls["grade"].disable();
             /** active status */
             //  this.form.controls["active_status"].setValue('ACTIVE');
             this.form.controls["active_status"].disable();
-            this.form.controls["category"].setValue(
-              this.basic[0]?.apprentice_type
-            );
-            if(this.basic[0]?.apprentice_type==null){
+            this.form.controls["category"].setValue(this.basic[0]?.apprentice_type);
+            if(this.basic[0]?.apprentice_type == null){
                 // console.log('')
             }
             // else{

@@ -6,11 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateRangeFilterPipe implements PipeTransform {
 
   transform(items: any[], fromDate: Date, toDate: Date, colname: any): any[] {
-    console.log("rrr", fromDate, toDate)
+    console.log("onboard filter from , to date:", fromDate, toDate)
 
-    fromDate = new Date(fromDate)
-    toDate = new Date(toDate)
-
+    if(fromDate || toDate){
+      fromDate = new Date(fromDate)
+      toDate = new Date(toDate)
+    }
     if (!items) {
       return items;
     }

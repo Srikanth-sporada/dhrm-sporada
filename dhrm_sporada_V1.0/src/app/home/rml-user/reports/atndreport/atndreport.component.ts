@@ -17,7 +17,7 @@ export class AtndreportComponent implements OnInit {
   plant: any;
   plantlist: any;
   isadmin: any;
-  genid: any = "";
+  genid: any = undefined;
   noOfDays: any = moment(this.date, "yyyy-MM").daysInMonth();
   atndData: any[];
   categories: any[];
@@ -93,7 +93,7 @@ export class AtndreportComponent implements OnInit {
       }
     }, (error) => {
       console.error('ERROR:',error);
-      this.messageService.add({severity:'error',summary:error.message});
+      this.messageService.add({severity:'error',summary:error?.error?.message});
     });
   }
 

@@ -25,10 +25,14 @@
                     <!-- Details Table -->
                     <div style="flex: 3; text-align: left;">
                         <div style="width: 100%; display: flex; justify-content: flex-end;">
-                    <button onclick="history.back()" class="bg-blue-600 absolute"
-                        style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                        ← Back
+                    <button 
+                        onclick="history.back()" 
+                        class="bg-blue-600 absolute"
+                        style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                        pButton
+                        icon="pi pi-arrow-circle-left">
                     </button>
+                    <!-- trainee info table -->
                     </div>
                         <table style="width: 50%;">
                             <tr>
@@ -41,7 +45,7 @@
                             </tr>
                             <tr>
                                 <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;">
-                                    <b class="text-blue-600">Emp ID</b></td>
+                                    <b class="text-blue-600">Gen ID</b></td>
                                 <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
                                 : {{ skillTestData?.gen_id }}
                                 </td>
@@ -73,20 +77,25 @@
                                 <td style="line-height: 15px; text-align: left; padding-right: 10px; padding-top: 18px;" class="w-full">
                                     <b class="text-blue-600">Active Status</b></td>
                                 <td style="line-height: 15px; text-align: left; padding-left: 10px; padding-top: 10px;">
-                                : {{ skillTestData?.activestat }}
+                                : <span 
+                                 class="!font-semibold px-2 rounded"
+                                  [ngClass]="{' bg-green-200 text-green-600 ': skillTestData?.activestat == 'ACTIVE' || skillTestData?.activestat == 'active', ' bg-red-200 text-red-500': skillTestData?.activestat == 'INACTIVE' || skillTestData?.activestat == 'inactive'}"
+                                 > {{ skillTestData?.activestat || '-' }}
+                                </span>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <!-- Matrix Table Below -->
-                <div class="mt-2 mx-2">
+                <div class="h-[90svh] lg:h-[68vh] xl:h-[68vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
+                    <!-- matrix table -->
                     <table id="table" class="w-full table-auto">
                         <thead>
-                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                                 <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno
                                 </th>
-                                <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
+                                <th  class="!text-white !px-2 !py-2 !border-none !border-0">Operations</th>
                                 <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
                                 <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
                                 <th  class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
@@ -95,9 +104,10 @@
                         </thead>
                         <tbody >
                             <tr *ngFor="let item of operationsData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                                <td  class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1
-                                    }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.oprn_desc }}</td>
+                                <td  class="!px-2 !py-4 !rounded-s-md text-center">
+                                    {{ i + 1}}
+                                </td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{ item.oprn_desc }}</td>
                                 <td [ngClass]="{ 'yellow': item.oprn_trained == 1 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
                                 <td [ngClass]="{ 'blue': item.oprn_trained == 2 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
                                 <td [ngClass]="{ 'green': item.oprn_trained == 3 }"  class="!px-2 !py-4 !rounded-s-md text-center"></td>
@@ -105,6 +115,8 @@
                             </tr>
                         </tbody>
                     </table>
+                    <!-- loader -->
+                     <app-loader *ngIf="loader.isLoding | async"></app-loader>
                 </div>
             </ng-template>
          </p-tabPanel>
@@ -121,34 +133,38 @@
               <!-- content -->
             <ng-template pTemplate="content">
                 <div style="width: 100%; display: flex; justify-content: flex-end;">
-                <button onclick="history.back()" class="bg-blue-600 mr-3 mb-3"
-                    style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                    ← Back
+                <button 
+                    onclick="history.back()" 
+                    class="bg-blue-600 mr-3 mb-2"
+                    style="padding: 8px 16px; font-size: 14px; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                    pButton
+                    icon="pi pi-arrow-circle-left">
                 </button>
                 </div>
-                <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2">
+                <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
                     <table id="table" class="table-auto !w-full">
                         <!-- table head -->
                         <thead class="sticky top-0">
-                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
                                 Sno</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center" style="border: 2px solid white; height: 30px; width: 40%;">Operation</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Operation</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Score</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Result</th>
-                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center" >Supervisor Abservent
+                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0" >
+                                Supervisor Abservent
                             </th>
                             </tr>
                         </thead>
-                        <!-- table bbody -->
+                        <!-- table body -->
                         <tbody>
                             <tr *ngFor="let item of paperData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                                 <td class="!px-2 !py-4 !rounded-s-md text-center"> {{ i +
                                     1 }} </td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Date }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.oprn_desc }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md">{{ item.oprn_desc }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Level_No }}
                                 </td>
                                 
@@ -156,35 +172,56 @@
                                     item.Test_Percentage }}
                                 </td>
 
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">
+                                <td 
+                                 class="!px-2 !py-4 !rounded-s-md text-center flex items-center gap-2"
+                                [ngClass]="item.Test_Result == 'PASS' ? 'justify-center' : 'justify-center'">
                                     <ng-container *ngIf="item.Test_Result === 'PASS'; else noLink">
-                                        <a [routerLink]="['/rhrm/skill-developement/answer-paper', item.Peval_slno]">
+                                        <a 
+                                         [routerLink]="['/rhrm/skill-developement/answer-paper', item.Peval_slno]"
+                                         class="px-2 bg-green-200 text-green-600 font-semibold rounded">
                                             {{ item.Test_Result }}
                                         </a>
+                                          <mat-icon 
+                                            class="text-[20px] text-blue-600"
+                                           [routerLink]="['/rhrm/skill-developement/answer-paper', item.Peval_slno]"
+                                            >visibility</mat-icon>
                                     </ng-container>
                                     <ng-template #noLink>
-                                        {{ item.Test_Result }}
+                                        <span class="px-2 bg-red-200 text-red-500 font-semibold rounded">
+                                            {{ item.Test_Result }}
+                                        </span>
+                                        <mat-icon class="text-[20px] text-blue-600">visibility_off</mat-icon>
                                     </ng-template>
                                 </td>
                                 
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">
-                                    <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
+                                <td class="!px-2 !py-4 !rounded-s-md">
+                                    <span class="flex items-center justity-center gap-2">
+                                        <ng-container *ngIf="item.Sup_Eval_Status === 'APPROVED'; else notApproved">
                                         <a [routerLink]="['/rhrm/skill-developement/Abserv-point', item.Peval_slno]">
                                             {{ item.Sup_Eval_Status }}
                                         </a>
+                                         <mat-icon 
+                                            class="text-[20px] text-blue-600"
+                                          [routerLink]="['/rhrm/skill-developement/Abserv-point', item.Peval_slno]"
+                                            >visibility</mat-icon>
                                     </ng-container>
                                     <ng-template #notApproved>
                                         <ng-container *ngIf="item.Sup_Eval_Status === 'PENDING'; else notPending">
-                                            {{ 'PENDING' }}
+                                            <span>{{ 'PENDING' }}</span>
+                                            <mat-icon class="text-[20px] text-blue-600">visibility_off</mat-icon>
                                         </ng-container>
                                         <ng-template #notPending>
                                             <span>{{ item.Sup_Eval_Status || 'Unknown' }}</span>
+                                            <mat-icon class="text-[20px] text-blue-600">visibility_off</mat-icon>
                                         </ng-template>
                                     </ng-template>
+                                    </span>
                                 </td> 
                                 </tr>
                         </tbody>
                     </table>
+                    <!-- loader -->
+                     <app-loader *ngIf="loader.isLoding | async"></app-loader>
                 </div>
             </ng-template>
           </p-tabPanel>

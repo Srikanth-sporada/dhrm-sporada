@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/home/api.service';
 import { UntypedFormBuilder } from '@angular/forms';
-
+import { MessageService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 @Component({
   selector: 'app-abser-sheet',
   templateUrl: './abser-sheet.component.html',
@@ -10,7 +11,28 @@ import { UntypedFormBuilder } from '@angular/forms';
 })
 export class AbserSheetComponent implements OnInit {
 
-  answers: any = [];
+  answers: any = [
+  {
+    Abservent_Point: "The UI is clean and responsive",
+    Rating: 5,
+    Remarks: "Excellent work on accessibility"
+  },
+  {
+    Abservent_Point: "Data export feature works but needs optimization",
+    Rating: 3,
+    Remarks: "Performance can be improved"
+  },
+  {
+    Abservent_Point: "Workflow automation reduces manual effort significantly",
+    Rating: 4,
+    Remarks: "Very useful for daily tasks"
+  },
+  {
+    Abservent_Point: "Card-style layout improves readability",
+    Rating: 5,
+    Remarks: "Modern and user-friendly design"
+  }
+];
   genid: any;
   pevalno: any;
   aplnNo: any;
@@ -22,7 +44,9 @@ export class AbserSheetComponent implements OnInit {
     private service: ApiService,
     private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private messageService:MessageService,
+    public loader:LoaderserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -36,12 +60,27 @@ export class AbserSheetComponent implements OnInit {
     });
 
     if (this.pevalno) {
-      this.service.abservforuser(this.pevalno).subscribe((res: any) => {
-        this.answers = res
-      });
+      this.getTestData();
     }
   }
 
+  /** 
+   * get supervisor abservant test data
+   * @property {*} prevalno
+   * @property {*} answers
+   */
+  getTestData(){
+    this.service.abservforuser(this.pevalno).subscribe({
+        next: (res: any) => {
+          console.log('DATA:',res);
+        // this.answers = res;
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+      });
+  }
   navigateBack() {
     this.router.navigate(['/rhrm/skill-developement/skill-test']);
   }
