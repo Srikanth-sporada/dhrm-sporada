@@ -10,21 +10,23 @@
                     <div class="flex items-center justify-center gap-1">
                         <mat-icon class="icon-pad text-[1.5rem]">dashboard</mat-icon>
                         <span>Summary</span>
+                        <p-badge [value]="convertToString(plantSkill.length)"></p-badge>
                     </div>
             </ng-template>
             <!-- content -->
             <ng-template pTemplate="content">
-                  <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2 mt-3">
+                  <div class="h-[100svh] lg:h-[100vh] xl:h-[100vh] sm:h-[90vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 mt-3 relative">
+                    <!-- table -->
                     <table id="table" class="table-auto !w-full">
                       <!-- table head -->
                       <thead class="sticky top-0">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
                           <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                           <th class="!text-white !px-2 !py-2 !border-none !border-0">Operations</th>
-                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-1</th>
-                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-2</th>
-                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level-3</th>
-                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Skill Level-4</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 1</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 2</th>
+                          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level 3</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Skill Level 4</th>
                         </tr>
                       </thead>
                       <!-- table body -->
@@ -63,6 +65,8 @@
                         </tr>
                       </tbody>
                     </table>
+                    <!-- loader -->
+                     <app-loader *ngIf="loader.isLoding | async"></app-loader>
                   </div>
             </ng-template>
      </p-tabPanel>
@@ -91,15 +95,37 @@
                         Filters <mat-icon>filter_alt</mat-icon>
                       </h1>
                        <!-- user details -->
-                         <div *ngIf="showskillMatrix">
+                         <!-- <div *ngIf="showskillMatrix">
                           <p style="font-size: larger; font-weight: 800">
-                            <span>Name:</span> {{ userData.fullname }} | <span>DOJ:</span
-                            >{{ userData.doj }} | <span>Department:</span
+                            <span>Name :</span> {{ userData.fullname }} | <span>DOJ :</span
+                            >{{ userData.doj }} | <span>Department :</span
                             >{{ userData.dept_name }}
                           </p>
-                        </div>
-                    </div>
+                        </div> -->
+                    </div>  
                     <div>
+                       <div
+                        class="flex items-center justify-around shadow-md px-2 py-3 mt-2 rounded-md mx-auto animate"
+                        *ngIf="showskillMatrix"
+                        >
+                          <!-- gen id -->
+                            <p class="text-blue-600 font-semibold">
+                                Name:
+                                <span class="text-gray-400 ml-2">{{ userData?.fullname }}</span>
+                            </p>
+                            <p class="text-blue-600 font-semibold">
+                                DOJ:
+                                <span class="text-gray-400 ml-2">
+                                {{ userData?.doj }}
+                                </span>
+                            </p>
+                            <!-- Name -->
+                            <p class="text-blue-600 font-semibold">
+                                Department:
+                                <span class="text-gray-400 ml-2">{{ userData?.dept_name }}</span>
+                            </p>
+                        
+                          </div>
                       <!-- row one -->
                       <div class="flex items-center w-full flex-col sm:flex-row sm:gap-2">
                         <!-- gen id -->
@@ -130,31 +156,37 @@
                   </div>
                 </div>
                 <!-- evalution table -->
-                  <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2 mb-3" *ngIf="showskillMatrix">
+                  <div class="shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2 mb-3" *ngIf="showskillMatrix">
                     <table
                       *ngIf="fileDetails.length != 0"
                       id="table" class="table-auto !w-full"
                     >
                       <thead>
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Evaluation No</th>
-                          <th class="!text-white  !px-2 !py-2 !border-none !border-0 text-center">Trainer File</th>
-                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Supervisor File</th>
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
+                          <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 ">Evaluation No</th>
+                          <th class="!text-white  !px-2 !py-2 !border-none !border-0 ">Trainer File</th>
+                          <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 ">Supervisor File</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of fileDetails" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
 
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">
+                          <td class="!px-2 !py-4 !rounded-s-md">
                             Evaluation-{{ item.curr_skill_level }}
                           </td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">
-                            <a [href]="getUrl(item.tnr_filename)" target="_blank"
+                          <td class="!px-2 !py-4 !rounded-s-md">
+                            <a 
+                             [href]="getUrl(item.tnr_filename)"
+                             class="text-blue-600 font-semibold" 
+                             target="_blank"
                               >Test Doc</a
                             >
                           </td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">
-                            <a [href]="getUrl(item.sup_filename)" target="_blank"
+                          <td class="!px-2 !py-4 !rounded-s-md">
+                            <a
+                            class="text-blue-600 font-semibold" 
+                             [href]="getUrl(item.sup_filename)" 
+                             target="_blank"
                               >Evaluation Doc</a
                             >
                           </td>
@@ -167,13 +199,13 @@
                     <table id="table" class="table-auto !w-full">
                       <!-- table head -->
                     <thead class="table_header">
-                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
                         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operations</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
-                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Operations</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 1</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 2</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 3</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level 4</th>
                       </tr>
                     </thead>
                     <!-- table body -->
@@ -211,7 +243,7 @@
       <!-- view by operation -->
        <p-tabPanel>
             <!-- header -->
-            <ng-template pTemplate="header">
+            <ng-template  pTemplate="header">
                     <div class="flex items-center justify-center gap-1">
                         <mat-icon class="icon-pad text-[1.5rem]">business_center</mat-icon>
                         <span>View By Operation</span>
@@ -237,9 +269,7 @@
                       <div class="flex items-center w-full flex-col sm:flex-row sm:gap-2">
                         <!-- operation -->
                         <div class="w-full sm:w-1/3 p-fluid">
-                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
-                            >Operation</label
-                          >
+                          <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Operation</label>
                           <br />
                           <p-dropdown
                           [options]="oprnsList"
@@ -271,15 +301,15 @@
                   <table id="table" class="table-auto !w-full">
                     <!-- table head -->
                     <thead class="sticky top-0">
-                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 ">Name</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Department</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-1</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-2</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level-3</th>
-                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level-4</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 1</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 2</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Level 3</th>
+                        <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Level 4</th>
                       </tr>
                     </thead>
                     <!-- table body -->
@@ -312,6 +342,8 @@
                       </tr>
                     </tbody>
                   </table>
+                  <!-- loader -->
+                  <app-loader *ngIf="loader.isLoding | async"></app-loader>
                 </div>
             </ng-template>
        </p-tabPanel>

@@ -11,28 +11,7 @@ import { LoaderserviceService } from 'src/app/loaderservice.service';
 })
 export class AbserSheetComponent implements OnInit {
 
-  answers: any = [
-  {
-    Abservent_Point: "The UI is clean and responsive",
-    Rating: 5,
-    Remarks: "Excellent work on accessibility"
-  },
-  {
-    Abservent_Point: "Data export feature works but needs optimization",
-    Rating: 3,
-    Remarks: "Performance can be improved"
-  },
-  {
-    Abservent_Point: "Workflow automation reduces manual effort significantly",
-    Rating: 4,
-    Remarks: "Very useful for daily tasks"
-  },
-  {
-    Abservent_Point: "Card-style layout improves readability",
-    Rating: 5,
-    Remarks: "Modern and user-friendly design"
-  }
-];
+  answers: any = []
   genid: any;
   pevalno: any;
   aplnNo: any;
@@ -73,7 +52,7 @@ export class AbserSheetComponent implements OnInit {
     this.service.abservforuser(this.pevalno).subscribe({
         next: (res: any) => {
           console.log('DATA:',res);
-        // this.answers = res;
+          this.answers = res;
       },
       error: (error:any) => {
         console.error('ERROR:',error);

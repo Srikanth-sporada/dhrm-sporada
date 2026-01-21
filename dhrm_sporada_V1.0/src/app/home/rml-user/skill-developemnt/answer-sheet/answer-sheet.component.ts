@@ -85,7 +85,7 @@ export class AnswerSheetComponent implements OnInit {
     this.service.answersforuser(this.pevalno).subscribe({
         next: (response2: any) => {
         
-        this.answers = this.dummyData.map((q: any) => ({
+        this.answers = response2.map((q: any) => ({
           ...q,
           img_name: q.image_filename ? `${backendImageBaseUrl}${q.image_filename}` : null
         }));

@@ -22,6 +22,26 @@ export class Utility {
   exportexcel(tableId: string, fileName: string, plant: any) {
     const x = document.querySelector(`#${tableId}`);
     const ws = XLSX.utils.table_to_sheet(x);
+    // console.log('SHEET DATA:',ws)
+    /** Post-process: reformat date-like strings */ 
+    Object.keys(ws).forEach(cell => {
+      /** skip sheet meta data */
+      if (cell[0] === '!') return; 
+      const value = ws[cell].v;
+
+      /** Check if it's a valid date string */ 
+      if (typeof value === 'string') {
+        const parsed = new Date(value);
+        if (!isNaN(parsed.getTime())) {
+          const day = String(parsed.getDate()).padStart(2, '0');
+          const month = String(parsed.getMonth() + 1).padStart(2, '0');
+          const year = parsed.getFullYear();
+          /** final formated date */
+          ws[cell].v = `${day}-${month}-${year}`;
+        }
+      }
+    });
+
     const wb = XLSX.utils.book_new();
     /** checking if the plant code is empty */
     if (plant == "") {

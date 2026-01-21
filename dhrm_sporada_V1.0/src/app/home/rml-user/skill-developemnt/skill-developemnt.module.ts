@@ -43,6 +43,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from "primeng/inputtextarea";
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { InputTextareaModule } from "primeng/inputtextarea";
     CalendarModule,
     MultiSelectModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    BadgeModule,
 ]
 })
 export class SkillDevelopemntModule { }

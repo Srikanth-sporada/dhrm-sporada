@@ -768,14 +768,16 @@
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Comp-Off</a
               >
-              <!-- <a
+              <!-- night shift comp off -->
+              <a
                 *ngIf="isRA"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/night-coff"
-                style="color: white"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>Night Shift Comp-Off</a
-              > -->
+              >
               <a
                 *ngIf="isRA"
                 mat-list-item
@@ -800,7 +802,8 @@
                 *ngIf="ishrappr == 'true'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/otapproveph"
-                style="color: white"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
                 <mat-icon class="icon-pad">more_time</mat-icon>PHR OT
                 Approval</a
@@ -810,21 +813,24 @@
                 *ngIf="ishr == 'true'"
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/compoffhr"
-                style="color: white"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
                 <mat-icon class="icon-pad">av_timer</mat-icon>Comp-Off - HR</a
               > -->
               <!-- <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/comp-off-appr"
-                style="color: white"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
                 <mat-icon class="icon-pad">add_task</mat-icon>Comp Off</a
               >
               <a
                 mat-list-item
                 routerLink="/rhrm/time-office-appr/leave-appr"
-                style="color: white"
+                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
                 <mat-icon class="icon-pad">villa</mat-icon>Leave</a
               >
