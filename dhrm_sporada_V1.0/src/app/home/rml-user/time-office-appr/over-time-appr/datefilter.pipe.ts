@@ -6,7 +6,7 @@ import moment from "moment";
 })
 export class DatefilterPipe implements PipeTransform {
   transform(items: any, date: any): any {
-    console.log('FILTER DATE',date , items)
+    // console.log('FILTER DATE',date , items)
     if (!items) {
       return [];
     }

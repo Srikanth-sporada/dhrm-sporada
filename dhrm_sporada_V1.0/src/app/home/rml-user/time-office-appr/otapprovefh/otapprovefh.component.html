@@ -162,6 +162,7 @@
             <mat-checkbox
               [(ngModel)]="item.selected"
               color="primary"
+              [disabled]="item.bal == 0 ? true : false"
               (ngModelChange)="checkItems(item)"
               >{{ i + 1 }}</mat-checkbox>
           </td>

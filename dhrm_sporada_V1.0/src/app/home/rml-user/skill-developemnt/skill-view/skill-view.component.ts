@@ -31,6 +31,7 @@ export class SkillViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -42,29 +43,35 @@ export class SkillViewComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
-    this.apiService.getOperationList().subscribe((response: any) => {
+    /** get operations */
+    this.apiService.getOperationList().subscribe({
+      next: (response: any) => {
       if (response.status == "success") {
+        console.log('OPERTAIONS:',response.data);
         this.oprnsList = response.data;
       }
+    },
+    error: (error:any) => {
+       console.error('ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.error?.message});
+    }
     });
-    this.apiService.getPlantskill().subscribe(
-      (response: any) => {
+    /** get plant skill */
+    this.apiService.getPlantskill().subscribe({
+      next:  (response: any) => {
         if (response.status == "success") {
           this.plantSkill = response.skill;
-          console.log(this.plantSkill);
+          console.log('PLANT SKILL:',this.plantSkill);
         } else {
           // alert(response.message);
-          this.messageService.add({
-            severity: "info",
-            summary: response.message,
-          });
+          this.messageService.add({severity: "info",summary: response.message});
         }
       },
-      (error) => {
-        console.log(error);
+       error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
-    );
+    });
   }
 
   getSkilldetails() {
@@ -91,6 +98,7 @@ export class SkillViewComponent implements OnInit {
       },
     );
   }
+  
   getUrl(file_name: any) {
     return this.url + "/skill_dev/" + file_name;
   }
@@ -124,6 +132,11 @@ export class SkillViewComponent implements OnInit {
 
   /** convert number to string */
   convertToString(number:any){
+    if(!number){
+      return '0'
+    }else{
     return String(number);
+      
+    }
   }
 }

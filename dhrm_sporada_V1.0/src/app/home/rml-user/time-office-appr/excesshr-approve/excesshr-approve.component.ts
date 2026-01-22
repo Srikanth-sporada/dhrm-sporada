@@ -3,13 +3,18 @@ import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
-
+import moment from "moment";
+import { environment } from "src/environments/environment.prod";
+import { Utility } from "src/app/utils/utils";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 @Component({
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
   styleUrls: ["./excesshr-approve.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class ExcesshrApproveComponent implements OnInit {
   data: any = [];
   filterDate: any = "";
@@ -21,11 +26,19 @@ export class ExcesshrApproveComponent implements OnInit {
   all: any;
   userDetails: any;
   excessHourData: any;
-
+  selectAll:boolean=  false;
+  bulkApproveData:any = [];
+  setActualEH:boolean =  environment?.setActualEH;
+  successDataCount:number = 0;
+  failedDataCount:number = 0;
+  plantCode:any = sessionStorage.getItem("plantcode");
+  userName:any = sessionStorage.getItem("user_name");
   constructor(
     private apiService: ApiService,
     private messageService: MessageService,
-    public loader: LoaderserviceService
+    public loader: LoaderserviceService,
+    public utlis:Utility,
+    private modalService:NgbModal,
   ) {}
 
   ngOnInit() {
@@ -96,8 +109,8 @@ export class ExcesshrApproveComponent implements OnInit {
    * @property {*} data mapped with approverHr & reason
    */
   getData() {
-    this.apiService.getExcessHours().subscribe(
-      (response: any) => {
+    this.apiService.getExcessHours().subscribe({
+      next: (response: any) => {
         if (response.status == "failed") {
           // alert(response.message);
           this.messageService.add({
@@ -106,19 +119,20 @@ export class ExcesshrApproveComponent implements OnInit {
           });
         } else {
           console.log('EH DATA:',response.data);
+          /** map with approvedHr, reason, selected props */
           this.data = response.data.map((element: any) => {
-            return { ...element, approvedHr: null, reason: "" };
+            return { ...element, approvedHr: null, reason: "", selected:false };
           });
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
           console.log('MAPPED EH DATA:',this.data);
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       }
-    );
+    });
   }
 
   /**
@@ -146,12 +160,12 @@ export class ExcesshrApproveComponent implements OnInit {
     this.loading = true;
 
     let data = {
-      plant: sessionStorage.getItem("plantcode"),
+      plant: this.plantCode,
       emp_id: item.cemp_id,
       date: item.att_date,
       hours: item.approvedHr,
       flag: "I", // default flag COFF || OT flag O
-      approved_by: sessionStorage.getItem("user_name"),
+      approved_by: this.userName,
       reason: item.reason,
       shift_id: item.shift,
       type: item.type,
@@ -159,20 +173,20 @@ export class ExcesshrApproveComponent implements OnInit {
 
     console.log('APPROVE DATA:',data);
     /** EH approval API */
-    this.apiService.approveExcessHr(data).subscribe(
+    this.apiService.approveExcessHr([data]).subscribe(
       (response: any) => {
-        /** get EH data refresh */
-        this.getData();
-        // alert(response.message);
-        this.messageService.add({
-          severity: "warn",
-          summary: response.message,
-        });
-        this.loading = false;
+        if(response?.status == 'completed'){
+          this.messageService.add({severity:'info',summary:'Excess Hours Successfully Approved.'})
+          /** get EH data refresh */
+          this.getData();
+          this.loading = false;
+        }else{
+          this.messageService.add({severity:'error',summary:'Oops! Something wen wrong.'})
+        }
       },
       (error) => {
         console.error('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.message });
+        this.messageService.add({ severity: "error", summary: error?.error?.message });
       }
     );
   }
@@ -262,14 +276,209 @@ export class ExcesshrApproveComponent implements OnInit {
 
   filterExcessHourByGenID() {
     this.userEnteredGenID = this.userEnteredGenID.trim();
-    const filteredEhData = this.excessHourData.filter((trainee: any) =>
-      trainee.gen_id.includes(this.userEnteredGenID)
-    );
-
+    const filteredEhData = this.excessHourData.filter((trainee: any) => trainee.gen_id.includes(this.userEnteredGenID));
+    console.log('GEN ID FILTER DATA:',filteredEhData)
     if (filteredEhData.length) {
       this.data = filteredEhData;
     } else {
       this.data = this.excessHourData;
     }
+  }
+
+  /** 
+   * clear selected filter and selected data
+   * set all filter date to default
+   */
+  clear(){
+     this.filterDate = '';
+     this.selectedLine = 'All';
+     this.userEnteredGenID = '';
+     this.bulkApproveData = [];
+     this.data.forEach((ehData:any) => {
+      ehData.selected = false;
+      ehData.reason = '';
+      ehData.approvedHr = null;
+     });
+     this.selectAll = false;
+     this.data = this.excessHourData;
+  }
+
+  /** 
+   * select all based on filter to bulk approve EH
+   * here data is filter using ng pipe filtered data in @property {*} data
+   */
+  handelSelectAll() {
+    /** actual hours 
+     * here checked expect_othr is > ot per day limit
+    */
+   console.log('BULK SELECTED:',this.selectAll);
+   let filteredEHData:any = [];
+  /** format js date object */
+   const formattedDate:any = this.filterDate == '' ? '' : moment(this.filterDate).format('YYYY-MM-DD');
+   console.log(formattedDate,this.selectedLine,this.filterDate)
+    if(this.selectAll){
+      /** check if data & line filter applied */
+      if(formattedDate && this.selectedLine !== 'All'){
+        filteredEHData = this.data.filter((ehData:any) => {
+          if(ehData.att_date == formattedDate && ehData.Line_Name == this.selectedLine){
+            return ehData;
+          }
+        })
+      }
+      /** checking if date filter applied */
+      else if(formattedDate){
+        filteredEHData = this.data.filter((ehData:any) => {
+          if(ehData.att_date == formattedDate){
+            return ehData;
+          }
+        })
+      }
+      /** checking if line filter applied */
+      else if(this.selectedLine !== 'All'){
+       filteredEHData = this.data.filter((ehData:any) => {
+          if(ehData.Line_Name == this.selectedLine){
+            return ehData;
+          }
+        })
+      }else{
+        filteredEHData = this.data;
+      }
+      /** mapping filtered data EH bulk data */
+      console.log('FILTERED DATA:',filteredEHData)
+      this.bulkApproveData = filteredEHData.map((ehData:any) => {
+        let approvedEH:number;
+        /** set approvedHr based on user value */
+        if(this.setActualEH){
+          approvedEH = ehData.expect_othr
+        }else{
+           approvedEH = ehData.expect_othr > this.max_hrs  ? this.max_hrs : ehData.expect_othr;
+        }
+      return {
+        ...ehData,
+        approvedHr:approvedEH, 
+        reason:`BULK EH APPROVED:${ehData.biometric_no}`,
+        selected:true}
+      });
+    console.log('BULK DATA:',this.bulkApproveData);
+    /** set selected value to @property {*} data */
+    this.data =  this.bulkApproveData;
+    } else{
+      /** clear all data */
+      this.clear();
+    }
+  }
+
+  /** bulk approve EH  */
+  bulkApproveEH(){
+    console.log('BULK APPROVE EH DATA:',this.bulkApproveData);
+    /** mapp selected bulk data for API */
+    const mappedData:any = [];
+    this.bulkApproveData.forEach((bulkData:any) => {
+      const apiDataFormat = {
+      plant: this.plantCode,
+      emp_id: bulkData.cemp_id,
+      date: bulkData.att_date,
+      hours: bulkData.approvedHr,
+      flag: "I", // default flag COFF || OT flag O
+      approved_by: this.userName,
+      reason: bulkData.reason,
+      shift_id: bulkData.shift,
+      type: bulkData.type,
+      }
+      /** push formatted data */
+      mappedData.push(apiDataFormat);
+    });
+    /** bulk approve API call */
+    this.apiService.approveExcessHr(mappedData).subscribe({
+       next: (response:any) => {
+        if(response?.status == 'completed'){
+            this.findBulkApprovedFailedData(response?.results || []);
+            this.findBulkApprovedSuccessData(response?.results || []);
+            this.openBulkStatusModal(response?.results || [])
+        }
+       },
+       error: (error:any) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+       }
+    });    
+    console.log('API FORMATTED DATA:',mappedData);
+  }
+
+  /** 
+   * convert number to string
+   * @param number
+   *  */
+  convertToString(number:any){
+    if(!number){
+      return '0'
+    }else{
+    return String(number);
+    }
+  }
+
+  /**
+   * handle if user changes filter after select all btn clicked.
+   */
+  handleUserActionIfSelectedAllSelected(){
+    if(this.selectAll){
+      this.handelSelectAll();
+    }
+  }
+  /**
+   * count success data count based on status
+   * @property {*} succesuccessDataCount
+   * @param apiResponse
+   */
+  findBulkApprovedSuccessData(apiResponse:any){
+    apiResponse.forEach((data:any) => {
+      if(data?.status == 'success'){
+        this.successDataCount += 1;
+      }
+    })
+  }
+   /**
+   * count success data count based on status
+   *  @property {*} failedDataCount
+   * @param apiResponse
+   */
+  findBulkApprovedFailedData(apiResponse:any){
+    apiResponse.forEach((data:any) => {
+      if(data?.status == 'failed'){
+        this.failedDataCount += 1;
+      }
+    })
+  }
+  /**
+   * download failed data as excell sheet
+   */
+  downloadFailedData(apiResponse:any){
+    /** filter failed data */
+    const failedData = apiResponse.filter((data:any) => {
+      if(data?.status == 'failed'){
+        return data;
+      }
+    });
+    /** download failed data */
+    this.utlis.jsonToExcellExport(failedData,this.plantCode,'EH_FAILED_DATA')
+  }
+
+  /** 
+   * open modal
+   * @param apiResponse
+   */
+  openBulkStatusModal(apiResponse:any){
+    const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
+    confirmModalRef.componentInstance.confirmFunction = () => this.downloadFailedData(apiResponse);
+    confirmModalRef.componentInstance.confirmText = `${this.successDataCount} of ${this.bulkApproveData.length} success and ${this.failedDataCount} of ${this.bulkApproveData.length} failed. Click YES to download failed data.`
+    console.log('modal opened...');
+    /** set success and failed count to default */
+    confirmModalRef.closed.subscribe(() => {
+      this.successDataCount = 0;
+      this.failedDataCount = 0;
+      /** clear data & get excess hour data */
+      this.clear();
+      this.getData();
+    })
   }
 }

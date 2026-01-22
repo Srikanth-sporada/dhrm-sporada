@@ -96,7 +96,8 @@ export class OtapproveComponent implements OnInit {
             return { ...element, selected: false };
           })
           .filter((element: any) => {
-            return element.bal >= 0;
+            /** balance filter */
+            return element.bal > 0;
           });
         console.log('OT DATA:',response.data);
       } else if (response.status == "failed") {
@@ -210,7 +211,7 @@ export class OtapproveComponent implements OnInit {
       if (this.cat != "" && this.selectedDept == "") {
         console.log(`cat filter`);
         this.data = this.data.map((element: any) => {
-          if (element.apprentice_type == this.cat) {
+          if (element.apprentice_type == this.cat && element.bal != 0) {
             return { ...element, selected: true };
           } else {
             return { ...element, selected: false };
@@ -227,7 +228,7 @@ export class OtapproveComponent implements OnInit {
       if (this.selectedDept != "" && this.cat == "") {
         console.log(`dept filter`);
         this.data = this.data.map((element: any) => {
-          if (element.dept_name == this.selectedDept) {
+          if (element.dept_name == this.selectedDept && element.bal != 0) {
             return { ...element, selected: true };
           } else {
             return { ...element, selected: false };
@@ -246,7 +247,8 @@ export class OtapproveComponent implements OnInit {
         this.data = this.data.map((element: any) => {
           if (
             element.apprentice_type == this.cat &&
-            element.dept_name == this.selectedDept
+            element.dept_name == this.selectedDept &&
+            element.bal != 0
           ) {
             return { ...element, selected: true };
           } else {
@@ -263,7 +265,12 @@ export class OtapproveComponent implements OnInit {
       }
       /** select all OT */
       this.data = this.data.map((element: any) => {
-        return { ...element, selected: true };
+        if(element.bal != 0){
+           return { ...element, selected: true };
+        }else {
+          return { ...element, selected: false };
+        }
+        
       });
       console.log(
         this.data.filter((element: any) => {

@@ -39,6 +39,7 @@
           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Date</label> <br>
           <p-calendar 
            [(ngModel)]="filterDate"
+           (onSelect)="handleUserActionIfSelectedAllSelected()"
             dateFormat="yy-mm-dd" 
             styleClass="w-full !font-poppins"
             [showIcon]="true" >
@@ -49,6 +50,7 @@
           <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Line</label> <br>
           <p-dropdown 
             [options]="lines"
+            (onChange)="handleUserActionIfSelectedAllSelected()"
            [(ngModel)]="selectedLine"
             optionLabel="Line_Name"
             optionValue="Line_Name"
@@ -62,10 +64,47 @@
             pInputText
             [(ngModel)]="userEnteredGenID"
             styleClass="w-full" 
-            (input)="filterExcessHourByGenID()"
+            (input)="filterExcessHourByGenID(); handleUserActionIfSelectedAllSelected();"
             placeholder="Enter Gen ID"/>
        </div>
+        <!-- clear btn -->
+        <div>
+           <button
+           pButton
+           icon="pi pi-times"
+           class="mt-10 bg-red-500 outline-none border-none hover:!bg-red-500"
+           (click)="clear()">
+           </button>
+        </div>
+         <!-- row two -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2 mt-10">
+        <div>
+           <p-checkbox 
+            [(ngModel)]="selectAll"
+            color="primary"
+            [binary]="true"
+            inputId="ny"
+            class="font-poppins"
+            (ngModelChange)="handelSelectAll()"> 
+          </p-checkbox>
+          <label for="ny" class="mb-0 ml-2 font-semibold">Select All</label>
+          <p-badge [value]="convertToString(bulkApproveData.length)" styleClass="ml-2"></p-badge>
+        </div>
+            <!-- <mat-checkbox
+              [(ngModel)]="selectAll"
+              color="primary"
+              class="font-poppins"
+              (ngModelChange)="handelSelectAll()"
+              >Select All</mat-checkbox> -->
+                <p-button
+                  (click)="bulkApproveEH()"
+                  label="Approve"
+                  [disabled]="bulkApproveData.length == 0 || (loader.isLoding | async) ? true : false"
+                >
+                </p-button>
+      </div>
      </div>
+
      </div>
   </div>
    </div>
@@ -94,7 +133,14 @@
       <!-- table body | datefilter:filterDate | lineFilter:selectedLine;-->
       <tbody>
         <tr *ngFor="let item of data | datefilter:filterDate | lineFilter:selectedLine  let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-          <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i + 1 }}</td>
+          <td class="!px-2 !py-2 !rounded-s-md text-center">
+            <p-checkbox 
+              [(ngModel)]="item.selected" 
+              [binary]="true" 
+              [disabled]="true"
+              [inputId]="item.emp_id"></p-checkbox>
+            {{ i + 1 }}
+          </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.gen_id }}</td>
           <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.biometric_no}}</td>
           <td class="!px-2 !py-2 !rounded-s-md">{{ item.fullname }}</td>
@@ -103,7 +149,7 @@
           <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-blue-600">
             {{ item.att_date | date:'dd-MM-yyyy'}}
             <!-- attendance type -->
-               <p-badge [value]="item?.type" severity="warning">
+               <p-badge [value]="item?.type" [severity]="item.type == 'R' ? 'warning' : 'info'">
                </p-badge>
           </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center font-semibold text-green-500">{{item.in_time}}</td>
@@ -115,6 +161,7 @@
                 type="number"
                 [(ngModel)]="item.approvedHr"
                 pInputText
+                [disabled]="selectAll"
               />
             <!-- <mat-form-field>
               
@@ -129,7 +176,12 @@
             <p *ngIf=" item.approvedHr > getMaxHours(item)" class="text-red-500" >OT  Cannot be Greater Than {{max_hrs}} Hours</p>
           </td>
           <td class="!px-2 !py-2 !rounded-s-md text-center">
-            <input type='text' pInputText [(ngModel)]="item.reason" class="w-[100px] h-[40px]"/>
+            <input 
+              type='text' 
+              pInputText 
+              [disabled]="selectAll"
+              [(ngModel)]="item.reason" 
+              class="w-[100px] h-[40px]"/>
             <!-- <mat-form-field>
               <input matInput [(ngModel)]="item.reason" />
             </mat-form-field> -->
@@ -146,7 +198,8 @@
                 || item.reason.length < 10 
                 || item.approvedHr > getMaxHours(item.type)  
                 || loading
-                || item.approvedHr <0 
+                || item.approvedHr < 0 
+                || selectAll
               "
               (click)="approve(item)"
             >

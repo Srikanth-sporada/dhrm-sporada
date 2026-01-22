@@ -1028,7 +1028,7 @@ export class ApiService {
   }
 
   approveExcessHr(data: any) {
-    return this.http.post(this.url + `/ars/approveExcessHr`, data);
+    return this.http.post(this.url + `/ars/approveExcessHr`, {data:data});
   }
 
   getApprovedExcessHours() {
