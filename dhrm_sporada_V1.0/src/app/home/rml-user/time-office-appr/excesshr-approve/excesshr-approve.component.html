@@ -29,7 +29,8 @@
         <p-button 
          icon="pi pi-download" 
          styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         (click)="exportexcel()"></p-button>
+         (click)="exportexcel()" 
+         ariaLabel="download"></p-button>
       </div>
      <div>
      <!--  filter row one -->
@@ -41,27 +42,32 @@
            [(ngModel)]="filterDate"
            (onSelect)="handleUserActionIfSelectedAllSelected()"
             dateFormat="yy-mm-dd" 
+            id="date"
+            ariaLabel="calender"
+            iconAriaLabel="calendar icon"
             styleClass="w-full !font-poppins"
             [showIcon]="true" >
           </p-calendar>
         </div>
        <!-- line filter -->
        <div class="font-poppins w-full">
-          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Line</label> <br>
+          <label for="line" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Line</label> <br>
           <p-dropdown 
             [options]="lines"
             (onChange)="handleUserActionIfSelectedAllSelected()"
            [(ngModel)]="selectedLine"
             optionLabel="Line_Name"
             optionValue="Line_Name"
-            styleClass="w-full" 
+            styleClass="w-full"
+            id="line" 
             placeholder="Select Line" ></p-dropdown>
        </div>
        <!-- gen id -->
        <div class="font-poppins w-full p-fluid">
-          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Gen ID</label> <br>
+          <label for="gen id" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Gen ID</label> <br>
           <input 
             pInputText
+            id="gen id"
             [(ngModel)]="userEnteredGenID"
             styleClass="w-full" 
             (input)="filterExcessHourByGenID(); handleUserActionIfSelectedAllSelected();"
@@ -73,7 +79,8 @@
            pButton
            icon="pi pi-times"
            class="mt-10 bg-red-500 outline-none border-none hover:!bg-red-500"
-           (click)="clear()">
+           (click)="clear()"
+           aria-label="clear">
            </button>
         </div>
          <!-- row two -->
@@ -84,6 +91,7 @@
             color="primary"
             [binary]="true"
             inputId="ny"
+            id="ny"
             class="font-poppins"
             (ngModelChange)="handelSelectAll()"> 
           </p-checkbox>
@@ -100,6 +108,7 @@
                   (click)="bulkApproveEH()"
                   label="Approve"
                   [disabled]="bulkApproveData.length == 0 || (loader.isLoding | async) ? true : false"
+                  ariaLabel="bulk approve"
                 >
                 </p-button>
       </div>
@@ -136,8 +145,8 @@
           <td class="!px-2 !py-2 !rounded-s-md text-center">
             <p-checkbox 
               [(ngModel)]="item.selected" 
-              [binary]="true" 
-              [disabled]="true"
+              [binary]="true"
+              (onChange)="handleSingleSelect($event,item)" 
               [inputId]="item.emp_id"></p-checkbox>
             {{ i + 1 }}
           </td>
@@ -161,7 +170,8 @@
                 type="number"
                 [(ngModel)]="item.approvedHr"
                 pInputText
-                [disabled]="selectAll"
+                [id]="item.gen_id"
+                [disabled]="selectAll || item.approvedHr"
               />
             <!-- <mat-form-field>
               
@@ -179,8 +189,9 @@
             <input 
               type='text' 
               pInputText 
-              [disabled]="selectAll"
-              [(ngModel)]="item.reason" 
+              [disabled]="selectAll || item.reason"
+              [(ngModel)]="item.reason"
+              [id]="item.emp_id" 
               class="w-[100px] h-[40px]"/>
             <!-- <mat-form-field>
               <input matInput [(ngModel)]="item.reason" />
@@ -199,9 +210,10 @@
                 || item.approvedHr > getMaxHours(item.type)  
                 || loading
                 || item.approvedHr < 0 
-                || selectAll
+                || item.selected
               "
               (click)="approve(item)"
+              aria-label="approve button"
             >
             </button>
           </td>

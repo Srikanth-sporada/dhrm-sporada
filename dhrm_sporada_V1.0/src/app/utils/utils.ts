@@ -152,5 +152,17 @@ export class Utility {
     ).map((item:any) => JSON.parse(item));
      return uniqueArray;
   }
+
+   /**
+   * remove duplicate object
+   * @param array 
+   * @returns {[]}
+   */
+  removeDuplicateObjectsInArray(array: any):any {
+    const uniqueArray = Array.from(
+      new Set(array.map((item:any) => item))
+    ).map((item:any) => item);
+     return uniqueArray;
+  }
  
 }

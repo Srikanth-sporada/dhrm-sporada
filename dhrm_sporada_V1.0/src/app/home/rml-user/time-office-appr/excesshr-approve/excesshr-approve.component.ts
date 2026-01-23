@@ -121,7 +121,7 @@ export class ExcesshrApproveComponent implements OnInit {
           console.log('EH DATA:',response.data);
           /** map with approvedHr, reason, selected props */
           this.data = response.data.map((element: any) => {
-            return { ...element, approvedHr: null, reason: "", selected:false };
+            return { ...element, approvedHr: null, reason: "", selected:null };
           });
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
@@ -356,7 +356,7 @@ export class ExcesshrApproveComponent implements OnInit {
       return {
         ...ehData,
         approvedHr:approvedEH, 
-        reason:`BULK EH APPROVED:${ehData.biometric_no}`,
+        reason:`BULK EH APPROVED:${ehData.gen_id}`,
         selected:true}
       });
     console.log('BULK DATA:',this.bulkApproveData);
@@ -366,6 +366,80 @@ export class ExcesshrApproveComponent implements OnInit {
       /** clear all data */
       this.clear();
     }
+  }
+  /**
+   * handle single select for bulk EH approval
+   */
+  handleSingleSelect(event:any,data:any){
+      if(this.selectAll){
+        if(event.checked){
+        let approvedEH:number;
+        /** set approvedHr based on user value */
+        if(this.setActualEH){
+          approvedEH = data.expect_othr
+        }else{
+           approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+        }
+        /** set approved hour and reason */
+        data.approvedHr = approvedEH;
+        data.reason = `BULK EH APPROVED:${data.gen_id}`;
+        const mappedData = {...data,approvedHr:approvedEH,reason:`BULK EH APPROVED:${data.gen_id}`}
+        console.log('DATA:',mappedData);
+        const filteredEhData = this.bulkApproveData.filter((ehData:any) => ehData.gen_id != data.gen_id && ehData.att_date != data.att_date);
+        console.log('ALL FILTERED EH DATA:',filteredEhData)
+        filteredEhData.push(mappedData);
+        this.bulkApproveData.push(filteredEhData[0]);
+      }else{
+        /** set approved hour and reason to default if user unchecked */
+        data.approvedHr = null;
+        data.reason = "";
+        /** remove unselected array */
+        const indexOfElemToRemove = this.bulkApproveData.findIndex((item:any) => item.gen_id == data.gen_id && item.att_date == data.att_date)
+        /** splice element */
+        if (indexOfElemToRemove !== -1) {
+          this.bulkApproveData.splice(indexOfElemToRemove,1)
+        }
+      }
+      }
+      /** if select all is unchecked */
+      else{
+        /** check if checked */
+        if(event.checked){
+        let approvedEH:number;
+        /** set approvedHr based on user value */
+        if(this.setActualEH){
+          approvedEH = data.expect_othr
+        }else{
+           approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+        }
+        /** set approved hour and reason */
+        data.approvedHr = approvedEH;
+        data.reason = `BULK EH APPROVED:${data.gen_id}`;
+      const mappedData = {...data,approvedHr:approvedEH,reason:`BULK EH APPROVED:${data.gen_id}`}
+      console.log('MAPPED DATA SINGLE:',mappedData);
+      const filteredEhData = this.data.filter((ehData:any) => {
+        if(ehData.gen_id == data.gen_id && ehData.att_date == data.att_date){
+          return ehData;
+        }
+      })
+      console.log('FILTERED DATA SINGLE:',filteredEhData)
+      filteredEhData.push(mappedData);
+      this.bulkApproveData.push(filteredEhData[0]);
+      console.log('SINGLE DATA BULK DATA:',this.bulkApproveData)
+      }
+      /** check if checked */
+      else{
+        /** set approved hour and reason to default if user unchecked */
+        data.approvedHr = null;
+        data.reason = "";
+        /** remove unselected array */
+        const indexOfElemToRemove = this.bulkApproveData.findIndex((item:any) => item.gen_id == data.gen_id && item.att_date == data.att_date)
+        /** splice element */
+        if (indexOfElemToRemove !== -1) {
+          this.bulkApproveData.splice(indexOfElemToRemove,1)
+        }
+      }
+      }
   }
 
   /** bulk approve EH  */
@@ -453,6 +527,10 @@ export class ExcesshrApproveComponent implements OnInit {
    * download failed data as excell sheet
    */
   downloadFailedData(apiResponse:any){
+    if(this.failedDataCount == 0){
+      this.messageService.add({severity:'warn',summary:'There no failed Data to download!'})
+     return
+    }
     /** filter failed data */
     const failedData = apiResponse.filter((data:any) => {
       if(data?.status == 'failed'){
@@ -470,7 +548,8 @@ export class ExcesshrApproveComponent implements OnInit {
   openBulkStatusModal(apiResponse:any){
     const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
     confirmModalRef.componentInstance.confirmFunction = () => this.downloadFailedData(apiResponse);
-    confirmModalRef.componentInstance.confirmText = `${this.successDataCount} of ${this.bulkApproveData.length} success and ${this.failedDataCount} of ${this.bulkApproveData.length} failed. Click YES to download failed data.`
+    /** modal text */
+    confirmModalRef.componentInstance.confirmText = `${this.successDataCount} of ${this.bulkApproveData.length} SUCCESS and ${this.failedDataCount} of ${this.bulkApproveData.length} FAILED. Click YES to download failed data.`
     console.log('modal opened...');
     /** set success and failed count to default */
     confirmModalRef.closed.subscribe(() => {

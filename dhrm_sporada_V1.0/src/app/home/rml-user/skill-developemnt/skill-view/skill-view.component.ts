@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit , ChangeDetectionStrategy } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import { environment } from "src/environments/environment.prod";
 import { MessageService } from "primeng/api";
@@ -8,6 +8,7 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
   selector: "app-skill-view",
   templateUrl: "./skill-view.component.html",
   styleUrls: ["./skill-view.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkillViewComponent implements OnInit {
   genid: any;
@@ -44,39 +45,21 @@ export class SkillViewComponent implements OnInit {
         this.all.plant_name;
     }
     /** get operations */
-    this.apiService.getOperationList().subscribe({
-      next: (response: any) => {
-      if (response.status == "success") {
-        console.log('OPERTAIONS:',response.data);
-        this.oprnsList = response.data;
-      }
-    },
-    error: (error:any) => {
-       console.error('ERROR:',error);
-       this.messageService.add({severity:'error',summary:error?.error?.message});
-    }
-    });
+    this.getOperationList();
     /** get plant skill */
-    this.apiService.getPlantskill().subscribe({
-      next:  (response: any) => {
-        if (response.status == "success") {
-          this.plantSkill = response.skill;
-          console.log('PLANT SKILL:',this.plantSkill);
-        } else {
-          // alert(response.message);
-          this.messageService.add({severity: "info",summary: response.message});
-        }
-      },
-       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.message });
-      },
-    });
+    this.getPlantSkill();
   }
 
+  /** 
+   * get skill details
+   * @property {*} skillData
+   * @property {*} userData
+   * @property {*} fileDetails
+   * @property {*} showSkillMatrix
+   */
   getSkilldetails() {
-    this.apiService.getoperationsByGenid(this.genid).subscribe(
-      (response: any) => {
+    this.apiService.getoperationsByGenid(this.genid).subscribe({
+      next: (response: any) => {
         if (response.status == "success") {
           this.skillData = response.skill;
           this.userData = response.userData;
@@ -92,17 +75,59 @@ export class SkillViewComponent implements OnInit {
           });
         }
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
-    );
+    });
   }
-  
-  getUrl(file_name: any) {
-    return this.url + "/skill_dev/" + file_name;
-  }
+  /** 
+     * get operations
+     * @property {*} oprnsList
+     *  */
+    getOperationList() {this.apiService.getOperationList().subscribe({
+      next: (response: any) => {
+      if (response.status == "success") {
+        console.log('OPERTAIONS:',response.data);
+        this.oprnsList = response.data;
+      }
+    },
+    error: (error:any) => {
+       console.error('ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.error?.message});
+    }
+    });
+    }
+     /** 
+     * get plant skill
+     * @property {*} plantSkill
+     *  */
+    getPlantSkill(){this.apiService.getPlantskill().subscribe({
+        next:  (response: any) => {
+          if (response.status == "success") {
+            this.plantSkill = response.skill;
+            console.log('PLANT SKILL:',this.plantSkill);
+          } else {
+            // alert(response.message);
+            this.messageService.add({severity: "info",summary: response.message});
+          }
+        },
+        error: (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({ severity: "error", summary: error.message });
+        },
+      });
+    }
 
+    getUrl(file_name: any) {
+      return this.url + "/skill_dev/" + file_name;
+    }
+
+  /**
+   * get operation data
+   * @property {*} getOprationData
+   * @property {*} showOprationData
+   */
   getOprationData() {
     if (this.oprnId == "") {
       return this.messageService.add({
@@ -110,8 +135,8 @@ export class SkillViewComponent implements OnInit {
         summary: "Select Operation",
       });
     }
-    this.apiService.getoperationsByOperation(this.oprnId).subscribe(
-      (response: any) => {
+    this.apiService.getoperationsByOperation(this.oprnId).subscribe({
+      next: (response: any) => {
         if (response.status == "success") {
           this.oprnData = response.skill;
           this.showOprationData = true;
@@ -123,11 +148,11 @@ export class SkillViewComponent implements OnInit {
           });
         }
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
-    );
+    });
   }
 
   /** convert number to string */
