@@ -93,7 +93,7 @@
             inputId="ny"
             id="ny"
             class="font-poppins"
-            (ngModelChange)="handelSelectAll()"> 
+            (ngModelChange)="handelSelectAll(true)"> 
           </p-checkbox>
           <label for="ny" class="mb-0 ml-2 font-semibold">Select All</label>
           <p-badge [value]="convertToString(bulkApproveData.length)" styleClass="ml-2"></p-badge>
@@ -189,7 +189,7 @@
             <input 
               type='text' 
               pInputText 
-              [disabled]="selectAll || item.reason"
+              [disabled]="selectAll || item.reason !== ''"
               [(ngModel)]="item.reason"
               [id]="item.emp_id" 
               class="w-[100px] h-[40px]"/>

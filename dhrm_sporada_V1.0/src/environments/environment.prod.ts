@@ -5,7 +5,7 @@ export const environment = {
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
-  hideSalaryMaster:true,
+  hideSalaryMaster:false,
   hidePeoplePlanning:true,
   hidePmpd:true,
   hideMidPermission:true,
