@@ -1,4 +1,4 @@
-import { Component, OnInit , ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit , ChangeDetectionStrategy} from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import { environment } from "src/environments/environment.prod";
 import { MessageService } from "primeng/api";
@@ -10,6 +10,7 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
   styleUrls: ["./skill-view.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class SkillViewComponent implements OnInit {
   genid: any;
   skillData: any;

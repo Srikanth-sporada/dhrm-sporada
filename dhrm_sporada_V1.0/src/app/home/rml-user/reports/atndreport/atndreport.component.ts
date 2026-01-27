@@ -26,6 +26,7 @@ export class AtndreportComponent implements OnInit {
   lines: any;
   all:any;
   userDetails:any;
+
   constructor(
     private api: ApiService, 
     private messageService:MessageService,
@@ -33,17 +34,29 @@ export class AtndreportComponent implements OnInit {
     public utils:Utility) {}
 
   ngOnInit() {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    const plantCode = sessionStorage.getItem("plantcode");
+    this.plant = sessionStorage.getItem("plantcode");
     this.isadmin = sessionStorage.getItem("isadmin");
-    this.plant = plantCode;
-  
-    // get plant code api call
-    this.api.getplantcode(plantCode).subscribe({
+    
+    /** get plants */
+    this.getPlants();
+    /** get attendance data */
+    this.getData();
+    /** get categories */
+     this.getCategories();
+   /** get line by dept */  
+    this.getLineByDept();
+    
+  }
+
+  /** get plant code API */
+  getPlants(){
+    this.api.getplantcode(this.plant).subscribe({
       next: (response: any) => {
         this.plantlist = response;
         this.plantlist.unshift({plant_name:'All',plant_code:''})
@@ -53,29 +66,38 @@ export class AtndreportComponent implements OnInit {
         this.messageService.add({severity:'error',summary:error.message});
       },
     });
-
-    // get attedance date
-    this.getData();
-
-    // get catgory api call
-    this.api.getCategories().subscribe((data: any) => {
+  }
+  /** get categories API */
+  getCategories(){
+    this.api.getCategories().subscribe({
+      next: (data: any) => {
       this.categories = data;
       this.categories.unshift({categorynm:'All'});
-    }, (error) => {
+    }, 
+    error: (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});
+    }
     });
-    // get line api call
-    this.api.getlineBydept().subscribe((response: any) => {
+  }
+  /** get line by dept API */
+  getLineByDept(){
+    this.api.getlineBydept().subscribe({
+      next: (response: any) => {
       this.lines = response;
       this.lines.unshift({Line_Name:'All', Line_code:''});
-    },(error) => {
+    },
+    error: (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message});
+    }
     });
-    
   }
-
+  /**
+   *  get attendance data API 
+   *  @property {*} plant
+   * @property {!*} genid 
+   *  */
   getData() {
     let data = {
       plant: this.plant,
@@ -113,7 +135,12 @@ export class AtndreportComponent implements OnInit {
     this.messageService.add({severity:'info',summary:'Data Exported.'});
   } 
 
-  copyGenIDToClipboard(genId:any){
-    this.messageService.add({severity:'info',summary:`${genId} Copied to clipboard.`})
+  /** 
+   * copy toast function
+   * @param genId
+   */
+  copyGenIDToClipboard(value:any){
+    this.messageService.add({severity:'info',summary:`${value} Copied to clipboard.`})
   }
+
 }

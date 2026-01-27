@@ -1,6 +1,6 @@
 <div class="mx-2">
   <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>approval_delegation</mat-icon> Week Off Approval<hr/>
@@ -52,7 +52,7 @@
         (ngModelChange)="getDates()"
         [minDate]="lockDate"
         [maxDate]="today"
-        (ngModelChange)="data=[];weekDates=[];selectedDept='';slectedLine=''"
+        (ngModelChange)="data=[];weekDates=[];selectedDept='';slectedLine='';"
         [showIcon]="true" >
      </p-calendar>
      </div>
@@ -65,7 +65,7 @@
             optionLabel="dept_name"
             optionValue="dept_slno"
             styleClass="w-full"
-            (ngModelChange)="getLine(); data = []; slectedLine = ''" 
+            (ngModelChange)="getLine(); data = [];" 
             placeholder="Select Department">
             <ng-template let-dept pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -132,8 +132,8 @@
           <p-button 
             icon="pi pi-download"
             styleClass="rounded-[1.5rem] mt-2 ml-2"
-            [hidden]="true"
-            (onClick)="utils.jsonToExcellExport(data,'','WeekOff')"
+            [hidden]="data.length == 0"
+            (onClick)="exportWeekOffData()"
           >
         </p-button> 
         </div>
@@ -215,8 +215,7 @@
      pButton
      class="rounded-xl" 
      (click)="updateData()"
-     label="Update" 
-     [disabled]="checkAlreadyApplied()"
+     label="Update"
      >
      <!-- [disabled]="checkAlreadyApplied()" -->
     </button>

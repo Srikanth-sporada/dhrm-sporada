@@ -125,7 +125,9 @@
             <div class="bg-green-200 text-green-600 present py-1 px-2 rounded-lg text-center">
               Present
             </div>
-            <div class="bg-yellow-200 text-yellow-600 halfday py-1 px-2 rounded-lg text-center">
+            <div 
+            class="bg-yellow-200 text-yellow-600 halfday py-1 px-2 rounded-lg text-center" 
+            [hidden]="true">
               LC | EG
             </div>
             <div class="bg-red-200 text-red-600 absent py-1 px-2 rounded-lg text-center">
@@ -152,6 +154,8 @@
       <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Gen ID</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Biometric No</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Application No</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">1</th>
@@ -189,7 +193,7 @@
     </thead>
     <!-- attedance table body -->
     <tbody>
-      <tr *ngFor="let item of atndData |categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+      <tr *ngFor="let item of atndData | categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
             {{ item.gen_id }}
@@ -202,6 +206,30 @@
                 style="color: slateblue" 
                 [cdkCopyToClipboard]="item.gen_id"
                 (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.gen_id)"></i>
+             </div>
+        </td>
+        <!-- biometric number -->
+        <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
+            {{ item.biometric_no }}
+            <!-- actions btn -->
+             <div class="flex items-center justity-center gap-2">
+              <i 
+                class="pi pi-clone" 
+                style="color: slateblue" 
+                [cdkCopyToClipboard]="item.biometric_no"
+                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.biometric_no)"></i>
+             </div>
+        </td>
+        <!-- application number -->
+         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
+            {{ item.biometric_no }}
+            <!-- actions btn -->
+             <div class="flex items-center justity-center gap-2">
+              <i 
+                class="pi pi-clone" 
+                style="color: slateblue" 
+                [cdkCopyToClipboard]="item.biometric_no"
+                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.biometric_no)"></i>
              </div>
         </td>
         <!-- [pTooltip]="item.dept_name + ' | ' + item.Line_Name"

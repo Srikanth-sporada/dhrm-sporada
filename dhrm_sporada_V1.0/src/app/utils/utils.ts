@@ -109,7 +109,6 @@ export class Utility {
   containsWhitespace(str: any): boolean {
     return /\s/.test(str);
   }
-
   /**
    * Throttling handle function
    * @property {*} milliSeconds
