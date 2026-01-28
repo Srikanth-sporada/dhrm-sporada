@@ -90,7 +90,13 @@
             <span class="text-blue-600 font-semibold">
               {{user.fullname | uppercase}} | 
               <span [ngClass]="user.activestat == 'ACTIVE' ? 'text-green-600 font-semibold' : 'text-red-500 font-semibold'">
-                {{user.activestat | uppercase}}
+                {{user.activestat | uppercase}} 
+              </span>
+              <span>
+                | {{user.biometric_no}} | 
+              </span>
+              <span>
+                {{user.apln_slno}} 
               </span>
             </span>
           </div>

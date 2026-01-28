@@ -67,6 +67,7 @@ export class AtndreportComponent implements OnInit {
       },
     });
   }
+  
   /** get categories API */
   getCategories(){
     this.api.getCategories().subscribe({
@@ -105,7 +106,8 @@ export class AtndreportComponent implements OnInit {
       year: moment(this.date).format('yyyy'),
       month: moment(this.date).format('MM'),
     };
-    this.api.atndReport(data).subscribe((response: any) => {
+    this.api.atndReport(data).subscribe({
+      next: (response: any) => {
       if ((response.status = "success")) {
         this.atndData = response.data;
         this.displayDate = moment(this.date).format("MMMM,yyyy")
@@ -113,9 +115,11 @@ export class AtndreportComponent implements OnInit {
         // alert(response.message);
         this.messageService.add({severity:'error',summary:response.message})
       }
-    }, (error) => {
+    }, 
+    error: (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error?.error?.message});
+    }
     });
   }
 
@@ -137,7 +141,7 @@ export class AtndreportComponent implements OnInit {
 
   /** 
    * copy toast function
-   * @param genId
+   * @param value
    */
   copyGenIDToClipboard(value:any){
     this.messageService.add({severity:'info',summary:`${value} Copied to clipboard.`})

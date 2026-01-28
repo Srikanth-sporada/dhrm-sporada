@@ -1147,8 +1147,8 @@ export class ApiService {
     );
   }
 
-  getWeekoffData(date: any, line: any) {
-    return this.http.get(this.url + `/ars/getWeekoffData?date=${date}&line=${line}`
+  getWeekoffData(date: any, line: any,endOfWeek:any) {
+    return this.http.get(this.url + `/ars/getWeekoffData?date=${date}&line=${line}&sunday=${endOfWeek}`
     );
   }
   // update already updated week off

@@ -154,8 +154,8 @@
       <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Gen ID</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0">Biometric No</th>
-        <th class="!text-white !px-2 !py-2 !border-none !border-0">Application No</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Biometric</th>
+        <th class="!text-white !px-2 !py-2 !border-none !border-0">Application</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">1</th>
@@ -195,6 +195,7 @@
     <tbody>
       <tr *ngFor="let item of atndData | categoryline:cat:selectedLine; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
         <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+        <!-- gen id -->
         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
             {{ item.gen_id }}
             <!-- actions btn -->
@@ -209,10 +210,10 @@
              </div>
         </td>
         <!-- biometric number -->
-        <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
-            {{ item.biometric_no }}
+        <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold">
             <!-- actions btn -->
              <div class="flex items-center justity-center gap-2">
+               {{ item.biometric_no }}
               <i 
                 class="pi pi-clone" 
                 style="color: slateblue" 
@@ -221,15 +222,16 @@
              </div>
         </td>
         <!-- application number -->
-         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold flex gap-3 justify-evenly">
-            {{ item.biometric_no }}
+         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold">
+           
             <!-- actions btn -->
              <div class="flex items-center justity-center gap-2">
-              <i 
+               {{ item.cemp_id }}
+               <i 
                 class="pi pi-clone" 
                 style="color: slateblue" 
-                [cdkCopyToClipboard]="item.biometric_no"
-                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.biometric_no)"></i>
+                [cdkCopyToClipboard]="item.cemp_id"
+                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.cemp_id)"></i>
              </div>
         </td>
         <!-- [pTooltip]="item.dept_name + ' | ' + item.Line_Name"

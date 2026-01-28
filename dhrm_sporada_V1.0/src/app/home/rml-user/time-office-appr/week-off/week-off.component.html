@@ -39,8 +39,10 @@
             optionLabel="label"
             optionValue="value"
             styleClass="w-full"
-            (ngModelChange)="getLockDate(); data = []; selectedDept='';slectedLine = '';date=''" 
-            placeholder="Select Category"></p-dropdown>
+            (ngModelChange)="getLockDate();" 
+            placeholder="Select Category">
+            <!--  data = []; selectedDept='';slectedLine = '';date='' -->
+          </p-dropdown>
        </div>
       <!-- Date-->
      <div class="w-full">
@@ -52,8 +54,8 @@
         (ngModelChange)="getDates()"
         [minDate]="lockDate"
         [maxDate]="today"
-        (ngModelChange)="data=[];weekDates=[];selectedDept='';slectedLine='';"
         [showIcon]="true" >
+        <!-- (ngModelChange)="data=[];weekDates=[];selectedDept='';slectedLine='';" -->
      </p-calendar>
      </div>
     <!-- department -->
@@ -65,7 +67,7 @@
             optionLabel="dept_name"
             optionValue="dept_slno"
             styleClass="w-full"
-            (ngModelChange)="getLine(); data = [];" 
+            (onChange)="getLine(); data = [];" 
             placeholder="Select Department">
             <ng-template let-dept pTemplate="item">
               <div class="flex align-items-center gap-2">
@@ -144,7 +146,7 @@
 </div>
 
 <!-- week days table -->
-<div class="shadow-md rounded-md border border-gray-400 mx-3 mb-2" *ngIf="date!=''">
+<div class="shadow-md rounded-md border border-gray-400 mx-3 mb-2" *ngIf="date != ''">
   <table id="table" class="table-auto !w-full">
       <thead>
         <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
@@ -161,7 +163,7 @@
           <td 
           *ngFor="let date of weekDates; let i = index" 
           class="!px-2 !py-4 !rounded-s-md text-center">
-          {{ date.date |date:'dd-MM-yyyy'}}
+          {{ date.date | date:'dd-MM-yyyy'}}
         </td>
         </tr>
       </tbody>
@@ -189,16 +191,17 @@
             <mat-button-toggle-group
               [(ngModel)]="item.week_off_day_arr"
               aria-label="Font Style"
-              [disabled]="item.already_applied==7"
-              (change)="onWeekOffChange(item, $event.value)" 
+              [disabled]="item.already_applied == 7"
+              (change)="onWeekOffChange(item, $event.value,i)" 
               [multiple]="true"> 
-              <mat-button-toggle value="1"> Monday</mat-button-toggle>
-              <mat-button-toggle value="2">Tuesday</mat-button-toggle>
-              <mat-button-toggle value="3">Wednesday</mat-button-toggle>
-              <mat-button-toggle value="4">Thursday</mat-button-toggle>
-              <mat-button-toggle value="5">Friday</mat-button-toggle>
-              <mat-button-toggle value="6">Saturday</mat-button-toggle>
-              <mat-button-toggle value="7">Sunday</mat-button-toggle>
+              <mat-button-toggle value="1" [disabled]="checkWeekOffDate(item.doj,'1')"
+               > Monday</mat-button-toggle>
+              <mat-button-toggle value="2" [disabled]="checkWeekOffDate(item.doj,'2')">Tuesday</mat-button-toggle>
+              <mat-button-toggle value="3" [disabled]="checkWeekOffDate(item.doj,'3')">Wednesday</mat-button-toggle>
+              <mat-button-toggle value="4" [disabled]="checkWeekOffDate(item.doj,'4')">Thursday</mat-button-toggle>
+              <mat-button-toggle value="5" [disabled]="checkWeekOffDate(item.doj,'5')">Friday</mat-button-toggle>
+              <mat-button-toggle value="6" [disabled]="checkWeekOffDate(item.doj,'6')">Saturday</mat-button-toggle>
+              <mat-button-toggle value="7" [disabled]="checkWeekOffDate(item.doj,'7')">Sunday</mat-button-toggle>
             </mat-button-toggle-group>
           </td>
            <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">

@@ -62,6 +62,7 @@ export class CalComponent implements OnInit {
   out_time = "5:00pm";
   a: any = "IN_OUT_TIME";
   date: string | null;
+  
   constructor(
     private service: ApiService,
     private messageService:MessageService,

@@ -15,7 +15,7 @@ export class WeekOffComponent implements OnInit {
   selectedDept:any="";
   lineList:any[];
   slectedLine:any="";
-  data:any[]=[];
+  data:any[] = [];
   weekOfData:any = [];
   weekDates:any;
   lockDate:any;
@@ -24,6 +24,7 @@ export class WeekOffComponent implements OnInit {
   loading:any=false;
   genIdInput:any;
   isCorrectDate:boolean;
+  endOfWeek:string = '';
   roles = [
   { value: 'T', label: 'Trainee/CL' },
   { value: 'O', label: 'Operator' }
@@ -45,13 +46,16 @@ export class WeekOffComponent implements OnInit {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
       /** set logged in user dept & line */
-      this.selectedDept = this.all.Department;
-      this.slectedLine = this.all.line_code;
+      this.selectedDept = Number(this.all.Department);
+      this.slectedLine = String(this.all.line_code);
+      console.log(this.selectedDept, this.slectedLine);
     }
     /** get dept by plant */
     this.getDeptByPlant();
     /** get lock date & get data */
     this.getLockDate();
+    /** get line */
+    this.getLine();
     // this.date < this.today ? this.getData() : "";
 
   }
@@ -69,13 +73,21 @@ export class WeekOffComponent implements OnInit {
     });
   }
   
-  /** get week days */
+  /** 
+   * get week days
+   * @method getWeekOffData()
+   * @method getdatebyno()
+   *  */
   getDates(){
     this.apiService.getWeekdates(moment(this.date).format('YYYY-MM-DD')).subscribe({
       next: (response: any) => {
       // console.log('response,response',response)
       if(response.status='success'){
         this.weekDates = response.data;
+        /** set endOfWeek */
+        this.endOfWeek = this.getdatebyno('7');
+        /** weekoffData API  */
+        this.getWeekOffData()
       }else{
         // alert(response.message);
         this.messageService.add({severity:'warn',summary:response.message})
@@ -91,7 +103,6 @@ export class WeekOffComponent implements OnInit {
 
   /** get line by dept */
   getLine(){
-   
       this.apiService.getlineBydeptslno(this.selectedDept).subscribe({
         next: (response: any) => {
          if(response?.message == 'failure' || response?.message == 'failed'){
@@ -112,23 +123,30 @@ export class WeekOffComponent implements OnInit {
    * @property {*} data
    * @property {*} isCorrectDate
    * @property {*} weekOfData
+   * @method getDates()
    */
   getData(){
-    console.log('LINE', this.slectedLine)
   //  if(this.isCorrectDate){
-     /** get week days */
+     /** get week days & get week off data*/
     this.getDates();
     /** get trainee week off data */
-    this.data=[]
-    /** 
-     * @param date
-     * @param line
-     *  */
+    this.data = [];
+  }
+
+  /** 
+   * get week off data by sunday,line,date
+   * @param date
+   * @param line
+   * @param sunday // endOfweek
+   * @property {*} weekOfData 
+   */
+  getWeekOffData(){
+    console.log('LINE', this.slectedLine)
     this.apiService
-    .getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine)
+    .getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine,this.endOfWeek)
     .subscribe((response:any) => {
       let data;
-      if(response.status='success'){
+      if(response.status == 'success'){
         data = response.data.map((element:any) => {
           // five days default sunday + saturday mapping
           if(element?.active_status == 'Y' && element.week_off_day[0]?.week_off_day == 7 && element?.week_off_day.length == 1){
@@ -144,7 +162,6 @@ export class WeekOffComponent implements OnInit {
             return data?.week_off_day.toString();
           })}
           }
-        
       })
         if(this.cat=='T'){
           data=data.filter((element:any)=>{
@@ -159,7 +176,8 @@ export class WeekOffComponent implements OnInit {
         this.data = data;
         /** copy of week of data */
         this.weekOfData = data;
-      }else{
+      }
+      else{
         // alert(response.message)
         this.messageService.add({severity:'warn',summary:response.message})
       }
@@ -167,9 +185,6 @@ export class WeekOffComponent implements OnInit {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
-  //  } else {
-  //   this.messageService.add({severity:'warn',summary:'Incorrect Selected Date!'})
-  //  }
   }
 
   /**
@@ -214,15 +229,16 @@ export class WeekOffComponent implements OnInit {
     // console.log(date[0].date);
     // console.log(date)
     
-    return date[0].date
+    return date[0].date;
   }
 
   /** 
    * handle week off change based on five days mapping
    * @param item
    * @param dayValue event
+   * @method checkIfAbsent()
    */
-  onWeekOffChange(item: any, dayValue:any): void {
+  onWeekOffChange(item: any, dayValue:any,itemIndex:any): void {
     // getting fivedays mapping status of the trainee
     const fiveDaysMapping = item.active_status;
     const selected = item.week_off_day_arr || [];
@@ -240,8 +256,8 @@ export class WeekOffComponent implements OnInit {
       console.log('ID ARR',weekOfIdArr)
       const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
       console.log('Changed Week Off Five Days:',changedWeekOff);
-      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr);
-      // this.messageService.add({severity:'warn',summary:'You can select only 2 days as week off.'});
+      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr, itemIndex);
+      
     } 
     /** 1 day week off mapping */
     else if(selected.length > 1 && (!fiveDaysMapping || fiveDaysMapping == 'N')){
@@ -251,8 +267,7 @@ export class WeekOffComponent implements OnInit {
       /** finding changed week of id */
       const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
       console.log('Changed Week Off six Days',changedWeekOff);
-      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, changedWeekOff.trn_woff_id);
-      // this.messageService.add({severity:'warn',summary:'You can select only 1 day as week off.'});
+      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, changedWeekOff.trn_woff_id,itemIndex);
     }
     /** update week off if user selected two days for 2 days week offs */
     else if(selected.length == 2 && item.already_applied == 1){
@@ -261,7 +276,7 @@ export class WeekOffComponent implements OnInit {
         return weekoff.trn_woff_id
       });
       console.log('ID ARR',weekOfIdArr);
-      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr);
+      this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr,itemIndex);
     }
   }
 
@@ -269,10 +284,12 @@ export class WeekOffComponent implements OnInit {
    * check if the selected day is absent
    * @param item
    * @param emp_id
-   * @param day
+   * @param day //week_off_day_arr
    * @param weekOffID
+   * @param itemIndex
+   * @method changealreadyUpdatedWeekOff()
    */
-  checkIfAbsent(item:any,emp_id:any,day:any, weekOffID:any){
+  checkIfAbsent(item:any,emp_id:any,day:any, weekOffID:any, itemIndex:any){
     console.log(weekOffID);
     const fiveDaysMapping = item?.active_status;
     /** looping selected day array to check present or not */
@@ -289,23 +306,22 @@ export class WeekOffComponent implements OnInit {
       }
       else if(date < this.lockDate){
         // alert(`Selected day is previous payroll period`)
-        this.messageService.add({severity:'info',summary:`Selected day is previous payroll period`})
-        this.data.forEach((element:any)=>{
-          if(element.apln_slno==emp_id){
-            element.week_off_day_arr = ['7']
-          }
-        })
+        this.messageService.add({severity:'info',summary:`Selected day is previous payroll period`});
+         /** set actual w-off */
+        item.week_off_day_arr = item?.week_off_day.map((data:any) => {return data?.week_off_day.toString()});
+        // this.data.forEach((element:any)=>{
+        //   if(element.apln_slno==emp_id){
+        //     element.week_off_day_arr = ['7']
+        //   }
+        // })
       }
       else{
         /** if trainee is absent on selected date */
         if(response.is_valid.status){
           // alert(response.is_valid.message)
-          this.messageService.add({severity:'warn',summary:response.is_valid.message})
-          this.data.forEach((element:any) => {
-          if(element.apln_slno == emp_id){
-            element.week_off_day_arr = ['7']
-          }
-        })
+          this.messageService.add({severity:'warn',summary:response.is_valid.message});
+          /** set actual w-off */
+          item.week_off_day_arr = item?.week_off_day.map((data:any) => {return data?.week_off_day.toString()});
         }
         /** checking if the selected date is absent for second week off update */ 
         if(!response.is_valid.status){
@@ -352,27 +368,28 @@ export class WeekOffComponent implements OnInit {
    * @param data
    *  */
   changealreadyUpdatedWeekOff(data:any){
-    // this.apiService.changeAlreadyUpdatedEmployeeWeekOff(data).subscribe({
-    //   next: (response:any) => {
-    //      console.log(response);
-    //      if(response.status == 'success'){
-    //       this.messageService.add({key:'toast',severity:'info',summary:response.message});
-    //       this.messageService.clear('toast');
-    //       // api call for refresh the data
-    //       this.getData();
-    //      }else{
-    //       this.messageService.add({severity:'warn',summary:response.message})
-    //      }
-    //   },
-    //   error: (error) => {
-    //     console.error('ERROR:',error);
-    //     this.messageService.add({severity:'error',summary:error?.error?.message})
-    //   }
-    // })
+    this.apiService.changeAlreadyUpdatedEmployeeWeekOff(data).subscribe({
+      next: (response:any) => {
+         console.log(response);
+         if(response.status == 'success'){
+          this.messageService.add({key:'toast',severity:'info',summary:response.message});
+          this.messageService.clear('toast');
+          // api call for refresh the data
+          this.getData();
+         }else{
+          this.messageService.add({severity:'warn',summary:response.message})
+         }
+      },
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message})
+      }
+    })
   }
 
   /**
    * bulk update week off
+   * @method getdatebyno()
    */
   updateData(){
     this.loading=true
@@ -452,11 +469,11 @@ export class WeekOffComponent implements OnInit {
     }
   }
 
-  /** check current date is correct based on lock date */
-  // checkCorrectDate(){
-  //   /** check current date is correct */
-  //     this.date < this.today ? this.isCorrectDate = true : this.isCorrectDate = false;
-  // }
+  /** check current date is correct based on lock date 
+  checkCorrectDate(){
+      this.date < this.today ? this.isCorrectDate = true : this.isCorrectDate = false;
+  }
+  */
 
   /**
    * export @property {*} data to excell 
@@ -473,5 +490,22 @@ export class WeekOffComponent implements OnInit {
   }));
   /** export utils function */
   this.utils.jsonToExcellExport(exportData,this.all.plant_code,'WeekOff')
+  }
+
+  /** 
+   * handle DOL based date selection
+   * @param doj trainee doj
+   * @param weekOffDay
+   *  */
+  checkWeekOffDate(doj:any,weekOffDay:any):boolean{
+    const traineeDOJ = new Date(doj);
+    const weekDate = new Date(this.getdatebyno(weekOffDay));
+    /** find DOJ in user selected week off  */
+    if(this.weekDates.find((weekDate:any) => weekDate.date == doj) ){
+      // console.log('RETURN', traineeDOJ > weekDate)
+      return traineeDOJ > weekDate
+    }else{
+      return false;
+    }
   }
 }

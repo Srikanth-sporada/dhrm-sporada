@@ -171,7 +171,6 @@
                 [(ngModel)]="item.approvedHr"
                 pInputText
                 [id]="item.gen_id"
-                [disabled]="selectAll || item.approvedHr"
               />
             <!-- <mat-form-field>
               
@@ -189,7 +188,6 @@
             <input 
               type='text' 
               pInputText 
-              [disabled]="selectAll || item.reason !== ''"
               [(ngModel)]="item.reason"
               [id]="item.emp_id" 
               class="w-[100px] h-[40px]"/>
