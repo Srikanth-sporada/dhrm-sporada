@@ -7,7 +7,7 @@ import { elements } from "chart.js";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
-
+import { environment } from "src/environments/environment.prod";
 @Component({
   selector: "app-otapprove",
   templateUrl: "./otapprovefh.component.html",
@@ -21,13 +21,15 @@ export class OtapproveComponent implements OnInit {
   departmentList: any;
   selectedDept: any = "";
   loading: any = false;
-
+  userEnteredGenID:any;
+  overTimeDataCopy:any = [];
+  showNoData:boolean = false;
+  noDataImgPath:any = environment.noDataImgPath;
   constructor(
     private apiService: ApiService, 
     private matdailog: MatDialog, 
     private messageService:MessageService,
     public loader:LoaderserviceService) {
-
     }
 
   selectAll: any = false;
@@ -100,12 +102,14 @@ export class OtapproveComponent implements OnInit {
             return element.bal > 0;
           });
         console.log('OT DATA:',response.data);
+        /** copy data */
+        this.overTimeDataCopy = this.data;
       } else if (response.status == "failed") {
         // alert(response.message);
         this.messageService.add({severity:'warn',summary:response.message})
       }
     },
-    error:(error) => {
+    error: (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     }
@@ -130,6 +134,8 @@ export class OtapproveComponent implements OnInit {
         this.getData();
         this.messageService.add({severity:'info',summary:res.message});
         this.loading = false;
+        /** reset filter */
+        this.resetFilterValue();
       } else {
         this.messageService.add({severity:'warn',summary:res.message})
         this.getData();
@@ -167,15 +173,23 @@ export class OtapproveComponent implements OnInit {
       sup_id: sessionStorage.getItem("user_name"),
     };
     /** approve OT API */
-    this.apiService.approveFhOt(data).subscribe((response: any) => {
-      // alert(response.message);
-      this.messageService.add({severity:'warn',summary:response.message})
-      this.getData();
-      this.selectAll = false;
-      this.loading = false;
-    },(error) => {
+    this.apiService.approveFhOt(data).subscribe({
+      next: (response: any) => {
+      if(response.status == 'success'){
+        this.messageService.add({severity:'info',summary:response.message})
+        this.getData();
+        this.selectAll = false;
+        this.loading = false;
+        /** reset filter */
+        this.resetFilterValue();
+      } else{
+        this.messageService.add({severity:'error',summary:'Oops! error occured.'})
+      }
+    },
+    error: (error) => {
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
+    }
     });
   }
 
@@ -320,6 +334,7 @@ export class OtapproveComponent implements OnInit {
       return { ...element, selected: false };
     });
     this.selectAll = false;
+    this.userEnteredGenID = null;
   }
 
   filterChanged() {
@@ -386,5 +401,38 @@ export class OtapproveComponent implements OnInit {
         this.messageService.add({severity:'info',summary:'Data Exported!'})
       }
     });
+  }
+
+  /** 
+   * filter OT approval by gen id
+   * @property {*} userEnteredGenID
+   * @property {*} data 
+   * @property {*} overTimeDataCopy
+   */
+  filterOverTimeByGenID(){
+     this.userEnteredGenID = this.userEnteredGenID.trim();
+    let filteredEhData = this.overTimeDataCopy.filter((trainee: any) => trainee.gen_id.includes(this.userEnteredGenID));
+    console.log('GEN ID FILTER DATA:',filteredEhData)
+    if (filteredEhData.length) {
+      this.data = filteredEhData;
+      this.showNoData = false;
+      
+    } else {
+      this.data = this.overTimeDataCopy;
+      this.showNoData = true;
+      filteredEhData = [];
+    }
+  }
+
+  /** 
+   * reset filter values
+   * @property {*} userEnteredGenID
+   * @property {*} cat
+   * @property {*} selectedDept
+   *  */
+  resetFilterValue(){
+    this.userEnteredGenID = null;
+    this.selectedDept = "";
+    this.cat = ''
   }
 }

@@ -12,6 +12,7 @@ import { AuthGuard } from './home/Guards/Auth.guard';
 import { PageNotFoundComponent } from './home/page-not-found/page-not-found.component';
 import { PermIdcardComponent } from './home/rml-user/new-joiners/perm-idcard/perm-idcard.component';
 import { DashboardComponent } from './home/rml-user/dashboard/dashboard.component';
+import { AdminArsDumbComponent } from './admin-ars-dumb/admin-ars-dumb.component';
 
 const routes: Routes = [
 
@@ -74,7 +75,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent
-  }
+  },
 ];
 
 @NgModule({

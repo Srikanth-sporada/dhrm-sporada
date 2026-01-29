@@ -828,7 +828,7 @@ export class ClamAPIService {
   }
   Van_Facility(data: any) {
 
-    return this.http.post(`${this.url}/CLAM/Van_Maaping`, data)
+    return this.http.post(`${this.url}/clam/Van_Maaping`, data)
 
   }
   delete_Van_Facility(data: any) {

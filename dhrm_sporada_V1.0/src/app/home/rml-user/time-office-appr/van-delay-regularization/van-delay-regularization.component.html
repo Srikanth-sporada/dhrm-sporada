@@ -1,7 +1,7 @@
 
 <div>
     <!-- header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
       <mat-icon>watch_later</mat-icon>Van Delay Regularization<hr/>
@@ -28,11 +28,10 @@
         </ng-template>
         <!-- content -->
          <ng-template pTemplate="content">
-           <!-- filters -->
           <div>
-          <!-- filters -->
+          <!-- action -->
           <div class="!shadow-md !my-2 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2">
-            <!-- filter header -->
+            <!-- action header -->
               <div class="relative">
                 <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
                   Actions <mat-icon>filter_alt</mat-icon>
@@ -137,73 +136,7 @@
             </div>
              </div>
            </div>
-          </div>
-             <!-- <div style="margin-top: 1rem;">
-              <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 1rem;">
-                <mat-label>Category</mat-label>
-                <mat-select [(ngModel)]="Category" (selectionChange)="onCategoryChange()">
-                  <mat-option value="T">Trainee/CL</mat-option>
-                  <mat-option value="O">Operator</mat-option>
-                </mat-select>
-              </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
-                    <mat-label>Date</mat-label>
-                    <input type="date" matInput [(ngModel)]="date"  [disabled]="!Category"
-                    [min]="minDate" 
-                     [max]="maxDate" />
-                
-                </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 20%;height: 12%; margin-left: 2rem;" >
-                    <mat-label>Route</mat-label>
-                    <mat-select [(ngModel)]="route"  [disabled]="!Category">
-                      <mat-option value="">SELECT</mat-option>
-                      <mat-option *ngFor="let plant of routelist" [value]="plant.Route_Id">{{plant.Route_Name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-              
-
-
-                <button
-                mat-raised-button
-                color="primary"
-                style="margin: 10px 20px; height: 40px"
-                (click)="verify()" 
-                [disabled]="!isverifyValid()"
-              >
-                Details
-              </button>
-
-            </div> -->
-            <!-- <div style="margin-top: 1rem;" *ngIf="userList.length > 0">
-                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
-                    <mat-label>Transporter Name</mat-label>
-                    <input type="text" matInput [(ngModel)]="transporter" />
-                
-                </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
-                    <mat-label>Driver Name</mat-label>
-                    <input type="text" matInput [(ngModel)]="driver" />
-                
-                </mat-form-field>
-                <mat-form-field appearance="outline" style="width: 20%;height: 10%; margin-left: 1rem;">
-                    <mat-label>Late coming minutes</mat-label>
-                    <input type="text" matInput [(ngModel)]="lc_min" />
-                
-                </mat-form-field>
-          
-
-                <button
-                mat-raised-button
-                color="primary"
-                style="margin: 10px 20px; height: 40px"
-                (click)="submit()" 
-                [disabled]="!issubmitValid()"
-              >
-                Submit
-              </button>
-
-            </div> -->
-            
+          </div>            
             <!-- table -->
             <div class="h-[90svh] lg:h-[58vh] xl:h-[58vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll no-scrollbar mx-2 relative">
             <!-- <div   style="margin-top: 1rem;" class = "table-wrapper container3"> -->

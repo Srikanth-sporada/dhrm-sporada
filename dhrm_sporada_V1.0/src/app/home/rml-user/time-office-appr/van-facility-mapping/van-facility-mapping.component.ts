@@ -81,22 +81,24 @@ export class VanFacilityMappingComponent implements OnInit {
       return;
     }
     const trimmedGenID = this.genid.trim();
-    this.OpApi.mid_Userdetails(trimmedGenID, this.plant).subscribe(
-      (res: any) => {
+    /** search trainee for van mapping */
+    this.OpApi.mid_Userdetails(trimmedGenID, this.plant).subscribe({
+      next: (res: any) => {
         console.log(res);
 
         if (res[0].Van_Eligible == true) {
           // this.openAlertDialog("Already Van Facility Mapped", "error");
           this.messageService.add({severity:'warn',summary:'Already Van Facility Mapped'})
-        }else {
+        }
+        else {
           this.userdtls = res;
         }
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
         this.messageService.add({severity:'error',summary:error?.error?.message})
       }
-    );
+    });
   }
 
   getroute() {
@@ -121,7 +123,8 @@ export class VanFacilityMappingComponent implements OnInit {
 
   /** submit van details */
   submitVan() {
-    const data = {
+   if(this.userdtls[0].Van_Eligible || this.viewPayscaleForm){
+     const data = {
       route: this.route,
       transport: this.transport,
       pickup: this.pickup,
@@ -133,7 +136,8 @@ export class VanFacilityMappingComponent implements OnInit {
     console.log(data);
     this.OpApi.Van_Facility(data).subscribe({
       next: (res: any) => {
-        // this.openAlertDialog("Van Facility Mapped", "Check");
+       if(res.status){
+         // this.openAlertDialog("Van Facility Mapped", "Check");
         console.log('RES:',res)
         this.messageService.add({severity:'info',summary:'Van Facility Mapped.'})
         this.genIdChange();
@@ -141,6 +145,10 @@ export class VanFacilityMappingComponent implements OnInit {
         this.closeAllForms1();
         /** set GEN ID to null */
         this.genid = null;
+       }
+       else{
+        this.messageService.add({severity:'error',summary:res?.message})
+       }
       },
       error: (error) => {
         console.error('ERROR:',error);
@@ -152,6 +160,9 @@ export class VanFacilityMappingComponent implements OnInit {
         }
       }
     });
+   } else{
+    this.messageService.add({severity:'warn',summary:'Not Eligible for van mapping!'})
+   }
   }
 
   /** delete van mapping */

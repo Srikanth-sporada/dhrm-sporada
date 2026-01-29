@@ -306,5 +306,10 @@ export class NavbarComponent implements OnInit {
   navigateToHome(){
     this.router.navigate(['../rhrm']);
   }
+
+  navigateToARS(event: Event) {
+  event.preventDefault(); // This stops the browser from opening a new window
+  this.router.navigate(['/rhrm/ars-dump']);
+}
 }
 

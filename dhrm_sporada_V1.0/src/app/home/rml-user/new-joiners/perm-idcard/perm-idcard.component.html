@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <div *ngFor="let i of formvalues" class="container flex items-center justify-center flex-col xl:flex-row" id="printDiv">
-    <!-- front card design -->
-    <div class="card bg-image">
+    <!-- front card design bg-image-->
+    <div class="card bg-image2">
       <!-- rane logo -->
       <div class="flex items-center justify-center my-2">
         <img class="h-[var(--id-card-height)] w-[var(--id-card-width)] bg-white" src="assets/ranelogo.png" alt="rane-logo">
@@ -38,13 +38,17 @@
         </p>
        </div>
        <!-- signature -->
-        <div class="flex item-center justify-between mt-2">
-          <div class="text-center w-1/2">
-            <img [src]="apiPath + '/uploads/' + i?.other_files7" alt="sign" class="object-contain">
+        <div class="flex item-center justify-between mt-4">
+          <div class="text-center w-1/2 flex items items-center justify-center flex-col">
+            <div class="flex item-center justify-center h-[40px] w-full">
+              <img [src]="apiPath + '/uploads/' + i?.other_files7" alt="trainee_sign" class="object-contain">
+            </div>
             <p class="text-lg">Holder's Signature</p>
           </div>
-          <div class="text-center w-1/2">
-            <img [src]="apiPath + '/plant/' + i?.plant_sign" alt="sign">
+          <div class="text-center w-1/2 flex items items-center justify-center flex-col">
+            <div class="flex items-center justify-center h-[40px] w-full">
+              <img [src]="apiPath + '/plant/' + i?.plant_sign" alt="plant_sign" class="object-contain">
+            </div>
             <p class="text-lg">Issuing Authority</p>
           </div>
         </div>

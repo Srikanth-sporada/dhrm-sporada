@@ -32,172 +32,10 @@ export class VanDelayRegularizationComponent implements OnInit {
   trainee_date: any;
   minDate: any;
   maxDate: any;
-  userList: any[] = [
-  {
-    Route_Name: "Route 12",
-    gen_id: "GEN201",
-    fullname: "Arun Kumar",
-    shift_desc: "Shift A",
-    in_time: new Date(2025, 1, 15, 8, 55, 12),   // 15-02-2025 08:55:12
-    out_time: new Date(2025, 1, 15, 17, 10, 45), // 17:10:45
-    present_type: "P",
-    late_comeing: 5,
-    Worked_Hrs: "08:15",
-    Shift_Duration: "08:00"
-  },
-  {
-    Route_Name: "Route 7",
-    gen_id: "GEN202",
-    fullname: "Siva Prakash",
-    shift_desc: "Shift B",
-    in_time: new Date(2025, 1, 15, 9, 12, 30),
-    out_time: new Date(2025, 1, 15, 18, 5, 10),
-    present_type: "LC",
-    late_comeing: 22,
-    Worked_Hrs: "08:53",
-    Shift_Duration: "09:00"
-  },
-  {
-    Route_Name: "Route 3",
-    gen_id: "GEN203",
-    fullname: "Meena Devi",
-    shift_desc: "Shift A",
-    in_time: new Date(2025, 1, 15, 8, 45, 0),
-    out_time: new Date(2025, 1, 15, 17, 0, 0),
-    present_type: "P",
-    late_comeing: 0,
-    Worked_Hrs: "08:15",
-    Shift_Duration: "08:00"
-  },
-  {
-    Route_Name: "Route 5",
-    gen_id: "GEN204",
-    fullname: "Priya Dharshini",
-    shift_desc: "Shift C",
-    in_time: new Date(2025, 1, 15, 10, 5, 20),
-    out_time: new Date(2025, 1, 15, 19, 30, 55),
-    present_type: "LC",
-    late_comeing: 35,
-    Worked_Hrs: "08:25",
-    Shift_Duration: "09:00"
-  },
-  {
-    Route_Name: "NA",
-    gen_id: "GEN205",
-    fullname: "Vignesh R",
-    shift_desc: "Shift A",
-    in_time: new Date(2025, 1, 15, 8, 50, 10),
-    out_time: new Date(2025, 1, 15, 17, 20, 40),
-    present_type: "P",
-    late_comeing: 0,
-    Worked_Hrs: "08:30",
-    Shift_Duration: "08:00"
-  }
-];;
+  userList: any[] = [];
   errorList: any[] = [];
   routelist: any[] = [];
-  AppliedList: any[] = [
-  {
-    attn_date: new Date(2025, 1, 15),
-    gen_id: "GEN101",
-    fullname: "Arun Kumar",
-    apprentice_type: "ITI",
-    Transport: "Bus",
-    Driver: "Ramesh",
-    Route_Name: "Route 12",
-
-    Present_type_before: "P",
-    Lc_min_before: 12,
-    Worked_hrs_before: "07:18",
-    Shift_Duration: "08:00",
-
-    Applied_LC_min: 5,
-
-    Present_type_after: "P",
-    Lc_min_after: 7,
-    Worked_hrs_after: "07:35"
-  },
-  {
-    attn_date: new Date(2025, 1, 15),
-    gen_id: "GEN102",
-    fullname: "Siva Prakash",
-    apprentice_type: "NAPS",
-    Transport: "Van",
-    Driver: "Karthik",
-    Route_Name: "Route 7",
-
-    Present_type_before: "LC",
-    Lc_min_before: 28,
-    Worked_hrs_before: "06:45",
-    Shift_Duration: "08:00",
-
-    Applied_LC_min: 15,
-
-    Present_type_after: "P",
-    Lc_min_after: 13,
-    Worked_hrs_after: "07:05"
-  },
-  {
-    attn_date: new Date(2025, 1, 15),
-    gen_id: "GEN103",
-    fullname: "Meena Devi",
-    apprentice_type: "BOAT",
-    Transport: "Bus",
-    Driver: "Suresh",
-    Route_Name: "Route 3",
-
-    Present_type_before: "A",
-    Lc_min_before: 0,
-    Worked_hrs_before: "00:00",
-    Shift_Duration: "08:00",
-
-    Applied_LC_min: 0,
-
-    Present_type_after: "A",
-    Lc_min_after: 0,
-    Worked_hrs_after: "00:00"
-  },
-  {
-    attn_date: new Date(2025, 1, 15),
-    gen_id: "GEN104",
-    fullname: "Priya Dharshini",
-    apprentice_type: "ITI",
-    Transport: "Auto",
-    Driver: "Mani",
-    Route_Name: "Route 5",
-
-    Present_type_before: "P",
-    Lc_min_before: 5,
-    Worked_hrs_before: "07:40",
-    Shift_Duration: "08:00",
-
-    Applied_LC_min: 3,
-
-    Present_type_after: "P",
-    Lc_min_after: 2,
-    Worked_hrs_after: "07:50"
-  },
-  {
-    attn_date: new Date(2025, 1, 15),
-    gen_id: "GEN105",
-    fullname: "Vignesh R",
-    apprentice_type: "NATS",
-    Transport: "Bike",
-    Driver: "Self",
-    Route_Name: "NA",
-
-    Present_type_before: "LC",
-    Lc_min_before: 18,
-    Worked_hrs_before: "07:00",
-    Shift_Duration: "08:00",
-
-    Applied_LC_min: 10,
-
-    Present_type_after: "P",
-    Lc_min_after: 8,
-    Worked_hrs_after: "07:20"
-  }
-];
+  AppliedList: any[] = [];
 /** dropdown roles */
   roles = [
     { value: "T", label: "Trainee/CL" },
@@ -387,13 +225,13 @@ export class VanDelayRegularizationComponent implements OnInit {
       this.Category
     ).subscribe(
       (res: any) => {
-        // this.userList = res;
+        this.userList = res;
 
-        // if(res[0].Van_Eligible == true){
-        //   this.openAlertDialog("Already Van Facility Mapped",'error')
-        // }else{
-        //   this.userList =res
-        // }
+        if(res[0].Van_Eligible == true){
+          this.openAlertDialog("Already Van Facility Mapped",'error')
+        }else{
+          this.userList = res;
+        }
       },
       (error) => {
         console.error('ERROR:',error);
