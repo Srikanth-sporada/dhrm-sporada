@@ -35,6 +35,7 @@ export class CompanyComponent implements OnInit,AfterViewInit {
   userDetails:any;
   all:any;
   hideProcessedtabMenu:boolean = environment.hideProcessedBillTabMenu;
+  arsDumpTabMenu:boolean = environment?.arsDumpTabMenu
   // reference variable for company data
   companyData:any = [];
   status = [{label:'All',value:'all'},{label:'Active',value:'Active'},{label:'In-Active',value:null}]

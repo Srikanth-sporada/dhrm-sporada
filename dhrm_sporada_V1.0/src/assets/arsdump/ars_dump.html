@@ -1,0 +1,180 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+</head>
+<body>
+  <div class="page-container">
+
+    <form class="center-form" id="punchForm">
+      <label style="font-size: 17px;">Plant</label>
+      <select id="plant"  style="height: 25px;">
+        <option value="" >-- Select Plant --</option>
+      </select>
+
+      <label style="font-size: 17px;">Start Date</label>
+      <input type="date" id="start-date" style="height: 25px;" required>
+
+      <label style="font-size: 17px;">End Date</label>
+      <input type="date" id="end-date" style="height: 25px;" required>
+
+      <label style="font-size: 17px;">GenID</label>
+      <input type="text" id="genid" class="genid" style="height: 25px;">
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <div class="action-buttons">
+      <button type="button" id="exportExcel">Export to Excel</button>
+      <button type="button" id="copyTable">Copy to Clipboard</button>
+    </div>
+
+    <div id="noData" class="no-data" style="display:none;">
+      No records found
+    </div>
+
+    <div class="search-box" style="display:none;">
+      <input
+        type="text"
+        id="tableSearch"
+        placeholder="Search in results..."
+      />
+    </div>
+
+    <div class="grid-view">
+      <table id="resultTable" style="width: 100%;">
+        <thead>
+          <tr>
+            <th>SwipeID</th>
+            <th>EmpID</th>
+            <th>Punch Date</th>
+            <th>Punch Time</th>
+            <th>Punch DateTime</th>
+            <th>Direction</th>
+            <th>InsertOn</th>
+            <th>Plant Code</th>
+            <th>Is Read</th>
+            <th>Record Last Update</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rane ARS Punch Dump </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="page-container">
+    <div class="header-banner">
+       <h3><i class="fa-solid fa-database"></i> Rane ARS Punch Dump </h3>
+    </div>
+
+    <form class="filter-card" id="punchForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Plant</label>
+          <select id="plant">
+            <option value="">-- Loading Plants --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="start-date" required>
+        </div>
+
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" id="end-date" required>
+        </div>
+
+        <div class="form-group">
+          <label>Gen ID</label>
+          <input type="text" id="genid" placeholder="Ex: 15981">
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+      </div>
+    </form>
+
+    <div class="table-card">
+      <div id="loaderOverlay" class="loader-hidden">
+        <div class="spinner"></div>
+        <p>Getting ARS Data....</p>
+      </div>
+
+      <div class="table-actions">
+        <button type="button" id="exportExcel" class="btn-success">
+          <i class="fa-solid fa-file-excel"></i> Export Excel
+        </button>
+        <button type="button" id="copyTable" class="btn-info">
+          <i class="fa-solid fa-copy"></i> Copy to Clipboard
+        </button>
+      </div>
+
+      <div id="noData" class="no-data-alert" style="display:none;">
+        <i class="fa-solid fa-triangle-exclamation"></i> No records found.
+      </div>
+
+      <div class="table-container">
+        <table id="resultTable" class="display compact nowrap" style="width:100%">
+          <thead>
+            <tr>
+              <th>SwipeID</th>
+              <th>EmpID</th>
+              <th>Punch Date</th>
+              <th>Punch Time</th>
+              <th>Punch DateTime</th>
+              <th>Direction</th>
+              <th>InsertOn</th>
+              <th>Plant</th>
+              <th>IsRead</th>
+              <th>Last Update</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

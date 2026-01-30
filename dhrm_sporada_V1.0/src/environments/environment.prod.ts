@@ -11,6 +11,7 @@ export const environment = {
   hideMidPermission:true,
   hideMissPunchHR:false,
   hideProcessedBillTabMenu:true,
+  arsDumpTabMenu:true,
   /** power BI dashboard */
   hideHrSummary:true,
   hideHrDashboard:true,

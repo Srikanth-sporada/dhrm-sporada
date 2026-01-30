@@ -1,10 +1,15 @@
-<iframe 
+
+  <iframe 
   title="canteen dashboard_prod" 
   [src]="urlSafe" 
+  #arsDumpFrame
   frameborder="0" 
-  allowFullScreen="false"
-  class="rounded-md !flex !items-center !justify-center !h-dvh !w-full"
+  allowFullScreen="true"
+  class="rounded-md !flex !items-center !justify-center !w-full h-full"
   loading="lazy"
+  (load)="sendDataToIframe()"
+  sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
   (error)="handleIframeError()"
   >
 </iframe>
+

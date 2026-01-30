@@ -59,15 +59,51 @@
           </div>
           <!-- second row -->
            <div class="row mx-2 mt-3">
-            <!--Lock month -->
+             <!-- Start Date calender -->
+            <!-- <div class="col-sm-6">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                Year
+              </label> <br>
+            <p-calendar 
+                [minDate]="minYear"
+                [maxDate]="maxYear"
+                dateFormat="yy"
+                (onSelect)="handleMonthStartDate($event)"
+                view="year"
+                [(ngModel)]="currentYear"
+                styleClass="w-full !font-poppins"
+                [showIcon]="true" >
+            </p-calendar>
+            </div> -->
+
+             <!-- lock month -->
             <div class="col-sm-6">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+               Lock Month
+              </label> <br>
+            <p-calendar 
+                [minDate]="minYear"
+                [maxDate]="maxYear"
+                dateFormat="MM-yy"
+                (onSelect)="updateSelectedDate()"
+                view="month"
+                placeholder="Select Lock Month"
+                formControlName="lock_month"
+                styleClass="w-full !font-poppins"
+                [showIcon]="true" >
+            </p-calendar>
+            </div>
+            <!--Lock month -->
+            <div class="col-sm-6" *ngIf="false">
               <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
               <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
               Lock Month
             </label><br />
             <p-dropdown 
               formControlName="lock_month"
-              [options]=" monthsWithFirstDates"
+              [options]="monthsWithFirstDates"
               optionLabel="month"
               optionValue="firstDate"
               styleClass="w-full"
@@ -75,7 +111,7 @@
               placeholder="Select Month">
             </p-dropdown>
             </div>
-            <!-- Start Date calender -->
+             <!-- Start Date calender -->
             <div class="col-sm-6">
             <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
                 <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
@@ -106,7 +142,7 @@
                   [showIcon]="true" >
               </p-calendar>
               </div>
-              <!-- company trainee process days calander days or between days -->
+               <!-- company trainee process days calander days or between days -->
               <div class="col-sm-6 flex items-start justify-center flex-col">
                 <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
                 <br>
@@ -188,7 +224,7 @@
                   </div>
                 </div>
               </div>
-               <!-- category -->
+              <!-- category -->
               <div class="col-sm-6">
                   <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
                   <br>
@@ -228,7 +264,6 @@
                 </div>
               </div>
            </div>
-          
           <!-- form footer -->
           <div class="bg-gray-100 flex items-center justify-end gap-6 py-2">
             <!-- add btn -->

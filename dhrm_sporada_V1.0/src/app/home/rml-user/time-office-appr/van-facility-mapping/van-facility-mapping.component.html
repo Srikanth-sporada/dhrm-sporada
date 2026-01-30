@@ -114,17 +114,17 @@
 
           <div class="flex flex-col">
             <span class="text-gray-500 font-semibold">Transporter</span>
-            <span class="text-gray-900">{{ item.transporter_name }}</span>
+            <span class="text-gray-900">{{ item.transporter_name || '-' }}</span>
           </div>
 
           <div class="flex flex-col">
             <span class="text-gray-500 font-semibold">Route</span>
-            <span class="text-gray-900">{{ item.village_name }}</span>
+            <span class="text-gray-900">{{ item.village_name || '-'}}</span>
           </div>
 
           <div class="flex flex-col">
             <span class="text-gray-500 font-semibold">Pick Up Point</span>
-            <span class="text-gray-900">{{ item.Route_Name }}</span>
+            <span class="text-gray-900">{{ item.Route_Name || '-' }}</span>
           </div>
 
           <div class="flex flex-col">
@@ -261,7 +261,7 @@
                   <td class="flex items-center justify-center !px-2 !py-4">
                     <button
                     *ngIf="data.Van_Eligible == 1 "
-                      (click)="onView(data)"
+                      (click)="openEditVanMapping(content,data)"
                     >
                       <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
                     </button>
@@ -367,9 +367,95 @@
                       
           </span> -->
             <span class="flex justify-between items-center my-3 mx-2">
-            <button pButton label="Close" class="bg-gray-200 border-none outline-none text-gray-400" (click)="closeAllForms1()" style="width: 50%;"></button>
-            <button pButton label="Update"   [disabled]="!isSubmitFormValid()" (click)="submitVan()" style="width: 50%;margin-left: 1rem;"></button>
-          </span>
+            <button 
+              pButton 
+              label="Close" 
+              class="bg-gray-200 border-none outline-none text-gray-400" 
+              (click)="closeAllForms1()" 
+              style="width: 50%;"></button>
+            <button 
+              pButton label="Update" 
+              [disabled]="!isSubmitFormValid()" 
+              (click)="submitVan()" 
+              style="width: 50%;margin-left: 1rem;">
+            </button>
+            </span>
      
         </div>
     </div>
+
+    <!-- edit vam mapping template -->
+     <ng-template #content let-modal>
+            <div>
+              <!-- modal header -->
+            <div>
+              <div class="bg-blue-600 flex items-center justify-start py-4">
+                <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
+                  <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
+                    <mat-icon class="h-0 w-0 text-2xl opacity-100">edit</mat-icon>
+                  </div>
+                  <h3 class="text-2xl text-white">Edit Van Mapping</h3>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div>
+               <!-- route -->
+              <div class="w-full px-2">
+                <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">location_on</mat-icon>
+               Route
+              </label><br />
+              <p-dropdown 
+                [(ngModel)]="route"
+                [options]="routelist"
+                optionLabel="Route_Name"
+                optionValue="Route_Id"
+                styleClass="w-full"
+                placeholder="Select Route">
+              </p-dropdown>
+              </div>
+              <!-- transport -->
+              <div class="w-full px-2 p-fluid mt-2">
+                <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">directions_bus</mat-icon>
+               Transport
+              </label><br />
+               <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="transport"
+                placeholder="Enter Transport" />
+              </div>
+              <!-- PickUp Point -->
+              <div class="w-full px-2 p-fluid mt-2 mb-2">
+                <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                <mat-icon class="text-2xl text-blue-600 h-0 w-0">add_location</mat-icon>
+               Pickup Point
+              </label><br />
+               <input 
+                type="text" 
+                pInputText
+                styleClass="w-full !font-poppins" 
+                [(ngModel)]="pickup"
+                placeholder="Enter Pickup Point" />
+              </div>
+            </div>
+            </div>
+            <!-- footer -->
+           <div class="modal-footer bg-gray-100">
+            <button 
+              pButton 
+              label="Close" 
+              class="bg-gray-300 border-none outline-none hover:!bg-gray-300 hover:outline-none hover:border-none hover:text-gray-600 text-gray-600 mr-3"
+              (click)="closeAllForms1(); modal.close();" 
+             ></button>
+            <button 
+              pButton 
+              label="Update" 
+              [disabled]="!isSubmitFormValid()" 
+              (click)="updateVanMapping(modal)">
+            </button>
+          </div>
+     </ng-template>

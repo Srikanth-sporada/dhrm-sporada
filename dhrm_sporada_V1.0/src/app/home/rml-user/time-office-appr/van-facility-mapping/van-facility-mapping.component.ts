@@ -6,13 +6,13 @@ import {
   Renderer2,
 } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
-import { environment } from "./../../../../../environments/environment.prod";
+import { environment } from "src/environments/environment.prod";
 import { ToastComponent } from "src/app/new-contractor-mod/toast/toast.component";
 import { ClamAPIService } from "src/app/new-contractor-mod/clam-api.service";
 import { MatDialog } from "@angular/material/dialog";
 import * as XLSX from "xlsx-js-style";
 import { MessageService, ConfirmationService } from "primeng/api";
-
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-van-facility-mapping",
   templateUrl: "./van-facility-mapping.component.html",
@@ -40,7 +40,8 @@ export class VanFacilityMappingComponent implements OnInit {
     private renderer: Renderer2,
     private OpApi: ClamAPIService,
     private messageService: MessageService,
-    private confirmationService:ConfirmationService
+    private confirmationService:ConfirmationService,
+    private modalService:NgbModal,
   ) {}
  
 
@@ -60,6 +61,7 @@ export class VanFacilityMappingComponent implements OnInit {
     this.getpermList();
   }
 
+  /** set user details to [] */
   genIdChange() {
     this.userdtls = [];
   }
@@ -73,6 +75,11 @@ export class VanFacilityMappingComponent implements OnInit {
     });
   }
 
+  /** 
+   * verify & get user details
+   * @property {*} userdtls
+   * check if van facility is already mapped
+   */
   verify() {
     if (this.genid == "" || this.genid == undefined) {
       // alert("Gen Id cannot be empty");
@@ -80,6 +87,7 @@ export class VanFacilityMappingComponent implements OnInit {
       this.messageService.add({severity:'warn',summary:'Gen ID cannot be empty'})
       return;
     }
+    /** trim input */
     const trimmedGenID = this.genid.trim();
     /** search trainee for van mapping */
     this.OpApi.mid_Userdetails(trimmedGenID, this.plant).subscribe({
@@ -110,7 +118,6 @@ export class VanFacilityMappingComponent implements OnInit {
       },
       error: (error) => {
         console.error('ERROR:',error);
-        // this.openAlertDialog("Data not found", "error");
         this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     });
@@ -137,7 +144,6 @@ export class VanFacilityMappingComponent implements OnInit {
     this.OpApi.Van_Facility(data).subscribe({
       next: (res: any) => {
        if(res.status){
-         // this.openAlertDialog("Van Facility Mapped", "Check");
         console.log('RES:',res)
         this.messageService.add({severity:'info',summary:'Van Facility Mapped.'})
         this.genIdChange();
@@ -152,10 +158,10 @@ export class VanFacilityMappingComponent implements OnInit {
       },
       error: (error) => {
         console.error('ERROR:',error);
-        // this.openAlertDialog(error.error, "error");
         if(error?.status == 404){
           this.messageService.add({severity:'error',summary:error?.message});
-        }else{
+        }
+        else{
          this.messageService.add({severity:'error',summary:error?.error?.message});
         }
       }
@@ -203,7 +209,10 @@ export class VanFacilityMappingComponent implements OnInit {
     });
   }
 
-  /** get van details */
+  /** 
+   * get van details
+   * @property {*}
+   *  */
   getpermList() {
     this.OpApi.get_Van_Details(this.plant).subscribe({
       next: (res: any) => {
@@ -233,6 +242,9 @@ export class VanFacilityMappingComponent implements OnInit {
     this.genid = data.Gen_id;
   }
 
+  /** 
+   * reset update van mapping data
+   */
   closeAllForms1() {
     this.viewPayscaleForm = false;
     this.route = null;
@@ -285,5 +297,62 @@ export class VanFacilityMappingComponent implements OnInit {
   /** convert number to string */
   convertToString(number:any){
     return String(number);
+  }
+
+  /**
+   *  open edit modal
+   * @param content
+   * @param data
+   *  */
+  openEditVanMapping(content:any,data:any){
+    this.route = data.Route_Id;
+    this.transport = data.Transporter;
+    this.pickup = data.Pickup_Point;
+    this.genid = data.Gen_id;
+    this.modalService.open(content,{centered:true});
+    console.log('modal opened.')
+  }
+  /**
+   * update van mapping
+   * @param modal //modal ref
+   */
+  updateVanMapping(modal:any){
+     const data = {
+      route: this.route,
+      transport: this.transport,
+      pickup: this.pickup,
+      gen_id: this.genid.trim(), // trim user text
+      applied_by: this.userEmpcode, // user employee code
+      plant: this.plant,
+    };
+
+    console.log('UPDATE DATA:',data);
+    this.OpApi.Van_Facility(data).subscribe({
+      next: (res: any) => {
+       if(res.status){
+        console.log('RES:',res)
+        this.messageService.add({severity:'info',summary:'Van Facility Mapped.'})
+        this.genIdChange();
+        this.getpermList();
+        this.closeAllForms1();
+        /** set GEN ID to null */
+        this.genid = null;
+        /** close modal */
+        modal.close();
+       }
+       else{
+        this.messageService.add({severity:'error',summary:res?.message})
+       }
+      },
+      error: (error) => {
+        console.error('ERROR:',error);
+        if(error?.status == 404){
+          this.messageService.add({severity:'error',summary:error?.message});
+        }
+        else{
+         this.messageService.add({severity:'error',summary:error?.error?.message});
+        }
+      }
+    });
   }
 }

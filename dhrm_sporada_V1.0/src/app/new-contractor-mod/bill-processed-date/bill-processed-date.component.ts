@@ -33,10 +33,12 @@ export class BillProcessedDateComponent implements OnInit {
   maxStartDate:Date
   processedBillStartDate:any;
   processedBillEndDate:any;
+  minYear:any;
+  maxYear:any;
   /** hide processed bill */
   hideHeader:boolean = environment.hideProcessedBillTabMenu;
   /** checking current month based for year */
-  currentYear = new Date().getMonth() == 0 ? new Date().getFullYear() -1 : new Date().getFullYear();
+  currentYear = moment().format('YYYY');
   all:any;
   userDetails:any;
   // months: string[] = [
@@ -44,7 +46,7 @@ export class BillProcessedDateComponent implements OnInit {
   //   'July', 'August', 'September', 'October', 'November', 'December'
   // ];
 
-  monthsWithFirstDates: {month:string,firstDate:string}[]=[
+  monthsWithFirstDates: {month:string,firstDate:string}[] = [
     {month:'January' ,firstDate:`${this.currentYear}-01-01`},
     {month:'February' ,firstDate:`${this.currentYear}-02-01`},
     {month:'March' ,firstDate:`${this.currentYear}-03-01`},
@@ -103,6 +105,15 @@ export class BillProcessedDateComponent implements OnInit {
       weekoff_paid:['', Validators.required],
       // holidayName:['',{validators : [Validators.required],updateOn: 'blur',disabled: false}]
     });
+      /** calculate min & max year */
+      let currentYear  = new Date().getFullYear();
+      /** Set min year to 1 year ago */
+      this.minYear = new Date();
+      this.minYear.setFullYear(currentYear - 1 , 0 , 1);
+      /** Set maxyear to 1 year from now */
+      this.maxYear = new Date();
+      this.maxYear.setFullYear(currentYear + 1, 11 , 31);
+      console.log(this.minYear,this.maxYear);
   }
 
 ngOnInit(): void {
@@ -121,7 +132,7 @@ ngOnInit(): void {
 /** on month selected area selected caluculate start,end day for selected month */
 updateSelectedDate() {
     const selectedLockMonth = this.billForm.get('lock_month')?.value;
-    console.log('SELECTED LOCK MONTH: ' + selectedLockMonth)
+    console.log('SELECTED LOCK MONTH: ' , selectedLockMonth)
     console.log('MONTH:',new Date().getMonth())
     if (selectedLockMonth){
       /** bill process start date & end date as calaulation based on start of the month */
@@ -129,7 +140,7 @@ updateSelectedDate() {
        console.log('SELECTED LOCK MONTH:',selected);
       /** checking if the selected payroll area start day */
         if (this.selecetedPayrollArea.StartDay === 1) {
-          // Full calendar month
+          /** Full calendar month */
           const startDate = selected.clone().startOf('month');
           const endDate = selected.clone().endOf('month');
           /** calculated processed star & end date */
@@ -396,8 +407,10 @@ dialogRef.afterClosed().subscribe((result) => {
 //   }
 // }
 
-// add new processed bill
-
+/** 
+ * add processed bill
+ * @property {*} billForm
+ */
 onSubmit(){
   if(this.billForm.valid){
     console.log(this.billForm.value);
@@ -409,6 +422,7 @@ onSubmit(){
     formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
     formData.process_start_date = this.formatDate(this.billForm.value.process_start_date);
     formData.process_end_date = this.formatDate(this.billForm.value.process_end_date);
+    formData.lock_month = moment(this.billForm.value.lock_month).format('YYYY-MM-DD')
     // formData.lock_date = this.formatDate(this.billForm.value.lock_date);
     /** lock date format */
     formData.lock_date = moment().format('YYYY-MM-DD');
@@ -446,8 +460,6 @@ exportExcel() : void{
       transformedObj[newKey] = data[key];
     });
     return transformedObj;
-   
-  
   })
   console.log(transformedArray);
   var ws = XLSX.utils.json_to_sheet(transformedArray);
@@ -456,4 +468,27 @@ exportExcel() : void{
   XLSX.writeFile(wb,"processed_bills.xlsx");
 
 }
+
+  /**
+   * handle year select for month start date
+   */
+  handleMonthStartDate(event:any){
+    this.currentYear = moment(event).format('YYYY');
+    console.log('YEAR',this.currentYear);
+    this.monthsWithFirstDates = [
+    {month:'January' ,firstDate:`${this.currentYear}-01-01`},
+    {month:'February' ,firstDate:`${this.currentYear}-02-01`},
+    {month:'March' ,firstDate:`${this.currentYear}-03-01`},
+    {month:'April' ,firstDate:`${this.currentYear}-04-01`},
+    {month:'May' ,firstDate:`${this.currentYear}-05-01`},
+    {month:'June' ,firstDate:`${this.currentYear}-06-01`},
+    {month:'July' ,firstDate:`${this.currentYear}-07-01`},
+    {month:'August' ,firstDate:`${this.currentYear}-08-01`},
+    {month:'September' ,firstDate:`${this.currentYear}-09-01`},
+    {month:'October' ,firstDate:`${this.currentYear}-10-01`},
+    {month:'November' ,firstDate:`${this.currentYear}-11-01`},
+    {month:'December' ,firstDate:`${this.currentYear}-12-01`},
+  ]
+    console.log('MONTH WITH DATE:',this.monthsWithFirstDates)
+  }
 }

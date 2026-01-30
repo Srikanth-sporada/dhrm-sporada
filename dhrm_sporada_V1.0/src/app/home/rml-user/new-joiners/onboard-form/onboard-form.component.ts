@@ -806,7 +806,6 @@ export class OnboardFormComponent implements OnInit {
       mobile:this.applicationData.mobile_no1,
       company:this.applicationData.company_code,
     }
-    // console.log(this.applicationData)
     /** dojo training handling api */
     this.formservice.DojoTrainingProcess({
       cat: this.form.value.category,
@@ -837,7 +836,7 @@ export class OnboardFormComponent implements OnInit {
     const rejectDailog=this.dailog.open(RejectComponent,{disableClose:false,
     width:'600px',
     })
-    rejectDailog.afterClosed().subscribe( data =>{
+    rejectDailog.afterClosed().subscribe( data => {
       if(data){
         this.rejected(data);
       }

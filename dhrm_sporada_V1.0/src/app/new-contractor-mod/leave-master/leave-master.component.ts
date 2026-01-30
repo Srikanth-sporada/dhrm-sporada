@@ -211,7 +211,8 @@ export class LeaveMasterComponent implements OnInit {
               this.validOpt.nonValidatedRecords.length === 0
             ) {
               this.clsoe();
-              this.openAlertDialog(`All records Updated`, "check");
+              // this.openAlertDialog(`All records Updated`, "check");
+              this.messageService.add({severity:'info',summary:'All Records updated'})
             } else {
               this.showForm = true;
               this.validatedRecords = this.validOpt.validatedRecords;
@@ -239,7 +240,7 @@ export class LeaveMasterComponent implements OnInit {
           console.log(error);
           this.messageService.add({
             severity: "error",
-            summary: error.message,
+            summary: error?.error?.message,
           });
         }
       );
