@@ -491,4 +491,15 @@ exportExcel() : void{
   ]
     console.log('MONTH WITH DATE:',this.monthsWithFirstDates)
   }
+
+  /**
+   * download bill lock data
+   */
+  downloadPaidDaysData(payrollMonth:any,plantCode:any,payrollArea:any){
+    const queryData = {
+      payrollMonth:moment(payrollMonth).format('YYYY-MM-DD'),
+      plantCode,
+      payrollArea}
+    console.log('QUERY DATA:',queryData);
+  }
 }

@@ -9,16 +9,29 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class AdminArsDumbComponent implements OnInit {
   urlSafe: SafeResourceUrl = '';
+  userDetails:any;
+  all:any;
   /** element ref */
   @ViewChild('arsDumpFrame') iframe!: ElementRef;
   rootURL:string =  environment?.path;
-
+  showHeader:boolean = environment?.arsDumpTabMenu;
   constructor(
     private sanitizer: DomSanitizer,
     private messageService:MessageService
   ) {}
 
   ngOnInit() {
+    let details = sessionStorage.getItem("all");
+    if (details != null) {
+      this.all = JSON.parse(details);
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
+    }
     // If the file is in your src/assets folder
     const path = 'assets/arsdump/ars_dump.html'; 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(path);
@@ -29,7 +42,7 @@ export class AdminArsDumbComponent implements OnInit {
   }
   /** send root URL to iframe */
   sendDataToIframe() {
-    /** send root URL for API call */
-    this.iframe.nativeElement.contentWindow.postMessage(this.rootURL, '*');
+    /** send root URL for API call & user data */
+    this.iframe.nativeElement.contentWindow.postMessage({baseURL:this.rootURL,userData:this.userDetails,showHeader:this.showHeader}, '*');
   }
 }

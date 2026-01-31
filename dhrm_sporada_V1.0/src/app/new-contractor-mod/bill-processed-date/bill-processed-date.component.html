@@ -398,12 +398,18 @@
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.category === 'T' ? 'Trainee' : 'Operator'}}</td>
                            <!-- action btn -->
                             <td  class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                              <!-- download btn -->
+                               <button
+                                 (click)="downloadPaidDaysData(data.lock_month,data.plant_Code,data.PayrollArea)">
+                                    <mat-icon class="text-blue-600 text-[20px]">download</mat-icon>
+                                </button>
                               <!-- data.Payroll_Lock==='Y' | null" -->
                               <button 
                                 *ngIf="data.category === 'T' && data.Payroll_Lock==='Y'" 
                                 >
                                     <mat-icon class="text-green-600 text-[20px]">lock</mat-icon>
                                 </button>
+                               
                                 <button 
                                  *ngIf="data.category === 'T' && data.Payroll_Lock===null" 
                                   (click)="Salary_locked(data)">
