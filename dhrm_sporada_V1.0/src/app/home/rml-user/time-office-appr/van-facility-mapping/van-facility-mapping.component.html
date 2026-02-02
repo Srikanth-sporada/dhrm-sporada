@@ -66,142 +66,152 @@
                   iconPos="right"
                   icon="pi pi-search"
                   class="mt-10"
-                  (click)="verify()" 
-                  [disabled]="!genid">
+                  (click)="getTraineeData()" 
+                  [disabled]="!genid || userdtls.length !== 0">
                 </button>
             </div>
             </div>
           </div>
         </div>
          <div *ngIf="userdtls.length > 0" class="mx-2">
+            <!-- GRID: User Details + Van Facility -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mx-2">
 
-  <!-- GRID: User Details + Van Facility -->
-  <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mx-2">
+              <!-- USER DETAILS -->
+              <div class="bg-white border rounded-xl shadow-sm p-6">
+                <h2 class="text-blue-600 text-2xl font-semibold text-center mb-6 tracking-wide font-poppins">
+                  User Details
+                </h2>
 
-    <!-- USER DETAILS -->
-    <div class="bg-white border rounded-xl shadow-sm p-6">
-      <h2 class="text-blue-600 text-2xl font-semibold text-center mb-6 tracking-wide font-poppins">
-        User Details
-      </h2>
+                <div *ngFor="let item of userdtls" class="space-y-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm font-poppins">
 
-      <div *ngFor="let item of userdtls" class="space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm font-poppins">
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Gen ID</span>
+                      <span class="text-gray-900">{{ item.gen_Id }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Gen ID</span>
-            <span class="text-gray-900">{{ item.gen_Id }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Name</span>
+                      <span class="text-gray-900">{{ item.fullname }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Name</span>
-            <span class="text-gray-900">{{ item.fullname }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Category</span>
+                      <span class="text-gray-900">{{ item.apprentice_type }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Category</span>
-            <span class="text-gray-900">{{ item.apprentice_type }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Department</span>
+                      <span class="text-gray-900">{{ item.dept_name }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Department</span>
-            <span class="text-gray-900">{{ item.dept_name }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Line</span>
+                      <span class="text-gray-900">{{ item.Line_Name }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Line</span>
-            <span class="text-gray-900">{{ item.Line_Name }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Transporter</span>
+                      <span class="text-gray-900">{{ item.transporter_name || '-' }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Transporter</span>
-            <span class="text-gray-900">{{ item.transporter_name || '-' }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Route</span>
+                      <span class="text-gray-900">{{ item.village_name || '-'}}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Route</span>
-            <span class="text-gray-900">{{ item.village_name || '-'}}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Pick Up Point</span>
+                      <span class="text-gray-900">{{ item.Route_Name || '-' }}</span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Pick Up Point</span>
-            <span class="text-gray-900">{{ item.Route_Name || '-' }}</span>
-          </div>
+                    <div class="flex flex-col">
+                      <span class="text-gray-500 font-semibold">Van Mapping</span>
+                      <span class="font-semibold"
+                        [ngClass]="item.Van_Eligible == 1 ? 'text-green-600' : 'text-red-600'">
+                        {{ item.Van_Eligible == 1 ? 'Active' : 'InActive' }}
+                      </span>
+                    </div>
 
-          <div class="flex flex-col">
-            <span class="text-gray-500 font-semibold">Status</span>
-            <span class="font-semibold"
-              [ngClass]="item.Van_Eligible == 1 ? 'text-green-600' : 'text-red-600'">
-              {{ item.Van_Eligible == 1 ? 'Active' : 'InActive' }}
-            </span>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- VAN FACILITY -->
-    <div class="bg-white border rounded-xl shadow-sm p-6">
-      <h2 class="text-blue-600 text-xl font-semibold text-center mb-6 tracking-wide font-poppins">
-        Van Facility
-      </h2>
-
-      <div class="flex flex-col gap-6">
-
-        <!-- Route -->
-        <div class="w-full p-fluid">
-          <label class="font-semibold text-gray-500 mb-1 block">Route</label>
-          <p-dropdown
-            [options]="routelist"
-            [(ngModel)]="route"
-            optionValue="Route_Id"
-            optionLabel="Route_Name"
-            styleClass="w-full"
-          >
-          <ng-template let-route pTemplate="item">
-              <div class="flex align-items-center gap-2">
-                <span>{{ route?.Route_Id + '-' + route.Route_Name }}</span>
+                  </div>
+                </div>
               </div>
-            </ng-template>
-        </p-dropdown>
-        </div>
 
-        <!-- Transport -->
-        <div class="w-full p-fluid">
-          <label class="font-semibold text-gray-500 mb-1 block">Transport</label>
-          <input
-            type="text"
-            pInputText
-            styleClass="w-full font-poppins"
-            [(ngModel)]="transport"
-          />
-        </div>
+              <!-- VAN FACILITY -->
+              <div class="bg-white border rounded-xl shadow-sm p-6">
+                <h2 class="text-blue-600 text-xl font-semibold text-center mb-6 tracking-wide font-poppins">
+                  Van Facility
+                </h2>
 
-        <!-- Pick Up Point -->
-        <div class="w-full p-fluid">
-          <label class="font-semibold text-gray-500 mb-1 block">Pick Up Point</label>
-          <input
-            type="text"
-            pInputText
-            styleClass="w-full font-poppins"
-            [(ngModel)]="pickup"
-          />
-        </div>
-        <div class="flex items-end justify-end">
-           <!-- Save Button -->
-        <button
-          pButton
-          icon="pi pi-save"
-          iconPos="right"
-          label="Save"
-          [disabled]="!isSubmitFormValid()"
-          (click)="submitVan()"
-        ></button>
-        </div>
-      </div>
-    </div>
+                <div class="flex flex-col gap-6">
 
-  </div>
-</div>
+                  <!-- Route -->
+                  <div class="w-full p-fluid">
+                    <label class="font-semibold text-gray-500 mb-1 block">Route</label>
+                    <p-dropdown
+                      [options]="routelist"
+                      [(ngModel)]="route"
+                      optionValue="Route_Id"
+                      optionLabel="Route_Name"
+                      styleClass="w-full"
+                    >
+                    <ng-template let-route pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <span>{{ route?.Route_Id + '-' + route.Route_Name }}</span>
+                        </div>
+                      </ng-template>
+                  </p-dropdown>
+                  </div>
+                 <!-- Van Eligibility -->
+                  <div class="w-full p-fluid">
+                    <label class="font-semibold text-gray-500 mb-1 block">Van Eligibility</label>
+                    <p-dropdown
+                      [options]="vanEligibilityOptions"
+                      [(ngModel)]="vanEligibility"
+                      optionValue="value"
+                      optionLabel="label"
+                      styleClass="w-full"
+                    >
+                  </p-dropdown>
+                  </div>
+                  <!-- Transport -->
+                  <div class="w-full p-fluid">
+                    <label class="font-semibold text-gray-500 mb-1 block">Transport</label>
+                    <input
+                      type="text"
+                      pInputText
+                      styleClass="w-full font-poppins"
+                      [(ngModel)]="transport"
+                    />
+                  </div>
+
+                  <!-- Pick Up Point -->
+                  <div class="w-full p-fluid">
+                    <label class="font-semibold text-gray-500 mb-1 block">Pick Up Point</label>
+                    <input
+                      type="text"
+                      pInputText
+                      styleClass="w-full font-poppins"
+                      [(ngModel)]="pickup"
+                    />
+                  </div>
+                  <div class="flex items-end justify-end">
+                    <!-- Save Button -->
+                  <button
+                    pButton
+                    icon="pi pi-save"
+                    iconPos="right"
+                    label="Save"
+                    [disabled]="!isSubmitFormValid()"
+                    (click)="submitVan()"
+                  ></button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+        </div>
        </ng-template>
         </p-tabPanel>
 

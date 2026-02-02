@@ -33,7 +33,7 @@ export class AdminArsDumbComponent implements OnInit {
         this.all.plant_name;
     }
     // If the file is in your src/assets folder
-    const path = 'assets/arsdump/ars_dump.html'; 
+    const path = 'arsdump/ars_dump.html'; 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(path);
   }
 

@@ -48,6 +48,33 @@ async function loadPlants() {
     }
 }
 
+    document.addEventListener("DOMContentLoaded", function () {
+    let startDate = document.getElementById("start-date");
+    let endDate = document.getElementById("end-date");
+
+    const today = new Date();
+
+    const minDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+
+    const formatDate = (date) => date.toISOString().split("T")[0];
+
+    const min = formatDate(minDate);
+    const max = formatDate(today);
+
+    startDate.min = min;
+    startDate.max = max;
+
+    endDate.min = min;
+    endDate.max = max;
+
+    startDate.addEventListener("change", function () {
+        endDate.min = this.value;
+        if (endDate.value && endDate.value < this.value) {
+        endDate.value = "";
+        }
+    });
+    });
+
 // 3. Form Submission & Table Population
 document.getElementById("punchForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -136,7 +163,7 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
     }
 });
 
-// 4. Custom Search Integration
+
 // Uses the DataTable API for a much faster/cleaner search than manual DOM manipulation
 document.getElementById("tableSearch").addEventListener("input", function () {
     if (dataTable) {

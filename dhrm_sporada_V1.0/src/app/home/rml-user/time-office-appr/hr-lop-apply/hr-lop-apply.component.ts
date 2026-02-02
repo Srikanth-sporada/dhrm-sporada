@@ -199,7 +199,7 @@ export class HrLopApplyComponent implements OnInit {
         console.log('LOCK DATE:',response);
         if(response?.date){
           /** set min date for calendar */
-          this.minDate = moment(response?.date).add(1,'days').toDate();
+          this.minDate = moment(response?.date).add(0,'days').toDate();
           console.log('MIN DATE:',this.minDate)
         }else{
           this.messageService.add({severity:'warn',summary:`There is no Lock Date found for your plant (${this.plantCode}) !`});

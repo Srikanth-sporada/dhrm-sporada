@@ -22,6 +22,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/arsdump",
               "src/manifest.webmanifest",
               {
                 "glob": "**/*",
@@ -105,6 +106,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/arsdump",
               "src/manifest.webmanifest"
             ],
             "styles": [

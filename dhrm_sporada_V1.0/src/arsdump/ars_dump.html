@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RANE | HRMS </title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="ranelogo.png" />
+</head>
+<body>
+
+  <header class="top-header" id="header">
+    <div class="header-left">
+      <span class="breadcrumb"><i class="fa fa-th-large"></i> Rane ARS Dump</span>
+    </div>
+    <div class="header-right">
+      <span class="user-name" id="userNameDisplay">TEST USER (12345) - HRD-RML</span>
+      <i class="fa fa-user-circle"></i>
+    </div>
+  </header>
+
+  <div class="page-container">
+    
+    <div class="card filter-section">
+      <div class="card-header">
+        <i class="fa fa-filter"></i> Filters <span class="badge">Total Count: 0</span>
+      </div>
+      <form class="filter-grid" id="punchForm">
+        <div class="field">
+          <label>Plant</label>
+          <select id="plant">
+            <option value="">-- Select Plant --</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" id="start-date" required>
+        </div>
+        <div class="field">
+          <label>End Date</label>
+          <input type="date" id="end-date" required>
+        </div>
+        <div class="field">
+          <label>Gen ID</label>
+          <input type="text" id="genid" placeholder="Enter Gen ID">
+        </div>
+        <div class="field action">
+          <button type="submit" class="btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="noData" style="display:none; text-align:center; padding:20px; color:#666;">
+        <i class="fa fa-info-circle"></i> No records found for the selected criteria.
+    </div>
+
+    <div id="loaderOverlay" class="loader-overlay loader-hidden">
+        <div class="loader"></div>
+    </div>
+    
+    <div class="table-actions">
+      <div class="search-wrapper">
+        <i class="fa fa-search"></i>
+        <input type="text" id="tableSearch" placeholder="Search....">
+      </div>
+      <div class="export-buttons">
+        <button id="exportExcel" class="btn-success"><i class="fa fa-file-excel"></i> Export to Excel</button>
+        <button id="copyTable" class="btn-info"><i class="fa fa-copy"></i> Copy</button>
+      </div>
+    </div>
+
+    <div class="card table-card">
+     <table id="resultTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Swipe ID</th>
+          <th>Emp ID</th>
+          <th>Punch Date</th>
+          <th>Punch Time</th>
+          <th>Punch DateTime</th>
+          <th>Direction</th>
+          <th>Plant Code</th>
+          <th>Status</th> </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+     </table>
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService,MenuItem } from 'primeng/api';
 import { environment } from 'src/environments/environment.prod';
+import { Utility } from 'src/app/utils/utils';
 @Component({
   selector: 'app-bill-processed-date',
   templateUrl: './bill-processed-date.component.html',
@@ -91,7 +92,8 @@ export class BillProcessedDateComponent implements OnInit {
     ,private dialog: MatDialog
     ,private service : ApiService
     ,public loader: LoaderserviceService
-    ,private messageService:MessageService) { 
+    ,private messageService:MessageService
+    ,public utils:Utility) { 
   // bill form
     this.billForm = this.fb.group({
       plant:[this.plant_Code],
@@ -496,10 +498,35 @@ exportExcel() : void{
    * download bill lock data
    */
   downloadPaidDaysData(payrollMonth:any,plantCode:any,payrollArea:any){
-    const queryData = {
+    try{
+       const queryData = {
       payrollMonth:moment(payrollMonth).format('YYYY-MM-DD'),
       plantCode,
       payrollArea}
     console.log('QUERY DATA:',queryData);
+    /** get Paid days API call */
+    this.api.getPaidDays(queryData).subscribe({
+      next: (response:any) => {
+        if(response.status){
+         if(response.data.length != 0){
+           /** export JSON to excell */
+        this.utils.jsonToExcellExport(response.data,queryData.plantCode,'paid_days')
+         }
+        }
+        else{
+          console.log('REPONSE:',response);
+          this.messageService.add({severity:'error',summary:'Oops! Error Occured.'})
+        }
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.error});
+      }
+    })
+    }
+    catch(error){
+      console.error('ERROR:',error);
+      this.messageService.add({severity:'error',summary:'hello'})
+    }
   }
 }
