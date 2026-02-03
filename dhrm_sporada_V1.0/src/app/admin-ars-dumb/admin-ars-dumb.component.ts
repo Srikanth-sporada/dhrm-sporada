@@ -43,6 +43,6 @@ export class AdminArsDumbComponent implements OnInit {
   /** send root URL to iframe */
   sendDataToIframe() {
     /** send root URL for API call & user data */
-    this.iframe.nativeElement.contentWindow.postMessage({baseURL:this.rootURL,userData:this.userDetails,showHeader:this.showHeader}, '*');
+    this.iframe.nativeElement.contentWindow.postMessage({baseURL:this.rootURL,userDetails:this.userDetails,showHeader:this.showHeader, userData:this.all}, '*');
   }
 }

@@ -10,8 +10,8 @@
       <p-calendar 
         [(ngModel)]="date"
         view="month"
+        dateFormat="dd-MM-yy"
         (ngModelChange)="getData()"
-        dateFormat="MM"
         dataType="string"
         styleClass="w-full !font-poppins"
         [showIcon]="true" >

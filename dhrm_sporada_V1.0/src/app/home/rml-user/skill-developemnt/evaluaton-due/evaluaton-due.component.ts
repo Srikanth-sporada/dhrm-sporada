@@ -28,7 +28,7 @@ import { MessageService } from "primeng/api";
 
 export class EvaluatonDueComponent implements OnInit {
   someSubscription: any;
-  filterinfo: any = [];
+  filterinfo: any = []
   id: any;
   form: any;
   tick: any = "✔️";

@@ -27,7 +27,8 @@ export class OcmComponent implements OnInit {
       this.all = JSON.parse(detail);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    this.generate_years()
+    this.generate_years();
+    
     const plantCode = sessionStorage.getItem("plantcode");
     this.isadmin = sessionStorage.getItem("isadmin");
     let details = sessionStorage.getItem("all");
@@ -35,6 +36,7 @@ export class OcmComponent implements OnInit {
       this.empDetails = JSON.parse(details);
     }
     this.selectedPlant = plantCode;
+
     this.apiService.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plants = response;

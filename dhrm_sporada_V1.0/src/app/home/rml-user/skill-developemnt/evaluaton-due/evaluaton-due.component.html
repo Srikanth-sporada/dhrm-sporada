@@ -93,7 +93,13 @@
                   optionValue="dept_name"
                   styleClass="w-full"
                   placeholder="Select Department"
-                ></p-dropdown>
+                >
+                 <ng-template let-dept pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ dept.dept_slno + '-' + dept.dept_name }}</span>
+                        </div>
+                  </ng-template>
+              </p-dropdown>
               </div>
               <!-- line -->
               <div class="font-poppins w-full">
@@ -110,7 +116,13 @@
                   optionValue="line_name"
                   styleClass="w-full"
                   placeholder="Select Line"
-                ></p-dropdown>
+                >
+                <ng-template let-line pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <span>{{ line.line_code + '-' + line.line_name }}</span>
+                    </div>
+                </ng-template>
+              </p-dropdown>
               </div>
             </div>
           </div>
@@ -126,16 +138,16 @@
           <table id="table" class="table-auto !w-full">
                <!-- table head -->
                 <thead class="sticky top-0">
-                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins  xl:!text-left">
                         <!-- <th div class="aligncommand">Date</th> -->
                         <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Skill Level</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>         
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept Name</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line Name</th>
-                        <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Reporting To</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Dept Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Line Name</th>
+                        <th class="!text-white !px-2 !py-2 !border-none !border-0">Reporting To</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Aging</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">First Evaluation</th>
                         <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Second Evaluation</th>
@@ -145,17 +157,17 @@
                 </thead>
                 <!-- table body -->
                     <tbody>
-                      <tr *ngFor="let i of filterinfo|filter:name|deptfilter:dept|linefilter:line;let j=index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                      <tr *ngFor="let i of filterinfo | filter:name | deptfilter:dept | linefilter:line;let j = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                           <!-- <td>{{ i.doj.split('T')[0] | date: 'dd-MM-yyyy' }}</td> -->
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{j+1}}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.gen_id}}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{i.gen_id}}</td>
                           <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.levels }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{i.doj}}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.dept_name }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.line_name }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.dept_name }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md">{{ i.line_name }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md">{{ i.Emp_Name }}</td>
-                          <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.diff }}</td>
+                          <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.diff }}</td>
                           <td class="!px-2 !py-4 !rounded-s-md text-center">
                             <div *ngIf="(i.skillLevel >= 1 &&i.skillLevel <= 4) then check else cross">
                             </div>

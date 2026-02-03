@@ -18,7 +18,7 @@ import moment from "moment";
   styleUrls: ['./contworking.component.css']
 })
 export class ContworkingComponent implements OnInit {
-  date:any
+  date:any = new Date(); // current date
   @Input() plant: any;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   barChartOptions: ChartConfiguration["options"] | any = {
@@ -57,7 +57,7 @@ export class ContworkingComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.date)
-    this.date=moment().format('MMMM')
+    // this.date = moment().format('MMMM')
     console.log(this.date)
     this.getData()
     // this.barChartData.datasets[0].borderColor ='green'
@@ -74,8 +74,8 @@ export class ContworkingComponent implements OnInit {
     console.log(this.date)
     let data={
       plant:this.plant,
-      year: moment(new Date()).format('yyyy'),
-      month:moment().month(this.date).format('MM')
+      year: moment(this.date).format('yyyy'),
+      month:moment(this.date).format('MM')
     }
     console.log(data)
     this.apiService.getContWorking(data).subscribe((response:any)=>{

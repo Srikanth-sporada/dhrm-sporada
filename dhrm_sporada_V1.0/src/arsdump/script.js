@@ -1,5 +1,9 @@
 let API_URL = '';
 let dataTable = null;
+let plantCode =  null;
+let companyCode = null;
+let isAdmin = false;
+let isHr = false;
 
 // The loader from your UI logic
 const loader = document.getElementById('loaderOverlay');
@@ -21,11 +25,16 @@ window.addEventListener('message', function(event) {
         loadPlants();
     }
 
-    if (data.userData) {
+    if (data.userDetails) {
         const userDisplay = document.getElementById('userNameDisplay');
-        if (userDisplay) userDisplay.innerText = data.userData;
+        if (userDisplay) userDisplay.innerText = data.userDetails;
     }
-
+    if(data.userData){
+        plantCode = data.userData.plant_code;
+        companyCode = data.userData.company_code;
+        isAdmin = data.userData.is_admin;
+        isHr = data.userData.Is_HR;
+    }
 });
 
 // 2. Load Plants into the stylized dropdown
@@ -35,6 +44,11 @@ async function loadPlants() {
         const res = await fetch(`${API_URL}/master/plants`);
         const plants = await res.json();
         const select = document.getElementById("plant");
+        console.dir(select)
+        if(isHr){
+          select.innerHTML = `<option value="${plantCode}">${plantCode}</option>`;
+          select.disabled = true;
+        }else{
         select.innerHTML = '<option value="">-- Select Plant --</option>';
         plants.forEach(p => {
             const opt = document.createElement("option");
@@ -42,13 +56,16 @@ async function loadPlants() {
             opt.textContent = p.PlantCode;
             select.appendChild(opt);
         });
+        }
+        
     } catch (err) { 
         alert('Oops! Error Occured.')
         console.error("Plant load failed", err); 
     }
 }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", 
+        function () {
     let startDate = document.getElementById("start-date");
     let endDate = document.getElementById("end-date");
 
@@ -72,8 +89,13 @@ async function loadPlants() {
         if (endDate.value && endDate.value < this.value) {
         endDate.value = "";
         }
+        /** set start date as end date */
+        if(isHr){
+          endDate.value = startDate.value;
+        }
+        });
     });
-    });
+   
 
 // 3. Form Submission & Table Population
 document.getElementById("punchForm").addEventListener("submit", async (e) => {
@@ -81,6 +103,11 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
     if (!API_URL) {
         alert("API URL not detected.");
         return;
+    }
+    /** check genid has value */
+    if(isHr & !document.getElementById("genid").value){
+     alert('Enter Gen ID');
+     return;
     }
 
     toggleLoader(true);
@@ -91,9 +118,10 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
         startDate: document.getElementById("start-date").value,
         endDate: document.getElementById("end-date").value,
         plant: document.getElementById("plant").value,
-        genid: document.getElementById("genid").value
+        genid: document.getElementById("genid").value,
+        company: companyCode,
     };
-
+    console.log('PAYLOAD:',payload);
     try {
         const res = await fetch(`${API_URL}/master/punches`, {
             method: "POST",
