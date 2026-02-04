@@ -30,23 +30,21 @@
                 </button>
             </div>
            <br>
-        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
 
-        <ng-template #show>
-            <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
+            <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
                 <!-- <table class="table table-bordered table-striped table-hover"> -->
                 <table id="table" class="table-auto !w-full">
                     <!-- table head -->
                     <thead class="sticky top-0">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Operation</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Date</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Operation</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Current Skill Level</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Propesed Skill Level</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Status</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Test Result</th>
                             <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
                         </tr>
@@ -55,20 +53,20 @@
                     <tbody>
                         <tr *ngFor="let i of filterinfo; let index = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ index + 1 }}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Date }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md">{{ i.Date }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md">{{ i.dept_name }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md">{{ i.fullname }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md">{{ i.oprn_desc }}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Level_No }}</td>
-                           <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
+                            <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.Level_No }}</td>
+                           <td class="!px-2 !py-4 !rounded-s-md text-center font-semibold">{{ i.Level_No === 4 ? 'MAX' : i.Level_No + 1 }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.Sup_Eval_Status }}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center flex items-center justify-center">
-                                    <a [routerLink]="['/rhrm/skill-developement/answer-paper', i.Peval_slno]">
-                                        {{ i.Test_Result }}
-                                        <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
-                                    </a>
+                               {{ i.Test_Result }}      
                             </td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">
+                                <button [routerLink]="['/rhrm/skill-developement/answer-paper', i.Peval_slno]">
+                                    <mat-icon class="text-[20px] text-blue-600">visibility</mat-icon>
+                                </button>
                                     <button type="button"
                                         [routerLink]="['/rhrm/skill-developement/Supervisor_Evaluation_Form', i.Peval_slno,i.dept_slno, i.Trainee_Id]">
                                         <mat-icon class="text-[20px] text-blue-600">edit</mat-icon>
@@ -77,8 +75,9 @@
                         </tr>
                     </tbody>
                 </table>
+            <!-- app loader -->
+             <app-loader *ngIf="loader.isLoding | async"></app-loader>
                 <!-- </table> -->
             </div>
-        </ng-template>
     </div>
 </div>

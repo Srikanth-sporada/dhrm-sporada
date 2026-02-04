@@ -4,7 +4,7 @@ let plantCode =  null;
 let companyCode = null;
 let isAdmin = false;
 let isHr = false;
-
+let isHrApprover = false;
 // The loader from your UI logic
 const loader = document.getElementById('loaderOverlay');
 
@@ -34,6 +34,7 @@ window.addEventListener('message', function(event) {
         companyCode = data.userData.company_code;
         isAdmin = data.userData.is_admin;
         isHr = data.userData.Is_HR;
+        isHrApprover = data.userData.Is_HRAppr;
     }
 });
 
@@ -45,7 +46,7 @@ async function loadPlants() {
         const plants = await res.json();
         const select = document.getElementById("plant");
         console.dir(select)
-        if(isHr){
+        if(isHr || isHrApprover){
           select.innerHTML = `<option value="${plantCode}">${plantCode}</option>`;
           select.disabled = true;
         }else{
@@ -71,7 +72,7 @@ async function loadPlants() {
 
     const today = new Date();
 
-    const minDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const minDate = new Date(today.getFullYear(), today.getMonth() - 12, 1);
 
     const formatDate = (date) => date.toISOString().split("T")[0];
 
@@ -90,7 +91,7 @@ async function loadPlants() {
         endDate.value = "";
         }
         /** set start date as end date */
-        if(isHr){
+        if(isHr || isHrApprover){
           endDate.value = startDate.value;
         }
         });
@@ -105,7 +106,7 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
         return;
     }
     /** check genid has value */
-    if(isHr & !document.getElementById("genid").value){
+    if((isHr || isHrApprover) && !document.getElementById("genid").value){
      alert('Enter Gen ID');
      return;
     }
@@ -117,11 +118,13 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
     const payload = {
         startDate: document.getElementById("start-date").value,
         endDate: document.getElementById("end-date").value,
-        plant: document.getElementById("plant").value,
+        plant: document.getElementById('plant').value,
         genid: document.getElementById("genid").value,
-        company: companyCode,
+        company_code: companyCode,
+        admin:isAdmin,
     };
     console.log('PAYLOAD:',payload);
+
     try {
         const res = await fetch(`${API_URL}/master/punches`, {
             method: "POST",

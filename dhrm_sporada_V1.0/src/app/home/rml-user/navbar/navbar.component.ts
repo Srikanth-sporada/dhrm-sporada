@@ -132,6 +132,8 @@ export class NavbarComponent implements OnInit {
       username: new UntypedFormControl(sessionStorage.getItem("user_name")),
     });
   }
+
+  
   delCookie() {
     this.user = sessionStorage.getItem("user");
     this.cookie.delete("User_Name");
