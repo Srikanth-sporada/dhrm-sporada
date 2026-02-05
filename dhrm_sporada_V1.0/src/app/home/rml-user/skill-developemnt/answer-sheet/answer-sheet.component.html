@@ -46,7 +46,7 @@
         </table>
     </form>
     <!-- loader -->
-     <app-loader *ngIf="loader.isLoding"></app-loader>
+     <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>
    
 </div>

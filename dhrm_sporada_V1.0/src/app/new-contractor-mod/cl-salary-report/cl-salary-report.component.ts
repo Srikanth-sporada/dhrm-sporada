@@ -22,7 +22,7 @@ export class CLSalaryReportComponent implements OnInit {
   isadmin: any;
   selectedReportType: any;
   employeeType:any='T';
-  monthReport:any[]=['OTMSAL','PRSAL']
+  monthReport:any[] = ['OTMSAL','PRSAL']
   yearReport:any[]=['Optr_LB','P2']
   ContractReport :any[]=['PRSAL','CTSAL']
   Con_list:any
@@ -43,10 +43,11 @@ export class CLSalaryReportComponent implements OnInit {
 
 
   ngOnInit(): void {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
     }
     this.from=moment(new Date()).format("YYYY-MM-DD");
     this.to =moment(new Date()).format("YYYY-MM-DD");
@@ -55,25 +56,33 @@ export class CLSalaryReportComponent implements OnInit {
     this.selectedReportType = "mr";
     const plantCode = sessionStorage.getItem("plantcode");
     this.isadmin = sessionStorage.getItem("isadmin");
-
+    /** get contractors */
     this.getContra()
 
     if (this.isadmin == "false") {
       this.plant = plantCode;
     }
+    /** get plant code */
+    this.getPlant(this.plant)
+  }
 
-    this.api.getplantcode(plantCode).subscribe({
+/** 
+ * get plants 
+ * @param plantCode
+ * */
+getPlant(plantCode:any){
+  this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
-        this.plantlist.push({plant_name:'All',plant_code:''})
+        this.plantlist.unshift({plant_name:'All',plant_code:''});
       },
       error: (error) => {
-        console.log(error);
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       },
     });
-  }
-
+}
+/** get contractors */
 getContra(){
   this.clApi.getContractor().subscribe(res =>{
     this.Con_list = res;
@@ -88,9 +97,7 @@ getContra(){
   getData() {
     this.loading = true;
     let from: string;
-    let to: string;
-
-  
+    let to: string;  
     if (this.monthReport.includes(this.selectedReportType)) {
       const selectedMonth:any = moment(this.from).format('MM');
       const selectedYear:any = moment(this.from).format('yy');
@@ -104,28 +111,24 @@ getContra(){
         prevMonth = 12;
         prevMonthYear--;
       }
+      /**  selected month prev month caculation */
       this.from = `${prevMonthYear}-${prevMonth.toString().padStart(2, '0')}-26`;
-  
-      // Set to date to 25th of selected month
+      /** Set to date to 25th of selected month */
       this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-25`;
-  
       console.log('Updated date range:', this.from, 'to', this.to);
     } 
+
     else if(this.selectedReportType =='CTSAL'){
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();
-  
       console.log('currentMonth',currentMonth);
-      
-      // Set from date to 26th of previous month
+      /** Set from date to 26th of previous month */
       let prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
       let prevMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
       this.from = `${prevMonthYear}-${(prevMonth + 1).toString().padStart(2, '0')}-26`;
-  
-      // Set to date to 25th of current month
+      /** Set to date to 25th of current month */
       this.to = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-25`;
-  
       console.log('Updated date range for CTSAL:', this.from, 'to', this.to);
     }
     
@@ -136,8 +139,8 @@ getContra(){
     }
   
     let data = {
-      from: this.from,
-      to: this.to,
+      from: '2026-01-01',
+      to: '2026-01-31',
       type: this.selectedReportType,
       plant: this.plant,
       cont: this.selectedContractor

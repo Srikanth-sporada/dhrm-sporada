@@ -152,7 +152,7 @@ export class LopReportComponent implements OnInit {
         },
         error: (error:any) =>{
           console.error(error);
-          this.messageService.add({severity:'error',summary:error?.error?.message})
+          this.messageService.add({severity:'error',summary:error?.error?.error})
         }
       })
      }

@@ -440,7 +440,7 @@ this.payScale= this.fb.group({
         plant:[this.plant_Code],
         contractor:[null,{validators : [Validators.required],updateOn: 'blur'}],
         payscale:[null,{validators : [Validators.required],updateOn: 'blur'}],
-        effectiveDate:[null,{validators : [Validators.required],updateOn: 'blur'}],
+        effectiveDate:[null,{validators : [Validators.required]}],
         stipend :[null,{updateOn: 'blur'}],
         basic:[null,{updateOn: 'blur'}],
         DA:[null,{updateOn: 'blur'}],
@@ -788,12 +788,11 @@ this.stepper.selectedIndex=0;
 // submit Form
 
 submitForm(){
+  console.log('PAYSCALE FORM:',this.payScale)
   if(this.validateStep(1) && this.validateStep(2) && this.validateStep(3) && this.validateStep(4) ){
 
     const allowances = this.allowance.value.otherAllowance;
     const deduction  = this.deduction.value.otherDeduction;
-   console.log(this.payScale.value);
-   
 //Payscale Details   
     this.newPayScaleObj.Con_Id  =this.payScale.value.contractor
     this.newPayScaleObj.Payscale_ID  =this.payScale.value.payscale
@@ -899,6 +898,7 @@ validateStep(stepNumber: number): boolean {
     case 1:
    
       if (this.payScale.valid) {
+        console.log('PAY SCALE FORM:',this.payScale)
         return true;
       } else {
       
@@ -1028,6 +1028,9 @@ console.log(res);
   })
 }
 
+/** 
+ * filter payscale data based on payscale type
+ */
 filter_Latest(data:any){
   if(data ==='Latest'){
     this.filteredPayscaleData = this.payscaleData.filter((item:any) => item.Status == true)

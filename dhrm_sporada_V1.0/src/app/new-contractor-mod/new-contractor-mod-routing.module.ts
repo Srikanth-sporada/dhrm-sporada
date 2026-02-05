@@ -56,7 +56,9 @@ const routes: Routes = [
     component: CanteenDeductionComponent,
     canActivate: [Admin],
   },
-  { path: "payscale", component: PayscaleMasterComponent },
+  { path: "payscale", 
+    component: PayscaleMasterComponent 
+  },
   { path: "bonus", component: BonusMasterComponent, canActivate: [Admin] },
 
   {
