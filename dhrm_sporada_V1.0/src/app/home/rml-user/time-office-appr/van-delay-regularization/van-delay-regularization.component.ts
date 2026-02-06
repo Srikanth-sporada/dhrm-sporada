@@ -268,6 +268,7 @@ export class VanDelayRegularizationComponent implements OnInit {
       plant: this.plant,
       Category: this.Category,
     };
+    
     this.OpApi.Van_delay(data).subscribe({
       next:  (res: any) => {
         console.log(res);
