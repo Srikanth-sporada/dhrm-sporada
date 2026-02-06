@@ -1,105 +1,156 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
-// import * as XLSX from 'xlsx';
-import moment from 'moment';
-import { ClamAPIService } from '../../../../new-contractor-mod/clam-api.service';
-import { ToastComponent } from '../../../../new-contractor-mod/toast/toast.component';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from "@angular/core";
+import {
+  FormBuilder,
+  FormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from "@angular/forms";
+import { ClamAPIService } from "src/app/new-contractor-mod/clam-api.service";
+import { ToastComponent } from "src/app/new-contractor-mod/toast/toast.component";
+import { MatDialog } from "@angular/material/dialog";
 import { ApiService } from "src/app/home/api.service";
-// import * as XLSX from 'xlsx-style';
-import * as XLSX from 'xlsx-js-style';
-import { MessageService } from 'primeng/api';
+import * as XLSX from "xlsx-js-style";
+import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
 
 @Component({
-  selector: 'app-skill-matrix-report',
-  templateUrl: './skill-matrix-report.component.html',
-  styleUrls: ['./skill-matrix-report.component.css']
+  selector: "app-skill-matrix-report",
+  templateUrl: "./skill-matrix-report.component.html",
+  styleUrls: ["./skill-matrix-report.component.css"],
 })
 export class SkillMatrixReportComponent implements OnInit {
-
-  plant_Code: any = sessionStorage.getItem('plantcode');
-  userEmpcode: string | null = sessionStorage.getItem('user_name');
+  plant_Code: any = sessionStorage.getItem("plantcode");
+  userEmpcode: string | null = sessionStorage.getItem("user_name");
   button1: boolean = false;
   departments: any;
   form: any;
   plant: any;
-  ALL = 'Select Department';
-  all:any;
-  userDetails:any;
-  constructor(private fb: UntypedFormBuilder, private api: ClamAPIService, private dialog: MatDialog, private service: ApiService, private messageService:MessageService) {
+  ALL = "Select Department";
+  all: any;
+  userDetails: any;
+  constructor(
+    private fb: UntypedFormBuilder,
+    private api: ClamAPIService,
+    private dialog: MatDialog,
+    private service: ApiService,
+    private messageService: MessageService,
+    public loader:LoaderserviceService,
+  ) {
     this.form = this.fb.group({
-      department: [this.ALL, Validators.required]
+      department: [this.ALL, Validators.required],
     });
   }
 
   ngOnInit(): void {
-     let details = sessionStorage.getItem("all");
+    /** logged in user data */
+    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
-    this.plant = sessionStorage.getItem('plantcode');
+    this.plant = sessionStorage.getItem("plantcode");
+    /** get department for report */
+    this.getDepartment();
+  }
 
-    if (this.plant) {
+  /** get department API */
+  getDepartment(){
+     if (this.plant) {
       this.service.getDeptForReport(this.plant).subscribe({
         next: (res: any) => {
           this.departments = res.data;
         },
         error: (error) => {
           console.log(error);
-          this.messageService.add({severity:'error',summary:error.message})
-        }
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        },
       });
     }
-
   }
 
+  /**
+   * open toast modal
+   * @param message 
+   * @param icon 
+   */
   openAlertDialog(message: string, icon: string): void {
     this.dialog.open(ToastComponent, {
       data: {
         icon: icon,
-        message: message
-      }
+        message: message,
+      },
     });
   }
 
+  /** 
+   * download report
+   * @property {*} ALL
+   */
   download() {
-    const selectedDept = this.form.get('department')?.value;
+    const selectedDept = this.form.get("department")?.value;
 
     if (selectedDept === this.ALL) {
       // alert('Please select a department');
-      this.messageService.add({severity:'warn',summary:'Please Select Department!'})
+      this.messageService.add({
+        severity: "warn",
+        summary: "Please Select Department!",
+      });
       return;
     }
 
+    /** check if department is selected */
     if (selectedDept) {
       this.service.getMatrixReport(selectedDept, this.plant).subscribe({
         next: (res: any) => {
-          console.log('report res', res);
+          console.log("REPORT DATA:", res);
           if (!res.data) {
             // this.openAlertDialog('No Data Found !', 'warning');
-            this.messageService.add({severity:'info',summary:'Data Not Found!'})
+            this.messageService.add({
+              severity: "info",
+              summary: "Data Not Found!",
+            });
+            /** set to default  */
             this.form.reset({
-              department: this.ALL
+              department: this.ALL,
             });
           } else {
+            /** data export fn */
             this.exportToExcel(res.data, res.summary, res.Dept[0].dept_name);
             this.form.reset({
-              department: this.ALL
+              department: this.ALL,
             });
           }
         },
-         error: (error) => {
-          console.log(error);
-          this.messageService.add({severity:'error',summary:error.message})
-        }
-      })
+        error: (error) => {
+          console.error('ERROR:',error);
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        },
+      });
     }
-
-    console.log('Selected department ID:', selectedDept);
+    else{
+      this.messageService.add({severity:'warn',summary:'Select Department!'})
+    }
+    console.log("Selected department ID:", selectedDept);
   }
 
+  /** 
+   * export data to excel
+   * @param data
+   * @param summary
+   * @param dep
+   */
   exportToExcel(data: any[], summary: any[], dep: string) {
     const headerText = "Skill Matrix Report";
     const summaryHeader = "Skill Matrix Summary";
@@ -109,8 +160,8 @@ export class SkillMatrixReportComponent implements OnInit {
     const summaryWs: XLSX.WorkSheet | any = XLSX.utils.json_to_sheet(summary);
 
     // Define ranges
-    const dataRange = XLSX.utils.decode_range(dataWs['!ref']);
-    const summaryRange = XLSX.utils.decode_range(summaryWs['!ref']);
+    const dataRange = XLSX.utils.decode_range(dataWs["!ref"]);
+    const summaryRange = XLSX.utils.decode_range(summaryWs["!ref"]);
 
     // Adjust rows for summary sheet
     const rowsToAdd = 2;
@@ -126,37 +177,39 @@ export class SkillMatrixReportComponent implements OnInit {
     }
 
     // Header Row
-    summaryWs['A1'] = {
-      t: 's',
+    summaryWs["A1"] = {
+      t: "s",
       v: summaryHeader,
       s: {
-        alignment: { horizontal: 'center', vertical: 'center' },
+        alignment: { horizontal: "center", vertical: "center" },
         font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "00094B" } }
-      }
+        fill: { fgColor: { rgb: "00094B" } },
+      },
     };
 
     // Merge header cells
-    summaryWs['!merges'] = [{
-      s: { r: 0, c: 0 },
-      e: { r: 0, c: summaryRange.e.c }
-    }];
+    summaryWs["!merges"] = [
+      {
+        s: { r: 0, c: 0 },
+        e: { r: 0, c: summaryRange.e.c },
+      },
+    ];
 
     // Department Row
-    summaryWs['A2'] = {
-      t: 's',
-      v: 'Dept : ' + dep,
+    summaryWs["A2"] = {
+      t: "s",
+      v: "Dept : " + dep,
       s: {
-        alignment: { horizontal: 'left', vertical: 'center' },
+        alignment: { horizontal: "left", vertical: "center" },
         font: { bold: true, sz: 12, color: { rgb: "black" } },
-        fill: { fgColor: { rgb: "02ccfe" } }
-      }
+        fill: { fgColor: { rgb: "02ccfe" } },
+      },
     };
 
     // Merge department cells
-    summaryWs['!merges'].push({
+    summaryWs["!merges"].push({
       s: { r: 1, c: 0 },
-      e: { r: 1, c: summaryRange.e.c }
+      e: { r: 1, c: summaryRange.e.c },
     });
 
     // Header Row Styling
@@ -167,13 +220,13 @@ export class SkillMatrixReportComponent implements OnInit {
         cell.s = {
           font: { color: { rgb: "FFFFFF" }, bold: true },
           fill: { fgColor: { rgb: "494848" } },
-          alignment: { horizontal: 'center', vertical: 'center' },
+          alignment: { horizontal: "center", vertical: "center" },
           border: {
             top: { style: "thin", color: { rgb: "000000" } },
             bottom: { style: "thin", color: { rgb: "000000" } },
             left: { style: "thin", color: { rgb: "000000" } },
-            right: { style: "thin", color: { rgb: "000000" } }
-          }
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
         };
       }
     }
@@ -186,48 +239,51 @@ export class SkillMatrixReportComponent implements OnInit {
         if (cell) {
           cell.s = {
             ...(cell.s || {}),
-            alignment: { horizontal: 'center', vertical: 'center' },
+            alignment: { horizontal: "center", vertical: "center" },
             border: {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
               left: { style: "thin", color: { rgb: "000000" } },
-              right: { style: "thin", color: { rgb: "000000" } }
-            }
+              right: { style: "thin", color: { rgb: "000000" } },
+            },
           };
         }
       }
     }
 
     // Update worksheet range
-    summaryWs['!ref'] = `A1:${XLSX.utils.encode_cell({ r: summaryRange.e.r + 3, c: summaryRange.e.c })}`;
+    summaryWs["!ref"] =
+      `A1:${XLSX.utils.encode_cell({ r: summaryRange.e.r + 3, c: summaryRange.e.c })}`;
 
     // ---------------------- DATA SHEET ----------------------
 
     const ws: XLSX.WorkSheet = {};
 
     // Title Row
-    ws['A1'] = {
-      t: 's',
+    ws["A1"] = {
+      t: "s",
       v: headerText,
       s: {
-        alignment: { horizontal: 'center', vertical: 'center' },
+        alignment: { horizontal: "center", vertical: "center" },
         font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "00094B" } }
-      }
+        fill: { fgColor: { rgb: "00094B" } },
+      },
     };
 
     // Merge title cells
-    ws['!merges'] = [{
-      s: { r: 0, c: 0 },
-      e: { r: 0, c: dataRange.e.c }
-    }];
+    ws["!merges"] = [
+      {
+        s: { r: 0, c: 0 },
+        e: { r: 0, c: dataRange.e.c },
+      },
+    ];
 
     // Skill Level Colors
     const levelColors: { [key: string]: string } = {
-      'L1': 'ffcf00', // Yellow
-      'L2': '02ccfe', // Blue
-      'L3': '08ff08', // Green
-      'L4': '008000'  // Dark Green
+      L1: "ffcf00", // Yellow
+      L2: "02ccfe", // Blue
+      L3: "08ff08", // Green
+      L4: "008000", // Dark Green
     };
 
     // Copy data with styling
@@ -247,10 +303,10 @@ export class SkillMatrixReportComponent implements OnInit {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
               left: { style: "thin", color: { rgb: "000000" } },
-              right: { style: "thin", color: { rgb: "000000" } }
+              right: { style: "thin", color: { rgb: "000000" } },
             },
             fill: cellColor ? { fgColor: { rgb: cellColor } } : undefined,
-          }
+          },
         };
       }
     }
@@ -263,13 +319,13 @@ export class SkillMatrixReportComponent implements OnInit {
         cell.s = {
           font: { color: { rgb: "FFFFFF" }, bold: true },
           fill: { fgColor: { rgb: "494848" } },
-          alignment: { horizontal: 'center', vertical: 'center' },
+          alignment: { horizontal: "center", vertical: "center" },
           border: {
             top: { style: "thin", color: { rgb: "000000" } },
             bottom: { style: "thin", color: { rgb: "000000" } },
             left: { style: "thin", color: { rgb: "000000" } },
-            right: { style: "thin", color: { rgb: "000000" } }
-          }
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
         };
       }
     }
@@ -282,35 +338,36 @@ export class SkillMatrixReportComponent implements OnInit {
         if (cell) {
           cell.s = {
             ...(cell.s || {}),
-            alignment: { horizontal: 'center', vertical: 'center' },
+            alignment: { horizontal: "center", vertical: "center" },
             border: {
               top: { style: "thin", color: { rgb: "000000" } },
               bottom: { style: "thin", color: { rgb: "000000" } },
               left: { style: "thin", color: { rgb: "000000" } },
-              right: { style: "thin", color: { rgb: "000000" } }
-            }
+              right: { style: "thin", color: { rgb: "000000" } },
+            },
           };
         }
       }
     }
 
-    ws['!ref'] = `A1:${XLSX.utils.encode_cell({ r: dataRange.e.r + 1, c: dataRange.e.c })}`;
+    ws["!ref"] =
+      `A1:${XLSX.utils.encode_cell({ r: dataRange.e.r + 1, c: dataRange.e.c })}`;
 
     // ---------------------- WORKBOOK ----------------------
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, summaryWs, 'Summary');
-    XLSX.utils.book_append_sheet(wb, ws, 'Skill Matrix Report');
-    XLSX.writeFile(wb, 'Skill_Matrix_Report.xlsx');
+    XLSX.utils.book_append_sheet(wb, summaryWs, "Summary");
+    XLSX.utils.book_append_sheet(wb, ws, "Skill Matrix Report");
+    XLSX.writeFile(wb, "Skill_Matrix_Report.xlsx");
 
-    this.messageService.add({severity:'info',summary:'Report Downloaded!'})
-  }
-
-
-
-  clear() {
-    this.form.reset({
-      department: this.ALL
+    this.messageService.add({
+      severity: "info",
+      summary: "Report Downloaded!",
     });
   }
 
+  clear() {
+    this.form.reset({
+      department: this.ALL,
+    });
+  }
 }

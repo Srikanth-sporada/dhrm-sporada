@@ -51,7 +51,13 @@
             optionValue="dept_slno"
             styleClass="w-full"
             placeholder="Select Department"
-          ></p-dropdown>
+          >
+           <ng-template let-dept pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                  <span>{{ dept.dept_slno + '-' + dept.dept_name }}</span>
+                </div>
+            </ng-template>
+        </p-dropdown>
         </div>
         <p-button
             icon="pi pi-download"
@@ -71,4 +77,9 @@
     </div>
   </div>
 </div>
+
+<!-- loader -->
+ <div>
+   <app-loader *ngIf="loader.isLoding | async"></app-loader>
+ </div>
 

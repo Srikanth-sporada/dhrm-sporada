@@ -14,44 +14,7 @@ import { MessageService } from "primeng/api";
 })
 export class SuperVisorAnswerComponent implements OnInit {
   someSubscription: any;
-  filterinfo: any = [
-  {
-    Date: "2026-02-04",
-    dept_name: "HR Department",
-    fullname: "John Doe",
-    oprn_desc: "Skill Assessment",
-    Level_No: 3,
-    Sup_Eval_Status: "Pending",
-    Peval_slno: 101,
-    dept_slno: 12,
-    Trainee_Id: "TR001",
-    Test_Result: "Pass"
-  },
-  {
-    Date: "2026-02-03",
-    dept_name: "Finance",
-    fullname: "Jane Smith",
-    oprn_desc: "Budget Training",
-    Level_No: 4,
-    Sup_Eval_Status: "Completed",
-    Peval_slno: 102,
-    dept_slno: 14,
-    Trainee_Id: "TR002",
-    Test_Result: "Fail"
-  },
-  {
-    Date: "2026-02-02",
-    dept_name: "IT",
-    fullname: "Michael Johnson",
-    oprn_desc: "System Upgrade",
-    Level_No: 2,
-    Sup_Eval_Status: "In Progress",
-    Peval_slno: 103,
-    dept_slno: 18,
-    Trainee_Id: "TR003",
-    Test_Result: "Pass"
-  }
-  ];
+  filterinfo: any = [];
   id: any;
   form: any;
   searchText: any;
@@ -92,14 +55,22 @@ export class SuperVisorAnswerComponent implements OnInit {
         "-" +
         this.all.plant_name;
     }
+
     this.plant = sessionStorage.getItem("plantcode");
     this.dept = sessionStorage.getItem("dept_slno");
 
     console.log("plant & Dept", this.plant, this.dept);
-    this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
+    /** get supervisor status */
+    this.getSupervisorStatus();
+  }
+
+
+  /** get supervisor status API */
+  getSupervisorStatus(){
+     this.service.getSupervisorStatus(this.plant, this.dept).subscribe({
       next: (response) => {
         console.log("supervisor Data", response);
-        // this.filterinfo = response;
+        this.filterinfo = response;
       },
       error: (error:any) => {
         console.error('ERROR:',error);

@@ -271,7 +271,6 @@ export class VanDelayRegularizationComponent implements OnInit {
     this.OpApi.Van_delay(data).subscribe({
       next:  (res: any) => {
         console.log(res);
-
         // this.openAlertDialog(res,'Check')
         this.messageService.add({ severity: "info", summary: res });
         // this.genIdChange()

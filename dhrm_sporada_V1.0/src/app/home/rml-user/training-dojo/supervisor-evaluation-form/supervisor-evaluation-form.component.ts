@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "src/app/home/api.service";
 import { Router } from "@angular/router";
 import { MessageService } from 'primeng/api';
+import { LoaderserviceService } from 'src/app/loaderservice.service';
 @Component({
   selector: 'app-supervisor-evaluation-form',
   templateUrl: './supervisor-evaluation-form.component.html',
@@ -13,21 +14,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
 
   peval_no: any;
   plant: any;
-  Abser_Point: any = [
-  {
-    index: 1,
-    Abservent_Point: "Observation 1",
-    rating: "Good",
-    remark: "Well done"
-  },
-  {
-    index: 2,
-    Abservent_Point: "Observation 2",
-    rating: "Average",
-    remark: "Needs improvement"
-  }
-];
-
+  Abser_Point: any = [];
   Sup_id: any;
   dept_no: any;
   emp_det: any = [];
@@ -40,7 +27,8 @@ export class SupervisorEvaluationFormComponent implements OnInit {
     private route: ActivatedRoute,
     private service: ApiService,
     private router: Router ,
-    private messageService:MessageService
+    private messageService:MessageService,
+    public loader:LoaderserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -63,7 +51,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
   this.getSupervisorOldPoints();
 
   /** get trainee status */
-  
+  this.getTraineeStatus();
 }
 
 /** 
@@ -73,7 +61,7 @@ export class SupervisorEvaluationFormComponent implements OnInit {
     this.service.getSupervisorAbserventPoint(this.plant, this.dept_no).subscribe({
       next:(res: any) => {
         console.log('Abservant Points:', res);
-        // this.Abser_Point = res;
+        this.Abser_Point = res;
         /** Initialize ratings and remarks */
         this.ratings = res.map(() => 'Good');
         this.remarks = res.map(() => '');

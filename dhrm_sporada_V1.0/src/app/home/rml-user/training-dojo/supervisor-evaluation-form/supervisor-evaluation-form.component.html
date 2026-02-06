@@ -53,7 +53,7 @@
     </div>
    </div>
     <!-- table -->
-    <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll  mx-2">
+    <div class="h-[90svh] lg:h-[90vh] xl:h-[90vh] sm:h-[75vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
         <form>
             <table id="table" class="table-auto !w-full">
                 <!-- table head -->
@@ -112,6 +112,8 @@
                 </tbody>
             </table>
         </form>
+        <!-- loader -->
+         <app-loader *ngIf="loader.isLoding | async"></app-loader>
     </div>    
 
 </div>
