@@ -106,8 +106,11 @@ export class HrLopApplyComponent implements OnInit {
     this.apiService.applyTraineeLopByHR(data).subscribe({
       next: (response:any) => {
         console.log('RESPONSE:',response);
-        /** checking if the trainee already present */
-        if(response?.present_type){
+        /** checking if the trainee already present and RH */
+        if(response.isRH){
+          this.messageService.add({severity:'warn',summary:response.message})
+        }
+        else if(response?.present_type){
           const confirmModalRef = this.modalService.open(ConfirmationComponent,{centered:true});
           /** passing confirmation function to ConfirmComponent instance */
            confirmModalRef.componentInstance.confirmFunction = () => this.confirmationByHR();

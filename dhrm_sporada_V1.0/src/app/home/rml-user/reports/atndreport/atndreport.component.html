@@ -211,28 +211,11 @@
         </td>
         <!-- biometric number -->
         <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold">
-            <!-- actions btn -->
-             <div class="flex items-center justity-center gap-2">
-               {{ item.biometric_no }}
-              <i 
-                class="pi pi-clone" 
-                style="color: slateblue" 
-                [cdkCopyToClipboard]="item.biometric_no"
-                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.biometric_no)"></i>
-             </div>
+          {{ item.biometric_no || '-' }}
         </td>
         <!-- application number -->
          <td class="!px-2 !py-4 !rounded-s-md  text-blue-600 font-semibold">
-           
-            <!-- actions btn -->
-             <div class="flex items-center justity-center gap-2">
-               {{ item.cemp_id }}
-               <i 
-                class="pi pi-clone" 
-                style="color: slateblue" 
-                [cdkCopyToClipboard]="item.cemp_id"
-                (cdkCopyToClipboardCopied)="copyGenIDToClipboard(item.cemp_id)"></i>
-             </div>
+            {{ item.cemp_id }}
         </td>
         <!-- [pTooltip]="item.dept_name + ' | ' + item.Line_Name"
             tooltipPosition="bottom" -->

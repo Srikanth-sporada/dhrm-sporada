@@ -78,10 +78,9 @@
      <div class="mt-8 ml-3">
       <p-button 
         icon="pi pi-search"
-        styleClass="rounded-[1.5rem] mt-2"
-        (onClick)="getData()"
-        label="Search" 
-        [disabled]="utils.containsWhitespace(genid) || utils.throttleBtnState"
+        styleClass="mt-2"
+        (onClick)="getData()" 
+        [disabled]="utils.throttleBtnState"
       >
      </p-button> 
      </div>
@@ -93,10 +92,16 @@
                 {{user.activestat | uppercase}} 
               </span>
               <span>
-                | {{user.biometric_no}} | 
+                | {{user.biometric_no || '-'}} |
               </span>
               <span>
-                {{user.apln_slno}} 
+                 {{user.apln_slno}} |
+              </span>
+              <span>
+                 {{user.doj || '-'}} |
+              </span>
+              <span>
+                {{user.dol || '-'}} 
               </span>
             </span>
           </div>

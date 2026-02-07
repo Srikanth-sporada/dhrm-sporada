@@ -138,9 +138,9 @@ export class CalComponent implements OnInit {
     this.month = this.viewDate;
     this.date = new DatePipe("en-US").transform(this.viewDate, "yyyy/MM");
     console.log(this.date);
-
+    /** trim gen id */
     this.service
-      .cal({ id: this.genid, date: this.date })
+      .cal({ id: String(this.genid).trim(), date: this.date })
       .subscribe({
         next: (response: any) => {
           if(response.status=='failed'){
