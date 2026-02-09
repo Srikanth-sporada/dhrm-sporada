@@ -19,6 +19,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "../../api.service";
 import { environment } from "src/environments/environment.prod";
 import { homeImages } from "src/app/imageList";
+import { Utility } from "src/app/utils/utils";
 
 @Component({
   selector: "app-navbar",
@@ -127,6 +128,7 @@ export class NavbarComponent implements OnInit {
     private active: ActivatedRoute,
     public router: Router,
     private messageService:MessageService,
+    private utils:Utility,
   ) {
     this.form = fb.group({
       username: new UntypedFormControl(sessionStorage.getItem("user_name")),
@@ -149,6 +151,10 @@ export class NavbarComponent implements OnInit {
     this.getHr();
     /** new Images */
     this.news = homeImages;
+    /** clear session after seconds  */
+    if(environment.enableSessionTimeout){
+      this.utils.logOutUser();
+    }
     // console.log('NEW BG:',this.appEnvironment,this.uatBg,this.devBg,this.prodBg)
     // console.log(this.payrollNavLink);
   }

@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  path: "http://192.168.15.10:7000",
-  path2: "http://192.168.15.10:7000",
+  path: "https://rane.ssipl.org", // http://192.168.15.10:7000
+  path2: "https://rane.ssipl.org", // http://192.168.15.10:7000
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
@@ -55,6 +55,9 @@ export const environment = {
   appEnvironment:'PROD', // PROD DEV UAT
   /** EH BULK APPROVAL */
   setActualEH:false,
+  /** session timeout */
+  hour:1,
+  enableSessionTimeout:true,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
 

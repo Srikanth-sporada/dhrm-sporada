@@ -4,6 +4,7 @@ import { Injectable, OnInit } from "@angular/core";
 import { ApiService } from "../home/api.service";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
+import { Router } from "@angular/router";
 @Injectable({
   providedIn: "root", // Makes the service available globally
 })
@@ -11,7 +12,8 @@ export class Utility {
   throttleBtnState: any = false;
   constructor(
     private messageService: MessageService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router:Router,
   ) {}
 
   /** Export HTML data to excel sheet
@@ -162,6 +164,15 @@ export class Utility {
       new Set(array.map((item:any) => item))
     ).map((item:any) => item);
      return uniqueArray;
+  }
+
+  /** logout user based o user config */
+  logOutUser(){
+    setTimeout(() => {
+     sessionStorage.clear();
+     window.location.reload();
+     this.messageService.add({severity:'warn',summary:'Session Timoeut.'})
+    }, environment.hour * 60 * 60 * 1000)
   }
  
 }

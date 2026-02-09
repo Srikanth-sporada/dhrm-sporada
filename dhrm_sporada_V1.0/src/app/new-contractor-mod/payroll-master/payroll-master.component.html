@@ -1,184 +1,198 @@
-<div class="overlay" [hidden]="!showPayrollForm"></div>
-<!-- add or update payroll popup component -->
-<div class="shadow-lg ">
-    <div class=" form-popup container1 mat-elevation-z8 sm:!w-[50%] !w-[90%] !overflow-scroll" [hidden]="!showPayrollForm" >
-     <!-- payroll master add or update form -->
-     <div class="bg-blue-600 flex items-center justify-center py-4">
+<!-- payroll form template -->
+<ng-template let-modal #payrollForm>
+   <!-- payroll master add or update form -->
+     <div>
+       <div class="bg-blue-600 flex items-center justify-center py-4">
       <div class="flex items-center justify-start text-white font-poppins mx-4 gap-2">
         <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
            <mat-icon class="h-0 w-0 lg:text-2xl opacity-100 sm:text-2xl text-xl">{{showAdd ? 'add_circle' : 'edit'}}</mat-icon>
         </div>
          <h4 class="lg:text-3xl text-white sm:text-2xl text-xl">{{showAdd? 'Add New Payroll' : 'Update Payroll'}}</h4>
       </div>
+      </div>
+      <!-- payroll master form -->
+      <br />
+          <!-- add and update payroll employee -->
+      <form [formGroup]="payroll" #mydiv >
+                <!-- first row -->
+                  <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
+                    <!-- plant -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">domain</mat-icon>
+                      Plant
+                    </label><br />
+                    <p-dropdown 
+                      formControlName="plant" 
+                      [options]="plantArr"
+                      optionLabel="plant_name"
+                      optionValue="plant_code"
+                      styleClass="w-full"
+                      placeholder="Select Plant">
+                      <ng-template let-plant pTemplate="item">
+                          <div class="flex align-items-center gap-2">
+                              <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    </div>
+                    <!-- effective from -->
+                    <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                        <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                        Effective From
+                      </label> <br>
+                    <p-calendar 
+                        dateFormat="yy-mm-dd"
+                        formControlName="effectivedate"
+                        [disabled]="!showAdd"
+                        view="date"
+                        [showIcon]="true" >
+                    </p-calendar>
+                    </div>
+                  </div>
+                  <!-- second row -->
+                  <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                    <!-- status -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">wifi_2_bar</mat-icon>
+                      Status
+                    </label><br />
+                    <p-dropdown 
+                    formControlName="status"
+                      [options]=" statusOptions"
+                      optionLabel="label"
+                      optionValue="value"
+                      styleClass="w-full"
+                      placeholder="Select Status">
+                    </p-dropdown>
+                    </div>
+                    <!-- leave with wages -->
+                    <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-1" for="name">
+                        <mat-icon class="text-2xl text-blue-600 h-0 w-0">type_specimen</mat-icon>
+                        Leave With Wages
+                      </label> <br>
+                    <mat-radio-group aria-labelledby="example-radio-group-label" formControlName="leaveWagesCheck" class="example-radio-group">
+                    <mat-radio-button value="YES" class="ml-3">Yes</mat-radio-button>
+                      <mat-radio-button value="NO" class="ml-4">No</mat-radio-button>
+                  </mat-radio-group>
+                    </div>
+                  </div>
+                  <!-- third row -->
+                  <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                    <!-- employee PF -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      PF Employee
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter PF Employee %"
+                      formControlName="EmployPF"
+                      />
+                    </div>
+                      <!-- employer PF -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      PF Employer
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter PF Employer %"
+                      formControlName="EmployerPF"
+                      />
+                    </div>
+                  </div>
+                  <!-- fourth row -->
+                  <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                    <!-- employee ESI -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      ESI Employee
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter ESI Employee %"
+                      formControlName="EmployESI"
+                      />
+                    </div>
+                      <!-- employer ESI -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      ESI Employer
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter ESI Employer %"
+                      formControlName="EmployerESI"
+                      />
+                    </div>
+                  </div>
+                  <!-- row five -->
+                  <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
+                    <!-- employee LWF -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      LWF Employee
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter LWF Employee %"
+                      formControlName="EmployLWF"
+                      />
+                    </div>
+                      <!-- employer LWF -->
+                    <div class="w-full mx-2">
+                      <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
+                      LWF Employer
+                      </label><br />
+                    <input
+                        pInputText
+                        type="number"
+                        styleClass="w-full"
+                        id="name"
+                        placeholder="Enter LWF Employer %"
+                      formControlName="EmployerLWF"
+                      />
+                    </div>
+                  </div>
+      </form>
      </div>
-    <!-- payroll master form -->
-    <br />
-        <!-- add and update payroll employee -->
-    <form [formGroup]="payroll" #mydiv >
-               <!-- first row -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins">
-                   <!-- plant -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">domain</mat-icon>
-                    Plant
-                  </label><br />
-                  <p-dropdown 
-                    formControlName="plant" 
-                    [options]="plantArr"
-                    optionLabel="plant_name"
-                    optionValue="plant_code"
-                    styleClass="w-full"
-                    placeholder="Select Plant">
-                  </p-dropdown>
-                  </div>
-                   <!-- effective from -->
-                  <div class="w-full mx-2">
-                  <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-                      Effective From
-                    </label> <br>
-                  <p-calendar 
-                      dateFormat="yy-mm-dd"
-                      formControlName="effectivedate"
-                      panelStyleClass="!h-1/2 !w-1/2"
-                      [disabled]="!showAdd"
-                      [view]="'date'"
-                      [showIcon]="true" >
-                  </p-calendar>
-                  </div>
-                </div>
-                <!-- second row -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- status -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">wifi_2_bar</mat-icon>
-                    Status
-                  </label><br />
-                  <p-dropdown 
-                   formControlName="status"
-                    [options]=" statusOptions"
-                    optionLabel="label"
-                    optionValue="value"
-                    styleClass="w-full"
-                    placeholder="Select Status">
-                  </p-dropdown>
-                  </div>
-                   <!-- leave with wages -->
-                  <div class="w-full mx-2">
-                  <label class="text-blue-600 flex items-center justify-start gap-1 -mb-1" for="name">
-                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">type_specimen</mat-icon>
-                       Leave With Wages
-                    </label> <br>
-                  <mat-radio-group aria-labelledby="example-radio-group-label" formControlName="leaveWagesCheck" class="example-radio-group">
-                   <mat-radio-button value="YES" class="ml-3">Yes</mat-radio-button>
-                    <mat-radio-button value="NO" class="ml-4">No</mat-radio-button>
-                </mat-radio-group>
-                  </div>
-                </div>
-                <!-- third row -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- employee PF -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     PF Employee
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter PF Employee %"
-                     formControlName="EmployPF"
-                    />
-                  </div>
-                    <!-- employer PF -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     PF Employer
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter PF Employer %"
-                     formControlName="EmployerPF"
-                    />
-                  </div>
-                </div>
-                <!-- fourth row -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- employee ESI -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     ESI Employee
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter ESI Employee %"
-                     formControlName="EmployESI"
-                    />
-                  </div>
-                    <!-- employer ESI -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     ESI Employer
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter ESI Employer %"
-                     formControlName="EmployerESI"
-                    />
-                  </div>
-                </div>
-                <!-- row five -->
-                <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- employee LWF -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     LWF Employee
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter LWF Employee %"
-                     formControlName="EmployLWF"
-                    />
-                  </div>
-                    <!-- employer LWF -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">percent</mat-icon>
-                     LWF Employer
-                    </label><br />
-                  <input
-                      pInputText
-                      type="number"
-                      styleClass="w-full"
-                      id="name"
-                      placeholder="Enter LWF Employer %"
-                     formControlName="EmployerLWF"
-                    />
-                  </div>
-                </div>
-                <!-- action buttons -->
-                 <div style="display: flex; justify-content: space-around;padding-top:1em">
-                    <!-- reset btn -->
+    <!-- modal footer -->
+      <div class="modal-footer bg-gray-100">
+                    <!-- close btn -->
+                    <button 
+                    (click)="hidePayroll()"
+                    (click)="modal.close('payroll form closed.')"
+                    class="!bg-gray-200 !text-gray-600 !px-4 !py-2 !rounded-[1rem] flex items-center justify-center gap-1 font-semibold"
+                        >
+                          <mat-icon class="text-[20px]">close</mat-icon>
+                     Cancel
+                    </button>
+                     <!-- reset btn -->
                     <button
                       type="reset"
                       class="!bg-purple-500 !text-white !font-bold !px-4 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
@@ -186,17 +200,9 @@
                           <mat-icon class="text-[20px]">sync</mat-icon>
                       Reset
                     </button>
-                    <!-- close btn -->
-                    <button 
-                    (click)="hidePayroll()"
-                    class="!bg-gray-100 !text-black !font-bold !px-4 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
-                        >
-                          <mat-icon class="text-[20px]">close</mat-icon>
-                      Cancel
-                    </button>
                     <!-- submit btn -->
                     <button  
-                      *ngIf="showAdd" (click)="submitPayroll()"
+                      *ngIf="showAdd" (click)="submitPayroll(); modal.close('after added.')"
                       [disabled]="!payroll.valid"
                       class="!bg-blue-600 !text-white !font-bold !px-4 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
                         >
@@ -205,20 +211,18 @@
                     <!-- update btn -->
                     <button 
                       *ngIf="!showAdd" 
-                      (click)="updatePayroll()"
+                      (click)="updatePayroll(); modal.close('after updated.')"
                       class="!bg-yellow-500 !text-white !font-bold !px-4 !py-2 !rounded-[1rem] flex items-center justify-center gap-1"
                         >
                       <mat-icon class="text-[20px]">sync</mat-icon> Update
                     </button>
-                 </div>
-    </form>
-</div>
-</div>
+      </div>
+</ng-template>
 
 <!-- payroll table -->
 <div class="mx-2">
        <!-- Payroll master header -->
-      <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+      <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
         <div class="flex items-start justify-start flex-col">
           <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
           <mat-icon>layers</mat-icon>Payroll Master<hr/>
@@ -258,69 +262,76 @@
                 optionValue="plant_code"
                 styleClass="w-full py-1"
                 (onChange)="filterPayrollByPlant()"  
-                placeholder="Select Plant"></p-dropdown>
+                placeholder="Select Plant">
+                <ng-template let-plant pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+                      </div>
+                  </ng-template>
+              </p-dropdown>
             </div>
           </div>
       </div>
-      
-        <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+ <!-- payroll data table -->
+            <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
 
-        <ng-template #show>
-            <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
-            <table id="table" class="table-auto !w-full">
-              <!-- table head -->
-                    <thead class="sticky top-0">
-                        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                            <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">PF Employee %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">PF Employer %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">ESI Employee %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">ESI Employer %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">LWF Employee %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">LWF Employer %</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Leave wages </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Effective date </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
-                            <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <!-- table body -->
-                    <tbody>
-                        <tr 
-                          *ngFor="let data of activePayroll;let i =index"
-                          class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Plant_code}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.PF_Employee}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.PF_Employer}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.ESI_Employee}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.ESI_Employer}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.LWF_Employee}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.LWF_Employer}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Leave_wages}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Effective_from |date:'dd-MM-yyyy'}}</td>
-                            <!-- <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="data.Status == 1">Active</td> -->
-                            <td class="!px-2 !py-4 !rounded-s-md text-center" 
-                                *ngIf="data.Status == 1; else inactive">Active</td>
-                            <ng-template #inactive>
-                              <td class="!px-2 !py-4 !rounded-s-md text-center">Inactive</td>
-                            </ng-template> 
-                            <!-- action buttons -->
-                            <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
-                                <button (click)="onEdit(data)" >
-                                    <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
-                                </button>
-                                <button (click)="deletePayroll($event,data)" >
-                                    <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
+              <table id="table" class="table-auto !w-full">
+                <!-- table head -->
+                      <thead class="sticky top-0">
+                          <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                              <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">PF Employee %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">PF Employer %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">ESI Employee %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">ESI Employer %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">LWF Employee %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">LWF Employer %</th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Leave wages </th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Effective date </th>
+                              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                              <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
+                          </tr>
+                      </thead>
+                      <!-- table body -->
+                      <tbody>
+                          <tr 
+                            *ngFor="let data of activePayroll;let i =index"
+                            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.Plant_code}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.PF_Employee}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.PF_Employer}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.ESI_Employee}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.ESI_Employer}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.LWF_Employee}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.LWF_Employer}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Leave_wages}}</td>
+                              <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Effective_from |date:'dd-MM-yyyy'}}</td>
+                              <!-- <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="data.Status == 1">Active</td> -->
+                              <td class="!px-2 !py-4 !rounded-s-md text-center" 
+                                  *ngIf="data.Status == 1; else inactive">
+                                <span class="px-2 bg-green-200 text-green-600 rounded font-semibold">Active</span>
+                              </td>
+                              <ng-template #inactive>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">
+                                  <span class="px-2 bg-red-200 text-red-600 rounded font-semibold">InActive</span>
+                                </td>
+                              </ng-template> 
+                              <!-- action buttons -->
+                              <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+                                  <button (click)="onEdit(data)" >
+                                      <mat-icon class="text-blue-600 text-[20px]">edit</mat-icon>
+                                  </button>
+                                  <button (click)="deletePayroll($event,data)" >
+                                      <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
               </table>
+              <!-- loader -->
+               <app-loader *ngIf="loader.isLoding | async"></app-loader>
           </div>
-
-        </ng-template> 
-
 </div>
   
