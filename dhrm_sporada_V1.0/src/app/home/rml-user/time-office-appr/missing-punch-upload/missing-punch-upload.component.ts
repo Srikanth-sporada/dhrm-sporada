@@ -342,15 +342,15 @@ submitDateTime() {
     const fileReader = new FileReader()
     fileReader.readAsBinaryString(file)
     fileReader.onload=(event:any)=>{
-    let binaryData= event.target.result;
+    let binaryData = event.target.result;
     // console.log('BINARY DATA:',binaryData)
-    let workbook=XLSX.read(binaryData,{type:'binary'})
+    let workbook = XLSX.read(binaryData,{type:'binary'})
     console.log('WB:',workbook);
     let sheetname = workbook.SheetNames[0];
     console.log('SN:',sheetname)
     this.bulkData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetname]);
     console.log('BULK DATA:',this.bulkData);
-    this.verifybtn = false
+    this.verifybtn = false;
     }
   }
 

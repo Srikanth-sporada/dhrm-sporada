@@ -57,7 +57,7 @@ export const environment = {
   setActualEH:false,
   /** session timeout */
   hour:1,
-  enableSessionTimeout:true,
+  enableSessionTimeout:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
 

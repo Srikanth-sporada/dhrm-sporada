@@ -482,6 +482,7 @@
               <app-full-month-lop></app-full-month-lop>
              </ng-template>
         </p-tabPanel>
+
         <!-- hr leave apply -->
          <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
@@ -496,6 +497,7 @@
               <app-hr-leave-apply></app-hr-leave-apply>
             </ng-template>
          </p-tabPanel>
+
           <!-- hr applied leave status -->
          <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
@@ -510,6 +512,7 @@
              <app-hr-applied-leave-record></app-hr-applied-leave-record>
             </ng-template>
          </p-tabPanel>
+
          <!-- hr lop apply -->
           <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->
@@ -524,6 +527,7 @@
              <app-hr-lop-apply></app-hr-lop-apply>
             </ng-template>
          </p-tabPanel>
+         
          <!-- hr applied lop record -->
           <p-tabPanel *ngIf="isadmin || ishr || isHrApprover">
            <!-- header -->

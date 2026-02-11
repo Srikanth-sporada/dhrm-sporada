@@ -838,3 +838,7 @@ margin-left: 0.75em;
   :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix{
     padding: .5em 0 .5em 0 !important;
   }
+
+::ng-deep .modal-dialog {
+  max-width: 75dvw;
+}
