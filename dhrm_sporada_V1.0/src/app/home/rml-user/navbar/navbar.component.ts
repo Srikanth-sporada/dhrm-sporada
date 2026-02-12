@@ -45,6 +45,8 @@ export class NavbarComponent implements OnInit {
   hideMachinePunchReport = environment.hideMachineReport;
   hideOperatorCoffApproval = environment.hideOperatorCOffApproval;
   hideHrmsNewTab:boolean = environment?.hideHrmsNewTab
+  hidePayrollHR:boolean = environment?.hidePayrollHR;
+  hidePayrollHrAppr:boolean = environment?.hidePayrollHrAppr
   /** home page image */
   homePageImg = ['assets/home-one.png' , 'assets/home-two.png'];
   homepageImgIndex:any;
@@ -102,6 +104,7 @@ export class NavbarComponent implements OnInit {
   isTraineeOnboardExpanded: boolean = false;
   isContractorOnboardExpanded: boolean = false;
   isSalaryMasterExpanded: boolean = false;
+  isPayrollExpanded:boolean = false;
   isTrainingExpanded: boolean = false;
   isTimeOfficeMenuExpanded: boolean = false;
   isSkillStatusExpanded:boolean = false;

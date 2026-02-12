@@ -77,6 +77,14 @@ export class ApiService {
     );
   }
 
+  /** 
+   * update trainee data #NEW
+   * @param payload
+   */
+  updateTraineDataBulk(payload:any){
+    return this.http.post(this.url + '/master/updatetrndetails' , payload);
+  }
+
   /** get all data about trainee for ID card */
   getTraineeDataForIdCard(applicationNo:any){
     return this.http.get(this.url + `/HROperation/getdatafortrainee?apln_slno=${applicationNo}`)

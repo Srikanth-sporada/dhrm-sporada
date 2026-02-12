@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {LoginModule} from "../login/login.module";
 import { NewJoinersRoutingModule } from './new-joiners-routing-module';
@@ -59,7 +59,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 import { ExtendedModule } from "@angular/flex-layout";
-
+import { UpdateTraineeDataComponent } from './update-trainee-data/update-trainee-data.component';
 @NgModule({
     declarations: [	
         HrApprovalComponent,
@@ -90,6 +90,7 @@ import { ExtendedModule } from "@angular/flex-layout";
       RejectComponent,
       RejoinProcessComponent,
       ConfirmationComponent,
+      UpdateTraineeDataComponent, // #NEW
    ],
       imports: [
     CommonModule,
@@ -125,7 +126,7 @@ import { ExtendedModule } from "@angular/flex-layout";
     ConfirmDialogModule,
     ExtendedModule
 ],
-      providers:
-      [AuthGuard]
+  providers:[AuthGuard],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   })
   export class NewJoinersModule { }

@@ -14,6 +14,7 @@ import { AuthGuard,  } from 'src/app/home/Guards/Auth.guard';
 import { PermIdcardComponent } from './perm-idcard/perm-idcard.component';
 import { isHr, isHrAppr, HrPermission } from '../../Guards/newJoiners.guard';
 import { RejoinProcessComponent } from './rejoin-process/rejoin-process.component';
+import { UpdateTraineeDataComponent } from './update-trainee-data/update-trainee-data.component';
 
 const routes: Routes = [
     {
@@ -67,6 +68,11 @@ const routes: Routes = [
     {
       path: 'Rejoin-process',
       component: RejoinProcessComponent
+    },
+    // #NEW
+    {
+      path:'update-trainee-data',
+      component: UpdateTraineeDataComponent
     }
     
 ];

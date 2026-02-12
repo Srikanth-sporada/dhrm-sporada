@@ -170,6 +170,24 @@
           </mat-expansion-panel>
         </div>
 
+        <!-- payroll seperate menu -->
+        <div *ngIf="isFin == 'true' || isadmin == 'true' || (ishr == 'true' && !hidePayrollHR) || (ishrappr && !hidePayrollHrAppr)">
+         <!-- sporada payroll -->
+              <div *ngIf="isFin == 'true' || isadmin == 'true' || (ishr == 'true' && !hidePayrollHR) || (ishrappr && !hidePayrollHrAppr)"> 
+                <a
+                  mat-list-item
+                  class="rounded-sm !font-semibold !font-poppins"
+                  (click)="navigateToPayroll()"
+                  target="_blank"
+                  class="rounded-sm px-2"
+                >
+                  <mat-icon class="icon-pad">account_balance_wallet</mat-icon>
+                 <span  class="!font-semibold !font-poppins">Payroll</span>
+                  </a
+                >
+              </div>
+        </div>
+
         <!-- masters menu -->
         <div *ngIf="isadmin == 'true'">
           <mat-expansion-panel
@@ -190,7 +208,7 @@
              <!-- sporada payroll -->
             <mat-nav-list>
               <!-- sporada payroll -->
-              <div *ngIf="isadmin == 'true'"> 
+              <div [hidden]="true"> 
                 <a
                   mat-list-item
                   class="rounded-sm"
@@ -282,6 +300,16 @@
                 >
                   <mat-icon class="icon-pad">assignment_ind</mat-icon>Rejoin
                   Request</a
+                >
+              </div>
+              <div *ngIf="isadmin == 'true'">
+                <a
+                  mat-list-item
+                  routerLink="/rhrm/new_joiners/update-trainee-data"
+                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                  class="rounded-sm"
+                >
+                  <mat-icon class="icon-pad">update</mat-icon>Update Trainee Data</a
                 >
               </div>
             </mat-nav-list>

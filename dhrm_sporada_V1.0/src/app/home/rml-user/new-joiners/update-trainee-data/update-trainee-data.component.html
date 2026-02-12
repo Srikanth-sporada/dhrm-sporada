@@ -1,0 +1,93 @@
+<!-- main div -->
+<div class="mx-2">
+  <!-- headet div -->
+  <div
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row"
+  >
+    <div class="flex items-start justify-start flex-col">
+      <h1
+        class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+      >
+        <mat-icon>cloud_upload</mat-icon>Update Trainee Data
+        <hr />
+      </h1>
+      <p class="mt-1 text-gray-400">Bulk update trainee data</p>
+    </div>
+    <!-- user details -->
+    <h1
+      class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+    >
+      {{ userDetails }}
+    </h1>
+  </div>
+  <!-- upload division -->
+  <div>
+    <!-- action -->
+    <div
+      class="!shadow-md !my-2 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
+    >
+      <!-- action header -->
+      <div class="relative">
+        <h1
+          class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
+        >
+          Actions <mat-icon>filter_alt</mat-icon>
+        </h1>
+        <div>
+          <!-- row one -->
+          <div
+            class="flex items-center justify-center sm:justify-start w-full gap-2"
+          >
+            <!--download btn-->
+            <a
+              [href]="url + 'sop/Trainee data upload format.xlsx'"
+              style="text-decoration: none"
+            >
+              <button
+                pButton
+                label="Template"
+                iconPos="right"
+                icon="pi pi-download"
+                class="mt-10"
+              ></button>
+            </a>
+            <!-- file upload-->
+            <div>
+              <label for="date" class="font-semibold text-gray-400 mb-1 mt-3"
+                >Upload</label
+              >
+              <br />
+              <input
+                type="file"
+                (change)="fileUpload($event)"
+                accept=".xlsx"
+                [(ngModel)]="file"
+                class="block text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-400 py-2 px-2 rounded-md"
+              />
+            </div>
+            <!-- verify btn -->
+            <!-- <button
+              pButton
+              label="Verify"
+              iconPos="right"
+              icon="pi pi-check"
+              class="mt-10"
+              (click)="verify_bulkData()"
+              [disabled]="verifybtn"
+            ></button> -->
+            <!-- details btn -->
+            <button
+              pButton
+              [disabled]="!hasGenID && !isFileLoaded"
+              label="Update"
+              iconPos="right"
+              (click)="updateTraineeDataBulk()"
+              icon="pi pi-upload"
+              class="mt-10"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
