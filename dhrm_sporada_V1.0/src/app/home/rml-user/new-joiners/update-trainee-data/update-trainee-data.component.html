@@ -2,7 +2,8 @@
 <div class="mx-2">
   <!-- headet div -->
   <div
-    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row"
+    class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row mx-2"
+    #headerDiv
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -21,7 +22,7 @@
     </h1>
   </div>
   <!-- upload division -->
-  <div>
+  <div #actionDiv>
     <!-- action -->
     <div
       class="!shadow-md !my-2 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2"
@@ -36,7 +37,7 @@
         <div>
           <!-- row one -->
           <div
-            class="flex items-center justify-center sm:justify-start w-full gap-2"
+            class="flex items-center justify-center sm:justify-start w-full gap-2 flex-col md:flex-row"
           >
             <!--download btn-->
             <a
@@ -78,7 +79,7 @@
             <!-- details btn -->
             <button
               pButton
-              [disabled]="!hasGenID && !isFileLoaded"
+              [disabled]="!hasGenID"
               label="Update"
               iconPos="right"
               (click)="updateTraineeDataBulk()"
@@ -89,5 +90,60 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="traineeUpdateDataBulk.length > 0"  
+    class="!shadow-md !my-2 !rounded-md  pb-3  !font-poppins  border border-gray-400 mx-2"
+    [style.height]="'calc(108vh - ' + heightForTable + 'px)'">
+       <p-table 
+         [value]="traineeUpdateDataBulk" 
+         [tableStyle]="{'min-width': '50rem'}"
+         [scrollable]="true"
+         scrollHeight="flex">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th>Gen ID</th>
+                <th>Bank Name</th>
+                <th>Bank Account Number</th>
+                <th>IFSC Code</th>
+                <th>UAN Number</th>
+                <th>ESI Number</th>
+                <th>PF Number</th>
+                <th>Email</th>
+                <th>Cost Center</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-columns="columns">
+            <tr>
+                <td>
+                    {{product.gen_id || '-'}}
+                </td>
+                <td>
+                    {{product.bank_name || '-'}}
+                </td>
+                <td>
+                    {{product.bank_account_number || '-'}}
+                </td>
+                <td>
+                    {{product.ifsc_code || '-'}}
+                </td>
+                <td>
+                    {{product.uan_number || '-'}}
+                </td>
+                <td>
+                    {{product.esi_number || '-'}}
+                </td>
+                 <td>
+                    {{product.pf_number || '-'}}
+                </td>
+                <td>
+                    {{product.email || '-'}}
+                </td>
+                 <td>
+                    {{product.cost_center || '-'}}
+                </td>
+            </tr>
+        </ng-template>
+       </p-table>
   </div>
 </div>

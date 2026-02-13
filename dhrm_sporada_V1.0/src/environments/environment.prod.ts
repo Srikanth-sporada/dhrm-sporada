@@ -59,8 +59,8 @@ export const environment = {
   hour:1,
   enableSessionTimeout:false,
   /**payroll */
-  hidePayrollHR:false,
-  hidePayrollHrAppr:false,
+  hidePayrollHR:true,
+  hidePayrollHrAppr:true,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
 

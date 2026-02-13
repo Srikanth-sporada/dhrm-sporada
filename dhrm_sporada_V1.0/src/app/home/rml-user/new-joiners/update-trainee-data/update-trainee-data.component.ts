@@ -1,26 +1,38 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,ViewChild,ElementRef,AfterViewInit,Renderer2 } from "@angular/core";
 import { environment } from "src/environments/environment.prod";
 import * as XLSX from "xlsx";
 import { LoaderserviceService } from "src/app/loaderservice.service";
 import { MessageService } from "primeng/api";
 import { ApiService } from "src/app/home/api.service";
+import { ConfirmationComponent } from "src/app/confirmation/confirmation.component";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Utility } from "src/app/utils/utils";
 @Component({
   selector: "app-update-trainee-data",
   templateUrl: "./update-trainee-data.component.html",
   styleUrls: ["./update-trainee-data.component.css"],
 })
-export class UpdateTraineeDataComponent implements OnInit {
+export class UpdateTraineeDataComponent implements OnInit,AfterViewInit {
   userDetails: any;
   all: any;
   url = environment.path + "/";
   file: any;
-  traineeUpdateDataBulk: any;
+  traineeUpdateDataBulk: any = [];
   hasGenID: boolean = false;
   isFileLoaded:boolean = false;
+  headerHeight:any;
+  actionHeight:any;
+  heightForTable:any;
+  /** action & header element */
+   @ViewChild('headerDiv',) headerRef: ElementRef;
+   @ViewChild('actionDiv',) actionDivRef: ElementRef;
   constructor(
     private messageService:MessageService,
     public loader:LoaderserviceService,
     private apiService:ApiService,
+    private modalService:NgbModal,
+    private utils:Utility,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +49,12 @@ export class UpdateTraineeDataComponent implements OnInit {
         this.all.plant_name;
     }
   }
+
+ ngAfterViewInit():void{
+    this.headerHeight = this.headerRef.nativeElement.getBoundingClientRect().height;
+    this.actionHeight = this.actionDivRef.nativeElement.getBoundingClientRect().height;
+    this.heightForTable = this.actionHeight + this.headerHeight;
+ }
 
   /** 
    * handl file upload
@@ -102,20 +120,27 @@ export class UpdateTraineeDataComponent implements OnInit {
    * update trainee data bulk API
    */
   updateTraineeDataBulk(){
-    this.apiService.updateTraineDataBulk(this.traineeUpdateDataBulk).subscribe({
+    if(this.isFileLoaded){
+      this.apiService.updateTraineDataBulk(this.traineeUpdateDataBulk).subscribe({
       next: (response:any) => {
         console.log('RESPONSE:',response);
         if(response.status){
-          this.messageService.add({severity:'info',summary:'updated succesfully'})
+          this.messageService.add({severity:'info',summary:'updated succesfully'});
         }else{
           this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
         }
+        /** open status modal */
+        this.openStatusModal(response,this.traineeUpdateDataBulk.length);
       },
       error: (error:any) => {
        console.error('ERROR:',error);
        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
+    }else{
+      console.log('file not loaded correctly');
+      this.messageService.add({severity:'warn',summary:'Oops! something went wrong'})
+    }
   }
 
   /** 
@@ -125,5 +150,18 @@ export class UpdateTraineeDataComponent implements OnInit {
     this.traineeUpdateDataBulk = [];
         this.file = null;
         this.hasGenID = false;
+  }
+
+  /** 
+   * open status modal
+   * @param apiResponse
+   * @param totalDataCount
+   */
+  openStatusModal(apiResponse:any, totalDataCount:any){
+    const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
+    confirmModalRef.componentInstance.confirmFunction = () => this.resetData();
+    /** modal text */
+    confirmModalRef.componentInstance.confirmText = `${apiResponse?.inserted_count} of ${totalDataCount} SUCCESS and ${apiResponse?.not_inserted_count} of ${totalDataCount} FAILED.`
+    console.log('modal opened...');
   }
 }
