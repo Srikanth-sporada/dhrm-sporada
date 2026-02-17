@@ -41,7 +41,8 @@ export class ContractorEmployeeComponent implements OnInit {
 maritalStatusOptions = [
   { label: "UNMARRIED", value: "UNMARRIED" },
   { label: "MARRIED", value: "MARRIED" },
-  { label: "WIDOW", value: "WIDOW" }
+  { label: "WIDOW", value: "WIDOW" },
+  { label: "SINGLE", value: "SINGLE" }
 ];
 genderOptions = [
   { label: "Male", value: "Male" },

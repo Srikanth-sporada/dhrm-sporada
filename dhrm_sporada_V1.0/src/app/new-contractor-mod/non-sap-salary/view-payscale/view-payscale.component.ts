@@ -51,6 +51,7 @@ export class ViewPayscaleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    /** loged user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -153,26 +154,32 @@ export class ViewPayscaleComponent implements OnInit {
         ToTal_Base_Value:[null],
         Net_Take_Home:[null],
     })
+    /** get trainee details */
     this.get_trainee_dtls(this.Apln_slno, this.Gen_id, this.Apln_status);
-    
   }
 
+  /** 
+   * get trainee details
+   * @param apln_slno
+   * @param gen_id
+   * @param apln_status
+   */
   get_trainee_dtls(apln_slno: any, gen_id: any, apln_status: any) {
     console.log(apln_slno, gen_id, apln_status);
     
-    this.api.getTraineDtls(apln_slno, gen_id, apln_status).subscribe(
-      (res) => {
+    this.api.getTraineDtls(apln_slno, gen_id, apln_status).subscribe({
+      next:(res) => {
         this.apln_list = res;
 
         console.log(this.apln_list);
         this.get_Payscale(this.apln_list[0].cont_id);
         this.initvalueFormGroup();
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
-    );
+    });
   }
 
   initvalueFormGroup() {
@@ -198,19 +205,23 @@ export class ViewPayscaleComponent implements OnInit {
     const formattedDate = parsedDate.format("YYYY-MM-DD HH:mm:ss.SSS");
     return formattedDate;
   }
+  /** 
+   * get pascale by contractor ID
+   * @param con_Id
+   */
   get_Payscale(con_Id: any) {
     console.log(con_Id);
     
-    this.api.getConPayscale(this.plant_Code, con_Id).subscribe(
-      (res) => {
+    this.api.getConPayscale(this.plant_Code, con_Id).subscribe({
+      next:(res) => {
         this.payscale_Data = res;
         console.log(res)
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
-    );
+    });
   }
 
   openAlertDialog(message: string): void {
@@ -227,18 +238,19 @@ export class ViewPayscaleComponent implements OnInit {
     this.selectedPayscale = selectedData;
     this.payscaleForm = true;
     // to get max  amount
-    // this.payScaleFormGroup.patchValue(this.selectedPayscale);
-    this.NewPayScaleFormGroup.patchValue(this.selectedPayscale);
-    
+    this.NewPayScaleFormGroup.patchValue(this.selectedPayscale); 
   }
+
   onInputChanged(event: any, controlName: string) {
     const newValue = event.target.value;
     const numericValue = parseFloat(newValue);
     this.NewPayScaleFormGroup.get(controlName)?.patchValue(numericValue);
   }
 
+  /**
+   * submit payscale
+   */
   submit() {
-    
     const data = {
       PayScale_ID: this.NewPayScaleFormGroup.get('PayScale_ID')?.value,
       Effective_Date:this.NewPayScaleFormGroup.get('Effective_Date')?.value,
@@ -246,9 +258,16 @@ export class ViewPayscaleComponent implements OnInit {
           plant_Code: this.plant_Code,
           Requested_By: this.userEmpcode,
         };
-      this.api.addWagemaster(data).subscribe((res: any) => {
+      this.api.addWagemaster(data).subscribe({
+        next:(res: any) => {
         this.router.navigate(["/rhrm/contra/upt_payscale"]);
-        this.openAlertDialog(`${res}`);
+        // this.openAlertDialog(`${res}`);
+        this.messageService.add({severity:'info',summary:res});
+        },
+        error: (error:any) => {
+          console.error('ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message});
+        }
       });
   }
 
@@ -267,6 +286,7 @@ export class ViewPayscaleComponent implements OnInit {
       return row;
     });
   }
+
   goBack(): void {
     this.location.back();
   }

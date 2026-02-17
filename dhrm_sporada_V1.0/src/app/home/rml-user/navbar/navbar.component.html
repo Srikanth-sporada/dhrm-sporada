@@ -171,9 +171,9 @@
         </div>
 
         <!-- payroll seperate menu -->
-        <div *ngIf="isFin == 'true' || isadmin == 'true' || (ishr == 'true' && !hidePayrollHR) || (ishrappr && !hidePayrollHrAppr)">
+        <div *ngIf="isFin || isadmin == 'true' || (ishr === 'true' && !hidePayrollHR) || (ishrappr === 'true' && !hidePayrollHrAppr)">
          <!-- sporada payroll -->
-              <div *ngIf="isFin == 'true' || isadmin == 'true' || (ishr == 'true' && !hidePayrollHR) || (ishrappr && !hidePayrollHrAppr)"> 
+              <div *ngIf="isFin || isadmin == 'true' || (ishr === 'true' && !hidePayrollHR) || (ishrappr && !hidePayrollHrAppr)"> 
                 <a
                   mat-list-item
                   class="rounded-sm !font-semibold !font-poppins"

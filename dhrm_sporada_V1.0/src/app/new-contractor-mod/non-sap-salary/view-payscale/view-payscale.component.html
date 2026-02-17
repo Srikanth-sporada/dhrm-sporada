@@ -1,11 +1,11 @@
 <div class="mx-2">
     <!-- update salary breakup header -->
-      <div class="!flex  gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+      <div class="!flex  gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
         <div class="flex items-start justify-start flex-col">
           <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
           <mat-icon>sync</mat-icon>Update Salary Breakup<hr/>
         </h1>
-        <p class="mt-1 text-gray-400">Update Salary For Employee | Trainee</p>
+        <p class="mt-1 text-gray-400">Update Salary For Trainee</p>
         </div>
         <!-- user details -->
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
@@ -732,7 +732,7 @@
         <button class="px-4 py-1 bg-purple-600 !text-white rounded-lg font-semibold" (click)="goBack()"  >
           Back
         </button>
-        <button *ngIf="Current"  [hidden]="!payscaleForm" class="px-4 py-1 bg-blue-600 !text-white rounded-lg font-semibold" (click)="submit()"  >
+        <button *ngIf="Current"  [hidden]="!payscaleForm" class="px-4 py-1 bg-blue-600 !text-white rounded-lg font-semibold" (click)="submit()">
            Submit For Approval
         </button>
 </div>

@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  path: "https://rane.ssipl.org", // http://192.168.15.10:7000
-  path2: "https://rane.ssipl.org", // http://192.168.15.10:7000
+  path: "http://192.168.15.10:8080", // http://192.168.15.10:8080
+  path2: "http://192.168.15.10:8080", // http://192.168.15.10:8080
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
@@ -46,7 +46,7 @@ export const environment = {
   /** trainee time office */
   hideApplyPermission:true,
   hidePermissionStatus:true,
-  /** application environment */
+  /** application environment */  
   prodBg:' !bg-white',
   devBg:' !bg-blue-100',
   uatBg:' !bg-green-100',
@@ -59,8 +59,8 @@ export const environment = {
   hour:1,
   enableSessionTimeout:false,
   /**payroll */
-  hidePayrollHR:true,
-  hidePayrollHrAppr:true,
+  hidePayrollHR:false,
+  hidePayrollHrAppr:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
 
