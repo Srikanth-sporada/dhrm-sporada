@@ -11,6 +11,7 @@ import { MessageService } from "primeng/api";
   templateUrl: "./update-payscale.component.html",
   styleUrls: ["./update-payscale.component.css"],
 })
+
 export class UpdatePayscaleComponent implements OnInit {
   issupervisor: string | null = sessionStorage.getItem("issupervisor");
   ishrappr: string | null = sessionStorage.getItem("ishrappr");
@@ -18,7 +19,7 @@ export class UpdatePayscaleComponent implements OnInit {
   ishr: string | null = sessionStorage.getItem("ishr");
   plant_Code: any = sessionStorage.getItem("plantcode");
   userEmpcode: string | null = sessionStorage.getItem("user_name");
-  apnt_list: any;
+  apnt_list: any = [];
   Con_list: any;
   selectedDoj: any;
   selectedGenId: any;

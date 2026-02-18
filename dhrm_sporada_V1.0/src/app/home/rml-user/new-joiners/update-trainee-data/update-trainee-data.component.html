@@ -33,6 +33,10 @@
           class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
         >
           Actions <mat-icon>filter_alt</mat-icon>
+           <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{traineeUpdateDataBulk.length || 0}}
+           </span>
         </h1>
         <div>
           <!-- row one -->
@@ -131,7 +135,7 @@
                     {{product.uan_number || '-'}}
                 </td>
                 <td>
-                    {{product.esi_number || '-'}}
+                    {{product.esi_no || '-'}}
                 </td>
                  <td>
                     {{product.pf_number || '-'}}

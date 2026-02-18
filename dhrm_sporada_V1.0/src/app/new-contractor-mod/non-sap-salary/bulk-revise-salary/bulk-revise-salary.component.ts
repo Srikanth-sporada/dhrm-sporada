@@ -7,7 +7,8 @@ import { ToastComponent } from '../../toast/toast.component';
 import { Location } from '@angular/common';
 import * as XLSX from'xlsx'
 import moment from 'moment';
-import {LoaderserviceService} from '../../../loaderservice.service'
+import { LoaderserviceService } from 'src/app/loaderservice.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-bulk-revise-salary',
   templateUrl: './bulk-revise-salary.component.html',
@@ -22,21 +23,25 @@ export class BulkReviseSalaryComponent implements OnInit {
   selectedFile:any
   plant_Code: any = sessionStorage.getItem('plantcode');
   userEmpcode:string |null = sessionStorage.getItem('user_name');
-  viewtable=false
+  viewtable=false;
+
   constructor(
     private location: Location,
     private dialog: MatDialog,
     private route: ActivatedRoute,
      private api:ClamAPIService,
      public loader: LoaderserviceService,
-     public router: Router) {}
+    public router: Router,
+    private messageService:MessageService,
+  ) {}
 
   ngOnInit(): void {
+    console.log('component init..')
   }
 
   downloadList(): void {
-    this.api.get_wageList_For_Revise(this.plant_Code).subscribe(
-      (res: any) => {
+    this.api.get_wageList_For_Revise(this.plant_Code).subscribe({
+      next: (res: any) => {
         this.updateList = res;
         console.log(this.updateList);
 
@@ -47,10 +52,11 @@ export class BulkReviseSalaryComponent implements OnInit {
           console.error('Received an empty or invalid response from the API');
         }
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching data from the API:', error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
   formatDateWithHr(inputDate: Date): String {
     const parsedDate = moment(inputDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
@@ -153,9 +159,6 @@ export class BulkReviseSalaryComponent implements OnInit {
         }
         transformedObj[newKey] = value !== null ? value : null;
       });
-      
-     
-
       return transformedObj;
     });
   }
@@ -214,20 +217,8 @@ export class BulkReviseSalaryComponent implements OnInit {
       }
     }
   }
-  
-  // applyStyles(ws: XLSX.WorkSheet, range: string, style: any) {
-  //   const rangeArray = XLSX.utils.decode_range(range);
-  //   for (let row = rangeArray.s.r; row <= rangeArray.e.r; row++) {
-  //     for (let col = rangeArray.s.c; col <= rangeArray.e.c; col++) {
-  //       const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-  //       if (!ws[cellAddress]) {
-  //         ws[cellAddress] = {};
-  //       }
-  //       ws[cellAddress].s = style;
-  //     }
-  //   }
-  // }
-  
+ 
+  /** handel file input */
   handleFileInput(event: any): void {
     const selectedFile = event.target.files[0];
     const fileReader = new FileReader();

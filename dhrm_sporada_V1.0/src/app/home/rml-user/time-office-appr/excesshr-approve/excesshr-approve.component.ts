@@ -8,6 +8,7 @@ import { environment } from "src/environments/environment.prod";
 import { Utility } from "src/app/utils/utils";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
+
 @Component({
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
@@ -53,6 +54,9 @@ export class ExcesshrApproveComponent implements OnInit {
         this.all.dept_name +
         "-" +
         this.all.plant_name;
+        /** set logged in user line */
+        this.selectedLine = String(this.all.line_code);
+        console.log('LINE',this.selectedLine)
     }
      /** get allowed OT hours */
     this.getAllowedOtHours();

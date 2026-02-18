@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+      'blue-600':'#2D70E1' // payroll color
+    }
+    },
      fontFamily:{
       'poppins': ['poppins']
     },

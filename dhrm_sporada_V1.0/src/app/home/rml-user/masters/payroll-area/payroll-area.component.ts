@@ -113,6 +113,7 @@ export class PayrollAreaComponent implements OnInit {
               }
             }
   ];
+
   constructor(
     private fb : UntypedFormBuilder, 
     private modalService : NgbModal, 
@@ -212,7 +213,7 @@ export class PayrollAreaComponent implements OnInit {
       },
       error: (error:any) => {
         console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
   }

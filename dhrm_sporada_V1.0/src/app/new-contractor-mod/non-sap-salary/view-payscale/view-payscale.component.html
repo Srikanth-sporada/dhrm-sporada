@@ -61,28 +61,27 @@
             placeholder="Select Payscale"></p-dropdown>
        </div>
         </div>
-       
       </div>
       </form>
 
       <div class="container mat-elevation-z8" *ngIf="payscaleForm && Current"  >
         <form  [formGroup]="NewPayScaleFormGroup" >
-<!-- 2nd Line -->
-<div id="ndLine">
-  <!-- payscale name header -->
-    <div style="display: flex; justify-content:center; align-items: center; text-align: center;">
-      <p class="!text-[1rem] flex items-center justify-center py-2">
-        <label class="text-blue-600 font-semibold !mb-0">Pay Scale Description:</label>
-        <input class="!text-blue-600 !font-semibold ml-2" formControlName="PayScale_Name"  readonly/> 
-      </p>
-      <!-- <p class="col"><label style="color:rgb(13, 65, 238)">Wage Type:<input id="payinput" [value]="selectedPayscale?.Wage_type" disabled/> </label></p> -->
-      <!-- <p class="col"> -->
-        <!-- <label style="color:rgb(13, 65, 238)">Effective From:  -->
-            <!-- <input id="payinput1" formControlName="effective_from"  readonly/> -->
-         <!-- </label>  -->
-      <!-- </p> -->
+    <!-- 2nd Line -->
+    <div id="ndLine">
+      <!-- payscale name header -->
+        <div style="display: flex; justify-content:center; align-items: center; text-align: center;">
+          <p class="!text-[1rem] flex items-center justify-center py-2">
+            <label class="text-blue-600 font-semibold !mb-0">Pay Scale Description:</label>
+            <input class="!text-blue-600 !font-semibold ml-2" formControlName="PayScale_Name"  readonly/> 
+          </p>
+          <!-- <p class="col"><label style="color:rgb(13, 65, 238)">Wage Type:<input id="payinput" [value]="selectedPayscale?.Wage_type" disabled/> </label></p> -->
+          <!-- <p class="col"> -->
+            <!-- <label style="color:rgb(13, 65, 238)">Effective From:  -->
+                <!-- <input id="payinput1" formControlName="effective_from"  readonly/> -->
+            <!-- </label>  -->
+          <!-- </p> -->
+        </div>
     </div>
-  </div>
    <!-- 3rd Line -->
    <div id="rdLine">
     <div class="row">
@@ -149,10 +148,7 @@
               <p class="col" id="Spl_allow" *ngIf=" NewPayScaleFormGroup?.get('Spl_allow')?.value >0  && NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0" >
                 <label  style="color:black"> Special Allowance </label>
               </p>
-            </ng-container>
-           
-           
-        
+            </ng-container>       
             <ng-container *ngIf="NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !== 0 && NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value >0">
 
               <p class="col" id="Skilled_allow_P3" >
@@ -199,18 +195,9 @@
                 <label  style="color:rgb(13, 65, 238)"> Nightshift Allowance</label>
               </p>
             </ng-container>
-           
-           
               <!-- <p class="col" id="totalEarnings">
                 <label>Total Earnings</label>
               </p> -->
-
-          
-
-           
-         
-
-          
           </div>
          <!-- earning value -->
           <div class="col-6">
@@ -527,6 +514,7 @@
       </div>
     </div>
   </div>
+
   <!-- earnings and deductions -->
   <div id="ndLine">
     <div class="row ">
@@ -560,6 +548,7 @@
       </div>
       </div>
   </div>
+
   <!-- paid to contractors -->
   <div id="ndLine">
     <div class="col">
