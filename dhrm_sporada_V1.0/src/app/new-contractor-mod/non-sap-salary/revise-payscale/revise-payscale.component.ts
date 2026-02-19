@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import {ClamAPIService} from '../../clam-api.service'
-import { MatDialog } from '@angular/material/dialog';
-import { ToastComponent } from '../../toast/toast.component';
-import { Location } from '@angular/common';
-import * as XLSX from'xlsx'
-import moment from 'moment';
-import {FormGroup,FormControl,Validators,FormBuilder,} from "@angular/forms";
-import { MessageService } from 'primeng/api';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
+import { ClamAPIService } from "../../clam-api.service";
+import { MatDialog } from "@angular/material/dialog";
+import { ToastComponent } from "../../toast/toast.component";
+import { Location } from "@angular/common";
+import * as XLSX from "xlsx";
+import moment from "moment";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+} from "@angular/forms";
+import { MessageService } from "primeng/api";
 @Component({
-  selector: 'app-revise-payscale',
-  templateUrl: './revise-payscale.component.html',
-  styleUrls: ['./revise-payscale.component.css']
+  selector: "app-revise-payscale",
+  templateUrl: "./revise-payscale.component.html",
+  styleUrls: ["./revise-payscale.component.css"],
 })
 export class RevisePayscaleComponent implements OnInit {
   payroll_Data: any;
@@ -33,31 +38,40 @@ export class RevisePayscaleComponent implements OnInit {
   NewPayScaleFormGroup: FormGroup;
   CurrentPayScaleFormGroup: FormGroup;
   payRollFormGroup: FormGroup;
-  reviseButton=false
-  userDetails:any;
-  all:any;
+  reviseButton = false;
+  userDetails: any;
+  all: any;
   formGroup: FormGroup;
   constructor(
     private location: Location,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-     private api:ClamAPIService,
-     private fb: FormBuilder,
-     public router: Router,
-    private messageService:MessageService) {}
+    private api: ClamAPIService,
+    private fb: FormBuilder,
+    public router: Router,
+    private messageService: MessageService,
+  ) {}
 
   ngOnInit(): void {
-     let details = sessionStorage.getItem("all");
+    /** logged in user data */
+    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
+
     this.Apln_slno = this.route.snapshot.paramMap.get("apln_slno");
     this.Gen_id = this.route.snapshot.paramMap.get("gen_id");
     this.Apln_status = this.route.snapshot.paramMap.get("apln_status");
     this.Salary_Status = this.route.snapshot.paramMap.get("Salary_Status");
     this.CurrentPayScale_ID = this.route.snapshot.paramMap.get("PayScale_ID");
-    console.log( this.route.snapshot.paramMap.get("PayScale_ID"));
+    console.log(this.route.snapshot.paramMap.get("PayScale_ID"));
 
     this.formGroup = new FormGroup({
       apln_slno: new FormControl(),
@@ -72,179 +86,191 @@ export class RevisePayscaleComponent implements OnInit {
       birthdate: new FormControl(),
       Cont_company_name: new FormControl(),
       con_Id: new FormControl(),
-
       effective_date: new FormControl(),
     });
 
-    
-    this.NewPayScaleFormGroup =this.fb.group({
+    this.NewPayScaleFormGroup = this.fb.group({
       PayScale_ID: [null],
-        Plant_Code: [null],
-        Cont_ID: [null],
-        PayScale_Name: [null],
-        Stipend: [null],
-        Basic: [null],
-        DA: [null],
-        HRA: [null],
-        Leave_Salary: [null],
-        Washing_allow: [null],
-        Monthly_Bonus: [null],
-        Sat_and_Mon_Incentive: [null],
-        Monthly_Attn_Incentive: [null],
-        Retention_Incentive: [null],
-        Spl_allow: [null],
-        Night_shift_allowance: [null],
-        Skilled_allow_P3: [null],
-        Amenities_Allow: [null],
-        Other_allowance_1: [null],
-        Other_allowance_2: [null],
-        Other_allowance_3: [null],
-        Other_allowance_4: [null],
-        Gross_Earning: [null],
+      Plant_Code: [null],
+      Cont_ID: [null],
+      PayScale_Name: [null],
+      Stipend: [null],
+      Basic: [null],
+      DA: [null],
+      HRA: [null],
+      Leave_Salary: [null],
+      Washing_allow: [null],
+      Monthly_Bonus: [null],
+      Sat_and_Mon_Incentive: [null],
+      Monthly_Attn_Incentive: [null],
+      Retention_Incentive: [null],
+      Spl_allow: [null],
+      Night_shift_allowance: [null],
+      Skilled_allow_P3: [null],
+      Amenities_Allow: [null],
+      Other_allowance_1: [null],
+      Other_allowance_2: [null],
+      Other_allowance_3: [null],
+      Other_allowance_4: [null],
+      Gross_Earning: [null],
 
-        Canteen: [null],
-        Transport: [null],
-        Professional_Tax: [null],
-        
-        WC_Policy: [null],
-        Insurance: [null],
-        Shoe_FirstTime: [null],
-        Glass_FirstTime: [null],
-        Uniform_FirstTime: [null],
-        Coat_FirstTime: [null],
-        Other_deduction_1: [null],
-        Other_deduction_2: [null],
-        Other_deduction_3: [null],
-        Other_deduction_4: [null],
-        Gross_Deduction: [null],
+      Canteen: [null],
+      Transport: [null],
+      Professional_Tax: [null],
 
-        Service_Charge_Fixed: [null],
-        Service_charges_Percentage: [null],
-        SC_Base: [null],
-        NSDC_Contribution: [null],
-        Uniform_Charges: [null],
-        Labour_Welfare_Fund: [null],
-        Insurance_Premium: [null],
-        Learning_Fees: [null],
-        Workmen_Compensation: [null],
-        Emp_Comp_Ins: [null],
-        Higher_Education_Fee: [null],    
-        
-        EM_ESI_Cal_Val:[null],
-        EM_PF_Cal_Val:[null],
-        EMP_PF_Cal_Val:[null],
-        EMP_ESI_Cal_Val:[null],
-        EM_PF_Percent:[null],
-        EM_ESI_Percent:[null],
-        EMP_PF_Percent:[null],
-        EMP_ESI_Percent:[null],
-        Service_Tax_Val:[null],
-        Servive_Charge_Val:[null],
-        Effective_Date:[null],
-        Effective_Date1:[null],
+      WC_Policy: [null],
+      Insurance: [null],
+      Shoe_FirstTime: [null],
+      Glass_FirstTime: [null],
+      Uniform_FirstTime: [null],
+      Coat_FirstTime: [null],
+      Other_deduction_1: [null],
+      Other_deduction_2: [null],
+      Other_deduction_3: [null],
+      Other_deduction_4: [null],
+      Gross_Deduction: [null],
 
+      Service_Charge_Fixed: [null],
+      Service_charges_Percentage: [null],
+      SC_Base: [null],
+      NSDC_Contribution: [null],
+      Uniform_Charges: [null],
+      Labour_Welfare_Fund: [null],
+      Insurance_Premium: [null],
+      Learning_Fees: [null],
+      Workmen_Compensation: [null],
+      Emp_Comp_Ins: [null],
+      Higher_Education_Fee: [null],
 
-        CTC:[null],
-        ToTal_Base_Value:[null],
-        Net_Take_Home:[null],
-        
-        
+      EM_ESI_Cal_Val: [null],
+      EM_PF_Cal_Val: [null],
+      EMP_PF_Cal_Val: [null],
+      EMP_ESI_Cal_Val: [null],
+      EM_PF_Percent: [null],
+      EM_ESI_Percent: [null],
+      EMP_PF_Percent: [null],
+      EMP_ESI_Percent: [null],
+      Service_Tax_Val: [null],
+      Servive_Charge_Val: [null],
+      Effective_Date: [null],
+      Effective_Date1: [null],
+      CTC: [null],
+      ToTal_Base_Value: [null],
+      Net_Take_Home: [null],
+    });
 
-
-    })
-    this.CurrentPayScaleFormGroup =this.fb.group({
+    this.CurrentPayScaleFormGroup = this.fb.group({
       PayScale_ID: [null],
-        Plant_Code: [null],
-        Cont_ID: [null],
-        PayScale_Name: [null],
-        Stipend: [null],
-        Basic: [null],
-        DA: [null],
-        HRA: [null],
-        Leave_Salary: [null],
-        Washing_allow: [null],
-        Monthly_Bonus: [null],
-        Sat_and_Mon_Incentive: [null],
-        Monthly_Attn_Incentive: [null],
-        Retention_Incentive: [null],
-        Spl_allow: [null],
-        Night_shift_allowance: [null],
-        Skilled_allow_P3: [null],
-        Amenities_Allow: [null],
-        Other_allowance_1: [null],
-        Other_allowance_2: [null],
-        Other_allowance_3: [null],
-        Other_allowance_4: [null],
-        Gross_Earning: [null],
+      Plant_Code: [null],
+      Cont_ID: [null],
+      PayScale_Name: [null],
+      Stipend: [null],
+      Basic: [null],
+      DA: [null],
+      HRA: [null],
+      Leave_Salary: [null],
+      Washing_allow: [null],
+      Monthly_Bonus: [null],
+      Sat_and_Mon_Incentive: [null],
+      Monthly_Attn_Incentive: [null],
+      Retention_Incentive: [null],
+      Spl_allow: [null],
+      Night_shift_allowance: [null],
+      Skilled_allow_P3: [null],
+      Amenities_Allow: [null],
+      Other_allowance_1: [null],
+      Other_allowance_2: [null],
+      Other_allowance_3: [null],
+      Other_allowance_4: [null],
+      Gross_Earning: [null],
 
-        Canteen: [null],
-        Transport: [null],
-        Professional_Tax: [null],
-        
-        WC_Policy: [null],
-        Insurance: [null],
-        Shoe_FirstTime: [null],
-        Glass_FirstTime: [null],
-        Uniform_FirstTime: [null],
-        Coat_FirstTime: [null],
-        Other_deduction_1: [null],
-        Other_deduction_2: [null],
-        Other_deduction_3: [null],
-        Other_deduction_4: [null],
-        Gross_Deduction: [null],
+      Canteen: [null],
+      Transport: [null],
+      Professional_Tax: [null],
 
-        Service_Charge_Fixed: [null],
-        Service_charges_Percentage: [null],
-        SC_Base: [null],
-        NSDC_Contribution: [null],
-        Uniform_Charges: [null],
-        Labour_Welfare_Fund: [null],
-        Insurance_Premium: [null],
-        Learning_Fees: [null],
-        Workmen_Compensation: [null],
-        Emp_Comp_Ins: [null],
-        Higher_Education_Fee: [null],    
-        
-        EM_ESI_Cal_Val:[null],
-        EM_PF_Cal_Val:[null],
-        EMP_PF_Cal_Val:[null],
-        EMP_ESI_Cal_Val:[null],
-        EM_PF_Percent:[null],
-        EM_ESI_Percent:[null],
-        EMP_PF_Percent:[null],
-        EMP_ESI_Percent:[null],
-        Service_Tax_Val:[null],
-        Servive_Charge_Val:[null],
-        Effective_Date:[null],
-        Effective_Date1:[null],
+      WC_Policy: [null],
+      Insurance: [null],
+      Shoe_FirstTime: [null],
+      Glass_FirstTime: [null],
+      Uniform_FirstTime: [null],
+      Coat_FirstTime: [null],
+      Other_deduction_1: [null],
+      Other_deduction_2: [null],
+      Other_deduction_3: [null],
+      Other_deduction_4: [null],
+      Gross_Deduction: [null],
 
+      Service_Charge_Fixed: [null],
+      Service_charges_Percentage: [null],
+      SC_Base: [null],
+      NSDC_Contribution: [null],
+      Uniform_Charges: [null],
+      Labour_Welfare_Fund: [null],
+      Insurance_Premium: [null],
+      Learning_Fees: [null],
+      Workmen_Compensation: [null],
+      Emp_Comp_Ins: [null],
+      Higher_Education_Fee: [null],
 
-        CTC:[null],
-        ToTal_Base_Value:[null],
-        Net_Take_Home:[null],
-        
-    })
+      EM_ESI_Cal_Val: [null],
+      EM_PF_Cal_Val: [null],
+      EMP_PF_Cal_Val: [null],
+      EMP_ESI_Cal_Val: [null],
+      EM_PF_Percent: [null],
+      EM_ESI_Percent: [null],
+      EMP_PF_Percent: [null],
+      EMP_ESI_Percent: [null],
+      Service_Tax_Val: [null],
+      Servive_Charge_Val: [null],
+      Effective_Date: [null],
+      Effective_Date1: [null],
 
-    this.get_trainee_dtls(this.Apln_slno, this.Gen_id, this.Apln_status,this.route.snapshot.paramMap.get("PayScale_ID"));
-  }
-
-  get_trainee_dtls(apln_slno: any, gen_id: any, apln_status: any,PayScale_ID:any) {
-    console.log(apln_slno, gen_id, apln_status);
-    
-    this.api.getTraineDtls(apln_slno, gen_id, apln_status).subscribe(
-      (res) => {
-        this.apln_list = res;
-
-        console.log(this.apln_list);
-        this.get_Payscale(this.apln_list[0].cont_id,PayScale_ID);
-        this.initvalueFormGroup();
-      },
-      (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+      CTC: [null],
+      ToTal_Base_Value: [null],
+      Net_Take_Home: [null],
+    });
+    /** ge trainee details */
+    this.get_trainee_dtls(
+      this.Apln_slno,
+      this.Gen_id,
+      this.Apln_status,
+      this.route.snapshot.paramMap.get("PayScale_ID"),
     );
   }
+
+  /** 
+   * get trainee data
+   * @param apln_slno
+   * @param gen_id
+   * @param apln_status
+   * @param PayScale_ID
+   *  */
+  get_trainee_dtls(
+    apln_slno: any,
+    gen_id: any,
+    apln_status: any,
+    PayScale_ID: any,
+  ) {
+    console.log(apln_slno, gen_id, apln_status);
+
+    this.api.getTraineDtls(apln_slno, gen_id, apln_status).subscribe({
+      next: (res) => {
+        this.apln_list = res;
+        console.log("TRIANEE DATA:", this.apln_list);
+        this.get_Payscale(this.apln_list[0].cont_id, PayScale_ID);
+        /** create for using trainee data */
+        this.initvalueFormGroup();
+      },
+      error: (error) => {
+        console.error("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+
+  /**
+   * create form group using trainee data
+   */
   initvalueFormGroup() {
     this.formGroup = this.fb.group({
       apln_slno: [this.apln_list[0].apln_slno],
@@ -263,62 +289,79 @@ export class RevisePayscaleComponent implements OnInit {
     });
   }
 
-  get_Payscale(con_Id: any,PayScale_ID:number) {
+  /** 
+   * get payscale data
+   * @param con_Id
+   * @param PayScale_ID
+   */
+  get_Payscale(con_Id: any, PayScale_ID: number) {
     console.log(con_Id);
     console.log(PayScale_ID);
-    
-    this.api.getConPayscale(this.plant_Code, con_Id).subscribe(
-      (res) => {
+
+    this.api.getConPayscale(this.plant_Code, con_Id).subscribe({
+      next:(res) => {
         this.payscale_Data = res;
-     console.log(res);
-     
-        const currentPayScale = this.payscale_Data.find((item:any) => item.PayScale_ID == PayScale_ID);
-  console.log(currentPayScale);
-  
-  
+        console.log(res);
+        /** find current payscale */
+        const currentPayScale = this.payscale_Data.find((item: any) => item.PayScale_ID == PayScale_ID);
+        console.log(currentPayScale);
+
         if (currentPayScale) {
-          console.log('Current PayScale:', currentPayScale);
+          console.log("Current PayScale:", currentPayScale);
           this.CurrentPayScaleFormGroup.patchValue(currentPayScale);
-          
-  
-          console.log('CurrentPayScaleFormGroup value:', this.CurrentPayScaleFormGroup.value);
+
+          console.log(
+            "CurrentPayScaleFormGroup value:",
+            this.CurrentPayScaleFormGroup.value,
+          );
         } else {
-          console.log('No matching PayScale found for ID:', this.CurrentPayScale_ID);
+          console.log(
+            "No matching PayScale found for ID:",
+            this.CurrentPayScale_ID,
+          );
         }
       },
-      (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
   }
-  
+
+  /** 
+   * @param event
+   * @param controlName
+   */
   onInputChanged(event: any, controlName: string) {
     const newValue = event.target.value;
     const numericValue = parseFloat(newValue);
     this.NewPayScaleFormGroup.get(controlName)?.patchValue(numericValue);
   }
 
+  /** 
+   * handle selected payscale
+   * @param selectedData
+   */
   onOptionSelected(selectedData: any) {
     console.log("Selected data:", selectedData);
     this.selectedPayscale = selectedData;
     this.payscaleForm = true;
 
-if(selectedData.PayScale_ID == this.CurrentPayScale_ID){
-  this.reviseButton=true
-}
-else{
-  this.reviseButton=false
-}
+    if (selectedData.PayScale_ID == this.CurrentPayScale_ID) {
+      this.reviseButton = true;
+    } else {
+      this.reviseButton = false;
+    }
     // to get max  amount
     // this.payScaleFormGroup.patchValue(this.selectedPayscale);
     this.NewPayScaleFormGroup.patchValue(this.selectedPayscale);
-    
   }
 
+  /** navigate back to home */
   goBack(): void {
     this.location.back();
   }
+
   openAlertDialog(message: string): void {
     this.dialog.open(ToastComponent, {
       data: {
@@ -327,20 +370,28 @@ else{
       },
     });
   }
-  submit(){
+
+  /** 
+   * submit data
+   */
+  submit() {
     const data = {
-      PayScale_ID: this.NewPayScaleFormGroup.get('PayScale_ID')?.value,
-      Effective_Date:this.NewPayScaleFormGroup.get('Effective_Date')?.value,
-      apln_slno: this.formGroup.get('apln_slno')?.value,
-          plant_Code: this.plant_Code,
-          Requested_By: this.userEmpcode,
-        };
-      this.api.reviseWagemaster(data).subscribe((res: any) => {
+      PayScale_ID: this.NewPayScaleFormGroup.get("PayScale_ID")?.value,
+      Effective_Date: this.NewPayScaleFormGroup.get("Effective_Date")?.value,
+      apln_slno: this.formGroup.get("apln_slno")?.value,
+      plant_Code: this.plant_Code,
+      Requested_By: this.userEmpcode,
+    };
+    this.api.reviseWagemaster(data).subscribe({
+      next: (res: any) => {
         this.router.navigate(["/rhrm/contra/upt_payscale"]);
-        this.openAlertDialog(`${res}`);
-      });
-
-    
+        // this.openAlertDialog(`${res}`);
+        this.messageService.add({severity:'info',summary:res});
+      },
+      error: (error:any) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+      }
+    });
   }
-
 }

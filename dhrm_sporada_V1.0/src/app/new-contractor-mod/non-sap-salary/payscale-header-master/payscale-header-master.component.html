@@ -142,7 +142,7 @@
         </div>
       </div>
       <!-- add payscale header form -->
-      <form [formGroup]="NewPayScaleFormGroup" (ngSubmit)="onSubmit()" class="example-form">
+      <form [formGroup]="NewPayScaleFormGroup" class="example-form" (ngSubmit)="onSubmit()">
                    <!-- plant -->
                   <div class="mx-2 mt-3">
                     <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
@@ -208,6 +208,7 @@
         <button 
           color="primary"
           type="submit" 
+          (click)="onSubmit(); modal.close('add closed...')"
           [disabled]="!NewPayScaleFormGroup.valid"
           class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600"
           >
@@ -290,7 +291,7 @@
         <!-- update btn -->
         <button   
          [disabled]="!NewPayScaleFormGroup.valid"
-         (click)="On_Update()"
+         (click)="On_Update(); modal.closed('update closed...')"
            class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white"
           >
             <mat-icon class="text-[20px]">sync</mat-icon> Update

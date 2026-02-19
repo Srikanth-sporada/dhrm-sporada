@@ -14,7 +14,7 @@
       </div>
        <!-- user details -->
       <form  [formGroup]="formGroup">
-      <div class="!shadow-md !my-4 !rounded-md  h-full py-3 !px-4 !font-poppins sm:h-min border border-gray-400 flex item-center justify-between gap-4">
+      <div class="!shadow-md !my-4 !rounded-md  h-full py-3 !px-4 !font-poppins sm:h-min border border-gray-400 flex item-center justify-between gap-4 mx-1">
         <div class="column1">
           <div class="columnA">
             <strong>Name</strong> 
@@ -64,14 +64,14 @@
       </div>
       </form>
 
-      <div class="container mat-elevation-z8" *ngIf="payscaleForm && Current"  >
+      <div class="container mat-elevation-z8 pb-2" *ngIf="payscaleForm && Current"  >
         <form  [formGroup]="NewPayScaleFormGroup" >
     <!-- 2nd Line -->
     <div id="ndLine">
       <!-- payscale name header -->
         <div style="display: flex; justify-content:center; align-items: center; text-align: center;">
           <p class="!text-[1rem] flex items-center justify-center py-2">
-            <label class="text-blue-600 font-semibold !mb-0">Pay Scale Description:</label>
+            <label class="text-blue-600 !font-semibold !mb-0">Pay Scale Description:</label>
             <input class="!text-blue-600 !font-semibold ml-2" formControlName="PayScale_Name"  readonly/> 
           </p>
           <!-- <p class="col"><label style="color:rgb(13, 65, 238)">Wage Type:<input id="payinput" [value]="selectedPayscale?.Wage_type" disabled/> </label></p> -->
@@ -82,634 +82,634 @@
           <!-- </p> -->
         </div>
     </div>
-   <!-- 3rd Line -->
-   <div id="rdLine">
-    <div class="row">
-      <div class="col-6 colborder">
-        <div class="col">
-          <h4 class="text-green-600 font-seminbold !text-[1rem]">Earnings</h4>
-        </div>
-
-        <div class="row">
-          <!-- earning name -->
-          <div class="col-6">
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Stipend')?.value !== 0 && NewPayScaleFormGroup?.get('Stipend')?.value > 0">
-            <p class="col" id="stipend" ><label style="color:black">Stipend </label></p>
-          </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Basic')?.value !== 0 && NewPayScaleFormGroup?.get('Basic')?.value > 0 ">
-              <p class="col" id="Basic_amt" ><label style="color:black">Basic </label></p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('DA')?.value !==0 && NewPayScaleFormGroup?.get('DA')?.value > 0">
-              <p class="col" id="DA" ><label  style="color:black">DA </label></p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('HRA')?.value !==0 && NewPayScaleFormGroup?.get('HRA')?.value > 0">
-              <p class="col" id="HRA"  ><label  style="color:black">HRA </label></p>
-            </ng-container>
-         
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 && NewPayScaleFormGroup?.get('Leave_Salary')?.value >0">
-              <p class="col" id="Leave_Salary" >
-                <label  style="color:black"> Leave Salary Allowance</label>
-              </p>
-            </ng-container>
-
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Washing_allow')?.value >0 ">
-              <p class="col" id="Washing_allow"  >
-                <label  style="color:black"> Washing Allowance</label>
-              </p>
-
-            </ng-container>
-
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Bonus')?.value>0">
-              <p class="col" id="Monthly_Bonus" >
-                <label  style="color:black">Monthly Bonus </label>
-              </p>
-
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value>0">
-              <p class="col" id="Monthly_Attn_Incentive" >
-                <label  style="color:black">Attendance Bonus </label>
-              </p>
-            </ng-container>
-
-            <ng-container>
-              <p class="col" id="Sat_and_Mon_Incentive" *ngIf="NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value > 0 && NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value !== 0">
-                <label  style="color:black">Sat & Mon Incentive </label>
-              </p>
-            </ng-container>
-
-            <ng-container>
-              <p class="col" id="Retention_Incentive" *ngIf="NewPayScaleFormGroup?.get('Retention_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Retention_Incentive')?.value >0" >
-                <label  style="color:black">Retention Incentive </label>
-              </p>
-            </ng-container>
-          
-            <ng-container>
-
-              <p class="col" id="Spl_allow" *ngIf=" NewPayScaleFormGroup?.get('Spl_allow')?.value >0  && NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0" >
-                <label  style="color:black"> Special Allowance </label>
-              </p>
-            </ng-container>       
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !== 0 && NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value >0">
-
-              <p class="col" id="Skilled_allow_P3" >
-                <label  style="color:black">Skilled Allowance</label>
-              </p>
-            </ng-container>
-          
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 && NewPayScaleFormGroup?.get('Amenities_Allow')?.value >0">
-              <p class="col" id="Amenities_Allow" >
-                <label  style="color:black">Amenities Allowance </label>
-              </p>
-
-            </ng-container>
-            
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_1')?.value>0">
-              <p class="col" id="Other_allowance_1"  >
-                <label  style="color:black">Other Allowance 1</label>
-              </p>
-
-            </ng-container>
-
-         
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_2')?.value>0">
-              <p class="col" id="Other_allowance_2"  >
-                <label  style="color:black">Other Allowance 2</label>
-              </p>
-
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_3')?.value>0">
-              <p class="col" id="Other_allowance_3"  >
-                <label  style="color:black">Other Allowance 3</label>
-              </p>
-
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_4')?.value>0">
-              <p class="col" id="Other_allowance_4"  >
-                <label  style="color:black">Other Allowance 4</label>
-              </p>
-
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Night_shift_allowance')?.value !== 0 && NewPayScaleFormGroup?.get('Night_shift_allowance')?.value>0">
-
-              <p class="col" id="Night_shift_allowance" >
-                <label  style="color:rgb(13, 65, 238)"> Nightshift Allowance</label>
-              </p>
-            </ng-container>
-              <!-- <p class="col" id="totalEarnings">
-                <label>Total Earnings</label>
-              </p> -->
+    <!-- 3rd Line -->
+    <div id="rdLine">
+      <div class="row">
+        <div class="col-6 colborder">
+          <div class="col">
+            <h4 class="text-green-600 font-seminbold !text-[1rem]">Earnings</h4>
           </div>
-         <!-- earning value -->
-          <div class="col-6">
-            <!-- [value]="selectedPayscale?." -->
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Stipend')?.value !==0 && NewPayScaleFormGroup?.get('Stipend')?.value > 0 ">
-              <p class="col" for="Stipend"  >
-                : &#8377;<input type="number" readonly id="payinput"  formControlName="Stipend"  (input)="onInputChanged($event, 'Stipend')"   />   </p>
-            </ng-container>
-           
 
+          <div class="row">
+            <!-- earning name -->
+            <div class="col-6">
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Stipend')?.value !== 0 && NewPayScaleFormGroup?.get('Stipend')?.value > 0">
+              <p class="col" id="stipend" ><label style="color:black">Stipend </label></p>
+            </ng-container>
               <ng-container *ngIf="NewPayScaleFormGroup?.get('Basic')?.value !== 0 && NewPayScaleFormGroup?.get('Basic')?.value > 0 ">
-                <p class="col" for="Basic" >
-                  : &#8377;<input type="number" readonly id="payinput"  formControlName="Basic"  (input)="onInputChanged($event, 'Basic')"  />   </p>
+                <p class="col" id="Basic_amt" ><label style="color:black">Basic </label></p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('DA')?.value !==0 && NewPayScaleFormGroup?.get('DA')?.value > 0">
+                <p class="col" id="DA" ><label  style="color:black">DA </label></p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('HRA')?.value !==0 && NewPayScaleFormGroup?.get('HRA')?.value > 0">
+                <p class="col" id="HRA"  ><label  style="color:black">HRA </label></p>
               </ng-container>
           
-              <ng-container *ngIf="NewPayScaleFormGroup?.get('DA')?.value !==0 && NewPayScaleFormGroup?.get('DA')?.value > 0" for="DA">
-              
-            <p class="col"  >
-              : &#8377;<input type="number" readonly id="payinput" (input)="onInputChanged($event, 'DA')" formControlName="DA"  />  </p>
-            </ng-container>
-          
-              <ng-container  *ngIf="NewPayScaleFormGroup?.get('HRA')?.value !==0 && NewPayScaleFormGroup?.get('HRA')?.value > 0" >
-                <p class="col" for="HRA">
-                  : &#8377;<input type="number" readonly id="payinput"  (input)="onInputChanged($event, 'HRA')" formControlName="HRA"   />  </p>
-            </ng-container>
-           
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 && NewPayScaleFormGroup?.get('Leave_Salary')?.value >0">
+                <p class="col" id="Leave_Salary" >
+                  <label  style="color:black"> Leave Salary Allowance</label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 && NewPayScaleFormGroup?.get('Leave_Salary')?.value >0">
-              <p class="col"  for="Leave_Salary"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Leave_Salary')" formControlName="Leave_Salary"  />  
-              </p>
-            </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Washing_allow')?.value >0 ">
+                <p class="col" id="Washing_allow"  >
+                  <label  style="color:black"> Washing Allowance</label>
+                </p>
 
+              </ng-container>
+
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Bonus')?.value>0">
+                <p class="col" id="Monthly_Bonus" >
+                  <label  style="color:black">Monthly Bonus </label>
+                </p>
+
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value>0">
+                <p class="col" id="Monthly_Attn_Incentive" >
+                  <label  style="color:black">Attendance Bonus </label>
+                </p>
+              </ng-container>
+
+              <ng-container>
+                <p class="col" id="Sat_and_Mon_Incentive" *ngIf="NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value > 0 && NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value !== 0">
+                  <label  style="color:black">Sat & Mon Incentive </label>
+                </p>
+              </ng-container>
+
+              <ng-container>
+                <p class="col" id="Retention_Incentive" *ngIf="NewPayScaleFormGroup?.get('Retention_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Retention_Incentive')?.value >0" >
+                  <label  style="color:black">Retention Incentive </label>
+                </p>
+              </ng-container>
             
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Washing_allow')?.value >0 ">
-              <p class="col"  for="Washing_allow"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Washing_allow')" formControlName="Washing_allow" />  
-              </p>
-            </ng-container>
-         
+              <ng-container>
 
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Bonus')?.value>0">
-              <p class="col"  for="Monthly_Bonus"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Monthly_Bonus')" formControlName="Monthly_Bonus" />  
+                <p class="col" id="Spl_allow" *ngIf=" NewPayScaleFormGroup?.get('Spl_allow')?.value >0  && NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0" >
+                  <label  style="color:black"> Special Allowance </label>
+                </p>
+              </ng-container>       
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !== 0 && NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value >0">
+
+                <p class="col" id="Skilled_allow_P3" >
+                  <label  style="color:black">Skilled Allowance</label>
+                </p>
+              </ng-container>
+            
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 && NewPayScaleFormGroup?.get('Amenities_Allow')?.value >0">
+                <p class="col" id="Amenities_Allow" >
+                  <label  style="color:black">Amenities Allowance </label>
+                </p>
+
+              </ng-container>
+              
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_1')?.value>0">
+                <p class="col" id="Other_allowance_1"  >
+                  <label  style="color:black">Other Allowance 1</label>
+                </p>
+
+              </ng-container>
+
+          
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_2')?.value>0">
+                <p class="col" id="Other_allowance_2"  >
+                  <label  style="color:black">Other Allowance 2</label>
+                </p>
+
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_3')?.value>0">
+                <p class="col" id="Other_allowance_3"  >
+                  <label  style="color:black">Other Allowance 3</label>
+                </p>
+
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_4')?.value>0">
+                <p class="col" id="Other_allowance_4"  >
+                  <label  style="color:black">Other Allowance 4</label>
+                </p>
+
+              </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Night_shift_allowance')?.value !== 0 && NewPayScaleFormGroup?.get('Night_shift_allowance')?.value>0">
+
+                <p class="col" id="Night_shift_allowance" >
+                  <label  style="color:rgb(13, 65, 238)"> Nightshift Allowance</label>
+                </p>
+              </ng-container>
+                <!-- <p class="col" id="totalEarnings">
+                  <label>Total Earnings</label>
+                </p> -->
+            </div>
+          <!-- earning value -->
+            <div class="col-6">
+              <!-- [value]="selectedPayscale?." -->
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Stipend')?.value !==0 && NewPayScaleFormGroup?.get('Stipend')?.value > 0 ">
+                <p class="col" for="Stipend"  >
+                  : &#8377;<input type="number" readonly id="payinput"  formControlName="Stipend"  (input)="onInputChanged($event, 'Stipend')"   />   </p>
+              </ng-container>
+            
+
+                <ng-container *ngIf="NewPayScaleFormGroup?.get('Basic')?.value !== 0 && NewPayScaleFormGroup?.get('Basic')?.value > 0 ">
+                  <p class="col" for="Basic" >
+                    : &#8377;<input type="number" readonly id="payinput"  formControlName="Basic"  (input)="onInputChanged($event, 'Basic')"  />   </p>
+                </ng-container>
+            
+                <ng-container *ngIf="NewPayScaleFormGroup?.get('DA')?.value !==0 && NewPayScaleFormGroup?.get('DA')?.value > 0" for="DA">
+                
+              <p class="col"  >
+                : &#8377;<input type="number" readonly id="payinput" (input)="onInputChanged($event, 'DA')" formControlName="DA"  />  </p>
+              </ng-container>
+            
+                <ng-container  *ngIf="NewPayScaleFormGroup?.get('HRA')?.value !==0 && NewPayScaleFormGroup?.get('HRA')?.value > 0" >
+                  <p class="col" for="HRA">
+                    : &#8377;<input type="number" readonly id="payinput"  (input)="onInputChanged($event, 'HRA')" formControlName="HRA"   />  </p>
+              </ng-container>
+            
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Leave_Salary')?.value !== 0 && NewPayScaleFormGroup?.get('Leave_Salary')?.value >0">
+                <p class="col"  for="Leave_Salary"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Leave_Salary')" formControlName="Leave_Salary"  />  
+                </p>
+              </ng-container>
+
+              
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Washing_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Washing_allow')?.value >0 ">
+                <p class="col"  for="Washing_allow"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Washing_allow')" formControlName="Washing_allow" />  
+                </p>
+              </ng-container>
+          
+
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Bonus')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Bonus')?.value>0">
+                <p class="col"  for="Monthly_Bonus"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Monthly_Bonus')" formControlName="Monthly_Bonus" />  
+                </p>
+              </ng-container>
+            
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value>0">
+              <p class="col"  for="Monthly_Attn_Incentive"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Monthly_Attn_Incentive')" formControlName="Monthly_Attn_Incentive" />  
+              </p>
+            </ng-container>
+            
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value>0">
+              <p class="col"  for="Sat_and_Mon_Incentive"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Sat_and_Mon_Incentive')" formControlName="Sat_and_Mon_Incentive" />  
+              </p>
+            </ng-container>
+            
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Retention_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Retention_Incentive')?.value>0">
+              <p class="col"  for="Retention_Incentive"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Retention_Incentive')" formControlName="Retention_Incentive" />  
+              </p>
+            </ng-container>
+            
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Spl_allow')?.value>0">
+              <p class="col"  for="Spl_allow"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Spl_allow')" formControlName="Spl_allow" />  
               </p>
             </ng-container>
           
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Monthly_Attn_Incentive')?.value>0">
-            <p class="col"  for="Monthly_Attn_Incentive"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Monthly_Attn_Incentive')" formControlName="Monthly_Attn_Incentive" />  
-            </p>
-          </ng-container>
+        
           
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Sat_and_Mon_Incentive')?.value>0">
-            <p class="col"  for="Sat_and_Mon_Incentive"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Sat_and_Mon_Incentive')" formControlName="Sat_and_Mon_Incentive" />  
-            </p>
-          </ng-container>
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !== 0 && NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value>0">
+              <p class="col"  for="Skilled_allow_P3"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Skilled_allow_P3')" formControlName="Skilled_allow_P3" />  
+              </p>
+            </ng-container>
           
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Retention_Incentive')?.value !== 0 && NewPayScaleFormGroup?.get('Retention_Incentive')?.value>0">
-            <p class="col"  for="Retention_Incentive"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Retention_Incentive')" formControlName="Retention_Incentive" />  
-            </p>
-          </ng-container>
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 && NewPayScaleFormGroup?.get('Amenities_Allow')?.value>0">
+              <p class="col"  for="Amenities_Allow"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Amenities_Allow')" formControlName="Amenities_Allow" />  
+              </p>
+            </ng-container>
           
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Spl_allow')?.value !== 0 && NewPayScaleFormGroup?.get('Spl_allow')?.value>0">
-            <p class="col"  for="Spl_allow"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Spl_allow')" formControlName="Spl_allow" />  
-            </p>
-          </ng-container>
-         
-       
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value !== 0 && NewPayScaleFormGroup?.get('Skilled_allow_P3')?.value>0">
-            <p class="col"  for="Skilled_allow_P3"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Skilled_allow_P3')" formControlName="Skilled_allow_P3" />  
-            </p>
-          </ng-container>
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Amenities_Allow')?.value !== 0 && NewPayScaleFormGroup?.get('Amenities_Allow')?.value>0">
-            <p class="col"  for="Amenities_Allow"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Amenities_Allow')" formControlName="Amenities_Allow" />  
-            </p>
-          </ng-container>
-         
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_1')?.value>0">
-            <p class="col"  for="Other_allowance_1"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_1')" formControlName="Other_allowance_1" />  
-            </p>
-          </ng-container>
-         
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_2')?.value>0">
-            <p class="col"  for="Other_allowance_2"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_2')" formControlName="Other_allowance_2" />  
-            </p>
-          </ng-container>
-         
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_3')?.value>0">
-            <p class="col"  for="Other_allowance_3"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_3')" formControlName="Other_allowance_3" />  
-            </p>
-          </ng-container>
-         
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_4')?.value>0">
-            <p class="col"  for="Other_allowance_4"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_4')" formControlName="Other_allowance_4" />  
-            </p>
-          </ng-container>
-         
-          <ng-container *ngIf="NewPayScaleFormGroup?.get('Night_shift_allowance')?.value !== 0 && NewPayScaleFormGroup?.get('Night_shift_allowance')?.value>0">
-            <p class="col" style="color:blue"  for="Night_shift_allowance"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Night_shift_allowance')" formControlName="Night_shift_allowance" />  
-            </p>
-          </ng-container>
+          
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_1')?.value>0">
+              <p class="col"  for="Other_allowance_1"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_1')" formControlName="Other_allowance_1" />  
+              </p>
+            </ng-container>
+          
+          
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_2')?.value>0">
+              <p class="col"  for="Other_allowance_2"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_2')" formControlName="Other_allowance_2" />  
+              </p>
+            </ng-container>
+          
+          
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_3')?.value>0">
+              <p class="col"  for="Other_allowance_3"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_3')" formControlName="Other_allowance_3" />  
+              </p>
+            </ng-container>
+          
+          
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Other_allowance_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_allowance_4')?.value>0">
+              <p class="col"  for="Other_allowance_4"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_allowance_4')" formControlName="Other_allowance_4" />  
+              </p>
+            </ng-container>
+          
+            <ng-container *ngIf="NewPayScaleFormGroup?.get('Night_shift_allowance')?.value !== 0 && NewPayScaleFormGroup?.get('Night_shift_allowance')?.value>0">
+              <p class="col" style="color:blue"  for="Night_shift_allowance"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Night_shift_allowance')" formControlName="Night_shift_allowance" />  
+              </p>
+            </ng-container>
+            </div>
           </div>
         </div>
-      </div>
-     <!-- deductions -->
-      <div class="col-6">
-        <div class="col">
-          <h4 class="text-red-500 font-seminbold !text-[1rem]">Deductions</h4>
-        </div>
+      <!-- deductions -->
+        <div class="col-6">
+          <div class="col">
+            <h4 class="text-red-500 font-seminbold !text-[1rem]">Deductions</h4>
+          </div>
 
-        <div class="row">
-          <!-- name -->
-          <div class="col-6">
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Canteen')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
-              <p class="col" id="Canteen" >
-                <label> Canteen </label>
-              </p>
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Professional_Tax')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
-              <p class="col" id="Professional_Tax" >
-                <label> Professional_Tax </label>
-              </p>
-            </ng-container>
+          <div class="row">
+            <!-- name -->
+            <div class="col-6">
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Canteen')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
+                <p class="col" id="Canteen" >
+                  <label> Canteen </label>
+                </p>
+              </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Professional_Tax')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
+                <p class="col" id="Professional_Tax" >
+                  <label> Professional_Tax </label>
+                </p>
+              </ng-container>
 
-       
+        
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 && NewPayScaleFormGroup?.get('WC_Policy')?.value >0">
-              <p class="col" id="WC_Policy" >
-                <label> WC_Policy </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 && NewPayScaleFormGroup?.get('WC_Policy')?.value >0">
+                <p class="col" id="WC_Policy" >
+                  <label> WC_Policy </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Insurance')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance')?.value >0">
-              <p class="col" id="Insurance" >
-                <label> Insurance </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Insurance')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance')?.value >0">
+                <p class="col" id="Insurance" >
+                  <label> Insurance </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value >0">
-              <p class="col" id="Shoe_FirstTime" >
-                <label> Shoe FirstTime </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value >0">
+                <p class="col" id="Shoe_FirstTime" >
+                  <label> Shoe FirstTime </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Glass_FirstTime')?.value >0">
-              <p class="col" id="Glass_FirstTime" >
-                <label> Goggles FirstTime </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Glass_FirstTime')?.value >0">
+                <p class="col" id="Glass_FirstTime" >
+                  <label> Goggles FirstTime </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value >0">
-              <p class="col" id="Uniform_FirstTime" >
-                <label> Uniform FirstTime </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value >0">
+                <p class="col" id="Uniform_FirstTime" >
+                  <label> Uniform FirstTime </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Coat_FirstTime')?.value >0">
-              <p class="col" id="Coat_FirstTime" >
-                <label> Coat FirstTime </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Coat_FirstTime')?.value >0">
+                <p class="col" id="Coat_FirstTime" >
+                  <label> Coat FirstTime </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_1')?.value >0">
-              <p class="col" id="Other_deduction_1" >
-                <label> Other Deduction 1 </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_1')?.value >0">
+                <p class="col" id="Other_deduction_1" >
+                  <label> Other Deduction 1 </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_2')?.value >0">
-              <p class="col" id="Other_deduction_2" >
-                <label> Other Deduction 2 </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_2')?.value >0">
+                <p class="col" id="Other_deduction_2" >
+                  <label> Other Deduction 2 </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_3')?.value >0">
-              <p class="col" id="Other_deduction_3" >
-                <label> Other Deduction 3 </label>
-              </p>
-            </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_3')?.value >0">
+                <p class="col" id="Other_deduction_3" >
+                  <label> Other Deduction 3 </label>
+                </p>
+              </ng-container>
 
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_4')?.value >0">
-              <p class="col" id="Other_deduction_4" >
-                <label> Other Deduction 4 </label>
-              </p>
-            </ng-container>
-                   <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value >0">
-          <!-- <ng-container> -->
-            <p class="col" id="EM_PF" >
-                  <label> PF {{NewPayScaleFormGroup?.get('EM_PF_Percent')?.value}}% </label>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_4')?.value >0">
+                <p class="col" id="Other_deduction_4" >
+                  <label> Other Deduction 4 </label>
+                </p>
+              </ng-container>
+                    <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value >0">
+            <!-- <ng-container> -->
+              <p class="col" id="EM_PF" >
+                    <label> PF {{NewPayScaleFormGroup?.get('EM_PF_Percent')?.value}}% </label>
+                  </p>
+                </ng-container>
+                <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value >0">
+                <!-- <ng-container> -->
+              <p class="col" id="EM_ESI" >
+                    <label> ESI {{NewPayScaleFormGroup?.get('EM_ESI_Percent')?.value}}% </label>
+                  </p>
+                </ng-container>
+
+
+                <ng-container  *ngIf="NewPayScaleFormGroup?.get('Transport')?.value !== 0 && NewPayScaleFormGroup?.get('Transport')?.value >0">
+                  <p class="col" id="Transport" >
+                    <label  style="color:blue"> Transport </label>
+                  </p>
+                </ng-container>
+            </div>
+            <!-- values -->
+            <div class="col-6">
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Canteen')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
+                <p class="col"  for="Canteen"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Canteen')" formControlName="Canteen" />  
+                </p>
+              </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Professional_Tax')?.value !== 0 && NewPayScaleFormGroup?.get('Professional_Tax')?.value >0">
+                <p class="col"  for="Professional_Tax"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Professional_Tax')" formControlName="Professional_Tax" />  
+                </p>
+              </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 && NewPayScaleFormGroup?.get('WC_Policy')?.value >0">
+                <p class="col"  for="WC_Policy"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'WC_Policy')" formControlName="WC_Policy" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Insurance')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance')?.value >0">
+                <p class="col"  for="Insurance"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Insurance')" formControlName="Insurance" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value >0">
+                <p class="col"  for="Shoe_FirstTime"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Shoe_FirstTime')" formControlName="Shoe_FirstTime" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Glass_FirstTime')?.value >0">
+                <p class="col"  for="Glass_FirstTime"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Glass_FirstTime')" formControlName="Glass_FirstTime" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value >0">
+                <p class="col"  for="Uniform_FirstTime"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Uniform_FirstTime')" formControlName="Uniform_FirstTime" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Coat_FirstTime')?.value >0">
+                <p class="col"  for="Coat_FirstTime"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Coat_FirstTime')" formControlName="Coat_FirstTime" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_1')?.value >0">
+                <p class="col"  for="Other_deduction_1"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_1')" formControlName="Other_deduction_1" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_2')?.value >0">
+                <p class="col"  for="Other_deduction_2"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_2')" formControlName="Other_deduction_2" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_3')?.value >0">
+                <p class="col"  for="Other_deduction_3"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_3')" formControlName="Other_deduction_3" />  
+                </p>
+              </ng-container>
+
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_4')?.value >0">
+                <p class="col"  for="Other_deduction_4"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_4')" formControlName="Other_deduction_4" />  
+                </p>
+              </ng-container>
+              <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value >0">
+              <!-- <ng-container > -->
+                <p class="col"  for="EM_PF"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EM_PF_Cal_Val')" formControlName="EM_PF_Cal_Val" />  
                 </p>
               </ng-container>
               <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value >0">
-              <!-- <ng-container> -->
-            <p class="col" id="EM_ESI" >
-                  <label> ESI {{NewPayScaleFormGroup?.get('EM_ESI_Percent')?.value}}% </label>
+              <!-- <ng-container > -->
+                <p class="col"  for="EM_ESI"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EM_ESI_Cal_Val')" formControlName="EM_ESI_Cal_Val" />  
                 </p>
               </ng-container>
-
 
               <ng-container  *ngIf="NewPayScaleFormGroup?.get('Transport')?.value !== 0 && NewPayScaleFormGroup?.get('Transport')?.value >0">
-                <p class="col" id="Transport" >
-                  <label  style="color:blue"> Transport </label>
+                <p class="col" style="color:blue" for="Transport"  >
+                  : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Transport')" formControlName="Transport" />  
                 </p>
               </ng-container>
-          </div>
-          <!-- values -->
-          <div class="col-6">
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Canteen')?.value !== 0 && NewPayScaleFormGroup?.get('Canteen')?.value >0">
-              <p class="col"  for="Canteen"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Canteen')" formControlName="Canteen" />  
-              </p>
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Professional_Tax')?.value !== 0 && NewPayScaleFormGroup?.get('Professional_Tax')?.value >0">
-              <p class="col"  for="Professional_Tax"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Professional_Tax')" formControlName="Professional_Tax" />  
-              </p>
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('WC_Policy')?.value !== 0 && NewPayScaleFormGroup?.get('WC_Policy')?.value >0">
-              <p class="col"  for="WC_Policy"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'WC_Policy')" formControlName="WC_Policy" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Insurance')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance')?.value >0">
-              <p class="col"  for="Insurance"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Insurance')" formControlName="Insurance" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Shoe_FirstTime')?.value >0">
-              <p class="col"  for="Shoe_FirstTime"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Shoe_FirstTime')" formControlName="Shoe_FirstTime" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Glass_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Glass_FirstTime')?.value >0">
-              <p class="col"  for="Glass_FirstTime"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Glass_FirstTime')" formControlName="Glass_FirstTime" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_FirstTime')?.value >0">
-              <p class="col"  for="Uniform_FirstTime"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Uniform_FirstTime')" formControlName="Uniform_FirstTime" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Coat_FirstTime')?.value !== 0 && NewPayScaleFormGroup?.get('Coat_FirstTime')?.value >0">
-              <p class="col"  for="Coat_FirstTime"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Coat_FirstTime')" formControlName="Coat_FirstTime" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_1')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_1')?.value >0">
-              <p class="col"  for="Other_deduction_1"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_1')" formControlName="Other_deduction_1" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_2')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_2')?.value >0">
-              <p class="col"  for="Other_deduction_2"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_2')" formControlName="Other_deduction_2" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_3')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_3')?.value >0">
-              <p class="col"  for="Other_deduction_3"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_3')" formControlName="Other_deduction_3" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Other_deduction_4')?.value !== 0 && NewPayScaleFormGroup?.get('Other_deduction_4')?.value >0">
-              <p class="col"  for="Other_deduction_4"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Other_deduction_4')" formControlName="Other_deduction_4" />  
-              </p>
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_PF_Cal_Val')?.value >0">
-            <!-- <ng-container > -->
-              <p class="col"  for="EM_PF"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EM_PF_Cal_Val')" formControlName="EM_PF_Cal_Val" />  
-              </p>
-            </ng-container>
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EM_ESI_Cal_Val')?.value >0">
-            <!-- <ng-container > -->
-              <p class="col"  for="EM_ESI"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EM_ESI_Cal_Val')" formControlName="EM_ESI_Cal_Val" />  
-              </p>
-            </ng-container>
-
-            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Transport')?.value !== 0 && NewPayScaleFormGroup?.get('Transport')?.value >0">
-              <p class="col" style="color:blue" for="Transport"  >
-                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Transport')" formControlName="Transport" />  
-              </p>
-            </ng-container>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- earnings and deductions -->
-  <div id="ndLine">
-    <div class="row ">
-      <div class="col-6 colborder">
-        <div class="row">
-          <div class="col-6">
-            <p class="col" id="Gross_Earnings">
-              <label>Total Earnings</label>
-            </p>
-          </div>
-          <div class="col-6">
-            <p class="col" for="Gross_Earnings" class="text-green-600 font-semibold">
-              : &#8377;<input type="number" id="payinput" formControlName="Gross_Earning"  readonly class="text-green-600 font-semibold"/> 
-            </p>
-          </div>
-          </div>
-      </div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-6">
-            <p class="col" id="Tot_Deduction">
-              <label>Total Deduction</label>
-            </p>
-          </div>
-          <div class="col-6">
-            <p class="col" for="Tot_Deduction" class="text-red-600 font-semibold">
-              : &#8377;<input type="number" id="payinput" formControlName="Gross_Deduction" readonly class="text-red-600 font-semibold"/> 
-            </p>
-          </div>
-          </div>
-      </div>
-      </div>
-  </div>
-
-  <!-- paid to contractors -->
-  <div id="ndLine">
-    <div class="col">
-      <h4>To Be Paid to Contractor</h4>
-    </div>
-    <!-- name -->
-    <div class="row">
-      <div class="col-6" *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 || NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 || NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ||NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
-        <div class="row">
-          <div class="col-6">
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !== 0 && NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 ">
-              <p class="col" id="NSDC_Contribution" ><label style="color:rgb(0, 0, 0)">NSDC Contribution </label></p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 ">
-              <p class="col" id="Uniform_Charges" ><label style="color:rgb(0, 0, 0)">Uniform Charges </label></p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !== 0 && NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ">
-              <p class="col" id="Labour_Welfare_Fund" ><label style="color:rgb(0, 0, 0)">Labour Welfare Fund </label></p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Insurance_Premium')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
-              <p class="col" id="Insurance_Premium" ><label style="color:rgb(0, 0, 0)">Insurance Premium </label></p>
-            </ng-container>
-
+    <!-- earnings and deductions -->
+    <div id="ndLine">
+      <div class="row ">
+        <div class="col-6 colborder">
+          <div class="row">
+            <div class="col-6">
+              <p class="col" id="Gross_Earnings">
+                <label>Total Earnings</label>
+              </p>
             </div>
-          <div class="col-6">
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !== 0 && NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 ">
-              <p class="col" for="NSDC_Contribution" >
-                :<input type="number" readonly id="payinput"  formControlName="NSDC_Contribution"  (input)="onInputChanged($event, 'NSDC_Contribution')"  />   </p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 ">
-              <p class="col" for="Uniform_Charges" >
-                :<input type="number" readonly id="payinput"  formControlName="Uniform_Charges"  (input)="onInputChanged($event, 'Uniform_Charges')"  />   </p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !== 0 && NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ">
-              <p class="col" for="Labour_Welfare_Fund" >
-                :<input type="number" readonly id="payinput"  formControlName="Labour_Welfare_Fund"  (input)="onInputChanged($event, 'Labour_Welfare_Fund')"  />   </p>
-            </ng-container>
-            <ng-container *ngIf="NewPayScaleFormGroup?.get('Insurance_Premium')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
-              <p class="col" for="Insurance_Premium" >
-                :<input type="number" readonly id="payinput"  formControlName="Insurance_Premium"  (input)="onInputChanged($event, 'Insurance_Premium')"  />   </p>
-            </ng-container>
-
-
+            <div class="col-6">
+              <p class="col" for="Gross_Earnings" class="text-green-600 font-semibold">
+                : &#8377;<input type="number" id="payinput" formControlName="Gross_Earning"  readonly class="text-green-600 font-semibold"/> 
+              </p>
+            </div>
+            </div>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6">
+              <p class="col" id="Tot_Deduction">
+                <label>Total Deduction</label>
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="col" for="Tot_Deduction" class="text-red-600 font-semibold">
+                : &#8377;<input type="number" id="payinput" formControlName="Gross_Deduction" readonly class="text-red-600 font-semibold"/> 
+              </p>
+            </div>
             </div>
         </div>
         </div>
-        <div class="col-6" *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 || NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 || NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ||NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
- <div class="row">
-  <div class="col-6">
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 && NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 ">
-      <p class="col" id="Learning_Fees" ><label style="color:rgb(0, 0, 0)">Learning Fee</label></p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !== 0 && NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 ">
-      <p class="col" id="Workmen_Compensation" ><label style="color:rgb(0, 0, 0)">Workmen Compensation </label></p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 && NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ">
-      <p class="col" id="Emp_Comp_Ins" ><label style="color:rgb(0, 0, 0)">Emp_Comp +Ins</label></p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !== 0 && NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
-      <p class="col" id="Higher_Education_Fee" ><label style="color:rgb(0, 0, 0)">Higher Education Fee </label></p>
-    </ng-container>
-
-    </div>
-  <div class="col-6">
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 && NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 ">
-      <p class="col" for="Learning_Fees" >
-        :<input type="number" readonly id="payinput"  formControlName="Learning_Fees"  (input)="onInputChanged($event, 'Learning_Fees')"  />   </p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !== 0 && NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 ">
-      <p class="col" for="Workmen_Compensation" >
-        :<input type="number" readonly id="payinput"  formControlName="Workmen_Compensation"  (input)="onInputChanged($event, 'Workmen_Compensation')"  />   </p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 && NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ">
-      <p class="col" for="Emp_Comp_Ins" >
-        :<input type="number" readonly id="payinput"  formControlName="Emp_Comp_Ins"  (input)="onInputChanged($event, 'Emp_Comp_Ins')"  />   </p>
-    </ng-container>
-    <ng-container *ngIf="NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !== 0 && NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
-      <p class="col" for="Higher_Education_Fee" >
-        :<input type="number" readonly id="payinput"  formControlName="Higher_Education_Fee"  (input)="onInputChanged($event, 'Higher_Education_Fee')"  />   </p>
-    </ng-container>
     </div>
 
-    </div>
-        </div>
-    </div>
-    <!-- values -->
-      <div class="row" sty>
-        <div class="col-3">
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value >0">
-          <!-- <ng-container> -->
-        <p class="col" id="EMR_PF" >
-              <label  style="color:rgb(0, 0, 0)"> PF {{NewPayScaleFormGroup?.get('EMP_PF_Percent')?.value}}% </label>
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value >0">
-          <!-- <ng-container> -->
-        <p class="col" id="EMR_ESI" >
-              <label  style="color:rgb(0, 0, 0)"> ESI {{NewPayScaleFormGroup?.get('EMP_ESI_Percent')?.value}}% </label>
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !== 0 && NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value >0">
-            <p class="col" id="Service_Charge_Fixed" >
-              <label  style="color:rgb(0, 0, 0)"> Service Charge Fixed </label>
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value !== 0 && NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >0">
-            <p class="col" id="Service_charges_Percentage" >
-              <label  style="color:rgb(0, 0, 0)"> Service Charge Percentage </label>
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null">
-            <p class="col" id="SC_Base" >
-              <label  style="color:rgb(0, 0, 0)"> Service Tax 18% On {{NewPayScaleFormGroup?.get('SC_Base')?.value}}  </label>
-            </p>
-          </ng-container>
-        </div>
-        <!-- vaues -->
-        <div class="col-3">
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value >0">
-          <!-- <ng-container > -->
-            <p class="col"  for="EMR_PF"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EMP_PF_Cal_Val')" formControlName="EMP_PF_Cal_Val" />  
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value >0">
-          <!-- <ng-container > -->
-            <p class="col"  for="EMR_ESI"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EMP_ESI_Cal_Val')" formControlName="EMP_ESI_Cal_Val" />  
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !== 0 && NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value >0">
-            <p class="col"  for="Service_Charge_Fixed"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Servive_Charge_Val')" formControlName="Service_Charge_Fixed" />  
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value !== 0 && NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >0">
-            <p class="col"  for="Service_charges_Percentage"  >
-              : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Servive_Charge_Val')" formControlName="Service_charges_Percentage" />  
-            </p>
-          </ng-container>
-          <ng-container  *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null">
-            <p class="col"  for="SC_Base"  >
-              : &#8377;<input type="text" readonly id="payinput"(input)="onInputChanged($event, 'Service_Tax_Val')" formControlName="Service_Tax_Val" />  
-            </p>
-          </ng-container>
+    <!-- paid to contractors -->
+    <div id="ndLine">
+      <div class="col">
+        <h4>To Be Paid to Contractor</h4>
+      </div>
+      <!-- name -->
+      <div class="row">
+        <div class="col-6" *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 || NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 || NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ||NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
+          <div class="row">
+            <div class="col-6">
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !== 0 && NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 ">
+                <p class="col" id="NSDC_Contribution" ><label style="color:rgb(0, 0, 0)">NSDC Contribution </label></p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 ">
+                <p class="col" id="Uniform_Charges" ><label style="color:rgb(0, 0, 0)">Uniform Charges </label></p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !== 0 && NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ">
+                <p class="col" id="Labour_Welfare_Fund" ><label style="color:rgb(0, 0, 0)">Labour Welfare Fund </label></p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Insurance_Premium')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
+                <p class="col" id="Insurance_Premium" ><label style="color:rgb(0, 0, 0)">Insurance Premium </label></p>
+              </ng-container>
+
+              </div>
+            <div class="col-6">
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('NSDC_Contribution')?.value !== 0 && NewPayScaleFormGroup?.get('NSDC_Contribution')?.value > 0 ">
+                <p class="col" for="NSDC_Contribution" >
+                  :<input type="number" readonly id="payinput"  formControlName="NSDC_Contribution"  (input)="onInputChanged($event, 'NSDC_Contribution')"  />   </p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Uniform_Charges')?.value !== 0 && NewPayScaleFormGroup?.get('Uniform_Charges')?.value > 0 ">
+                <p class="col" for="Uniform_Charges" >
+                  :<input type="number" readonly id="payinput"  formControlName="Uniform_Charges"  (input)="onInputChanged($event, 'Uniform_Charges')"  />   </p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value !== 0 && NewPayScaleFormGroup?.get('Labour_Welfare_Fund')?.value > 0 ">
+                <p class="col" for="Labour_Welfare_Fund" >
+                  :<input type="number" readonly id="payinput"  formControlName="Labour_Welfare_Fund"  (input)="onInputChanged($event, 'Labour_Welfare_Fund')"  />   </p>
+              </ng-container>
+              <ng-container *ngIf="NewPayScaleFormGroup?.get('Insurance_Premium')?.value !== 0 && NewPayScaleFormGroup?.get('Insurance_Premium')?.value > 0 ">
+                <p class="col" for="Insurance_Premium" >
+                  :<input type="number" readonly id="payinput"  formControlName="Insurance_Premium"  (input)="onInputChanged($event, 'Insurance_Premium')"  />   </p>
+              </ng-container>
+
+
+              </div>
+          </div>
+          </div>
+          <div class="col-6" *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 || NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 || NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ||NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
+  <div class="row">
+    <div class="col-6">
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 && NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 ">
+        <p class="col" id="Learning_Fees" ><label style="color:rgb(0, 0, 0)">Learning Fee</label></p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !== 0 && NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 ">
+        <p class="col" id="Workmen_Compensation" ><label style="color:rgb(0, 0, 0)">Workmen Compensation </label></p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 && NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ">
+        <p class="col" id="Emp_Comp_Ins" ><label style="color:rgb(0, 0, 0)">Emp_Comp +Ins</label></p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !== 0 && NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
+        <p class="col" id="Higher_Education_Fee" ><label style="color:rgb(0, 0, 0)">Higher Education Fee </label></p>
+      </ng-container>
+
+      </div>
+    <div class="col-6">
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Learning_Fees')?.value !== 0 && NewPayScaleFormGroup?.get('Learning_Fees')?.value > 0 ">
+        <p class="col" for="Learning_Fees" >
+          :<input type="number" readonly id="payinput"  formControlName="Learning_Fees"  (input)="onInputChanged($event, 'Learning_Fees')"  />   </p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Workmen_Compensation')?.value !== 0 && NewPayScaleFormGroup?.get('Workmen_Compensation')?.value > 0 ">
+        <p class="col" for="Workmen_Compensation" >
+          :<input type="number" readonly id="payinput"  formControlName="Workmen_Compensation"  (input)="onInputChanged($event, 'Workmen_Compensation')"  />   </p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value !== 0 && NewPayScaleFormGroup?.get('Emp_Comp_Ins')?.value > 0 ">
+        <p class="col" for="Emp_Comp_Ins" >
+          :<input type="number" readonly id="payinput"  formControlName="Emp_Comp_Ins"  (input)="onInputChanged($event, 'Emp_Comp_Ins')"  />   </p>
+      </ng-container>
+      <ng-container *ngIf="NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value !== 0 && NewPayScaleFormGroup?.get('Higher_Education_Fee')?.value > 0 ">
+        <p class="col" for="Higher_Education_Fee" >
+          :<input type="number" readonly id="payinput"  formControlName="Higher_Education_Fee"  (input)="onInputChanged($event, 'Higher_Education_Fee')"  />   </p>
+      </ng-container>
+      </div>
+
+      </div>
           </div>
       </div>
-  </div>
+      <!-- values -->
+        <div class="row" sty>
+          <div class="col-3">
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value >0">
+            <!-- <ng-container> -->
+          <p class="col" id="EMR_PF" >
+                <label  style="color:rgb(0, 0, 0)"> PF {{NewPayScaleFormGroup?.get('EMP_PF_Percent')?.value}}% </label>
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value >0">
+            <!-- <ng-container> -->
+          <p class="col" id="EMR_ESI" >
+                <label  style="color:rgb(0, 0, 0)"> ESI {{NewPayScaleFormGroup?.get('EMP_ESI_Percent')?.value}}% </label>
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !== 0 && NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value >0">
+              <p class="col" id="Service_Charge_Fixed" >
+                <label  style="color:rgb(0, 0, 0)"> Service Charge Fixed </label>
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value !== 0 && NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >0">
+              <p class="col" id="Service_charges_Percentage" >
+                <label  style="color:rgb(0, 0, 0)"> Service Charge Percentage </label>
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null">
+              <p class="col" id="SC_Base" >
+                <label  style="color:rgb(0, 0, 0)"> Service Tax 18% On {{NewPayScaleFormGroup?.get('SC_Base')?.value}}  </label>
+              </p>
+            </ng-container>
+          </div>
+          <!-- vaues -->
+          <div class="col-3">
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_PF_Cal_Val')?.value >0">
+            <!-- <ng-container > -->
+              <p class="col"  for="EMR_PF"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EMP_PF_Cal_Val')" formControlName="EMP_PF_Cal_Val" />  
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value !== 0 && NewPayScaleFormGroup?.get('EMP_ESI_Cal_Val')?.value >0">
+            <!-- <ng-container > -->
+              <p class="col"  for="EMR_ESI"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'EMP_ESI_Cal_Val')" formControlName="EMP_ESI_Cal_Val" />  
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value !== 0 && NewPayScaleFormGroup?.get('Service_Charge_Fixed')?.value >0">
+              <p class="col"  for="Service_Charge_Fixed"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Servive_Charge_Val')" formControlName="Service_Charge_Fixed" />  
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value !== 0 && NewPayScaleFormGroup?.get('Service_charges_Percentage')?.value >0">
+              <p class="col"  for="Service_charges_Percentage"  >
+                : &#8377;<input type="number" readonly id="payinput"(input)="onInputChanged($event, 'Servive_Charge_Val')" formControlName="Service_charges_Percentage" />  
+              </p>
+            </ng-container>
+            <ng-container  *ngIf="NewPayScaleFormGroup?.get('SC_Base')?.value !== null">
+              <p class="col"  for="SC_Base"  >
+                : &#8377;<input type="text" readonly id="payinput"(input)="onInputChanged($event, 'Service_Tax_Val')" formControlName="Service_Tax_Val" />  
+              </p>
+            </ng-container>
+            </div>
+        </div>
+    </div>
 
-  <!-- CTC + GST + NET -->
-  <div
-    id="ndLine"
-    style="display: flex; justify-content: space-around;padding-top:0.5em"
-  >
-    <p><label>CTC :</label>&#8377;<input id="payinput" value="" formControlName="ToTal_Base_Value" readonly class="font-semibold text-green-600"/> </p>
-    <p><label>CTC + GST :</label>&#8377;<input id="payinput" value="" formControlName="CTC" readonly class="font-semibold text-purple-600"/> </p>
+    <!-- CTC + GST + NET -->
+    <div
+      id="ndLine"
+      style="display: flex; justify-content: space-around;padding-top:0.5em"
+    >
+      <p><label>CTC :</label>&#8377;<input id="payinput" value="" formControlName="ToTal_Base_Value" readonly class="font-semibold text-green-600"/> </p>
+      <p><label>CTC + GST :</label>&#8377;<input id="payinput" value="" formControlName="CTC" readonly class="font-semibold text-purple-600"/> </p>
 
-    <p>
-      <label>Net Take Home :</label>&#8377;<input id="payinput" formControlName="Net_Take_Home" value="" readonly class="font-semibold text-blue-600"/> 
-    </p>
-  </div>
+      <p>
+        <label>Net Take Home :</label>&#8377;<input id="payinput" formControlName="Net_Take_Home" value="" readonly class="font-semibold text-blue-600"/> 
+      </p>
+    </div>
 </form>
       </div>
 

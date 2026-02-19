@@ -173,6 +173,7 @@ export class ViewPayscaleComponent implements OnInit {
 
         console.log(this.apln_list);
         this.get_Payscale(this.apln_list[0].cont_id);
+        /** set api trainee data to form values */
         this.initvalueFormGroup();
       },
       error: (error) => {
@@ -182,6 +183,7 @@ export class ViewPayscaleComponent implements OnInit {
     });
   }
 
+  /** set trainee data form */
   initvalueFormGroup() {
     this.formGroup = this.fb.group({
       apln_slno: [this.apln_list[0].apln_slno],
@@ -200,6 +202,10 @@ export class ViewPayscaleComponent implements OnInit {
     });
   }
 
+  /** 
+   * format date
+   * @param inputDate
+   */
   formatDateWithHr(inputDate: Date): String {
     const parsedDate = moment(inputDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
     const formattedDate = parsedDate.format("YYYY-MM-DD HH:mm:ss.SSS");
@@ -224,6 +230,9 @@ export class ViewPayscaleComponent implements OnInit {
     });
   }
 
+  /**
+   * @param message
+   */
   openAlertDialog(message: string): void {
     this.dialog.open(ToastComponent, {
       data: {
@@ -233,6 +242,10 @@ export class ViewPayscaleComponent implements OnInit {
     });
   }
 
+  /** 
+   * handle option selected
+   * @param selectedData
+   */
   onOptionSelected(selectedData: any) {
     console.log("Selected data:", selectedData);
     this.selectedPayscale = selectedData;
@@ -241,6 +254,10 @@ export class ViewPayscaleComponent implements OnInit {
     this.NewPayScaleFormGroup.patchValue(this.selectedPayscale); 
   }
 
+  /** 
+   * @param event
+   * @param controlName
+   */
   onInputChanged(event: any, controlName: string) {
     const newValue = event.target.value;
     const numericValue = parseFloat(newValue);
@@ -271,6 +288,9 @@ export class ViewPayscaleComponent implements OnInit {
       });
   }
 
+  /** 
+   * @param data
+   */
   convertDataTypes(data: any[]): any[] {
     return data.map((row) => {
       for (const key in row) {

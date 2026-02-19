@@ -38,6 +38,10 @@ export class PayscaleMasterComponent implements OnInit {
   payScale: FormGroup;
   allowance: FormGroup;
   deduction: FormGroup;
+  activeStatus:any = [
+    {label:'Active',value:'true'},
+    {label:'InActive',value:'false'}
+  ]
   paidToContractor: FormGroup;
   NewPayScaleFormGroup: FormGroup;
   Service_Details: FormGroup;
