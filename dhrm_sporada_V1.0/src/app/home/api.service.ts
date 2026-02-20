@@ -399,9 +399,19 @@ export class ApiService {
     return this.http.get(this.url + `/master/getbackdate`);
   }
 
+  /** 
+   * add backdate #NEW
+   * @param data
+   *  */
+  addBackDate(data:any) {
+    console.log('add backdate data:',data);
+    return this.http.post(this.url + '/master/addbackdate',data);
+  }
+  
   updateBackDate(data: any) {
     return this.http.post(this.url + `/master/updatebackdate`, data)
   }
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////masters
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////

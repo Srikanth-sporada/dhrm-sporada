@@ -83,6 +83,7 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 // import { RequestDetailsDialogComponentComponent } from './request-details-dialog-component/request-details-dialog-component.component'
 @NgModule({
   declarations: [
@@ -166,6 +167,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     SpeedDialModule,
     InputNumberModule,
     FileUploadModule,
+    CheckboxModule,
     // NgxMatFileInputModule
   ],
   providers: [

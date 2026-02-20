@@ -1,13 +1,13 @@
-<div>
+<div class="!font-poppins">
   Please Enter the Reason of Rejection
   <br>
   <br>
   <mat-form-field appearance="outline" style="width: 100%;">
-    <mat-label>Reason</mat-label>
+    <mat-label class="!font-poppins">Reason</mat-label>
     <input type="text" matInput [(ngModel)]="reason">
   </mat-form-field>
-  <div style="display: flex;justify-content: flex-end;">
-    <button mat-button (click)="close()">Cancel</button>
-    <button mat-button (click)="submit()">Submit</button>
+  <div style="display: flex;justify-content: flex-end;" class="flex items-end gap-4">
+    <button (click)="close()" class="bg-gray-300 text-gray-600 rounded-md px-1 py-2 font-semibold">Cancel</button>
+    <button (click)="submit()" class="bg-red-300 text-red-600 rounded-md px-1 py-2 font-semibold">Reject</button>
   </div>
 </div>

@@ -90,7 +90,7 @@
                     placeholder="Select Category" ></p-dropdown>
             </div>
             <!-- Contractors -->
-            <div class="font-poppins w-full" *ngIf="contractorsList?.includes(form?.value?.category) || basic[0]?.cont_id !== null">
+            <div class="font-poppins w-full" *ngIf="showContractor()">
                 <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Contractor</label> <br>
                 <p-dropdown 
                     [options]="contractorData"
@@ -393,7 +393,7 @@
             <p-button 
                *ngIf="!readonly"
                [disabled]="disbleApproveBtn == 'status' || this.applicationStatus == 'APPOINTED' || !form.valid"
-               [hidden]="this.applicationStatus == this.applicationStatusForBtn"
+               [hidden]="getButtonStatus()"
                 icon="pi pi-check-square"
                 iconPos="right"
                 styleClass="rounded-[1.5rem] mt-2"
@@ -401,9 +401,9 @@
                 label="Approve"  
             >
             </p-button> 
-            <!-- send for approval -->
+            <!-- send for approval this.applicationStatus == this.applicationStatusForBtn-->
             <p-button 
-               *ngIf="this.applicationStatus == this.applicationStatusForBtn"
+               *ngIf="getButtonStatus()"
                [disabled]="!form.valid"
                 icon="pi pi-send"
                 iconPos="right"
@@ -415,7 +415,7 @@
               <!-- reject btn *ngIf="applicationStatus == 'SUBMITTED'" -->
             <button 
               pButton 
-              *ngIf="applicationStatus == 'SUBMITTED'"
+              *ngIf="applicationStatus === 'SUBMITTED'"
                [disabled]="disbleApproveBtn == 'status'"
               label="Reject" 
               icon="pi pi-times" 

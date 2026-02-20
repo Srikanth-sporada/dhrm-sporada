@@ -21,7 +21,7 @@ export class PayrollMasterComponent implements OnInit {
   showPayrollForm = false;
   payrollObj: PayrollObj = new PayrollObj();
   plantArr: any;
-  activePayroll: any;
+  activePayroll: any = [];
   userEmpcode: string | null = sessionStorage.getItem("user_name");
   @ViewChild('payrollForm', {read: TemplateRef}) payrollFromTemplate: TemplateRef<unknown> | undefined;
   payrollData: any;

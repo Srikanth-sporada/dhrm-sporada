@@ -1,7 +1,7 @@
 <div class="mx-2">
   <!-- approve salary header -->
   <div
-    class="!flex gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+    class="!flex gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -10,7 +10,7 @@
         <mat-icon>device_hub</mat-icon>Approve Salary
         <hr />
       </h1>
-      <p class="mt-1 text-gray-400">View and Approve Employee Salary</p>
+      <p class="mt-1 text-gray-400">View and Approve Trainee Salary</p>
     </div>
     <!-- user details -->
     <h1
@@ -27,15 +27,11 @@
       <div class="relative">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
           Filters <mat-icon>filter_alt</mat-icon>
+          <!-- total count -->
+           <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
+            Total Count: {{ WageList.length || 0}}
+           </span>
         </h1>
-       <!-- download btn-->
-        <p-button 
-         icon="pi pi-check-circle"
-         label="Approve Selected Items" 
-         styleClass="absolute right-0 top-0 mr-2 rounded-[1.5rem]" 
-         [disabled]="!anyRowSelected() || button"
-        (onClick)="approveSelectedItems()">
-      </p-button>
       </div>
    <div>
      <!-- approve salary filter -->
@@ -59,7 +55,13 @@
             optionLabel="dept_name"
             optionValue="dept_name"
             styleClass="w-full" 
-            placeholder="Select Department"></p-dropdown>
+            placeholder="Select Department">
+            <ng-template let-department pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ department.dept_slno + '-' + department.dept_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
        </div>
       <!-- contractor-->
        <div class="font-poppins w-full">
@@ -70,37 +72,55 @@
             optionLabel="Cont_company_name"
             optionValue="Con_Id"
             styleClass="w-full" 
-            placeholder="Select Contractor"></p-dropdown>
+            placeholder="Select Contractor">
+            <ng-template let-contractor pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ contractor.Con_Id + '-' + contractor.Cont_company_name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
        </div>
+        <!-- apprve btn -->
+        <p-button 
+         icon="pi pi-check-circle"
+         label="Approve"
+         styleClass="mt-10"
+         [disabled]="!anyRowSelected() || button"
+        (onClick)="approveSelectedItems()">
+        </p-button>
      </div>
    </div>
   </div>
   </div>
    <!-- approve salary table -->
-  <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+  <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll relative">
     <table id="table" class="table-auto !w-full">
       <!-- table head -->
         <thead class="sticky top-0">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
             <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
-              <mat-checkbox
+              <!-- <mat-checkbox
                 color="white"
+                class="m-0"
                 [(ngModel)]="allSelected"
                 (change)="toggleSelectAll()"
-                >SNo</mat-checkbox
-              >
-              <!-- </th>
-                                         <th  class="text-center"
-                            style="background-color: darkblue">Sl_No</th> -->
+                >Sno</mat-checkbox
+              > -->
+              <p-checkbox 
+                [(ngModel)]="allSelected" 
+                [binary]="true" 
+                (onChange)="toggleSelectAll()"
+                inputId="binary"></p-checkbox>
+                Sno
             </th>
 
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0">Employee Name</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Name</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0">Contractor</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Category</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">DOJ</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Dept</th>
-            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Line</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Department</th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">Line</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0">Payscale</th>
             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
             <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Action</th>
@@ -120,26 +140,36 @@
           >
             <!-- <tr  *ngFor="let data of WageList ; let i=index "> -->
 
-            <td class="!px-2 !py-4 !rounded-s-md text-center">
-              <mat-checkbox
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+              <!-- <mat-checkbox
                 [(ngModel)]="data.selected"
                 (change)="onRowSelectChange()"
-              ></mat-checkbox>
+              ></mat-checkbox> -->
+              <p-checkbox 
+                [(ngModel)]="data.selected" 
+                [binary]="true"
+                (onChange)="onRowSelectChange()" 
+                inputId="binary"></p-checkbox>
               {{ " " }}{{ i + 1 }}
             </td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.Gen_Id }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ data.name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ data.Cont_company_name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ data.apprentice_type }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.doj | date : "dd-MM-yyyy" }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.dept_name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Line_Name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md">{{ data.PayScale_Name }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.Approval_Status }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ data.Gen_Id }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ data.name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ data.Cont_company_name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-purple-600 font-semibold">{{ data.apprentice_type }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ data.doj | date : "dd-MM-yyyy" }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ data.dept_name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ data.Line_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ data.PayScale_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+              <span class="px-2 py-1 rounded font-semibold" [class]="data.Approval_Status == 'APPROVED' ? 'bg-green-200 text-green-600' : 'bg-yellow-200 text-yellow-600'">
+                {{ data.Approval_Status }}</span>
+            </td>
             <!-- action btn -->
-            <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
+            <td class="!px-2 !py-2 !rounded-e-md flex items-center justify-center">
                 <button
                   *ngIf="data.Approval_Status === 'APPROVED'"
+                  pButton
+                  icon="pi pi-eye"
                   [routerLink]="[
                     '/rhrm/contra/view_payscale',
                     'view',
@@ -149,10 +179,12 @@
                     data.Effective_Date
                   ]"
                 >
-                  <mat-icon class="text-red-500 text-[20px]">remove_red_eye</mat-icon>
+                  <!-- <mat-icon class="text-red-500 text-[20px]">remove_red_eye</mat-icon> -->
                 </button>
                 <button
                   *ngIf="data.Approval_Status === 'PENDING'"
+                  pButton
+                  icon="pi pi-check-circle"
                   [routerLink]="[
                     '/rhrm/contra/appr_payscale',
                     'approve',
@@ -162,11 +194,13 @@
                     data.Effective_Date
                   ]"
                 >
-                  <mat-icon class="text-blue-600 text-[20px]">check_circle</mat-icon>
+                  <!-- <mat-icon class="text-blue-600 text-[20px]">check_circle</mat-icon> -->
                 </button>
             </td>
           </tr>
         </tbody>
     </table>
+    <!-- loader -->
+     <app-loader *ngIf="loader?.isLoding | async"></app-loader>
   </div>
 </div>

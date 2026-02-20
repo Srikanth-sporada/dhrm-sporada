@@ -42,8 +42,18 @@ export class BackdatePopupComponent implements OnInit {
   close(){
     this.dailogRef.close();
   }
+
   addBackDate(){
-    console.log(this.data)
+    console.log('add backdate data:',this.data);
+    this.apiService.addBackDate(this.data).subscribe({
+      next: (response) => {
+        console.log('response:',response);
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+      }
+    })
   }
 
   /** get plant data 

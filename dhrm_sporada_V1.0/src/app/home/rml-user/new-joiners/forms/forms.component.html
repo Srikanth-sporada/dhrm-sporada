@@ -87,7 +87,10 @@
      *ngIf="showOnboard">
   </app-onboard-form>
 
-  <p *ngIf="apln_status=='REJECTED'" style="margin-left: 15px;color: red;">Application Rejection     Reason:<span style="color: black;">{{details[0].remarks_rejd}}</span>
+  <!-- rejection reason -->
+  <p *ngIf="apln_status=='REJECTED'" class="mx-6 font-semibold text-xl mt-2 text-red-500">
+    Application Rejection Reason:
+    <span style="color: black;">{{details[0].remarks_rejd}}</span>
   </p>
 
   <!-- show only if apprentice type is CL -->

@@ -117,6 +117,7 @@ export class TraineeApplicationComponent implements OnInit {
       this.service.traineeFormData(this.traineeApplicationForms.value).subscribe({
         next: (response: any) => {
           this.errmsg = response;
+          /**new form */
           if (this.errmsg.status == "newform") {
             this.service
               .getHr({ username: "newuser", user: "emp2" })
@@ -138,7 +139,9 @@ export class TraineeApplicationComponent implements OnInit {
                   ]);
                 },
               });
-          } else if (this.errmsg.status == "PENDING") {
+          } 
+          /** pending */
+          else if (this.errmsg.status == "PENDING") {
             this.service
               .getHr({ username: "newuser", user: "emp2" })
               .subscribe({

@@ -52,7 +52,7 @@ export class PayscaleMasterComponent implements OnInit {
   newPaidToContractor: NewPaidToContractor = new NewPaidToContractor();
   emp_Payscale: Emp_Payscale = new Emp_Payscale();
   payscaleData: any;
-  filteredPayscaleData: any;
+  filteredPayscaleData: any = [];
   filteredPlantArr: any[] = [];
   paycode: any;
   Con_list: any;

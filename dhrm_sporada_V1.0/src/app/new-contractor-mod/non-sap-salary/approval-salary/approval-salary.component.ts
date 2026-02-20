@@ -8,7 +8,7 @@ import { Location } from "@angular/common";
 import moment from "moment";
 import { ConfirmDialogReasonComponent } from "src/app/new-contractor-mod/confirm-dialog-reason/confirm-dialog-reason.component";
 import { MessageService } from "primeng/api";
-
+import { LoaderserviceService } from "src/app/loaderservice.service";
 @Component({
   selector: "app-approval-salary",
   templateUrl: "./approval-salary.component.html",
@@ -21,7 +21,7 @@ export class ApprovalSalaryComponent implements OnInit {
   isadmin: string | null = sessionStorage.getItem("isadmin");
   ishr: string | null = sessionStorage.getItem("ishr");
   defaultStatus: string;
-  WageList: any;
+  WageList: any = [];
   wageListCopy: any;
   deptList: any;
   Con_list: any;
@@ -40,6 +40,7 @@ export class ApprovalSalaryComponent implements OnInit {
     private api: ClamAPIService,
     public router: Router,
     private messageService: MessageService,
+    protected loader:LoaderserviceService,
   ) {
     this.defaultStatus = this.ishrappr ? "PENDING" : "ALL";
     this.selectedStatus = this.defaultStatus;
@@ -69,16 +70,19 @@ export class ApprovalSalaryComponent implements OnInit {
     this.selectedGenId = null;
   }
 
+  /** handle select all */
   toggleSelectAll() {
     this.WageList.forEach((item: any) => {
       item.selected = this.allSelected;
     });
   }
 
+  /** handle single row selected */
   onRowSelectChange() {
     this.allSelected = this.WageList.every((item: any) => item.selected);
   }
-
+ 
+  /** handle any row selected */
   anyRowSelected() {
     return this.WageList?.some((item: any) => item.selected);
   }
@@ -100,34 +104,37 @@ export class ApprovalSalaryComponent implements OnInit {
 
   approveSelectedItems() {
     this.button = true;
+    /** filter only selected item */
     const selectedItems = this.WageList.filter((item: any) => item.selected);
     console.log("Selected items for approval:", selectedItems);
-    // Implement your approval logic here
-    this.api.approve_Bulk_Salary(selectedItems, this.userEmpcode).subscribe(
-      (res: any) => {
+    /** approve bulk salary */
+    this.api.approve_Bulk_Salary(selectedItems, this.userEmpcode).subscribe({
+      next: (res: any) => {
         console.log(res);
-        this.openAlertDialog(`${res.message}`, 100, "check");
+        // this.openAlertDialog(`${res.message}`, 100, "check");
+        this.messageService.add({severity:'info',summary:res?.message});
         this.button = false;
+        /** get wage list */
         this.get_Wage_Mst();
       },
-      (error) => {
-        console.log(error);
-        this.messageService.add({ severity: "error", summary: error.message });
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error?.error?.message });
         this.button = false;
       },
-    );
+    });
   }
 
   get_Dept_Mst() {
     this.api.getDeptMst(this.plant_Code).subscribe({
       next:(res) => {
         this.deptList = res;
-        this.deptList.unshift({ dept_name: "All" });
+        this.deptList.unshift({ dept_name: "All",dept_slno:'' });
          console.log('department List',this.deptList)
       },
       error: (error) => {
         console.log('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.messaage });
+        this.messageService.add({ severity: "error", summary: error.message });
       }
     });
   }
@@ -137,16 +144,20 @@ export class ApprovalSalaryComponent implements OnInit {
       next:(res) => {
         this.Con_list = res;
         this.Con_list = this.Con_list.filter((item: any) => item.Plant_code == this.plant_Code && item.Status === true);
-        this.Con_list.unshift({ Cont_company_name: "All", Con_Id: "All" });
+        this.Con_list.unshift({ Cont_company_name: "All", Con_Id: "" });
         console.log('CON LIST:',this.Con_list);
       },
       error: (error) => {
         console.error('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.messaage });
+        this.messageService.add({ severity: "error", summary: error.message });
       },
     });
   }
 
+  /** 
+   * get wage list
+   * @property {*} wageList has selected prop to handle bulk approve
+   */
   get_Wage_Mst() {
     this.api.getWageMst(this.plant_Code, this.userEmpcode).subscribe({
       next:(res: any) => {

@@ -57,7 +57,7 @@ export class OnboardFormComponent implements OnInit {
   trainee_id: any;
   Role_Id: any;
   designation: any;
-  basic: any;
+  basic: any = [];
   status: any = this.active.snapshot.paramMap.get("apln_status");
   apln_slno: any = this.active.snapshot.paramMap.get("id");
   employeeID:any =  JSON.parse(sessionStorage.getItem('emp_id') || '');
@@ -101,6 +101,7 @@ export class OnboardFormComponent implements OnInit {
   contractorsList:any = [
     'CL',
     'CL - PIECE RATE',
+    'CL_PIECE_RATE',
     'VENDOR-NAPS',
     'VENDOR-LEAP',
     'VENDOR-BVOC',
@@ -158,6 +159,7 @@ export class OnboardFormComponent implements OnInit {
     console.log('form:',this.form.value)
     console.log('DATA FROM APPLICATION', this.applicationNumber);
     console.log('APPLICATION STATUS:',this.applicationStatus)
+    console.log('APPLICATION STATUS FR BTN:',this.applicationStatusForBtn)
     this.form.get("bnum").setValue(this.active.snapshot.paramMap.get("id"));
     this.form.controls["bio_id"].setValue(false);
     this.service.getonboard({apln_slno: this.active.snapshot.paramMap.get("id") || this.applicationNumber,readonly: this.readonly,})
@@ -907,5 +909,16 @@ export class OnboardFormComponent implements OnInit {
         this.messageService.add({severity:'error',summary:err.error?.message})
       }
     })
+  }
+  /** get button state for submit for approval btn */
+  getButtonStatus(){
+    return this.applicationStatus === 'PENDING' || this.applicationStatus === 'REJECTED'
+  }
+  /**
+   * @returns {boolean}
+   * checks if selected category in @property {*} contractorList category name
+   */
+  showContractor():boolean{
+    return this.contractorsList?.includes(this.form?.value?.category) || this.basic[0]?.cont_id !== null
   }
 }
