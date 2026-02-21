@@ -275,8 +275,9 @@ export class OperationsComponent implements OnInit {
    * @param slno
    */
   edit(a: number, slno: any) {
-    this.form.get('plant_name').disable();
-    this.form.get('Department').disable();
+    /** plant and dept disabled controled based on @property {boolean} editing_flag */
+    // this.form.get('plant_name').disable();
+    // this.form.get('Department').disable();
     this.editing_flag = true;
     this.temp_a = a;
 

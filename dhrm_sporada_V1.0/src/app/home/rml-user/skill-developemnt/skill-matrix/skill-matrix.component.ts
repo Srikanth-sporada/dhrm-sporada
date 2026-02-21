@@ -58,6 +58,7 @@ export class SkillMatrixComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -127,7 +128,7 @@ export class SkillMatrixComponent implements OnInit {
     // Update filtered records for display
     this.filterinfo = filtered;
   
-    // 🔁 Regenerate lineNames based on the filtered result
+    //  Regenerate lineNames based on the filtered result
     // this.lineNames = this.utils.removeDuplicateObjects(Array.from(filtered.map((item:any)=> { return {value:item.Line_Name}})));
   
     console.log('Filtered Records:', this.filterinfo);
@@ -146,8 +147,7 @@ export class SkillMatrixComponent implements OnInit {
     this.filterinfo = this.fullData;
   
     // Reset the full list of departments and line names
-    this.departments = Array.from(new Set(this.fullData.map((item:any) => item.dept_name)));
-  
+    // this.departments = Array.from(new Set(this.fullData.map((item:any) => item.dept_name))); // commented for filter value bug
     this.lineNames = Array.from(new Set(this.fullData.map((item:any) => item.Line_Name)));
   }
 

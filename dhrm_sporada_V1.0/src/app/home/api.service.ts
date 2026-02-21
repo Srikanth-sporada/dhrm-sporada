@@ -405,7 +405,7 @@ export class ApiService {
    *  */
   addBackDate(data:any) {
     console.log('add backdate data:',data);
-    return this.http.post(this.url + '/master/addbackdate',data);
+    return this.http.post(this.url + '/master/insertbackdatecontrol',data);
   }
   
   updateBackDate(data: any) {

@@ -157,7 +157,7 @@ export class EvaluatonDueComponent implements OnInit {
   getEvaluationDue(form:any){
     this.service.evaluationDueSupervisor(form).subscribe({
         next: (response) => {
-          console.log(response);
+          console.log('SD summary list:',response);
           this.filterinfo = response;
         },
         error: (error) => {
