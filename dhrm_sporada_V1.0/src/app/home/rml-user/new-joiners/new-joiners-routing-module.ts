@@ -73,7 +73,8 @@ const routes: Routes = [
     {
       path:'update-trainee-data',
       component: UpdateTraineeDataComponent
-    }
+    },
+    
     
 ];
   

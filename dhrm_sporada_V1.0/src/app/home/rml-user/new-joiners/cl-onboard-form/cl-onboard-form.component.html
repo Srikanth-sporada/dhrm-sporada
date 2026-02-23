@@ -1,0 +1,99 @@
+<div class="mx-2">
+    <!-- trainee application header -->
+  <div class="!flex !items-center gap-8 py-2 !justify-between !shadow-md !my-4 !rounded-md !mx-auto !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
+    <img src="assets/ranelogo.png" class="img rounded-md h-16 w-28" />
+    <div class="flex items-center justify-center flex-col w-full">
+      <h1 class="text-2xl !font-semibold flex items-center justify-center gap-2 text-blue-600 text-center sm:text-left">
+        CONTRACT EMPLOYEE ONBOARDING - APPLICATION FORM
+        <hr />
+      </h1>
+    </div>
+  </div>
+
+  <!-- aadhar and file upload -->
+   <div class="shadow !mx-2 sm:!mx-4">
+      <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
+            <span class="pi pi-user" style="font-size: 1.5rem"></span>
+          Aadhar
+        </h3>
+        <!-- first grid -->
+        <div class="grid sm:grid-cols-3 gap-4">
+            <!-- aadhar number -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Aadhar Number
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="aadhar"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- mobile number -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Mobile Number
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="mobileNo"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- Apperentice Type -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Apprentice Type
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="type"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+        </div>
+        <!-- second grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- aadhar upload -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="aadhar">
+                    Aadhar
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  id="aadhar"
+                  type="file"
+                  class="block w-full p-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-300 rounded-md"
+                  >
+            </div>
+            <!-- Photo -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="photo">
+                   Photo
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <!-- input -->
+                 <input 
+                  id="photo"
+                  type="file"
+                  class="block w-full p-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-300 rounded-md"
+                  >
+            </div>
+        </div>
+   </div>
+</div>

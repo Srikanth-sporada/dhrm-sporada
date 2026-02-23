@@ -1,0 +1,54 @@
+<!-- user login form -->
+<form [formGroup]="clApplicationForm">
+  <!-- company name -->
+<span class="font-bold block mb-2">Apprentice Type</span>
+  <p-dropdown
+    [options]="apprenticeType"
+    optionLabel="label"
+    optionValue="value"
+    placeholder="Choose Apprentice Type"
+    styleClass="font-poppins w-full mb-3"
+    formControlName="apprentice_type"
+    [loading]="true"
+  >
+</p-dropdown>
+  <br />
+   <!-- Aadhar Number -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Aadhar Number</span>
+    <p-inputMask
+      mask="9999-9999-9999"
+      placeholder="1234-1234-1234"
+      styleClass="w-full"
+      formControlName="aadhar_no"
+      [unmask]="true"
+    >
+    </p-inputMask>
+  </div>
+  <!--  mobile number -->
+  <div class="flex-auto mb-3">
+    <span class="font-bold block mb-2">Mobile Number</span>
+    <p-inputMask
+      mask="99999-99999"
+      placeholder="99999-99999"
+      styleClass="w-full"
+      formControlName="mobile_no1"
+      [unmask]="true"
+    >
+    </p-inputMask>
+  </div>
+  <div class="px-2 font-poppins font-semibold flex items-center justify-center mt-6 lg:mt-4 xl:mt-6">
+    <p-button
+      label="Apply"
+      icon="pi pi-send"
+      [fluid]="true"
+      iconPos="right"
+      class="font-poppins" 
+      [disabled]="!clApplicationForm.valid"
+      (onClick)="checkUserAdhaar()"
+    ></p-button>
+  </div>
+
+  <!-- prime ng -->
+</form>
+

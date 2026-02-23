@@ -61,6 +61,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 import { ExtendedModule } from "@angular/flex-layout";
 import { UpdateTraineeDataComponent } from './update-trainee-data/update-trainee-data.component';
+
 @NgModule({
     declarations: [	
         HrApprovalComponent,

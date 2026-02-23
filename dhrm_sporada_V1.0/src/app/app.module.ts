@@ -65,8 +65,8 @@ import { TrainerLoginComponent } from "./first-page/trainer-login/trainer-login.
 import { WorkmenLoginComponent } from "./first-page/workmen-login/workmen-login.component";
 import { ExecutiveLoginComponent } from "./first-page/executive-login/executive-login.component";
 import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filter.pipe";
-
-
+import { ClOnboardNewComponent } from './first-page/cl-onboard-new/cl-onboard-new.component';
+import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-form/cl-onboard-form.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,6 +83,8 @@ import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filte
     TrainerLoginComponent,
     WorkmenLoginComponent,
     ExecutiveLoginComponent,
+    ClOnboardNewComponent, //#NEW
+    ClOnboardFormComponent, //#NEW
   ],
   imports: [
     BrowserModule,

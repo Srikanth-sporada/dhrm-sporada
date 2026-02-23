@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './home/page-not-found/page-not-found.comp
 import { PermIdcardComponent } from './home/rml-user/new-joiners/perm-idcard/perm-idcard.component';
 import { DashboardComponent } from './home/rml-user/dashboard/dashboard.component';
 import { AdminArsDumbComponent } from './admin-ars-dumb/admin-ars-dumb.component';
+import { ClOnboardFormComponent } from './home/rml-user/new-joiners/cl-onboard-form/cl-onboard-form.component';
 
 const routes: Routes = [
 
@@ -63,6 +64,11 @@ const routes: Routes = [
     component: FirstPageComponent,
     pathMatch:'full'
   },
+   // #NEW
+  {
+    path:'cl-onboard/:aadhar/:mobileno/:type',
+    component: ClOnboardFormComponent,
+  },
   {
     path:'**',
     redirectTo: 'page-not-found',
@@ -76,6 +82,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent
   },
+ 
 ];
 
 @NgModule({

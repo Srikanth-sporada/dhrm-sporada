@@ -43,6 +43,12 @@ export class ApiService {
       uniqueid
     );
   }
+  /** CL & CL PIECE RATE ONBOARD NEW API */
+  checkAdhaarClOnboardNew(data:any){
+    return this.http.post(this.url + '/cl/onboard/v1/check-user',data)
+  }
+
+
   getPlantCode(form: any) {
     return this.http.get(
       this.url + "/hrOperation/plantcodelist?company_name=" + form.company_name
