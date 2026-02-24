@@ -11,14 +11,29 @@
   </div>
 
   <!-- aadhar and file upload -->
-   <div class="shadow !mx-2 sm:!mx-4">
+   <div class="shadow-md mb-4 !mx-2 sm:!mx-4">
       <!-- basic details -->
         <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
-            <span class="pi pi-user" style="font-size: 1.5rem"></span>
-          Aadhar
+            <span class="pi pi-id-card" style="font-size: 1.5rem"></span>
+          Aadhar 
         </h3>
         <!-- first grid -->
         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- Apperentice Type -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Application No
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="apln_slno"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
             <!-- aadhar number -->
             <div class="mx-3 mb-3">
                 <label class="text-blue-600 font-semibold font-poppins" for="title">
@@ -49,6 +64,9 @@
                   class="w-full bg-gray-300"
                   >
             </div>
+        </div>
+        <!-- second grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
             <!-- Apperentice Type -->
             <div class="mx-3 mb-3">
                 <label class="text-blue-600 font-semibold font-poppins" for="title">
@@ -64,9 +82,6 @@
                   class="w-full bg-gray-300"
                   >
             </div>
-        </div>
-        <!-- second grid -->
-         <div class="grid sm:grid-cols-3 gap-4">
             <!-- aadhar upload -->
             <div class="mx-3 mb-3">
                 <label class="text-blue-600 font-semibold font-poppins" for="aadhar">
@@ -77,6 +92,7 @@
                  <input 
                   id="aadhar"
                   type="file"
+                  (change)="onFileChange($event,'aadhar_file')"
                   class="block w-full p-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-300 rounded-md"
                   >
             </div>
@@ -91,9 +107,468 @@
                  <input 
                   id="photo"
                   type="file"
+                  (change)="onFileChange($event,'photo_file')"
                   class="block w-full p-2 text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400 border border-gray-300 rounded-md"
                   >
             </div>
         </div>
+   </div>
+
+   <!-- basic details -->
+   <div class="shadow-md mb-4 !mx-2 sm:!mx-4" [formGroup]="clOnboardForm">
+      <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
+            <span class="pi pi-user" style="font-size: 1.5rem"></span>
+          Basic Details
+        </h3>
+        <!-- first grid -->
+        <div class="grid sm:grid-cols-3 gap-4">
+            <!-- company -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Company
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="company"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- plant -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Plant
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [value]="plant"
+                  [disabled]="true"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- contractors -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Contractor
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="contractorList"
+                optionLabel="Cont_company_name"
+                optionValue="Con_id"
+                styleClass="w-full"
+                formControlName="cont_id"
+                placeholder="select Contractor">
+                </p-dropdown>
+            </div>
+        </div>
+        <!-- second grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- contractors -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Title
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="titleList"
+                optionLabel="value"
+                optionValue="value"
+                formControlName="title"
+                styleClass="w-full"
+                placeholder="select Title">
+                </p-dropdown>
+            </div>
+            <!-- name -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Name
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  pInputText
+                  class="w-full"
+                  formControlName="fullname"
+                  >
+            </div>
+            <!-- father name -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Father Name
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  pInputText
+                  class="w-full"
+                  formControlName="fathername"
+                  >
+            </div>
+         </div>
+        <!-- third grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- Marital Status -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Marital Status
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="maritalStatus"
+                optionLabel="value"
+                optionValue="value"
+                formControlName="marital_status"
+                styleClass="w-full"
+                placeholder="select Marital Status">
+                </p-dropdown>
+            </div>
+            <!-- religion -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Religion
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="religionList"
+                (onChange)="setReligion($event.value)"
+                optionLabel="religion_name"
+                optionValue="slno"
+                formControlName="religion_sl"
+                styleClass="w-full"
+                placeholder="select Religion">
+                </p-dropdown>
+            </div>
+            <!-- Gender -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Gender
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="genderList"
+                optionLabel="value"
+                optionValue="value"
+                formControlName="gender"
+                styleClass="w-full"
+                placeholder="select Gender">
+                </p-dropdown>
+            </div>
+        </div>
+        <!-- fourth grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- caste -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Caste
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  pInputText
+                  class="w-full"
+                  formControlName="caste_name"
+                  >
+            </div>
+            <!-- father name -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Date Of Birth
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-calendar
+                 formControlName="birthdate"
+                 dateFormat="yy-mm-dd"
+                 styleClass="w-full"
+                 [maxDate]="maxDate"
+                 [showIcon]="true">
+                </p-calendar>
+            </div>
+         </div>
+   </div>
+
+   <!-- address details -->
+   <div class="shadow-md mb-4 !mx-2 sm:!mx-4">
+    <div [formGroup]="clOnboardForm">
+      <!-- first grid -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
+            <span class="pi pi-home" style="font-size: 1.5rem"></span>
+          Address Details
+        </h3>
+        <!-- first grid -->
+        <div class="grid sm:grid-cols-5 gap-4">
+            <!-- present address -->
+            <div class="mx-3 mb-3 col-span-2">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Present Address
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  formControlName="present_address"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- pincode -->
+            <div class="mx-3 mb-3 ">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Pincode
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [maxlength]="6"
+                  formControlName="pres_pincode"
+                  (input)="getPincodeData($event,'present')"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- city -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    City
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [disabled]="true"
+                  formControlName="pres_city"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- state -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                  State
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [disabled]="true"
+                  formControlName="pres_state_name"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+        </div>
+        <!-- second grid -->
+        <div class="grid sm:grid-cols-5 gap-4">
+            <!-- permanent address -->
+            <div class="mx-3 mb-3 col-span-2">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Permanent Address
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [disabled]="checkPermanentAddress"
+                  formControlName="permanent_address"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- pincode -->
+            <div class="mx-3 mb-3 ">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Pincode
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [maxlength]="6"
+                  formControlName="pincode"
+                  (input)="getPincodeData($event,'permanent')"
+                  [disabled]="checkPermanentAddress"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- city -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    City
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [disabled]="true"
+                  formControlName="city"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+            <!-- state -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                  State
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [disabled]="true"
+                  formControlName="state_name"
+                  pInputText
+                  class="w-full bg-gray-300"
+                  >
+            </div>
+        </div>
+    </div>
+        <!-- check address -->
+         <div class="ml-3 pb-2 flex items-center justify-start gap-2">
+            <!-- address check box -->
+         <p-checkbox 
+            [(ngModel)]="checkPermanentAddress"
+            (onChange)="setPresentAddAsPermanentAddress()" 
+            [binary]="true" 
+            inputId="binary"></p-checkbox>
+        <label class="!mb-0">Check to save as Permanent Address</label>
+         </div>
+   </div>
+
+   <!-- emergency details -->
+     <div class="shadow-md mb-4 !mx-2 sm:!mx-4" [formGroup]="clOnboardForm">
+      <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
+            <span class="pi pi-id-card" style="font-size: 1.5rem"></span>
+          Emergency Details
+        </h3>
+        <!-- first grid -->
+        <div class="grid sm:grid-cols-3 gap-4">
+            <!-- contact person -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Contact Person Name
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  formControlName="emergency_name"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- person number -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                    Contact Person Number
+                <span class="text-red-600">*</span></label>
+                <br>
+                <!-- input -->
+                 <input 
+                  type="text"
+                  [maxLength]="10"
+                  formControlName="mobile_no2"
+                  pInputText
+                  class="w-full"
+                  >
+            </div>
+            <!-- relation -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Contact Person Relation
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="relationList"
+                optionLabel="relation_desc"
+                optionValue="relation_desc"
+                styleClass="w-full"
+                formControlName="emergency_rel"
+                placeholder="Select Relation">
+                </p-dropdown>
+            </div>
+        </div>
+        <!-- second grid -->
+         <div class="grid sm:grid-cols-3 gap-4">
+            <!-- Blood group -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                   Contact Person Relation
+                <span class="text-red-600">*</span></label>
+                <br>
+                <p-dropdown
+                [options]="bloodGroupList"
+                optionLabel="group"
+                optionValue="group"
+                styleClass="w-full"
+                formControlName="blood_group"
+                placeholder="Select Blood Group">
+                </p-dropdown>
+            </div>
+        </div>
+     </div>
+
+     <!-- other details -->
+   <div class="shadow-md mb-4 !mx-2 sm:!mx-4" [formGroup]="clOnboardForm">
+      <!-- basic details -->
+        <h3 class="ml-3 text-2xl text-blue-600 md:my-2 lg:my-3 font-semibold p-2">
+            <span class="pi pi-info-circle" style="font-size: 1.5rem"></span>
+          Other Details
+        </h3>
+        <!-- first grid -->
+        <div class="grid sm:grid-cols-3 gap-4">
+            <!-- transport facility -->
+            <div class="mx-3 mb-3">
+                <label class="text-blue-600 font-semibold font-poppins" for="title">
+                  Transport Facility Needed
+                <span class="text-red-600">*</span></label>
+                <br>
+                <div class="flex items-center justify-start gap-4">
+                    <div>
+                        <p-radioButton 
+                        name="Van_Eligible" 
+                        [value]="1" 
+                        formControlName="Van_Eligible" 
+                     ></p-radioButton>
+                    <label for="ingredient1" class="!mb-0 ml-2">
+                       Yes
+                    </label>
+                    </div>
+                    <div>
+                         <p-radioButton 
+                        name="Van_Eligible" 
+                        [value]="0" 
+                        formControlName="Van_Eligible" 
+                     ></p-radioButton>
+                    <label for="ingredient1" class="!mb-0 ml-2">
+                       No
+                    </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- submit btn -->
+         <div class="flex items-center justify-center py-1">
+            <button
+            pButton
+            label="Submit"
+            icon="pi pi-send"
+            [disabled]="!clOnboardForm.valid"
+            (click)="submitFormData()">
+            </button>
+         </div>
    </div>
 </div>

@@ -1,6 +1,51 @@
 <!-- user login form -->
 <form [formGroup]="clApplicationForm">
-  <!-- company name -->
+  <!-- company list -->
+  <p-dropdown
+    [options]="companyList"
+    optionLabel="company_name"
+    optionValue="company_code"
+    placeholder="Choose Company Name"
+    styleClass="font-poppins w-full mb-3"
+    formControlName="company_code"
+    [loading]="true"
+    (onChange)="getPlantsByCompanyCode($event.value)"
+  > 
+  <ng-template let-company pTemplate="selectedItem">
+      <div class="flex align-items-center gap-2">
+          <span>{{ company.company_code + '-' + company.company_name }}</span>
+      </div>
+  </ng-template>
+    <ng-template let-company pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ company.company_code + '-' + company.company_name }}</span>
+              </div>
+    </ng-template>
+ </p-dropdown>
+  <br />
+
+  <!-- Plane Name -->
+  <span class="font-bold block mb-2">Plant Name</span>
+  <p-dropdown
+    [options]="plantList"
+    optionLabel="plant_name"
+    optionValue="plant_code"
+    placeholder="Choose Plant"
+    styleClass="font-poppins w-full mb-3"
+    formControlName="plant_code"
+  >
+  <ng-template let-plant pTemplate="selectedItem">
+      <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+      </div>
+  </ng-template>
+      <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+           </ng-template>
+  </p-dropdown>
+  <!-- apprentice type -->
 <span class="font-bold block mb-2">Apprentice Type</span>
   <p-dropdown
     [options]="apprenticeType"
@@ -11,7 +56,7 @@
     formControlName="apprentice_type"
     [loading]="true"
   >
-</p-dropdown>
+  </p-dropdown>
   <br />
    <!-- Aadhar Number -->
   <div class="flex-auto mb-3">
@@ -37,6 +82,7 @@
     >
     </p-inputMask>
   </div>
+  <!-- submit btn -->
   <div class="px-2 font-poppins font-semibold flex items-center justify-center mt-6 lg:mt-4 xl:mt-6">
     <p-button
       label="Apply"

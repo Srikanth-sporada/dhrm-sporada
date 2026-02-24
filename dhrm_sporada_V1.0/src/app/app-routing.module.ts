@@ -66,7 +66,7 @@ const routes: Routes = [
   },
    // #NEW
   {
-    path:'cl-onboard/:aadhar/:mobileno/:type',
+    path:'cl-onboard/:aadhar/:mobileno/:type/:company/:plant/:apln_slno',
     component: ClOnboardFormComponent,
   },
   {

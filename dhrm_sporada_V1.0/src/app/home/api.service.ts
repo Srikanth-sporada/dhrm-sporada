@@ -47,7 +47,22 @@ export class ApiService {
   checkAdhaarClOnboardNew(data:any){
     return this.http.post(this.url + '/cl/onboard/v1/check-user',data)
   }
-
+  /** get contractors NEW API*/
+  getContractorsByPlant(plant:any){
+    return this.http.get(this.url + `/cl/onboard/v1/get_contractor?Plant_code=${plant}`)
+  }
+  /** religion and relations NEW API*/
+  getApplicationFormData(){
+    return this.http.get(this.url + '/cl/onboard/v1/application-form-data')
+  }
+  /** get pincode data NEW API*/
+  getPincodeData(pincode:any){
+    return this.http.get(this.url + `/cl/onboard/v1/getPincodes?pincode=${pincode}`)
+  }
+  /** sumbit cl application for NEW API */
+  submitClNewOnboardForm(data:any){
+    return this.http.post(this.url + '/cl/onboard/v1/upsert_application',data)
+  }
 
   getPlantCode(form: any) {
     return this.http.get(
