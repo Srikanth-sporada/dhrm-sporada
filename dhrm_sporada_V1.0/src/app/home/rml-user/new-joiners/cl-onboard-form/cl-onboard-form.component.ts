@@ -4,7 +4,7 @@ import { ActivatedRoute, ParamMap,Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/home/api.service';
 import moment from 'moment';
-
+import { Utility } from 'src/app/utils/utils';
 @Component({
   selector: 'app-cl-onboard-form',
   templateUrl: './cl-onboard-form.component.html',
@@ -16,11 +16,15 @@ export class ClOnboardFormComponent implements OnInit {
   type:any;
   company:any;
   plant:any;
+  companyName:any;
+  plantName:any;
   apln_slno:any;
   clOnboardForm:FormGroup;
   contractorList:any;
   religionList:any = [];
   relationList:any = [];
+  aadharFile:File;
+  photoFile:File;
   maritalStatus:any = [
     {value:'SINGLE'},
     {value:'MARRIED'},
@@ -55,8 +59,10 @@ export class ClOnboardFormComponent implements OnInit {
     private messageService:MessageService,
     private apiService:ApiService,
     private formBuilder:FormBuilder,
+    protected utils:Utility,
   ) { 
     const today = new Date();
+    /** 18 year old date check */
     this.maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
   }
 
@@ -71,11 +77,12 @@ export class ClOnboardFormComponent implements OnInit {
     this.clOnboardForm = this.formBuilder.group({
       cont_id: ['', Validators.required],
       plant_code: [this.plant, Validators.required],
+      apln_status:['PENDING'],
       marital_status: ['', Validators.required],
       fullname: ['', Validators.required],
       title: ['Mr', Validators.required],
       Van_Eligible: [0, Validators.required],
-      aadhar_file: [null, Validators.required], // file input handled separately
+      // aadhar_file: [null,], // file input handled separately
       aadhar_no: [this.aadhar, Validators.required],
       apprentice_type: [this.type, Validators.required],
       birthdate: ['', Validators.required],
@@ -90,7 +97,7 @@ export class ClOnboardFormComponent implements OnInit {
       mobile_no2: ['', Validators.required],
       other_files1: ['', Validators.required],
       permanent_address: ['', Validators.required],
-      photo_file: [null, Validators.required], // file input handled separately
+      // photo_file: [null,], // file input handled separately
       photo_filename: ['', Validators.required],
       pincode: ['', Validators.required],
       pres_city: ['', Validators.required],
@@ -124,21 +131,25 @@ export class ClOnboardFormComponent implements OnInit {
     } else if (controlName === 'photo_file') {
       newFileName = `${this.apln_slno}_photo.${extension}`;
     }
-    // Create a new File object with the renamed filename
+    /** Create a new File object with the renamed filename */
     const renamedFile = new File([file], newFileName, { type: file.type });
-    // Patch into form
-    this.clOnboardForm.patchValue({
-      [controlName]: renamedFile
-    });
+
+    // this.clOnboardForm.patchValue({
+    //   [controlName]: renamedFile
+    // });
     /** patch file name */
     if(controlName === 'aadhar_file'){
       this.clOnboardForm.patchValue({
         ['other_files1']: newFileName
       });
+      /** set aadhar file */
+      this.aadharFile = renamedFile;
     }else if(controlName === 'photo_file'){
       this.clOnboardForm.patchValue({
         ['photo_filename']: newFileName
       });
+      /** set photo file */
+      this.photoFile = renamedFile;
     }
     console.log('Renamed file:', renamedFile);
     console.log('form data:',this.clOnboardForm.value)
@@ -153,6 +164,7 @@ export class ClOnboardFormComponent implements OnInit {
       next: (response:any) => {
         console.log('contractors:',response?.data);
         this.contractorList = response?.data;
+        this.utils.checkHasData(response.data,'Contractors Not Found!')
       },
       error: (error:any) => {
         console.log('ERROR:',error);
@@ -165,10 +177,12 @@ export class ClOnboardFormComponent implements OnInit {
    * get application form data
    */
   getApplicationFormData(){
-    this.apiService.getApplicationFormData().subscribe({
+    this.apiService.getApplicationFormData(this.company,this.plant).subscribe({
       next: (response:any) => {
          this.religionList = response?.data?.religions;
-         this.relationList = response?.data?.relationTypes
+         this.relationList = response?.data?.relationTypes;
+         this.companyName = response?.data?.companyName;
+         this.plantName = response?.data?.plantName;
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -207,6 +221,7 @@ export class ClOnboardFormComponent implements OnInit {
       next: (response:any) => {
         /** patch form values */
         this.patchPincodeAddress(type,response?.data);
+        this.utils.checkHasData(response?.data,'Pincode Not Found!')
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -247,15 +262,26 @@ export class ClOnboardFormComponent implements OnInit {
    * sumbit form application
    */
   submitFormData(){
+    console.log(this.aadharFile,this.photoFile)
     /** format DOB */
     const formattedDOB = moment(this.clOnboardForm.value.birthdate).format('YYYY-MM-DD')
     this.clOnboardForm.controls['birthdate'].setValue(formattedDOB)
     console.log('form data:',this.clOnboardForm.value);
+   
+    /** construct form data */
+    const formData = new FormData();
+    Object.keys(this.clOnboardForm.controls).forEach(key => {
+     formData.append(key, this.clOnboardForm.get(key)?.value);
+    });
+    formData.append('aadhar_file', this.aadharFile);
+    formData.append('photo_file',this.photoFile);
 
-    this.apiService.submitClNewOnboardForm(this.clOnboardForm.value).subscribe({
+    this.apiService.submitClNewOnboardForm(formData).subscribe({
       next: (response:any) => {
         console.log('response',response);
-        this.navigator.navigateByUrl('/');
+        if(response?.success){
+         this.navigator.navigateByUrl('/');
+        }
       },
       error:(error:any) => {
         console.error('ERROR:',error);

@@ -52,8 +52,8 @@ export class ApiService {
     return this.http.get(this.url + `/cl/onboard/v1/get_contractor?Plant_code=${plant}`)
   }
   /** religion and relations NEW API*/
-  getApplicationFormData(){
-    return this.http.get(this.url + '/cl/onboard/v1/application-form-data')
+  getApplicationFormData(companyCode:any,plantCode:any){
+    return this.http.get(this.url + `/cl/onboard/v1/application-form-data?companyCode=${companyCode}&plantCode=${plantCode}`)
   }
   /** get pincode data NEW API*/
   getPincodeData(pincode:any){

@@ -94,7 +94,7 @@ export class FirstPageComponent implements OnInit {
     { user: "Trainer Login (DOJO)", value:"trainer-login" },
     { user: "Trainee Login", value:"workmen-login" },
     { user: "Executive Login",value:"executive-login" },
-    { user: "CL Labour / CL-Piece Rate",value:"cl-new-onboard" },
+    { user: "CL (or) CL-Piece Rate",value:"cl-new-onboard" },
   ];
 
   news = [

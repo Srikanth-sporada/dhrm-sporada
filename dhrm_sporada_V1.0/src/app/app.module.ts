@@ -53,6 +53,7 @@ import { ToastModule } from "primeng/toast";
 import { RippleModule } from "primeng/ripple";
 import { ConfirmPopupModule } from "primeng/confirmpopup";
 import { SpeedDialModule } from "primeng/speeddial";
+import { MenuModule } from 'primeng/menu';
 import { TabViewModule } from "primeng/tabview";
 import { CalendarModule } from "primeng/calendar";
 import { InputNumberModule } from "primeng/inputnumber";
@@ -125,6 +126,7 @@ import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-f
     CheckboxModule,
     InputTextModule,
     CarouselModule,
+    MenuModule,
     ToastModule,
     RippleModule,
     ConfirmPopupModule,

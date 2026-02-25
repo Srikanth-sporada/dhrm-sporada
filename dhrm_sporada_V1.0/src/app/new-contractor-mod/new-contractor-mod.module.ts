@@ -78,6 +78,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { ButtonModule } from 'primeng/button';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -161,6 +163,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     InputTextModule,
     DropdownModule,
     CalendarModule,
+    MenuModule,
+    SplitButtonModule,
     RadioButtonModule,
     InputTextareaModule,
     ButtonModule,

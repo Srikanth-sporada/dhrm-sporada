@@ -175,4 +175,10 @@ export class Utility {
     }, environment.hour * 60 * 60 * 1000)
   }
  
+  /** check has data */
+  checkHasData(dataToCheck:any,message:any){
+    if(dataToCheck.length == 0 || !dataToCheck || dataToCheck == null || dataToCheck == undefined){
+      this.messageService.add({severity:'warn',summary:message})
+    }
+  }
 }

@@ -108,10 +108,19 @@ export class ClOnboardNewComponent implements OnInit {
     const type = this.clApplicationForm.get('apprentice_type')?.value;
     const aadhar = this.clApplicationForm.get('aadhar_no')?.value;
     const apln_slno = this.apln_slno;
-    const company = this.findCodeByName('company',this.clApplicationForm.get('company_code')?.value);
-    const plant = this.findCodeByName('plant',this.clApplicationForm.get('plant_code')?.value)
+    const company = this.clApplicationForm.get('company_code')?.value;
+    const plant = this.clApplicationForm.get('plant_code')?.value
     console.log(`cl-onboard/${aadhar}/${mobileNo}/${type}/${company}/${plant}/${apln_slno}`)
-    this.router.navigateByUrl(`cl-onboard/${aadhar}/${mobileNo}/${type}/${company}/${plant}/${apln_slno}`)
+    this.router.navigateByUrl(`cl-onboard/${aadhar}/${mobileNo}/${type}/${company}/${plant}/${apln_slno}`);
+    // this.router.navigate([
+    //  '/cl-onboard',
+    //   aadhar,
+    //   mobileNo,
+    //   encodeURIComponent(type),
+    //   encodeURIComponent(company),
+    //   encodeURIComponent(plant),
+    //   apln_slno
+    // ])
   }
 
   /** 
