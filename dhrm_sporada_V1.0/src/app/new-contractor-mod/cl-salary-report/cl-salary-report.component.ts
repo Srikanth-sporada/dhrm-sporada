@@ -5,6 +5,8 @@ import moment from "moment";
 // import * as XLSX from "xlsx";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
+
 @Component({
   selector: "app-cl-salary-report",
   templateUrl: "./cl-salary-report.component.html",
@@ -57,6 +59,7 @@ export class CLSalaryReportComponent implements OnInit {
     private api: ApiService,
     private clApi: ClamAPIService,
     private messageService: MessageService,
+    protected loader:LoaderserviceService,
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +88,7 @@ export class CLSalaryReportComponent implements OnInit {
     if (this.isadmin == "false") {
       this.plant = plantCode;
     }
-     this.api.getplantcode(plantCode).subscribe({
+    this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
         this.plantlist.unshift({ plant_name: "All", plant_code: "" });
@@ -103,9 +106,7 @@ export class CLSalaryReportComponent implements OnInit {
    * get plants
    * @param plantCode
    * */
-  getPlant(plantCode: any) {
-   
-  }
+  getPlant(plantCode: any) {}
   /** get contractors */
   getContra() {
     this.clApi.getContractor().subscribe(

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild} from '@angular/core';
 import { FormBuilder,Validators,FormGroup} from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/home/api.service';
@@ -10,8 +10,11 @@ import { ToastComponent } from '../toast/toast.component';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService,MenuItem } from 'primeng/api';
+import { Menu } from 'primeng/menu';
 import { environment } from 'src/environments/environment.prod';
 import { Utility } from 'src/app/utils/utils';
+import { MatMenuTrigger } from '@angular/material/menu';
+
 @Component({
   selector: 'app-bill-processed-date',
   templateUrl: './bill-processed-date.component.html',
@@ -63,8 +66,8 @@ export class BillProcessedDateComponent implements OnInit {
   ]
   selectedMonth: string | undefined;
   selectedDate: string | undefined;
-   // Speed Dial items
-    items: MenuItem[] = [
+  /** menu item */
+  items: MenuItem[] = [
               {
                   icon: 'pi pi-plus-circle',
                   tooltipOptions:{
@@ -84,7 +87,17 @@ export class BillProcessedDateComponent implements OnInit {
                   this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
                 }
               }
-    ];
+  ];
+  /** mat menu */
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
+
+  toggleMenu() {
+    if (this.menuTrigger.menuOpen) {
+      this.menuTrigger.closeMenu();
+    } else {
+      this.menuTrigger.openMenu();
+    }
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -118,73 +131,73 @@ export class BillProcessedDateComponent implements OnInit {
       console.log(this.minYear,this.maxYear);
   }
 
-ngOnInit(): void {
-  /** logged in user data */
-   let details = sessionStorage.getItem("all");
-    if (details != null) {
-      this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
-    }
+  ngOnInit(): void {
+    /** logged in user data */
+    let details = sessionStorage.getItem("all");
+      if (details != null) {
+        this.all = JSON.parse(details);
+        this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
+      }
 
-    this.plant_Code = sessionStorage.getItem('plantcode');
-    this.getplantcode()
-    this.get_Bill_data();
-    this.getPayrollArea(this.plant_Code)
-}
-/** on month selected area selected caluculate start,end day for selected month */
-updateSelectedDate() {
-    const selectedLockMonth = this.billForm.get('lock_month')?.value;
-    console.log('SELECTED LOCK MONTH: ' , selectedLockMonth)
-    console.log('MONTH:',new Date().getMonth())
-    if (selectedLockMonth){
-      /** bill process start date & end date as calaulation based on start of the month */
-       const selected = moment(selectedLockMonth, 'YYYY-MM'); // e.g. '2025-11']
-       console.log('SELECTED LOCK MONTH:',selected);
-      /** checking if the selected payroll area start day */
-        if (this.selecetedPayrollArea.StartDay === 1) {
-          /** Full calendar month */
-          const startDate = selected.clone().startOf('month');
-          const endDate = selected.clone().endOf('month');
-          /** calculated processed star & end date */
-          this.processedBillStartDate = startDate.format('YYYY-MM-DD');
-          this.processedBillEndDate = endDate.format('YYYY-MM-DD');
-        } else {
-          /* Previous month start and current month end day in payroll area end date */
-          const prevMonth = selected.clone().subtract(1, 'month');
-          const startDate = moment({
-            year: prevMonth.year(),
-            month: prevMonth.month(),
-            day: this.selecetedPayrollArea.StartDay
-          });
-
-          const endDate = moment({
-            year: selected.year(),
-            month: selected.month(),
-            day: this.selecetedPayrollArea.EndDay
-          });
-
-    // Handle overflow (e.g. Feb 30 → Mar 2)
-    const validStart = startDate.isValid() ? startDate : prevMonth.clone().endOf('month');
-    const validEnd = endDate.isValid() ? endDate : selected.clone().endOf('month');
-
-    /** calculated processed star & end date */
-    this.processedBillStartDate = validStart.format('YYYY-MM-DD');
-    this.processedBillEndDate = validEnd.format('YYYY-MM-DD');
+      this.plant_Code = sessionStorage.getItem('plantcode');
+      this.getplantcode()
+      this.get_Bill_data();
+      this.getPayrollArea(this.plant_Code)
   }
+  /** on month selected area selected caluculate start,end day for selected month */
+  updateSelectedDate() {
+      const selectedLockMonth = this.billForm.get('lock_month')?.value;
+      console.log('SELECTED LOCK MONTH: ' , selectedLockMonth)
+      console.log('MONTH:',new Date().getMonth())
+      if (selectedLockMonth){
+        /** bill process start date & end date as calaulation based on start of the month */
+        const selected = moment(selectedLockMonth, 'YYYY-MM'); // e.g. '2025-11']
+        console.log('SELECTED LOCK MONTH:',selected);
+        /** checking if the selected payroll area start day */
+          if (this.selecetedPayrollArea.StartDay === 1) {
+            /** Full calendar month */
+            const startDate = selected.clone().startOf('month');
+            const endDate = selected.clone().endOf('month');
+            /** calculated processed star & end date */
+            this.processedBillStartDate = startDate.format('YYYY-MM-DD');
+            this.processedBillEndDate = endDate.format('YYYY-MM-DD');
+          } else {
+            /* Previous month start and current month end day in payroll area end date */
+            const prevMonth = selected.clone().subtract(1, 'month');
+            const startDate = moment({
+              year: prevMonth.year(),
+              month: prevMonth.month(),
+              day: this.selecetedPayrollArea.StartDay
+            });
 
-      /**
-       * @property {billForm} has procesed bill data
-       * @function patchValue update calculated start & end date YYYY-MM-DD format
-       */
-      this.billForm.patchValue({
-        process_start_date: this.processedBillStartDate,
-        process_end_date: this.processedBillEndDate,
-      });
-      console.log('Start Date' ,this.processedBillStartDate)
-      console.log('End Date' ,this.processedBillEndDate);
-      console.log(this.billForm.value)
+            const endDate = moment({
+              year: selected.year(),
+              month: selected.month(),
+              day: this.selecetedPayrollArea.EndDay
+            });
+
+      // Handle overflow (e.g. Feb 30 → Mar 2)
+      const validStart = startDate.isValid() ? startDate : prevMonth.clone().endOf('month');
+      const validEnd = endDate.isValid() ? endDate : selected.clone().endOf('month');
+
+      /** calculated processed star & end date */
+      this.processedBillStartDate = validStart.format('YYYY-MM-DD');
+      this.processedBillEndDate = validEnd.format('YYYY-MM-DD');
     }
-}
+
+        /**
+         * @property {billForm} has procesed bill data
+         * @function patchValue update calculated start & end date YYYY-MM-DD format
+         */
+        this.billForm.patchValue({
+          process_start_date: this.processedBillStartDate,
+          process_end_date: this.processedBillEndDate,
+        });
+        console.log('Start Date' ,this.processedBillStartDate)
+        console.log('End Date' ,this.processedBillEndDate);
+        console.log(this.billForm.value)
+      }
+  }
 
 /** get plant code api call */
   getplantcode(){

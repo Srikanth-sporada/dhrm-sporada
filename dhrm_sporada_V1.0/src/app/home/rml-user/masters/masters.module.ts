@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormsModule } from '@angular/forms';
 import { LoadModule } from 'src/app/loader/loader.module';
 import { MenuModule } from 'primeng/menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { MenuModule } from 'primeng/menu';
     FormsModule,
     LoadModule,
     MenuModule,
+    MatMenuModule,
   ],
   providers:[CookieService],
   schemas:[

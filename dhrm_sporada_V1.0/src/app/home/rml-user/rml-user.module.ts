@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { DeptComponent } from "./masters/dept/dept.component";
 import { MatTableModule } from "@angular/material/table";
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from "@angular/material/divider";
 import { PlantComponent } from "./masters/plant/plant.component";
 import { LineComponent } from "./masters/line/line.component";
@@ -128,6 +129,7 @@ import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.com
     MatButtonModule,
     MatTableModule,
     MatDividerModule,
+    MatMenuModule,
     MatDialogModule,
     MatSnackBarModule,
     FlexLayoutModule,

@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatIconModule} from '@angular/material/icon'
 import {MatToolbarModule} from '@angular/material/toolbar'; 
+import { MatMenuModule } from '@angular/material/menu';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -152,6 +153,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     MatFormFieldModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatMenuModule,
     MatDialogModule,
     HttpClientModule,
     LoadModule,

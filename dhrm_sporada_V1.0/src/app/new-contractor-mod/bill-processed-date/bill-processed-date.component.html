@@ -369,7 +369,7 @@
             >
                 <table id="table" class="table-auto !w-full">
                   <!-- table head -->
-                    <thead class="sticky top-0">
+                    <thead class="sticky top-0 z-10">
                         <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0">Lock Month</th>
@@ -380,7 +380,6 @@
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Lock On </th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Action</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Lock</th>
                         </tr>
                     </thead>
                     <!-- table body -->
@@ -397,10 +396,16 @@
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{data.bill_prossed_enddt | date:'dd-MM-yyyy'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.locked_date | date:'dd-MM-yyyy'}}</td>
                             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.category === 'T' ? 'Trainee' : 'Operator'}}</td>
-                           <!-- action btn -->
+                            <!-- action btn -->
                             <td  class="!px-2 !py-4  flex items-center justify-center">
+                               <!-- data.Payroll_Lock==='Y' | null" -->
+                              <button *ngIf="data.category === 'T' && data.Payroll_Lock==='Y'">
+                                  <mat-icon class="text-green-600 text-[20px]">
+                                    lock
+                                  </mat-icon>
+                              </button>
                               <!-- download btn -->
-                               <!-- <button
+                               <button
                                  (click)="downloadPaidDaysData(data.lock_month,data.plant_Code,data.PayrollArea)">
                                     <mat-icon class="text-blue-600 text-[20px]">download</mat-icon>
                                 </button> 
@@ -413,21 +418,15 @@
                                  *ngIf="data.category === 'T' && data.Payroll_Lock=== null"
                                  (click)="confirmDelete(data)">
                                     <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
-                                </button> -->
-                                <p-menu #menu [model]="items" ></p-menu>
-                                <p-button (onClick)="menu" icon="pi pi-ellipsis-v"></p-button>
-                            </td>
-                            <!-- action btn -->
-                            <td  class="!px-2 !py-4 !rounded-e-md text-center">
-                                <!-- data.Payroll_Lock==='Y' | null" -->
-                              <button *ngIf="data.category === 'T' && data.Payroll_Lock==='Y'">
-                                  <mat-icon class="text-green-600 text-[20px]">lock</mat-icon>
-                              </button>
+                                </button>
                             </td>
                         </tr>
+
                     </tbody>
                 </table>
              </div>
 
         </ng-template> 
+
+        
 </div>

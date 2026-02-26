@@ -1,7 +1,7 @@
 <div class="mx-2">
   <!-- employee salary master header -->
   <div
-    class="!flex gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20"
+    class="!flex gap-2 py-2 !items-center !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto"
   >
     <div class="flex items-start justify-start flex-col">
       <h1
@@ -10,7 +10,7 @@
         <mat-icon>assessment</mat-icon>Employee Salary Master
         <hr />
       </h1>
-      <p class="mt-1 text-gray-400">Download Employee Salary Data</p>
+      <p class="mt-1 text-gray-400">Download Employee Salary Master </p>
     </div>
     <!-- user details -->
     <h1
@@ -21,40 +21,58 @@
   </div>
   <!-- employee salary master -->
   <div>
-  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400">
-    <!-- header -->
+    <div
+      class="!shadow-md !my-4 !rounded-md h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400"
+    >
+      <!-- header -->
       <div class="relative">
-        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
-          Download Employee Salary Master <mat-icon>assessment</mat-icon>
+        <h1
+          class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2"
+        >
+          Download<mat-icon>download</mat-icon>
         </h1>
       </div>
-   <div>
-     <div class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2">
-       <!-- Department-->
-       <div class="font-poppins w-full lg:w-[30%]">
-          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
-          <p-dropdown 
-            [options]="plantlist"
-            [(ngModel)]="plant"
-            [disabled]="isadmin == 'false'"
-            optionLabel="plant_name"
-            optionValue="plant_code"
-            styleClass="w-full" 
-            placeholder="Select Plant"></p-dropdown>
-       </div>
-       <!-- download btn-->
-        <p-button 
-         icon="pi pi-download"
-         label="Download" 
-         styleClass="ml-3 rounded-[1.5rem] mt-9"
-         (onClick)="getData()" 
-         >
-       </p-button>
-     </div>
-   </div>
+      <div>
+        <div
+          class="flex items-center justify-start w-full flex-col sm:flex-row sm:gap-2"
+        >
+          <!-- Department-->
+          <div class="font-poppins w-full lg:w-[30%]">
+            <label
+              for="status"
+              class="text-gray-400 font-poppins mt-3 mb-1 font-semibold"
+              >Plant</label
+            >
+            <br />
+            <p-dropdown
+              [options]="plantlist"
+              [(ngModel)]="plant"
+              [disabled]="isadmin == 'false'"
+              optionLabel="plant_name"
+              optionValue="plant_code"
+              styleClass="w-full"
+              placeholder="Select Plant"
+            >
+            <ng-template let-plant pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                      <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                  </div>
+            </ng-template>
+          </p-dropdown>
+          </div>
+          <!-- download btn-->
+          <p-button
+            icon="pi pi-download"
+            label="Download"
+            styleClass="ml-3 rounded-md mt-10"
+            (onClick)="getData()"
+          >
+          </p-button>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
-  
+
   <!-- <div class="bulk-outer">
     <div class="bulk">
       <span><p>Download Employee Salary Master :</p></span>
@@ -81,6 +99,5 @@
     </div>
   </div> -->
 
-  <div>
-  </div>
+  <app-loader *ngIf="loader?.isLoding | async"></app-loader>
 </div>

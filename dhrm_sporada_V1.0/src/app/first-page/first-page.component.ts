@@ -90,11 +90,11 @@ export class FirstPageComponent implements OnInit {
   selectedUser: string = "trainee-application";
   users = [
     { user: "Trainee New Application",value:"trainee-application" },
+    { user: "CL (or) CL-Piece Rate",value:"cl-new-onboard" },
     { user: "Trainee Test Login (DOJO)", value:"trainee-test-login" },
     { user: "Trainer Login (DOJO)", value:"trainer-login" },
     { user: "Trainee Login", value:"workmen-login" },
     { user: "Executive Login",value:"executive-login" },
-    { user: "CL (or) CL-Piece Rate",value:"cl-new-onboard" },
   ];
 
   news = [
