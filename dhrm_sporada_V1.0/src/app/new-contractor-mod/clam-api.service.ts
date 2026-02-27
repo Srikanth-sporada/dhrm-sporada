@@ -582,6 +582,14 @@ export class ClamAPIService {
   getPaidDays(query:any){
     return this.http.get(this.url + `/master/getpaiddays?plant=${query.plantCode}&payroll_area=${query.payrollArea}&payroll_month=${query.payrollMonth}`)
   }
+  /** 
+   * update paid days
+   * @param data
+   */
+  updatePaidDays(data:any){
+     return this.http.post(this.url + '/master/update/paiddays',data);
+  }
+
   updt_Bill_date(data: any, user: any) {
     return this.http.put(`${this.url}/master/updtBillProcess?User=${user}`, data)
   }

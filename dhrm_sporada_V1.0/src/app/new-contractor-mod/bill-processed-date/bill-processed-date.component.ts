@@ -10,7 +10,6 @@ import { ToastComponent } from '../toast/toast.component';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService,MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
 import { environment } from 'src/environments/environment.prod';
 import { Utility } from 'src/app/utils/utils';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -39,6 +38,8 @@ export class BillProcessedDateComponent implements OnInit {
   processedBillEndDate:any;
   minYear:any;
   maxYear:any;
+  /** selected row for action */
+  selectedRow:any = [];
   /** hide processed bill */
   hideHeader:boolean = environment.hideProcessedBillTabMenu;
   /** checking current month based for year */
@@ -88,6 +89,7 @@ export class BillProcessedDateComponent implements OnInit {
                 }
               }
   ];
+  paidDayaJsonData:any = [];
   /** mat menu */
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
@@ -541,5 +543,73 @@ exportExcel() : void{
       console.error('ERROR:',error);
       this.messageService.add({severity:'error',summary:'hello'})
     }
+  }
+
+  /** 
+   * set selected row for actions
+   * @param data
+   */
+  setSelectedRow(data:any){
+    this.selectedRow = [];
+    console.log('after:',this.selectedRow)
+    this.selectedRow = data;
+    console.log('before:',this.selectedRow);
+  }
+
+  /** 
+   * file upload read the file and convert excel data into json data
+   * @param event
+   */
+  onFileUpload(event:any){
+     /** remove already selected file */
+        console.log("FILE:",event.target.files[0]);
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.readAsBinaryString(file);
+        /** on load event */
+        fileReader.onload = (event: any) => {
+          let binaryData = event.target.result;
+          let workbook = XLSX.read(binaryData, { type: "binary" });
+          console.log("WB:", workbook);
+          let sheetname = workbook.SheetNames[0];
+          console.log("SN:", sheetname);
+          this.paidDayaJsonData = XLSX.utils.sheet_to_json(
+            workbook.Sheets[sheetname],
+            {
+              blankrows: false,
+            },
+          );
+          /** upload paid days API */
+          this.uploadPaidDays(this.paidDayaJsonData)
+        }
+          /** on error event */
+          fileReader.onerror = (error:any) => {
+            this.messageService.add({severity:'error',summary:error?.message})
+          }
+          /** loaded end event */
+           fileReader.onloadend = ({loaded,total}) => {
+            if(loaded !== total){
+               this.messageService.add({severity:'error',summary:'Oops! something went wrong.'});
+            }
+           }
+          console.log("Paid Days", this.paidDayaJsonData);
+  }
+  /** 
+   * upload paid days API
+   * @param data
+   */
+  uploadPaidDays(data:any){
+    this.api.updatePaidDays(data).subscribe({
+      next: (response:any) => {
+        console.log('response',response);
+        if(response?.success){
+          this.messageService.add({severity:'info',summary:'Paid Days Updated Successfully!'})
+        }
+      },
+      error: (error:any) =>{
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+      }
+    })
   }
 }

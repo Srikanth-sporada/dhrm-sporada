@@ -1,30 +1,45 @@
 <!-- add,update bill processed date template -->
 <div class="overlay overflow-y-auto no-scrollbar" [hidden]="!showHolidayForm">
-  <div class="form-popup !p-0 !font-poppins w-1/2 !rounded-md" [hidden]="!showHolidayForm">
-  <!-- form header -->
-     <div>
+  <div
+    class="form-popup !p-0 !font-poppins w-1/2 !rounded-md"
+    [hidden]="!showHolidayForm"
+  >
+    <!-- form header -->
+    <div>
       <div class="bg-blue-600 flex items-center justify-center py-4">
-        <div class="flex items-center justify-center text-white font-poppins mx-4 gap-2">
-          <div  class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center">
-            <mat-icon class="h-0 w-0 text-2xl opacity-100">{{showAdd ? 'add_circle' : 'edit'}}</mat-icon>
+        <div
+          class="flex items-center justify-center text-white font-poppins mx-4 gap-2"
+        >
+          <div
+            class="px-2 py-2 rounded-md bg-[var(--bg-transparent)] flex items-center justify-center"
+          >
+            <mat-icon class="h-0 w-0 text-2xl opacity-100">{{
+              showAdd ? "add_circle" : "edit"
+            }}</mat-icon>
           </div>
-          <h4 class="text-2xl text-white !mb-0">{{showAdd ? 'Add Processed Bill' : 'Update Processed Bill'}}</h4>
+          <h4 class="text-2xl text-white !mb-0">
+            {{ showAdd ? "Add Processed Bill" : "Update Processed Bill" }}
+          </h4>
         </div>
       </div>
     </div>
-    <br>
-  <!-- processed bill form -->
+    <br />
+    <!-- processed bill form -->
     <div>
-        <form [formGroup]="billForm" >
-          <!-- first row -->
-          <div class="row mx-2">
-           <!--plant name -->
-            <div class="col-sm-6">
-              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-              <mat-icon class="text-2xl text-blue-600 h-0 w-0">adf_scanner</mat-icon>
-              Plant
-            </label><br />
-            <p-dropdown 
+      <form [formGroup]="billForm">
+        <!-- first row -->
+        <div class="row mx-2">
+          <!--plant name -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+            >
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >adf_scanner</mat-icon
+              >
+              Plant </label
+            ><br />
+            <p-dropdown
               formControlName="plant"
               [disabled]="!showAdd"
               [options]="plantname"
@@ -32,35 +47,39 @@
               optionValue="plant_code"
               styleClass="w-full"
               (onChange)="onPlantChange($event.value)"
-              placeholder="Select Plant">
+              placeholder="Select Plant"
+            >
               <ng-template let-plant pTemplate="item">
-                  <div class="flex align-items-center gap-2">
-                      <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
-                  </div>
-            </ng-template>
+                <div class="flex align-items-center gap-2">
+                  <span>{{ plant?.plant_code + "-" + plant.plant_name }}</span>
+                </div>
+              </ng-template>
             </p-dropdown>
-            </div>
-            <!-- Payroll area -->
-            <div class="col-sm-6">
-              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+          </div>
+          <!-- Payroll area -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+            >
               <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
-              Payroll Area
-            </label><br/>
-            <p-dropdown 
+              Payroll Area </label
+            ><br />
+            <p-dropdown
               formControlName="payrollArea"
               [disabled]="!showAdd"
               [options]="payrollArea"
               optionLabel="PayrollArea"
               (onChange)="onPayrollAreaChange($event.value)"
               styleClass="w-full"
-              placeholder="Select Payroll Area">
+              placeholder="Select Payroll Area"
+            >
             </p-dropdown>
-            </div>
           </div>
-          <!-- second row -->
-           <div class="row mx-2 mt-3">
-             <!-- Start Date calender -->
-            <!-- <div class="col-sm-6">
+        </div>
+        <!-- second row -->
+        <div class="row mx-2 mt-3">
+          <!-- Start Date calender -->
+          <!-- <div class="col-sm-6">
             <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
                 <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
                 Year
@@ -77,238 +96,296 @@
             </p-calendar>
             </div> -->
 
-             <!-- lock month -->
-            <div class="col-sm-6">
-            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-               Lock Month
-              </label> <br>
-            <p-calendar 
-                [minDate]="minYear"
-                [maxDate]="maxYear"
-                dateFormat="MM-yy"
-                (onSelect)="updateSelectedDate()"
-                view="month"
-                placeholder="Select Lock Month"
-                formControlName="lock_month"
-                styleClass="w-full !font-poppins"
-                [showIcon]="true" >
-            </p-calendar>
-            </div>
-            <!--Lock month -->
-            <div class="col-sm-6" *ngIf="false">
-              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-              <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
+          <!-- lock month -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+              for="name"
+            >
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >calendar_today</mat-icon
+              >
               Lock Month
-            </label><br />
-            <p-dropdown 
+            </label>
+            <br />
+            <p-calendar
+              [minDate]="minYear"
+              [maxDate]="maxYear"
+              dateFormat="MM-yy"
+              (onSelect)="updateSelectedDate()"
+              view="month"
+              placeholder="Select Lock Month"
+              formControlName="lock_month"
+              styleClass="w-full !font-poppins"
+              [showIcon]="true"
+            >
+            </p-calendar>
+          </div>
+          <!--Lock month -->
+          <div class="col-sm-6" *ngIf="false">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+            >
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >calendar_month</mat-icon
+              >
+              Lock Month </label
+            ><br />
+            <p-dropdown
               formControlName="lock_month"
               [options]="monthsWithFirstDates"
               optionLabel="month"
               optionValue="firstDate"
               styleClass="w-full"
               (onChange)="updateSelectedDate()"
-              placeholder="Select Month">
+              placeholder="Select Month"
+            >
             </p-dropdown>
-            </div>
-             <!-- Start Date calender -->
-            <div class="col-sm-6">
-            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-                Start Date
-              </label> <br>
-            <p-calendar 
-                [disabled]="true"
-                dateFormat="yy-mm-dd"
-                formControlName="process_start_date"
-                styleClass="w-full !font-poppins"
-                [showIcon]="true" >
+          </div>
+          <!-- Start Date calender -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+              for="name"
+            >
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >calendar_today</mat-icon
+              >
+              Start Date
+            </label>
+            <br />
+            <p-calendar
+              [disabled]="true"
+              dateFormat="yy-mm-dd"
+              formControlName="process_start_date"
+              styleClass="w-full !font-poppins"
+              [showIcon]="true"
+            >
             </p-calendar>
-            </div>
-           </div>
-           <!-- third row -->
-            <div class="row mx-2 mt-3">
-              <!-- End Date calender -->
-              <div class="col-sm-6">
-              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
-                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-                  End Date
-                </label> <br>
-              <p-calendar 
-                  [disabled]="true"
-                  dateFormat="yy-mm-dd"
-                  formControlName="process_end_date"
-                  styleClass="w-full !font-poppins"
-                  [showIcon]="true" >
-              </p-calendar>
-              </div>
-               <!-- company trainee process days calander days or between days -->
-              <div class="col-sm-6 flex items-start justify-center flex-col">
-                <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-                <br>
-                <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_month</mat-icon>
-                Process Calenday Days
-              </label>
-              
-              <div class="flex items-center justify-start gap-10">
-                
-                <!-- company trainee lock -->
-                <div class="flex items-center gap-2 ml-2 mb-2">
-                  <!-- <p-checkbox 
+          </div>
+        </div>
+        <!-- third row -->
+        <div class="row mx-2 mt-3">
+          <!-- End Date calender -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1 -mb-2"
+              for="name"
+            >
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >calendar_today</mat-icon
+              >
+              End Date
+            </label>
+            <br />
+            <p-calendar
+              [disabled]="true"
+              dateFormat="yy-mm-dd"
+              formControlName="process_end_date"
+              styleClass="w-full !font-poppins"
+              [showIcon]="true"
+            >
+            </p-calendar>
+          </div>
+          <!-- company trainee process days calander days or between days -->
+          <div class="col-sm-6 flex items-start justify-center flex-col">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1"
+              for="name"
+            >
+              <br />
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >calendar_month</mat-icon
+              >
+              Process Calenday Days
+            </label>
+
+            <div class="flex items-center justify-start gap-10">
+              <!-- company trainee lock -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox 
                   formControlName="companyTraineeLock"
                   value="Y"
                   inputId="admin" >
                 </p-checkbox> -->
-                 <p-radioButton 
-                    formControlName="companyTraineeLock"
-                    value="Y"
-                    inputId="cal-y">
-                  </p-radioButton>
-                  <label for="cal-y" class="mb-0 text-blue-600">YES</label>
-                </div>
-                <!-- company trainee lock -->
-                <div class="flex items-center gap-2 ml-2 mb-2">
-                    <!-- <p-checkbox 
+                <p-radioButton
+                  formControlName="companyTraineeLock"
+                  value="Y"
+                  inputId="cal-y"
+                >
+                </p-radioButton>
+                <label for="cal-y" class="mb-0 text-blue-600">YES</label>
+              </div>
+              <!-- company trainee lock -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox 
                     formControlName="companyTraineeLock"
                     value="N" 
                     inputId="national"
                     >
                   </p-checkbox> -->
-                  <p-radioButton 
-                    formControlName="companyTraineeLock"
-                    value="N"
-                    inputId="cal-n">
-                  </p-radioButton>
-                  <label for="caly-n" class="mb-0 text-blue-600">NO</label>
-                </div>
-              </div>
+                <p-radioButton
+                  formControlName="companyTraineeLock"
+                  value="N"
+                  inputId="cal-n"
+                >
+                </p-radioButton>
+                <label for="caly-n" class="mb-0 text-blue-600">NO</label>
               </div>
             </div>
-          <!-- fourth row -->
-           <div class="row mx-2 mt-3 mb-2">
-             <!-- paid week off -->
-              <div class="col-sm-6">
-                  <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-                  <br>
-                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">event</mat-icon>
-                  Paid Week Off
-                </label>
-                <div class="flex items-center justify-start gap-10">
-                  <!-- paid week off Y -->
-                  <div class="flex items-center gap-2 ml-2 mb-2">
-                    <!-- <p-checkbox 
+          </div>
+        </div>
+        <!-- fourth row -->
+        <div class="row mx-2 mt-3 mb-2">
+          <!-- paid week off -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1"
+              for="name"
+            >
+              <br />
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0">event</mat-icon>
+              Paid Week Off
+            </label>
+            <div class="flex items-center justify-start gap-10">
+              <!-- paid week off Y -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox 
                       formControlName="weekoff_paid"
                       value="Y" 
                       inputId="pay-week-off-yes">
                     </p-checkbox> -->
-                      <p-radioButton 
-                        formControlName="weekoff_paid"
-                        value="Y"
-                        inputId="pay-week-off-yes">
-                     </p-radioButton>
-                    <label for="pay-week-off-yes" class="mb-0 text-blue-600">Yes</label>
-                  </div>
-                  <!-- paid week off N -->
-                  <div class="flex items-center gap-2 ml-2 mb-2">
-                    <!-- <p-checkbox
+                <p-radioButton
+                  formControlName="weekoff_paid"
+                  value="Y"
+                  inputId="pay-week-off-yes"
+                >
+                </p-radioButton>
+                <label for="pay-week-off-yes" class="mb-0 text-blue-600"
+                  >Yes</label
+                >
+              </div>
+              <!-- paid week off N -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox
                       formControlName="weekoff_paid"
                       value="N" 
                       inputId="pay-week-off-no">
                    </p-checkbox> -->
-                    <p-radioButton 
-                      formControlName="weekoff_paid"
-                      value="N"
-                      inputId="pay-week-off-no">
-                     </p-radioButton>
-                    <label for="pay-week-off-no" class="mb-0 text-blue-600">No</label>
-                  </div>
-                </div>
+                <p-radioButton
+                  formControlName="weekoff_paid"
+                  value="N"
+                  inputId="pay-week-off-no"
+                >
+                </p-radioButton>
+                <label for="pay-week-off-no" class="mb-0 text-blue-600"
+                  >No</label
+                >
               </div>
-              <!-- category -->
-              <div class="col-sm-6">
-                  <label class="text-blue-600 flex items-center justify-start gap-1" for="name">
-                  <br>
-                  <mat-icon class="text-2xl text-blue-600 h-0 w-0">category</mat-icon>
-                  Category
-                </label>
-                <div class="flex items-center justify-start gap-10">
-                  <!-- company rainee -->
-                  <div class="flex items-center gap-2 ml-2 mb-2">
-                    <!-- <p-checkbox 
+            </div>
+          </div>
+          <!-- category -->
+          <div class="col-sm-6">
+            <label
+              class="text-blue-600 flex items-center justify-start gap-1"
+              for="name"
+            >
+              <br />
+              <mat-icon class="text-2xl text-blue-600 h-0 w-0"
+                >category</mat-icon
+              >
+              Category
+            </label>
+            <div class="flex items-center justify-start gap-10">
+              <!-- company rainee -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox 
                     formControlName="category"
                     [checked]="true"
                     value="T" 
                     inputId="admin" ></p-checkbox> -->
-                     <p-radioButton 
-                      formControlName="category"
-                      value="T"
-                      inputId="trainee">
-                     </p-radioButton>
-                    <label for="trainee" class="mb-0 text-blue-600">Trainee</label>
-                  </div>
-                  <!-- operator -->
-                  <div class="flex items-center gap-2 ml-2 mb-2">
-                    <!-- <p-checkbox 
+                <p-radioButton
+                  formControlName="category"
+                  value="T"
+                  inputId="trainee"
+                >
+                </p-radioButton>
+                <label for="trainee" class="mb-0 text-blue-600">Trainee</label>
+              </div>
+              <!-- operator -->
+              <div class="flex items-center gap-2 ml-2 mb-2">
+                <!-- <p-checkbox 
                     [disabled]="true"
                     formControlName="category"
                     value="O" 
                     inputId="operator" ></p-checkbox> -->
-                     <p-radioButton 
-                      formControlName="category"
-                      value="O"
-                      [disabled]="true"
-                      inputId="operator">
-                     </p-radioButton>
-                    <label for="operator" class="mb-0 text-blue-600">Operator</label>
-                  </div>
-                </div>
+                <p-radioButton
+                  formControlName="category"
+                  value="O"
+                  [disabled]="true"
+                  inputId="operator"
+                >
+                </p-radioButton>
+                <label for="operator" class="mb-0 text-blue-600"
+                  >Operator</label
+                >
               </div>
-           </div>
-          <!-- form footer -->
-          <div class="bg-gray-100 flex items-center justify-end gap-6 py-2">
-            <!-- add btn -->
-            <button
-              *ngIf="showAdd"
-              (click)="onSubmit()"
-              [disabled]="!billForm.valid"
-              class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600 mr-2"
-            >
-              Add Processed Bill
-            </button>
-             <!-- cancel btn -->
-            <button 
-             (click)="closeForm()"
-             class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
-             >
-              Cancel
-            </button>
-            <!-- update btn -->
-            <!-- <button
+            </div>
+          </div>
+        </div>
+        <!-- form footer -->
+        <div class="bg-gray-100 flex items-center justify-end gap-6 py-2">
+          <!-- add btn -->
+          <button
+            *ngIf="showAdd"
+            (click)="onSubmit()"
+            [disabled]="!billForm.valid"
+            class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600 mr-2"
+          >
+            Add Processed Bill
+          </button>
+          <!-- cancel btn -->
+          <button
+            (click)="closeForm()"
+            class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md"
+          >
+            Cancel
+          </button>
+          <!-- update btn -->
+          <!-- <button
               *ngIf="!showAdd"
               class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white mr-2"
               (click)="update()"
             >
               Update Holiday
             </button> -->
-          </div>
-        </form>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <!-- Masters header -->
-  <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row mx-2" *ngIf="hideHeader">
-    <div class="flex items-start justify-start flex-col">
-      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
-      <mat-icon>currency_rupee</mat-icon> Processed Bill's <hr/>
+<div
+  class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row mx-2"
+  *ngIf="hideHeader"
+>
+  <div class="flex items-start justify-start flex-col">
+    <h1
+      class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600"
+    >
+      <mat-icon>currency_rupee</mat-icon> Processed Bill's
+      <hr />
     </h1>
     <p class="mt-1 text-gray-400">View and Manage Masters</p>
-    </div>
-    <!-- user details -->
-         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
-          {{userDetails}}
-         </h1>
   </div>
+  <!-- user details -->
+  <h1
+    class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right"
+  >
+    {{ userDetails }}
+  </h1>
+</div>
 <!-- Table -->
 <div class="mx-2">
   <!-- processed bill master filter -->
@@ -323,7 +400,7 @@
         Filters <mat-icon>filter_alt</mat-icon>
         <!-- total count -->
         <span class="bg-blue-200 rounded-md px-2 py-1 text-base">
-            Total Count: {{ bill_data?.length || 0}}
+          Total Count: {{ bill_data?.length || 0 }}
         </span>
       </h1>
       <!-- primeNG speedDial -->
@@ -347,86 +424,224 @@
           >Search</label
         >
         <br />
-         <input 
-            type="text" 
-            pInputText
-            class="w-full"
-            name="search"
-            [(ngModel)]="selectedMonth1" 
-            id="search"
-            placeholder="🔍︎ Search Month | Plant"
-          >
+        <input
+          type="text"
+          pInputText
+          class="w-full"
+          name="search"
+          [(ngModel)]="selectedMonth1"
+          id="search"
+          placeholder="🔍︎ Search Month | Plant"
+        />
       </div>
     </div>
   </div>
-      
-  <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
-        <!-- procesed bills table -->
-        <ng-template #show>
-            <div
-            [class]="hideHeader ? 'h-[90svh] lg:h-[78vh] xl:h-[77.5vh] sm:h-[76vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll' 
-            : 'h-[90svh] lg:h-[65vh] xl:h-[64vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll'"
+
+  <app-loader *ngIf="loader.isLoding | async; else show"></app-loader>
+  <!-- procesed bills table -->
+  <ng-template #show>
+    <div
+      [class]="
+        hideHeader
+          ? 'h-[90svh] lg:h-[78vh] xl:h-[77.5vh] sm:h-[76vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll'
+          : 'h-[90svh] lg:h-[65vh] xl:h-[64vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll'
+      "
+    >
+      <table id="table" class="table-auto !w-full">
+        <!-- table head -->
+        <thead class="sticky top-0 z-10">
+          <tr
+            class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left"
+          >
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
             >
-                <table id="table" class="table-auto !w-full">
-                  <!-- table head -->
-                    <thead class="sticky top-0 z-10">
-                        <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Sno</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0">Lock Month</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Plant</th>
-                             <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll Area</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll Start </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Payroll End </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Lock On </th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Category</th>
-                            <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <!-- table body -->
-                    <tbody>
-                       <tr 
-                       *ngFor="let data of bill_data | monthFilter: selectedMonth1; let i = index"
-                        class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
-                       >
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md">{{data.lock_month | date : 'MMMM'}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.plant_Code}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.PayrollArea || '-'}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold">{{data.bill_processed_st | date:'dd-MM-yyyy'}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold">{{data.bill_prossed_enddt | date:'dd-MM-yyyy'}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{data.locked_date | date:'dd-MM-yyyy'}}</td>
-                            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ data.category === 'T' ? 'Trainee' : 'Operator'}}</td>
-                            <!-- action btn -->
-                            <td  class="!px-2 !py-4  flex items-center justify-center">
-                               <!-- data.Payroll_Lock==='Y' | null" -->
-                              <button *ngIf="data.category === 'T' && data.Payroll_Lock==='Y'">
-                                  <mat-icon class="text-green-600 text-[20px]">
-                                    lock
-                                  </mat-icon>
-                              </button>
-                              <!-- download btn -->
-                               <button
-                                 (click)="downloadPaidDaysData(data.lock_month,data.plant_Code,data.PayrollArea)">
-                                    <mat-icon class="text-blue-600 text-[20px]">download</mat-icon>
-                                </button> 
-                                <button 
-                                 *ngIf="data.category === 'T' && data.Payroll_Lock===null" 
-                                  (click)="Salary_locked(data)">
-                                    <mat-icon class="text-yellow-600 text-[20px]">lock_open</mat-icon>
-                                </button>
-                                <button 
-                                 *ngIf="data.category === 'T' && data.Payroll_Lock=== null"
-                                 (click)="confirmDelete(data)">
-                                    <mat-icon class="text-red-600 text-[20px]">delete</mat-icon>
-                                </button>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-             </div>
-
-        </ng-template> 
-
-        
+              Sno
+            </th>
+            <th class="!text-white !px-2 !py-2 !border-none !border-0">
+              Lock Month
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Plant
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Payroll Area
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Payroll Start
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Payroll End
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Lock On
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Category
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+             Locked
+            </th>
+            <th
+              class="!text-white !px-2 !py-2 !border-none !border-0 text-center"
+            >
+              Action
+            </th>
+          </tr>
+        </thead>
+        <!-- table body -->
+        <tbody>
+          <tr
+            *ngFor="
+              let data of bill_data | monthFilter: selectedMonth1;
+              let i = index
+            "
+            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
+          >
+            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i + 1 }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md">
+              {{ data.lock_month | date: "MMMM" }}
+            </td>
+            <td
+              class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold"
+            >
+              {{ data.plant_Code }}
+            </td>
+            <td
+              class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold"
+            >
+              {{ data.PayrollArea || "-" }}
+            </td>
+            <td
+              class="!px-2 !py-4 !rounded-s-md text-center text-green-600 font-semibold"
+            >
+              {{ data.bill_processed_st | date: "dd-MM-yyyy" }}
+            </td>
+            <td
+              class="!px-2 !py-4 !rounded-s-md text-center text-red-600 font-semibold"
+            >
+              {{ data.bill_prossed_enddt | date: "dd-MM-yyyy" }}
+            </td>
+            <td
+              class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold"
+            >
+              {{ data.locked_date | date: "dd-MM-yyyy" }}
+            </td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">
+              {{ data.category === "T" ? "Trainee" : "Operator" }}
+            </td>
+            <!-- lock status -->
+            <td class="!px-2 !py-4 text-center">
+              <!-- data.Payroll_Lock==='Y' | null" -->
+             <button>
+              <mat-icon class="text-green-600 text-[20px]">
+                {{data.category === 'T' && data.Payroll_Lock==='Y' ? 'lock' : '-'}}
+              </mat-icon>
+             </button>
+            </td>
+            <!-- action btn -->
+            <td class="!px-2 !py-4 flex items-center justify-center gap-3">
+              <!-- data.Payroll_Lock==='Y' | null" -->
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                (click)="setSelectedRow(data)"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
 </div>
+
+<!-- Single menu definition -->
+<mat-menu #menu="matMenu">
+  <div class="flex flex-col item-center justify-center gap-2 py-1">
+  <!-- 
+    <button
+    pButton
+    label="Download"
+    iconPos="right"
+    class="!text-blue-600 !bg-blue-200 hover:!bg-blue-200 outline-none border-none"
+    icon="pi pi-download"
+    (click)="downloadPaidDaysData(selectedRow?.lock_month, selectedRow?.plant_Code, selectedRow?.PayrollArea)"
+  ></button>
+  <button
+    pButton
+    label="Upload"
+    iconPos="right"
+    class="!text-purple-600 !bg-purple-200 hover:!bg-purple-200 outline-none border-none"
+    icon="pi pi-upload"
+    [disabled]="selectedRow.category === 'T' && selectedRow.Payroll_Lock === null"
+    (click)="
+      downloadPaidDaysData(selectedRow.lock_month, selectedRow.plant_Code, selectedRow.PayrollArea)
+    "
+  ></button>
+  <button
+    pButton
+    label="Lock"
+    iconPos="right"
+    class="!text-yellow-600 !bg-yellow-200 hover:!bg-yellow-200 outline-none border-none"
+    icon="pi pi-unlock"
+    [disabled]="selectedRow.category === 'T' && selectedRow.Payroll_Lock === null"
+    (click)="Salary_locked(selectedRow)"
+  ></button>
+  <button
+    pButton
+     label="Delete"
+    iconPos="right"
+    icon="pi pi-trash"
+    class="!text-red-600 !bg-red-200 hover:!bg-red-200 outline-none border-none"
+    [disabled]="selectedRow.category === 'T' && selectedRow.Payroll_Lock === null"
+    (click)="confirmDelete(selectedRow)"
+  ></button> 
+  -->
+  <button 
+  mat-menu-item 
+  (click)="downloadPaidDaysData(selectedRow?.lock_month, selectedRow?.plant_Code, selectedRow?.PayrollArea)">
+    <mat-icon class="!text-blue-600 text-[20px] mr-1">download</mat-icon>
+    <span class="!font-poppins !text-blue-600">Download</span>
+  </button>
+  <!-- file input -->
+   <input type="file" #fileInput (change)="onFileUpload($event)" hidden accept=".xlsx,.xls">
+  <button 
+   mat-menu-item 
+   (click)="fileInput.click()"
+   *ngIf="selectedRow.category === 'T' && selectedRow.Payroll_Lock == null">
+    <mat-icon class="!text-purple-600 text-[20px] mr-1">upload</mat-icon>
+    <span class="!font-poppins !text-purple-600">Upload</span>
+  </button>
+   <button 
+   mat-menu-item 
+   *ngIf="selectedRow.category === 'T' && selectedRow.Payroll_Lock === null"
+    (click)="Salary_locked(selectedRow)">
+    <mat-icon class="!text-yellow-600 text-[20px] mr-1">lock_open</mat-icon>
+    <span class="!font-poppins !text-yellow-600">Lock</span>
+  </button>
+   <button 
+   mat-menu-item 
+  *ngIf="selectedRow.category === 'T' && selectedRow.Payroll_Lock === null"
+    (click)="confirmDelete(selectedRow)">
+    <mat-icon class="!text-red-600 text-[20px] mr-1">delete</mat-icon>
+    <span class="!font-poppins !text-red-600">Delete</span>
+  </button>
+  </div>
+</mat-menu>
