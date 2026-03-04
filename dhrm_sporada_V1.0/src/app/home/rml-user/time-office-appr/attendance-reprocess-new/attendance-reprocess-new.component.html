@@ -1,0 +1,119 @@
+<div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
+    <div class="flex items-center sm:items-start justify-center sm:justify-start flex-col">
+      <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
+      <mat-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v240h-80v-80H200v400h280v80H200ZM760 0q-73 0-127.5-45.5T564-160h62q13 44 49.5 72T760-60q58 0 99-41t41-99q0-58-41-99t-99-41q-29 0-54 10.5T662-300h58v60H560v-160h60v57q27-26 63-41.5t77-15.5q83 0 141.5 58.5T960-200q0 83-58.5 141.5T760 0ZM200-640h560v-80H200v80Zm0 0v-80 80Z"/></svg>
+      </mat-icon> Attendance Reprocess<hr/>
+    </h1>
+    <p class="mt-1 text-gray-400">Reprocess Attendance</p>
+    </div>
+    <!-- user details -->
+         <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
+          {{userDetails}}
+         </h1>
+</div>
+
+   <div>
+    <!-- report filters -->
+  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 relative">
+    <!-- filter header -->
+      <div class="relative">
+        <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
+          Actions <mat-icon>call_to_action</mat-icon>
+        </h1>
+      </div>
+   <form [formGroup]="attendanceReprocessForm">
+     <!-- filter first row -->
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+     
+       <!-- plant -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Plant</label> <br>
+          <p-dropdown 
+            [options]="plantData"
+            formControlName="plantCode"
+            optionLabel="plant_name"
+            optionValue="plant_code"
+            styleClass="w-full" 
+            (onChange)="getPayrollAreaByPlant(false)"
+            placeholder="Select Plant">
+            <ng-template let-plant pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <span>{{ plant.plant_code + '-' + plant.plant_name }}</span>
+              </div>
+          </ng-template>
+          </p-dropdown>
+       </div>
+        <!-- payroll area-->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Payroll Area</label> <br>
+          <p-dropdown 
+            [options]="payrollAreaData"
+            formControlName="payrollArea"
+            optionLabel="PayrollArea"
+            optionValue="PayrollArea"
+            styleClass="w-full" 
+            placeholder="Select Payroll Area" ></p-dropdown>
+       </div>
+     <!-- reprocess table -->
+       <div class="font-poppins w-full">
+          <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Table</label> <br>
+          <p-dropdown 
+            [options]="reprocessTable"
+            formControlName="attendanceReprocess"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+            placeholder="Select Table">
+          </p-dropdown>
+       </div>
+     </div>
+     <!-- filters second row -->
+      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
+        <!-- from date -->
+        <div class="w-full">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+        <p-calendar 
+            formControlName="fromDate"
+            styleClass="w-full !font-poppins"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+        <!-- to date -->
+        <div class="w-full">
+        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+        <p-calendar 
+            formControlName="toDate"
+            [minDate]="getMinDate()"
+            dateFormat="yy-mm-dd"
+            styleClass="w-full !font-poppins"
+            [showIcon]="true" >
+        </p-calendar>
+        </div>
+      <!-- gen id -->
+     <div class="w-full p-fluid">
+      <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Gen</label> <br>
+      <input 
+       type="text" 
+       pInputText
+       styleClass="w-full !font-poppins"
+       placeholder="Enter Gen ID" 
+       formControlName="genId"
+       />
+      
+     </div>
+     <!-- search btn -->
+      <p-button 
+        icon="pi pi-search"
+        styleClass="rounded-[1.5rem] mt-10"
+        (onClick)="reprocessAttendance()"
+        [disabled]="!attendanceReprocessForm.valid"
+      >
+     </p-button> 
+     </div>
+   </form>
+    <!-- loader -->
+   <app-loader *ngIf="loader.isLoding | async"></app-loader>
+  </div>
+   </div>

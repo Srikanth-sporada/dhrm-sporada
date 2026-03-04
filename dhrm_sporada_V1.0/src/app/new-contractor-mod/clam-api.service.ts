@@ -90,7 +90,10 @@ export class ClamAPIService {
   getPlant() {
     return this.http.get(this.url + '/clam/plant')
   }
-
+  
+  reprocessAttendance(data:any){
+    return this.http.post(this.url + '/ars/attendance/reprocess', data);
+  }
 
   //---------------------------------------------------------------
 

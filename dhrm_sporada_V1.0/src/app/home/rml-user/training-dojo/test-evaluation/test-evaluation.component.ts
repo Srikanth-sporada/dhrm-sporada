@@ -131,6 +131,7 @@ export class TestEvaluationComponent implements OnInit {
   /** 
    * get trainee test status 
    * @param event change event
+   * @method checkTrainingModule
    * check trainee modules
    */
   get_test_status(event: any) {

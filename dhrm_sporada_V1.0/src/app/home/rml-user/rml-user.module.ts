@@ -73,6 +73,8 @@ import { CostCenterComponent } from "./masters/cost-center/cost-center.component
 import { TraineeHeadCountSummaryComponent } from "./dashboard/hr-dashboard/trainee-head-count-summary/trainee-head-count-summary.component";
 import { TraineePlantWiseHeadCountComponent } from "./dashboard/hr-dashboard/trainee-plant-wise-head-count/trainee-plant-wise-head-count.component";
 import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.component";
+import { AttendanceReprocessNewComponent } from "./time-office-appr/attendance-reprocess-new/attendance-reprocess-new.component";
+
 @NgModule({
   declarations: [
     CompanyComponent,
@@ -110,6 +112,7 @@ import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.com
     TraineeHeadCountSummaryComponent,
     TraineePlantWiseHeadCountComponent,
     AdminArsDumbComponent,
+    AttendanceReprocessNewComponent,
     ArsLoginComponent,
     MonthFilterPipe,
     DeptFilterPipe,

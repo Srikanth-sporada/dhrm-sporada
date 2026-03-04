@@ -25,6 +25,8 @@ import { VanFacilityMappingComponent } from './van-facility-mapping/van-facility
 import { VanDelayRegularizationComponent } from './van-delay-regularization/van-delay-regularization.component';
 import { RouteMasterComponent } from './route-master/route-master.component';
 import { RejoinApprovalComponent } from "./rejoin-approval/rejoin-approval.component";
+import { AttendanceReprocessNewComponent } from "./attendance-reprocess-new/attendance-reprocess-new.component";
+
 const routes: Routes = [
   {
     path: "forgot-punch-appr",
@@ -131,7 +133,6 @@ const routes: Routes = [
     path: "van-mapping",
     component: VanFacilityMappingComponent,
   },
-  
   {
     path: "route",
     component: RouteMasterComponent,
@@ -139,9 +140,11 @@ const routes: Routes = [
   {
     path: "Rejoin_Approval",
     component: RejoinApprovalComponent
-  }
-  
-
+  },
+  {
+    path: "attendance/reprocess/new",
+    component: AttendanceReprocessNewComponent,
+  },
 ];
 
 @NgModule({
