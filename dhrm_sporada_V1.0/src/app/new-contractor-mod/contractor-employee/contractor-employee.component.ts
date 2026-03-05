@@ -30,6 +30,7 @@ export class ContractorEmployeeComponent implements OnInit {
   contractEmpPayscaleDetails: any;
   contractEmpReleavingDetails: any;
   searchForm: any;
+  /** filter status options */
  statusOption=[
   { value: "PENDING", label: "PENDING" },
   { value: "SUBMITTED", label: "SUBMITTED" },
@@ -38,17 +39,20 @@ export class ContractorEmployeeComponent implements OnInit {
   { value: "REJECTED", label: "REJECTED" },
   { value: "RELIEVED", label: "RELIEVED" }
 ];
+/** form marital status options */
 maritalStatusOptions = [
   { label: "UNMARRIED", value: "UNMARRIED" },
   { label: "MARRIED", value: "MARRIED" },
   { label: "WIDOW", value: "WIDOW" },
   { label: "SINGLE", value: "SINGLE" }
 ];
+/** gender option */
 genderOptions = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },
   { label: "Transgender", value: "Transgender" }
 ];
+/** relation options */
 realtionOptions = [
   { value: "Father", label: "Father" },
   { value: "Mother", label: "Mother" },
@@ -58,6 +62,7 @@ realtionOptions = [
   { value: "Spouse", label: "Spouse" },
   { value: "Others", label: "Others" }
 ];
+/** blood gruop options */
 bloodGroupOptions = [
   { label: "A+", value: "A+"},
   { label: "A-", value: "A-"},
@@ -68,11 +73,13 @@ bloodGroupOptions = [
   { label: "AB+", value: "AB+"},
   { label: "AB-", value: "AB-"}
 ];
+/** active status options */
 activestatusOptions = [
   { value: 'Y', label: 'Active' },
   { value: 'N', label: 'InActive' }
 ];
 
+/** menu items */
 items: MenuItem[] = [
             {
                 icon: 'pi pi-plus-circle',
@@ -96,8 +103,55 @@ items: MenuItem[] = [
               }
             }
 ];
+
   form: any;
-  filterinfo: any;
+  filterinfo: any =  [
+  {
+    gen_id: "GEN001",
+    biometric_no: "BIO12345",
+    payrollArea: "PA01",
+    Cont_company_name: "ABC Contractors Pvt Ltd",
+    fullname: "Ravi Kumar",
+    birthdate: "1990-05-12",
+    gender: "Male",
+    aadhar_no: "1234-5678-9012",
+    doj: "2015-06-01",
+    dol: null, // still working
+    created_dt: "2024-01-15",
+    apln_status: "PENDING",
+    apln_slno: 101
+  },
+  {
+    gen_id: "GEN002",
+    biometric_no: "BIO67890",
+    payrollArea: null, // will render as '-'
+    Cont_company_name: "XYZ Enterprises",
+    fullname: "Priya Sharma",
+    birthdate: "1988-11-23",
+    gender: "Female",
+    aadhar_no: "9876-5432-1098",
+    doj: "2018-09-10",
+    dol: "2023-12-31",
+    created_dt: "2024-02-20",
+    apln_status: "APPOINTED",
+    apln_slno: 102
+  },
+  {
+    gen_id: "GEN003",
+    biometric_no: "BIO24680",
+    payrollArea: "PA03",
+    Cont_company_name: "LMN Services",
+    fullname: "Arun Raj",
+    birthdate: "1995-07-07",
+    gender: "Male",
+    aadhar_no: "4567-8901-2345",
+    doj: "2020-01-05",
+    dol: null,
+    created_dt: "2024-03-01",
+    apln_status: "RELIEVED",
+    apln_slno: 103
+  }
+];
   colname: any;
   colvalue: any;
   searchfilterinfo: any;
@@ -199,12 +253,13 @@ items: MenuItem[] = [
   }
 
   ngOnInit(): void {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    // basic
+    /** contractor basic form */
     this.contractEmpBasicDetails = this.fb.group({
       apln_slno: [""],
       plantCode: [""],
@@ -291,7 +346,7 @@ items: MenuItem[] = [
       Photo_Name: [""],
       Photo_File: [""],
     });
-    //  address
+    /** contractor other details */
     this.contractEmpOtherDetails = this.fb.group({
       addressCheckBox: [false, { disabled: false }],
       address: [
@@ -351,7 +406,7 @@ items: MenuItem[] = [
       transporter: [{ value: "", disabled: false }],
       village: [{ value: "", disabled: false }],
     });
-    // contract onboard details
+    /** contract employee details */
     this.contractEmpDetails = this.fb.group({
       empId: [{ value: "", disabled: true }],
       bioMiD: [{ value: "", disabled: true }],
@@ -408,11 +463,11 @@ items: MenuItem[] = [
       legacyNumberOne: [''],
       legacyNumberTwo:[''],
     });
-    // contract employee payscal
+    /** employee payscale details */
     this.contractEmpPayscaleDetails = this.fb.group({
       payscaleCode: [""],
     });
-    // contract releaving details
+    /** contract employee reliving details */
     this.contractEmpReleavingDetails = this.fb.group({
       actOrInAct: ["Yes"],
       servicePeriod: [{ value: "", disabled: true }],
@@ -424,28 +479,21 @@ items: MenuItem[] = [
       rejectionReason: [""],
     });
 
-    // this.calculateMinDate();
-
-    // const currentDate = new Date();
-    // // this.DoEminDate = new Date(currentDate.setDate(currentDate.getDate() - 60));
-    // this.DoEmaxDate = new Date();
-    // console.log(this.DoEmaxDate);
-    // this.searchForm = this.fb.group({
-    //   CName: [''],
-    //   EName: [''],
-    //   SearchStatus: ['PENDING']
-    // });
-
     this.currentDate = new Date();
     if (this.ishrappr == "true") {
+      /** set filter default status if HR Approver*/
       this.form.controls["status"].setValue("SUBMITTED");
     } else {
+      /** set filter status */
       this.form.controls["status"].setValue("PENDING");
     }
     this.form.controls["CName"].setValue("");
     this.form.controls["EName"].setValue("");
     this.searchfilter();
-
+    /** 
+     * detect value changes @property {*} contractEmpReleavingDetails
+     * add validations and enable input fields
+     *  */
     this.contractEmpReleavingDetails
       .get("status")
       .valueChanges.subscribe((value: string) => {
@@ -475,26 +523,24 @@ items: MenuItem[] = [
       });
 
     this.getContractorDetails();
-    // this.getPayscale()
-    // this.getPayroll()
-
     this.getPincode();
     this.getReligion();
     this.getAllClEmployees();
     this.getClHrAppr();
-    // this.applySearch()
     this.get_Last_EmpID();
-    this.getReligion();
-
     this.get_dept();
     this.getReason();
-
+    /** 
+     * register observable to find dept_slno on value changes
+     * update @property {*} contracEmpDetails line and reportin authority 
+     */
     this.contractEmpDetails
       .get("dept")
       .valueChanges.subscribe((deptSlno: any) => {
         const selectedDept = this.dept.find(
           (d: any) => d.dept_slno === deptSlno
         );
+        /** check and patchvalue */
         if (selectedDept) {
           this.contractEmpDetails.patchValue({
             line: selectedDept.Line_code,
@@ -582,15 +628,21 @@ items: MenuItem[] = [
     }
   }
 
+  /** 
+   * get contract onboard details based on application status
+   * @property {*} filterinfo
+   */
   searchfilter() {
-    this.api.searchFilter(this.form.value).subscribe(
-      (res) => {
-        this.filterinfo = res;
+    this.api.searchFilter(this.form.value).subscribe({
+      next:  (res) => {
+        // this.filterinfo = res;
+        console.log('Contractor employee data:',res);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.error?.message})
       }
-    );
+    });
   }
 
   seletePayscale(event: any) {
@@ -748,58 +800,68 @@ items: MenuItem[] = [
     }
   }
 
-  // get contractor details api call function
+  /** get contractors details  */
   getContractorDetails() {
-    this.api.getContractor().subscribe(
-      (res) => {
+    this.api.getContractor().subscribe({
+      next:(res) => {
         this.contractorData = res;
-        this.activeData = this.contractorData.filter(
-          (item: any) =>
-            item.Status === true && item.Plant_code === this.plant_Code
-        );
+        /** filter active status and plant contractors */
+        this.activeData = this.contractorData.filter((item: any) => item.Status === true && item.Plant_code === this.plant_Code);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
-    );
+    });
   }
 
-  // get pincode api call function
+  /** 
+   * get pincodes
+   * @property {*} pincodeData
+   *   */
   getPincode() {
-    this.api.get_pincode().subscribe(
-      (res) => {
+    this.api.get_pincode().subscribe({
+      next:  (res) => {
         this.pincodeData = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
       }
-    );
+    });
   }
-  // get releaving reason api call function
+
+  /** 
+   * get reliving details
+   * @property {*} reasonData
+   */
   getReason() {
-    this.api.get_ror().subscribe(
-      (res) => {
+    this.api.get_ror().subscribe({
+      next: (res) => {
         this.reasonData = res;
+        console.log('Relive resaon',res);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:"error",summary:error.message})
       }
-    );
+    });
   }
-// get religion api call function
+
+  /** 
+   * get religion data
+   * @property {*} religionData
+   */
   getReligion() {
-    this.api.get_religion().subscribe(
-      (res) => {
+    this.api.get_religion().subscribe({
+      next: (res:any) => {
         this.religionData = res;
+        console.log('religion data:',res);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
+      }});
   }
 
   // permanent address state and city by pincode function

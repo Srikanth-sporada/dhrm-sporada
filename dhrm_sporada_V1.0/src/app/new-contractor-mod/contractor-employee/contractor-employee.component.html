@@ -1052,7 +1052,7 @@
 <!-- contract employee details -->
 <div class="container2"  *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' " >
   <!-- contractor employee master header-->
-    <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-20">
+    <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">
       <div class="flex items-start justify-start flex-col">
         <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
         <mat-icon>recent_actors</mat-icon> Contractor Employee Master  <hr/>
@@ -1136,13 +1136,11 @@
       <!-- contractor employee table -->
       <ng-template #show>
           <div class="h-[90svh] lg:h-[80vh] xl:h-[78vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
-              <table id="table"
-        class="table-auto !w-full">
+              <table id="table" class="table-auto !w-full">
             <!-- table header -->
                   <thead class="sticky top-0">
                       <tr  class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                          <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">SNo</th>
-
+                          <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
                           <!-- <th div class="text-center">Plant</th> -->
                           <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Gen ID</th>
                           <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Punch ID</th>
