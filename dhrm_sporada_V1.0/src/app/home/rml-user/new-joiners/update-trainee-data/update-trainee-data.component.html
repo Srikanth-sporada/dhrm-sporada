@@ -45,7 +45,7 @@
           >
             <!--download btn-->
             <a
-              [href]="url + 'sop/Trainee data upload format.xlsx'"
+              [href]="url + 'sop/Trainee_data_upload_format.xlsx'"
               style="text-decoration: none"
             >
               <button
@@ -115,6 +115,15 @@
                 <th>PF Number</th>
                 <th>Email</th>
                 <th>Cost Center</th>
+                <th>Aadhar No</th>
+                <th>Work Contract</th>
+                <th>Mobile No</th>
+                <th>DOL</th>
+                <th>Active Status</th>
+                <th>Status</th>
+                <th>Legacy No1</th>
+                <th>Legacy No2</th>
+                <th>Trainee Type</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-columns="columns">
@@ -145,6 +154,33 @@
                 </td>
                  <td>
                     {{product.cost_center || '-'}}
+                </td>
+                 <td>
+                    {{product.aadhar_no || '-'}}
+                </td>
+                <td>
+                    {{product.workcontract || '-'}}
+                </td>
+                <td>
+                    {{product.mobile_no1 || '-'}}
+                </td>
+                <td>
+                    {{product.dol || '-'}}
+                </td>
+                <td>
+                    {{product.activestat || '-'}}
+                </td>
+                <td>
+                    {{product.apln_status || '-'}}
+                </td>
+                <td>
+                    {{product.legacy_no1 || '-'}}
+                </td>
+                <td>
+                    {{product.legacy_no2 || '-'}}
+                </td>
+                 <td>
+                    {{product.trainee_type || '-'}}
                 </td>
             </tr>
         </ng-template>

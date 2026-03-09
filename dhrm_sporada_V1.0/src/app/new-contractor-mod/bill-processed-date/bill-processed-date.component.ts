@@ -125,10 +125,10 @@ export class BillProcessedDateComponent implements OnInit {
       process_start_date: ["", { validators: [Validators.required] }],
       process_end_date: ["", { validators: [Validators.required] }],
       lock_date: [""],
-      companyTraineeLock: ["", [Validators.required]],
+      companyTraineeLock: ["Y", [Validators.required]],
       category: ["T", { validators: [Validators.required] }],
-      weekoff_paid: ["", Validators.required],
-      // holidayName:['',{validators : [Validators.required],updateOn: 'blur',disabled: false}]
+      weekoff_paid: ["Y", Validators.required],
+      lc_eg_paid:['Y',Validators.required]
     });
     /** calculate min & max year */
     let currentYear = new Date().getFullYear();
@@ -478,7 +478,7 @@ export class BillProcessedDateComponent implements OnInit {
       /** lock date format */
       formData.lock_date = moment().format("YYYY-MM-DD");
       console.log("BILL LOCK DATA:", formData);
-      /** add new processed bill api call */
+      // /** add new processed bill api call */
       this.api.add_Bill_date(formData, this.userEmpcode).subscribe(
         (res: any) => {
           this.hideForm();

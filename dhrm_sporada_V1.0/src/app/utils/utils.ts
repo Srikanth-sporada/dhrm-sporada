@@ -5,6 +5,8 @@ import { ApiService } from "../home/api.service";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
 import { Router } from "@angular/router";
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
 @Injectable({
   providedIn: "root", // Makes the service available globally
 })
@@ -181,4 +183,20 @@ export class Utility {
       this.messageService.add({severity:'warn',summary:message})
     }
   }
+
+  /** 
+   * custom number only validator
+   */
+ numberOnlyValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    /** Allow empty values */
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+    /** Regex: matches digits only */
+    const isValid = /^[0-9]+$/.test(value);
+    return isValid ? null : { numberOnly: true };
+  };
+}
 }

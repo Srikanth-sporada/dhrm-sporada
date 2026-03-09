@@ -118,6 +118,8 @@ export class UpdateTraineeDataComponent implements OnInit,AfterViewInit {
 
   /** 
    * update trainee data bulk API
+   * @property {boolean} isFileLoaded
+   * @property {*} traineeUpdateDataBulk
    */
   updateTraineeDataBulk(){
     if(this.isFileLoaded){

@@ -324,7 +324,9 @@ export class PlantComponent implements OnInit {
     this.form.reset();
   }
 
-  // plant sign upload function
+/** 
+ * upload plant sign
+ */
   upload(event: any) {
     this.file = event.target.files[0];
     var file_local = this.file?.name.split(".");
@@ -342,19 +344,22 @@ export class PlantComponent implements OnInit {
       next: (res: any) => {
         if (res.message == "success") {
           this.messageService.add({
-            severity: "success",
+            severity: "info",
             summary: "Uploaded Successfully",
           });
         }
         console.log(res);
       },
       error: (err) => {
+        console.error('ERROR:',err?.message)
         this.messageService.add({ severity: "error", summary: err.message });
       },
     });
   }
 
-  // hr sign upload file
+  /** 
+   * plant HR sign upload
+   */
   signUpload(event: any) {
     console.log(event);
     if (event.originalEvent.body.message == "success") {

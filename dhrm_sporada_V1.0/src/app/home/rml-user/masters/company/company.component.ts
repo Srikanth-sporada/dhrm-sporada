@@ -19,9 +19,8 @@ import { LoaderserviceService } from "src/app/loaderservice.service";
 import { environment } from "src/environments/environment.prod";
 import { Router } from "@angular/router";
 import * as XLSX from "xlsx";
-import { ToastService } from "angular-toastify";
 import { MessageService, ConfirmationService, MenuItem } from "primeng/api";
-
+import { Utility } from "src/app/utils/utils";
 const material = [MatSidenav, MatTableModule];
 
 @Component({
@@ -92,10 +91,11 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     @Inject(LOCALE_ID) private locale: string,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    protected utils:Utility,
   ) {
     this.form = this.fb.group({
       sno: [""],
-      company_code: ["", [Validators.required, Validators.pattern(/\S+/)]],
+      company_code: ["", [Validators.required, Validators.pattern(/\S+/),utils.numberOnlyValidator()]],
       company_name: ["", [Validators.required, Validators.pattern(/\S+/)]],
       created_on: [""],
       created_by: [""],
@@ -213,7 +213,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
     this.service.companyadd(this.form.value).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response.message == "success") {
+        if (response?.success) {
           this.messageService.add({
             severity: "info",
             summary: "Company Added Successfully.",
@@ -238,7 +238,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.log("ERROR:", err);
-        this.messageService.add({ severity: "error", summary: err.message });
+        this.messageService.add({ severity: "error", summary: err?.error?.message });
       },
     });
   }
