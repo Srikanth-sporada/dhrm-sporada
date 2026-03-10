@@ -125,7 +125,7 @@ export class BillProcessedDateComponent implements OnInit {
       process_start_date: ["", { validators: [Validators.required] }],
       process_end_date: ["", { validators: [Validators.required] }],
       lock_date: [""],
-      companyTraineeLock: ["Y", [Validators.required]],
+      companyTraineeLock: ["Y"],
       category: ["T", { validators: [Validators.required] }],
       weekoff_paid: ["Y", Validators.required],
       lc_eg_paid:['Y',Validators.required]

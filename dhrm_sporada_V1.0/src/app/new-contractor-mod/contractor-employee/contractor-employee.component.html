@@ -866,7 +866,7 @@
         </mat-step>
 
          <!-- Payscale Details  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" -->
-          <mat-step  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
+          <mat-step  *ngIf = "issupervisor=='false' && ishr=='false' && isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
             <form  [formGroup]="contractEmpPayscaleDetails" >
               <div id="fourthBox">
                 <!-- payscale code -->
@@ -1049,7 +1049,7 @@
         </mat-vertical-stepper>
   </div>
 
-<!-- contract employee details -->
+<!-- contract employee details table view -->
 <div class="container2"  *ngIf = "ishr == 'true' || isadmin == 'true' ||issupervisor=='true' || ishrappr=='true' " >
   <!-- contractor employee master header-->
     <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row md:!h-auto">

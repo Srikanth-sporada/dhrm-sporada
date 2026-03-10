@@ -238,7 +238,7 @@ export class CostCenterComponent implements OnInit {
       this.editing_flag = true
       this.costCenterForm.controls['companyCode'].setValue(this.costCenterList[a]?.CompanyCode)    
       this.costCenterForm.controls['costCenter'].setValue(this.costCenterList[a]?.CostCenter)
-      this.costCenterForm.controls['departmentCode'].setValue(this.costCenterList[a].DepartmentCode)
+      this.costCenterForm.controls['departmentCode'].setValue(Number(this.costCenterList[a].DepartmentCode))
       this.costCenterForm.controls['plantCode'].setValue(this.costCenterList[a].PlantCode);
       this.costCenterForm.controls['InsertBy'].setValue(this.costCenterList[a].InsertBy);
       // while updating setting update use gen id

@@ -20,7 +20,7 @@
 
 import { Component, OnInit,ViewChild,TemplateRef} from '@angular/core';
 import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators,FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from "src/app/home/api.service";
 import { LoaderserviceService } from 'src/app/loaderservice.service';
@@ -44,7 +44,7 @@ export class PayrollAreaComponent implements OnInit {
    * payrollAreaForm - Form group for payroll area data
    * @type {any}
    */
-  payrollAreaForm:any;
+  payrollAreaForm:FormGroup;
   file:any
   new:any
   company:any
@@ -135,12 +135,13 @@ export class PayrollAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** loged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
-    // get plant data
+    /** get plants */
     this.service.getplant().
     subscribe({
       next: (response:any) => {
@@ -159,6 +160,8 @@ export class PayrollAreaComponent implements OnInit {
     this.payrollAreaForm.reset();
     this.editing_flag = false
     console.log("opening")
+    /** enable payroll area input */
+    this.payrollAreaForm.get('PayrollArea')?.enable();
     this.modalService.open(content, {centered: true})
   }
   
@@ -224,7 +227,8 @@ export class PayrollAreaComponent implements OnInit {
    // open material modal for update plant
   opentoedit(content:any){
     console.log("opening")
-    this.modalService.open(content, {centered: true})
+    const modalRef = this.modalService.open(content, {centered: true});
+    
   }
 
   /** 
@@ -234,8 +238,9 @@ export class PayrollAreaComponent implements OnInit {
    * @var payrollAreaList
    * 1. patching user selected data to the update form
    **/
-    patchUpdateValue(a:any){      
-      this.editing_flag = true
+    patchUpdateValue(a:any){
+      /** set edititng flag true */
+      this.editing_flag = true;
       this.payrollAreaForm.controls['PlantCode'].setValue(this.payrollAreaList[a]?.PlantCode)    
       this.payrollAreaForm.controls['PayrollArea'].setValue(this.payrollAreaList[a]?.PayrollArea)
       this.payrollAreaForm.controls['StartDay'].setValue(this.payrollAreaList[a]?.StartDay)
@@ -245,6 +250,8 @@ export class PayrollAreaComponent implements OnInit {
       this.payrollAreaForm.controls['week_off_eligibility'].setValue(this.payrollAreaList[a]?.week_off_eligibility);
       this.payrollAreaForm.controls['UpdateBy'].setValue(this.all?.gen_id);
       console.log(this.payrollAreaForm.value);
+      /** disable payroll area */
+      this.payrollAreaForm.get('PayrollArea')?.disable();
 
     }
 
@@ -262,11 +269,10 @@ export class PayrollAreaComponent implements OnInit {
    * @returns {void}
    */
   updatepayrollArea(): void{
-    this.payrollAreaForm.controls['PayrollArea'].setValue(String(this.payrollAreaForm.value.PayrollArea));
     this.payrollAreaForm.controls['Grace_minutes'].setValue(String(this.payrollAreaForm.value.Grace_minutes));
     this.payrollAreaForm.controls['UpdateBy'].setValue(this.all?.gen_id || 'null');
     console.log(this.payrollAreaForm.value);
-    this.service.updatePayrollArea(this.payrollAreaForm.value).subscribe({
+    this.service.updatePayrollArea(this.payrollAreaForm.getRawValue()).subscribe({
       next: (response:any) => {
         console.log(response);
          this.messageService.add({severity:'info',summary:response.message});

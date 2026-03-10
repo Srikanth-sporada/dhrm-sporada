@@ -210,7 +210,9 @@ export class LineComponent implements OnInit {
     this.form.controls['dept_name'].setValue(Number(this.line[a].module_code));
   }
 
-  // add new line
+  /** 
+   * Add New Line
+   */
   save() {
     // this.form.get('plant_name').setValue(this.plantname[this.index].plant_code)
     this.form.controls['created_by'].setValue(sessionStorage.getItem('user_name'))
@@ -241,12 +243,17 @@ export class LineComponent implements OnInit {
           }
 
         },
-        error:(err) => this.messageService.add({severity:'error',summary:err.message})
+        error:(err) => {
+          console.error('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err.message});
+        }
       })
-
   }
 
-  // update line
+  /** 
+   * update line data
+   * @property {*} 
+   *  */
   editSave() {
     this.form.get('plant_name').enable()
     this.form.get('dept_name').enable()
@@ -266,16 +273,26 @@ export class LineComponent implements OnInit {
             this.line[this.temp_a] = this.form.value;
             /** filter plant function */
             this.filterLineByPlant();
+            this.getLineData()
             this.messageService.add({severity:'info',summary:'Line Updated'});
           }else{
             this.messageService.add({severity:'error',summary:'Cannot Update Line!'})
           }
           console.log(this.form.value);
         },
-        error:(err) => this.messageService.add({severity:'error',summary:err.message})
+        error: (err) => {
+          console.error('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err.message})
+        }
       })
   }
-// delete line
+
+  /** 
+   * delete Line Data
+   * @param event
+   * @param slno
+   * @param a
+   */
   deleteLine(event:Event,a: any, slno: any) {
   console.log(slno)
   this.confirmationService.confirm({
@@ -289,6 +306,11 @@ export class LineComponent implements OnInit {
       })
   }
 
+  /**
+   * delete API call
+   * @param a 
+   * @param slno 
+   */
   deleteLineAPICall(a: any, slno: any){
       this.service.deleteline({ slno: slno })
       .subscribe({
@@ -298,9 +320,13 @@ export class LineComponent implements OnInit {
             this.line.splice(a, 1);
             this.messageService.add({severity:'info',summary:'Line Deleted.'})
         },
-        error:(err) => this.messageService.add({severity:'error',summary:err.message})
+        error:(err) => {
+          console.error('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err.message});
+        }
       })
   }
+
   // reset line form
   reset() {
     this.form.reset()

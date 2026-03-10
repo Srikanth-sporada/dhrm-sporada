@@ -54,18 +54,24 @@ export class BackdateComponent implements OnInit {
 
   /** get back date api call */
   getBackDateData() {
-    this.service.getBackDate().subscribe((response: any) => {
-      if (response.status == "success") {
-        console.log(response.data);
-        this.data = response.data;
-        this.backDateData = response.data;
-        /** filter function */
-        this.filterBackDateByPlant();
-      } else {
-        this.messageService.add({
-          severity: "info",
-          summary: response.message,
-        });
+    this.service.getBackDate().subscribe({
+      next: (response: any) => {
+          if (response.status == "success") {
+            console.log(response.data);
+            this.data = response.data;
+            this.backDateData = response.data;
+            /** filter function */
+            this.filterBackDateByPlant();
+          } else {
+            this.messageService.add({
+              severity: "info",
+              summary: response.message,
+            });
+          }
+      },
+      error: (error:any) => {
+        console.log('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
     });
   }
@@ -77,8 +83,10 @@ export class BackdateComponent implements OnInit {
         this.plantData = response;
         this.plantData.unshift({ plant_name: "All", plant_code: "" });
       },
-      error: (err) =>
-        this.messageService.add({ severity: "error", summary: err.message }),
+      error: (err) => {
+        console.error('ERROR:',err);
+        this.messageService.add({ severity: "error", summary: err.message });
+      }
     });
   }
   // open update back date material model
@@ -152,10 +160,10 @@ export class BackdateComponent implements OnInit {
 
   /** open add backdate modal */
   openAddBackDate() {
-   let dialogRef = this.dailog.open(BackdatePopupComponent, {
+    let dialogRef = this.dailog.open(BackdatePopupComponent, {
       data: { editingFlag: true },
     });
-    
+
     dialogRef.afterClosed().subscribe(() => {
       this.getBackDateData();
     });

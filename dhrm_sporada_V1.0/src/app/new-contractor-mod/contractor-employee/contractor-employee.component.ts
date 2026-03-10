@@ -105,53 +105,7 @@ items: MenuItem[] = [
 ];
 
   form: any;
-  filterinfo: any =  [
-  {
-    gen_id: "GEN001",
-    biometric_no: "BIO12345",
-    payrollArea: "PA01",
-    Cont_company_name: "ABC Contractors Pvt Ltd",
-    fullname: "Ravi Kumar",
-    birthdate: "1990-05-12",
-    gender: "Male",
-    aadhar_no: "1234-5678-9012",
-    doj: "2015-06-01",
-    dol: null, // still working
-    created_dt: "2024-01-15",
-    apln_status: "PENDING",
-    apln_slno: 101
-  },
-  {
-    gen_id: "GEN002",
-    biometric_no: "BIO67890",
-    payrollArea: null, // will render as '-'
-    Cont_company_name: "XYZ Enterprises",
-    fullname: "Priya Sharma",
-    birthdate: "1988-11-23",
-    gender: "Female",
-    aadhar_no: "9876-5432-1098",
-    doj: "2018-09-10",
-    dol: "2023-12-31",
-    created_dt: "2024-02-20",
-    apln_status: "APPOINTED",
-    apln_slno: 102
-  },
-  {
-    gen_id: "GEN003",
-    biometric_no: "BIO24680",
-    payrollArea: "PA03",
-    Cont_company_name: "LMN Services",
-    fullname: "Arun Raj",
-    birthdate: "1995-07-07",
-    gender: "Male",
-    aadhar_no: "4567-8901-2345",
-    doj: "2020-01-05",
-    dol: null,
-    created_dt: "2024-03-01",
-    apln_status: "RELIEVED",
-    apln_slno: 103
-  }
-];
+  filterinfo: any =  []
   colname: any;
   colvalue: any;
   searchfilterinfo: any;
@@ -635,7 +589,7 @@ items: MenuItem[] = [
   searchfilter() {
     this.api.searchFilter(this.form.value).subscribe({
       next:  (res) => {
-        // this.filterinfo = res;
+        this.filterinfo = res;
         console.log('Contractor employee data:',res);
       },
       error: (error) => {
@@ -1525,8 +1479,7 @@ items: MenuItem[] = [
       this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
       this.contractEmpBasicDetails.controls["Photo_File"].setValue(fileUrl);
 
-      const licenseFileValue =
-        this.contractEmpBasicDetails.controls["Photo_File"].value;
+      const licenseFileValue = this.contractEmpBasicDetails.controls["Photo_File"].value;
       if (licenseFileValue === fileUrl) {
         console.log("File successfully bound to Photo_File control.");
       this.messageService.add({severity:'info',summary:"File successfully bound to Photo_File control."})

@@ -63,6 +63,8 @@
             class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
             type="text"
             id="code"
+            pInputText
+            [maxLength]="50"
             formControlName="dept_name"
           />
         </div>
@@ -74,9 +76,11 @@
           </label>
           <br />
           <input
+            pInputText
             class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
             type="text"
             id="code"
+            [maxLength]="5"
             formControlName="sap_code"
           />
         </div>
@@ -91,6 +95,8 @@
             class="w-full bg-transparent outline outline-gray-400 outline-1 shadow-none -mt-10 -mb-10 rounded-md h-[40px] focus:outline-2 focus:outline focus:outline-blue-600 px-2"
             type="text"
             id="code"
+            pInputText
+            [maxLength]="20"
             formControlName="dept_group"
           />
         </div>

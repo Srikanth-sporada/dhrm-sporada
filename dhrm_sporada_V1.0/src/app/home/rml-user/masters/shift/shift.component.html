@@ -85,6 +85,9 @@
                 </label> <br>
                 <p-inputNumber 
                     mode="decimal" 
+                    [minFractionDigits]="1" 
+                    [maxlength]="4"
+                    [maxFractionDigits]="1"
                     inputId="withoutgrouping"
                     formControlName="coff_eligible_hours"
                     styleClass="w-full" 
