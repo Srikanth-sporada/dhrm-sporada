@@ -248,7 +248,7 @@ export class EmployeeComponent implements OnInit {
     this.form.controls['Emp_Name'].setValue(this.employee[a].Emp_Name)
     this.form.controls['gen_id'].setValue(this.employee[a].gen_id)
     this.form.controls['plant_name'].setValue(this.employee[a].plant_code)
-    this.form.controls['plant_name'].disable()
+    // this.form.controls['plant_name'].disable() 
     this.form.controls['gen_id'].disable();
 
     this.form.controls['dept_name'].setValue(Number(this.employee[a].Department))

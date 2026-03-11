@@ -39,6 +39,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   date: any;
   dummy: any = [];
   userDetails: any;
+  statusInput:string = 'all'
   all: any;
   hideProcessedtabMenu: boolean = environment.hideProcessedBillTabMenu;
   arsDumpTabMenu: boolean = environment?.arsDumpTabMenu;
@@ -47,7 +48,7 @@ export class CompanyComponent implements OnInit, AfterViewInit {
   status = [
     { label: "All", value: "all" },
     { label: "Active", value: "Active" },
-    { label: "In-Active", value: null },
+    { label: "In-Active", value: 'InActive' },
   ];
   editing_flag: any;
   // add company template reference

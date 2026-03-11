@@ -1131,11 +1131,7 @@
       </div>
       </div>
 
-      <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
-
-      <!-- contractor employee table -->
-      <ng-template #show>
-          <div class="h-[90svh] lg:h-[80vh] xl:h-[78vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2">
+          <div class="h-[90svh] lg:h-[80vh] xl:h-[78vh] sm:h-[45vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
               <table id="table" class="table-auto !w-full">
             <!-- table header -->
                   <thead class="sticky top-0">
@@ -1229,8 +1225,10 @@
                       </tr>
                   </tbody>
               </table>
+              <!-- loader -->
+               <app-loader *ngIf="loader?.isLoding | async"></app-loader>
           </div>
-      </ng-template> 
+      
 </div>
 
 

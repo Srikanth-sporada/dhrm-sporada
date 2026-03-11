@@ -448,9 +448,7 @@ items: MenuItem[] = [
      * detect value changes @property {*} contractEmpReleavingDetails
      * add validations and enable input fields
      *  */
-    this.contractEmpReleavingDetails
-      .get("status")
-      .valueChanges.subscribe((value: string) => {
+    this.contractEmpReleavingDetails.get("status").valueChanges.subscribe((value: string) => {
         if (value === "N") {
           this.contractEmpReleavingDetails.get("DOE").enable();
           this.contractEmpReleavingDetails.get("reasonForReleaving").enable();
@@ -474,7 +472,7 @@ items: MenuItem[] = [
             .get("reasonForReleaving")
             .clearValidators();
         }
-      });
+    });
 
     this.getContractorDetails();
     this.getPincode();
@@ -486,7 +484,7 @@ items: MenuItem[] = [
     this.getReason();
     /** 
      * register observable to find dept_slno on value changes
-     * update @property {*} contracEmpDetails line and reportin authority 
+     * update @property {*} contracEmpDetails line and reporting authority 
      */
     this.contractEmpDetails
       .get("dept")
@@ -509,7 +507,10 @@ items: MenuItem[] = [
     console.log(this.contractEmpDetails.value);
     console.log(this.contractEmpOtherDetails.value)
   }
-  // handle transporter if selected
+  
+  /** 
+   * handle transport if selected
+   */
   handletransport(){
   this.contractEmpOtherDetails.get('Van_Eligible').valueChanges.subscribe((value:any) => {
     const transporterControl = this.contractEmpOtherDetails.get('transporter');
