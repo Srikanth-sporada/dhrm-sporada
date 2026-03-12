@@ -866,7 +866,7 @@
         </mat-step>
 
          <!-- Payscale Details  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" -->
-          <mat-step  *ngIf = "issupervisor=='false' && ishr=='false' && isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
+          <mat-step  *ngIf= "issupervisor=='false' && ishr=='false' && isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
             <form  [formGroup]="contractEmpPayscaleDetails" >
               <div id="fourthBox">
                 <!-- payscale code -->
