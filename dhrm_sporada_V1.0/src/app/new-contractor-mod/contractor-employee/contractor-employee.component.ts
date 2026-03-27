@@ -413,7 +413,7 @@ items: MenuItem[] = [
         },
       ],
       payrollArea: ['',Validators.required],
-      costCenter: ['',Validators.required],
+      costCenter: ['',],
       legacyNumberOne: [''],
       legacyNumberTwo:[''],
     });
@@ -697,14 +697,14 @@ items: MenuItem[] = [
     throw new Error(message);
   }
 
-  // getPayscale(){
-  //   this.api.get_Payscale_Master(this.plant_Code).subscribe(res =>{
-  //       this.payscaleData = res
-  //       // console.log(this.payscaleData)
-  //     },error=>{
-  //       console.log(error)
-  //     })
-  //   }
+  getPayscale(){
+    this.api.get_Payscale_Master(this.plant_Code).subscribe(res =>{
+        this.payscaleData = res
+        // console.log(this.payscaleData)
+      },error=>{
+        console.log(error)
+      })
+    }
 
 
   // get playroll data api call function

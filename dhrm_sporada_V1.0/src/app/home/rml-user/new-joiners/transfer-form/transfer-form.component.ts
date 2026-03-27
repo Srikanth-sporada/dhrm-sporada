@@ -26,6 +26,16 @@ export class TransferFormComponent implements OnInit {
   slno: any;
   fullname: any;
   genID: any;
+  apprenticeType:any;
+  /** trainee type */
+  traineeType:any = [
+    {value:1 , label:'DIRECT'},
+    {value:2, label:'IN-DIRECT'}
+  ]
+   /** contractor list
+   * used to seperate contract trainee & company trainee
+   */
+  contractorsList:any = environment?.contractorsList || []
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -44,6 +54,7 @@ export class TransferFormComponent implements OnInit {
       current_line: [""],
       emp_name: [""],
       current_Role: [""],
+      current_trainee_type:[''],
       changedepartment: ["", Validators.required],
       payrollArea:['',Validators.required],
       costCenter:['',Validators.required],
@@ -51,10 +62,12 @@ export class TransferFormComponent implements OnInit {
       change_Role: ["", Validators.required],
       reportingto: ["", Validators.required],
       changeworkcat: [""],
+      change_trainee_type:['',Validators.required],
       fullname: [""],
       idno: [""],
       plantcode: [sessionStorage.getItem("plantcode")],
       workcat: [""],
+      apprentice_type:[''],
     });
   }
 
@@ -74,6 +87,7 @@ export class TransferFormComponent implements OnInit {
     this.getDeptTransferData();
   }
 
+  
   /** get trainee current data */
   getTraineeData(){
     var object = {
@@ -82,7 +96,7 @@ export class TransferFormComponent implements OnInit {
       line_code: this.active.snapshot.paramMap.get("line"),
     };
      this.service.dept_line(object).subscribe({
-      next: (response) => {
+      next: (response:any) => {
         console.log('RESPONSE:',response);
         /** 
          * response[0]dept 
@@ -91,6 +105,14 @@ export class TransferFormComponent implements OnInit {
          * response[3] traineeData 
          * response[4] cat & role */
         this.obj = response;
+        /** set apprentice type */
+        this.apprenticeType = response[3]?.apprentice_type
+        console.log('apprentice type:',this.apprenticeType);
+        /** 
+         * call function to enable or disable cost center
+         */
+        this.checkEnableCostCenter(this.apprenticeType);
+
         this.fullname = this.obj[3]?.fullname;
         this.genID = this.obj[3]?.gen_id;
         console.log(this.obj);
@@ -101,6 +123,8 @@ export class TransferFormComponent implements OnInit {
         this.form.controls["current_line"].setValue(this.obj[1]?.line_name);
         /** obj[2] report auth */
         this.form.controls["emp_name"].setValue(this.obj[2]?.emp_name);
+        /** set apprentice type */
+        this.form.controls['apprentice_type'].setValue(this.apprenticeType);
         /** obj[3] trainee data */
         this.form.controls["fullname"].setValue(this.obj[3]?.fullname);
         this.form.controls["idno"].setValue(this.obj[3]?.gen_id);
@@ -108,8 +132,8 @@ export class TransferFormComponent implements OnInit {
         this.form.controls["currentCC"].setValue(this.obj[3].cost_center);
         /** obj[4] cat & role */
         this.form.controls["workcat"].setValue(this.obj[4].Category_Name);
+        this.form.controls["current_trainee_type"].setValue(this.obj[3].trainee_type == 1 ? 'DIRECT': 'IN-DIRECT');
         this.form.controls["current_Role"].setValue(this.obj[4].Role_Name);
-       
         this.obj = [];
       },
       error: (err) => {
@@ -118,7 +142,23 @@ export class TransferFormComponent implements OnInit {
       }
     });
   }
-
+ 
+  /** 
+   * on category select based on the category disable costcenter
+   */
+  checkEnableCostCenter(category:any){
+    console.log('category:',category);
+    console.log('contractor list from evnironment',this.contractorsList)
+    const isSelectedCategory = this.contractorsList.includes(category);
+    console.log('is selected category:',isSelectedCategory);
+    if(isSelectedCategory){
+      this.form.get('costCenter')?.disable();
+     this.form.get('costCenter')?.setValue(null);
+    }else{
+      this.form.get('costCenter')?.enable();
+    this.form.get('costCenter')?.setValue('');
+    }
+  }
   /** get transfer data */
   getDeptTransferData(){
      this.service
@@ -142,9 +182,9 @@ export class TransferFormComponent implements OnInit {
 
   /** change department API */
   submit() {
-    console.log('CHANGE DEPT DATA:',this.form.value);
-    // this.form.controls['reportingto'].setValue(this.slno)
-    this.service.transfer(this.form.value).subscribe({
+    console.log('CHANGE DEPT DATA:',this.form.getRawValue());
+    /** department transfer form API call */
+    this.service.transfer(this.form.getRawValue()).subscribe({
       next: (response: any) => {
         console.log(response);
         if (response.status == "success") {
@@ -158,7 +198,7 @@ export class TransferFormComponent implements OnInit {
           },2200)
         }
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error('ERROR:',err);
         if(err.status == 400){
           this.messageService.add({severity:'warn', summary:err?.error})

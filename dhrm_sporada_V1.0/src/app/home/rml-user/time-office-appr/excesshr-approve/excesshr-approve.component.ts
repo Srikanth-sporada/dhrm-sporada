@@ -310,52 +310,58 @@ export class ExcesshrApproveComponent implements OnInit {
   /** 
    * select all based on filter to bulk approve EH
    * here data is filter using ng pipe filtered data in @property {*} data
+   * @property {boolean} selectAll check box ng modal
+   * @param isSelectAll -- handle if @property {boolean} selectAll is selected based on this prop map filtered data
    */
   handelSelectAll(isSelectAll?:boolean) {
     /** actual hours 
      * here checked expect_othr is > ot per day limit
     */
    console.log('BULK SELECTED:',this.selectAll);
+  /** filtered EH data based on the use applied filters @var filteredEHData */
    let filteredEHData:any = [];
-  /** format js date object */
+  /** format js date object to YYYY-MM-DD @var formattedDate */
    const formattedDate:any = this.filterDate == '' ? '' : moment(this.filterDate).format('YYYY-MM-DD');
    console.log(formattedDate,this.selectedLine,this.filterDate)
     if(this.selectAll){
       /** check if data & line filter applied */
-      if(formattedDate && this.selectedLine !== 'All'){
+      if(formattedDate && this.selectedLine !== 'All' && this.selectedLine !== null){
+        /** filter user applied filter. check only expired */
         filteredEHData = this.data.filter((ehData:any) => {
-          if(ehData.att_date == formattedDate && ehData.Line_Name == this.selectedLine){
+          if(ehData.att_date == formattedDate && ehData.Line_Name == this.selectedLine && ehData.expired == 0){
             return ehData;
           }
         })
       }
       /** checking if date filter applied */
-      else if(formattedDate){
+      else if(formattedDate ){
         filteredEHData = this.data.filter((ehData:any) => {
-          if(ehData.att_date == formattedDate){
+          if(ehData.att_date == formattedDate && ehData.expired == 0){
             return ehData;
           }
         })
       }
       /** checking if line filter applied */
-      else if(this.selectedLine !== 'All'){
+      else if(this.selectedLine !== 'All' && this.selectedLine !== null){
        filteredEHData = this.data.filter((ehData:any) => {
-          if(ehData.Line_Name == this.selectedLine){
+          if(ehData.Line_Name == this.selectedLine && ehData.expired == 0){
             return ehData;
           }
         })
       }else{
-        filteredEHData = this.data;
+        /** set not expired data EH data */
+        filteredEHData = this.data.filter((ehData:any) => ehData.expired == 0);
       }
-      /** mapping filtered data EH bulk data */
+      /** mapping filtered data  */
       console.log('FILTERED DATA:',filteredEHData)
       if(isSelectAll){
         this.bulkApproveData = filteredEHData.map((ehData:any) => {
         let approvedEH:number;
-        /** set approvedHr based on user value */
+        /** set approvedHr based on user value @property {boolean} setActualEH */
         if(this.setActualEH){
           approvedEH = ehData.expect_othr
         }else{
+          /** check max_hrs  */
            approvedEH = ehData.expect_othr > this.max_hrs  ? this.max_hrs : ehData.expect_othr;
         }
         /** set approved Hour and reason */
@@ -478,19 +484,22 @@ export class ExcesshrApproveComponent implements OnInit {
     /** mapp selected bulk data for API */
     const mappedData:any = [];
     this.bulkApproveData.forEach((bulkData:any) => {
-      const apiDataFormat = {
-      plant: this.plantCode,
-      emp_id: bulkData.cemp_id,
-      date: bulkData.att_date,
-      hours: bulkData.approvedHr,
-      flag: "I", // default flag COFF || OT flag O
-      approved_by: this.userName,
-      reason: bulkData.reason,
-      shift_id: bulkData.shift,
-      type: bulkData.type,
-      }
+      /** format only not expired excess hour data */
+      if(bulkData.expired == 0){
+         const apiDataFormat = {
+            plant: this.plantCode,
+            emp_id: bulkData.cemp_id,
+            date: bulkData.att_date,
+            hours: bulkData.approvedHr,
+            flag: "I", // default flag COFF || OT flag O
+            approved_by: this.userName,
+            reason: bulkData.reason,
+            shift_id: bulkData.shift,
+            type: bulkData.type,
+          }
       /** push formatted data */
       mappedData.push(apiDataFormat);
+      }
     });
     /** bulk approve API call */
     this.apiService.approveExcessHr(mappedData).subscribe({

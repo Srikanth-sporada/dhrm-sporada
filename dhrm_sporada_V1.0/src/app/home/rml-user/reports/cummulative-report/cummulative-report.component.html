@@ -76,6 +76,7 @@
           <label for="status" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Payroll Area</label> <br>
           <p-dropdown 
             [options]="payrollAreaData"
+            (keydown.enter)="filterCummulativeReport()"
             formControlName="payrollArea"
             optionLabel="PayrollArea"
             optionValue="PayrollArea"
@@ -91,6 +92,7 @@
         <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Month</label> <br>
         <p-calendar 
             formControlName="month"
+            (keydown.enter)="filterCummulativeReport()"
             view="month"
             styleClass="w-full !font-poppins"
             dateFormat="MM"
@@ -102,6 +104,7 @@
         <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">Year</label> <br>
         <p-calendar 
             formControlName="year"
+            (keydown.enter)="filterCummulativeReport()"
             view="year"
             dateFormat="yy" 
             styleClass="w-full !font-poppins"
@@ -115,6 +118,7 @@
        type="text" 
        pInputText
        styleClass="w-full !font-poppins"
+       (keydown.enter)="filterCummulativeReport()"
        placeholder="Enter Gen ID" 
        formControlName="genId"
        />
@@ -123,6 +127,7 @@
      <!-- search btn -->
       <p-button 
         icon="pi pi-search"
+        
         styleClass="rounded-[1.5rem] mt-9"
         (onClick)="filterCummulativeReport()"
         [disabled]="!cummulativeReportForm.valid"

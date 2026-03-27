@@ -181,4 +181,11 @@ export class CummulativeReportComponent implements OnInit {
         }
       })
     }
+
+    /** 
+     * handle keyborad event
+     */
+    onEnterPress(event:KeyboardEvent){
+      console.log('key:',event.key , event.code, event.detail);
+    }
 }

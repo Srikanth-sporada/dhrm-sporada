@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
-  path: "http://192.168.0.205:8080", // 192.168.0.205:8080
-  path2: "http://192.168.0.205:8080", // 192.168.0.205:8080
+  path: "HTTP://192.168.1.205:8080", // 192.168.1.205:8080
+  path2: "HTTP://192.168.1.205:8080", // 192.168.1.205:8080
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
   hideSalaryMaster:false,
-  hidePeoplePlanning:true,
+  hidePeoplePlanning:false,
   hidePmpd:true,
   hideMidPermission:true,
   hideMissPunchHR:false,
@@ -58,6 +58,17 @@ export const environment = {
   /** session timeout */
   hour:1,
   enableSessionTimeout:false,
+  /** contractor and vendor list */
+  contractorsList: [
+    'CL',
+    'CL_PIECE_RATE',
+    'VENDOR_NAPS',
+    'VENDOR_LEAP',
+    'VENDOR_BVOC',
+    'VENDOR_DVOC',
+    'VENDOR_NATS',
+    'VENDOR_LEARN_EARN',
+    'VENDOR_NEEM'],
   /**payroll */
   hidePayrollHR:false,
   hidePayrollHrAppr:false,

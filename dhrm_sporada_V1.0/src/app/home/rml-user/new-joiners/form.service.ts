@@ -239,6 +239,9 @@ fileupload(file:any,uniqueId:any,company:any, id_no :any, fileno:any){
 
 }
 
+/** 
+ * genreate trainee id
+ */
 submitted(uniqueId: any){
   console.log("----------------------------", uniqueId)
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)

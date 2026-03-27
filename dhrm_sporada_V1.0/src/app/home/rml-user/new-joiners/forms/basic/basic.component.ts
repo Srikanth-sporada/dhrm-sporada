@@ -484,7 +484,7 @@ export class BasicComponent implements OnInit {
         setTimeout(() => {
             this.state = false
         }, 2000);
-
+        console.log('trainee basic data:',this.form.getRawValue());
     }
 
     sendData() {

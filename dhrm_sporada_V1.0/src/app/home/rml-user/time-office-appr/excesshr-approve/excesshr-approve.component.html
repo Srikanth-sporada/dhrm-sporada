@@ -146,6 +146,7 @@
             <p-checkbox 
               [(ngModel)]="item.selected" 
               [binary]="true"
+              [disabled]="item.expired == 1"
               (onChange)="handleSingleSelect($event,item)" 
               [inputId]="item.emp_id"></p-checkbox>
             {{ i + 1 }}

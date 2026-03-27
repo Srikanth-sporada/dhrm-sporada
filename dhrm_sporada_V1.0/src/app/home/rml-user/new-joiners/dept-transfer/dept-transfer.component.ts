@@ -30,6 +30,20 @@ export class DeptTransferComponent implements OnInit {
   dept: any;
   all: any;
   userDetails: any;
+  apprenticeType:any;
+   /** contractor list
+   * used to seperate contract trainee & company trainee
+   */
+  contractorsList:any = [
+    'CL',
+    'CL_PIECE_RATE',
+    'VENDOR_NAPS',
+    'VENDOR_LEAP',
+    'VENDOR_BVOC',
+    'VENDOR_DVOC',
+    'VENDOR_NATS',
+    'VENDOR_LEARN_EARN',
+    'VENDOR_NEEM']
   constructor(
     private fb: UntypedFormBuilder,
     private service: ApiService,
@@ -106,10 +120,11 @@ export class DeptTransferComponent implements OnInit {
    *  */
   getTraineeData(){
     this.service.depttransfer(this.form.value).subscribe({
-      next: (response) => {
+      next: (response:any) => {
         console.log(response);
         this.filterinfo = response;
         this.collectionSize = this.filterinfo.length;
+        
         this.getPremiumData();
       },
       error: (err) => {

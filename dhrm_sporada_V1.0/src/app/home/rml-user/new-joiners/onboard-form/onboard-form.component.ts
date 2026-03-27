@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, ErrorHandler, OnInit } from "@angular/core";
-import { FormControl, UntypedFormBuilder, Validators } from "@angular/forms";
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx";
@@ -28,7 +28,7 @@ export class OnboardFormComponent implements OnInit {
   hideCostCenterInput:boolean = environment?.hidecostCenterInput;
   applicationStatusForBtn = 'PENDING'
   lockDate:any;
-  form: any;
+  form:any;
   ifsc_code: any;
   grade: any = [
     {value:1,label:1},
@@ -53,6 +53,10 @@ export class OnboardFormComponent implements OnInit {
   uan: any;
   /** work contract */
   w_contract: any = ["DIRECT", "INDIRECT",'OTHERS'];
+  traineeType:any = [
+    {value:1 , label:'DIRECT'},
+    {value:2, label:'IN-DIRECT'}
+  ]
   isWContractDisabled: boolean = true;
   trainee_id: any;
   Role_Id: any;
@@ -98,17 +102,7 @@ export class OnboardFormComponent implements OnInit {
   /** contractor list
    * used to seperate contract trainee & company trainee
    */
-  contractorsList:any = [
-    'CL',
-    'CL - PIECE RATE',
-    'CL_PIECE_RATE',
-    'VENDOR-NAPS',
-    'VENDOR-LEAP',
-    'VENDOR-BVOC',
-    'VENDOR-DVOC',
-    'VENDOR-NATS',
-    'VENDOR LEARN & EARN',
-    'VENDOR NEEM']
+  contractorsList:any =  environment?.contractorsList || []
   constructor(
     private fb: UntypedFormBuilder,
     private formservice: FormService,
@@ -150,7 +144,8 @@ export class OnboardFormComponent implements OnInit {
       apln_slno: [""],
       category: ["",Validators.required],
       // contractor
-      cont_id:['']
+      cont_id:[''],
+      trainee_type:[1,Validators.required],
     });
   }
   values: any;
@@ -200,6 +195,11 @@ export class OnboardFormComponent implements OnInit {
           // console.log(this.obj[0]);
           // api call for geting roles data for 2nd approver
           this.getRolesFor2ndApporver();
+          /** 
+           * disbaled costcenter based on the category in approvals
+           * @param category
+           */
+          this.onCategorySelect(this.basic[0]?.apprentice_type)
         /** get contractors */ 
         this.getContractors(this?.basic[0]?.mobile_no1)
           this.created_dt= response[0][0]?.created_dt
@@ -375,6 +375,21 @@ export class OnboardFormComponent implements OnInit {
     this.location.back();
   }
 
+  /** 
+   * on category select based on the category disable costcenter
+   */
+  onCategorySelect(category:any){
+    console.log('category:',category);
+    const isSelectedCategory = this.contractorsList.includes(category);
+    console.log('is selected category:',isSelectedCategory);
+    if(isSelectedCategory){
+      this.form.get('costCenter')?.disable();
+     this.form.get('costCenter')?.setValue(null);
+    }else{
+      this.form.get('costCenter')?.enable();
+    this.form.get('costCenter')?.setValue('');
+    }
+  }
 
   /**
    * get payroll area by plant code
