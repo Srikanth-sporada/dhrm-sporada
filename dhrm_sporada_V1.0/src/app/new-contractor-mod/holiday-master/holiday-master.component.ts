@@ -158,7 +158,7 @@ this.holidayForm.patchValue({
 deleteHoliday(event:Event,data:any){
 console.log(data)
 const formData = { ...data };
-// formData.holiday_date = this.holidayForm.value.holiday_date.split('T')[0]
+formData.holiday_date = moment(formData.holiday_date).format('YYYY-MM-DD')
 console.log(formData)
 this.confirmationService.confirm({
         target: event.target as EventTarget,
@@ -173,6 +173,7 @@ this.confirmationService.confirm({
 
 // delete holiday api call
 deleteHolidayAPICall(formData:any){
+
  this.api.del_Fct_Holiday(formData,this.userEmpcode).subscribe({
   next: (res) => {
   // this.openAlertDialog(`${res}` ,'check')
