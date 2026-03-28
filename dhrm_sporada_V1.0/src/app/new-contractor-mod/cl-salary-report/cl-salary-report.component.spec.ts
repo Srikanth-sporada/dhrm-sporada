@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CLSalaryReportComponent } from './cl-salary-report.component';
+import { CLSalaryReportComponent } from './cl-salary-report.component1';
 
 describe('CLSalaryReportComponent', () => {
   let component: CLSalaryReportComponent;

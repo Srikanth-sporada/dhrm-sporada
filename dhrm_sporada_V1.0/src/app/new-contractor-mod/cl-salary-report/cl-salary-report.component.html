@@ -69,7 +69,7 @@
               <p-dropdown 
                 [options]="plantlist"
                 [(ngModel)]="plant"
-                [disabled]="isadmin === 'false'"
+                [disabled]="!isadmin && !Is_CFIN" 
                 optionLabel="plant_name"
                 optionValue="plant_code"
                 styleClass="w-full" 

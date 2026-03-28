@@ -19,23 +19,19 @@ export class CLSalaryReportComponent implements OnInit {
   plant: any;
   min: any;
   max: any;
-  all:any;
-  userDetails:any;
   fromMax: any;
   plantlist: any[];
   isadmin: any;
   selectedReportType: any;
-  employeeType:any='T';
-  monthReport:any[]=['OTMSAL','PRSAL']
-  yearReport:any[]=['Optr_LB','P2']
-  ContractReport :any[]=['PRSAL','CTSAL']
-  Con_list:any
-  plant_Code: any = sessionStorage.getItem('plantcode');
-  Is_CFIN: any;
-  Is_CHR: any;
-  filterReportTypr:any[]
-  
-  
+  employeeType: any = "T";
+  monthReport: any[] = ["OTMSAL", "PRSAL"];
+  yearReport: any[] = ["Optr_LB", "P2"];
+  ContractReport: any[] = ["PRSAL", "CTSAL"];
+  Con_list: any;
+  plant_Code: any = sessionStorage.getItem("plantcode");
+  filterReportTypr: any[];
+  userDetails: any;
+  all: any;
   reportType: any = [
     {
       name: "One Time Earnings & Deduction Salary Report",
@@ -63,7 +59,7 @@ export class CLSalaryReportComponent implements OnInit {
     private api: ApiService,
     private clApi: ClamAPIService,
     private messageService: MessageService,
-    public loader:LoaderserviceService,
+    protected loader:LoaderserviceService,
   ) {}
 
   ngOnInit(): void {
@@ -82,14 +78,12 @@ export class CLSalaryReportComponent implements OnInit {
     this.from = moment(new Date()).format("YYYY-MM-DD");
     this.to = moment(new Date()).format("YYYY-MM-DD");
     this.fromMax = moment(new Date()).format("YYYY-MM-DD");
-    this.plant = sessionStorage.getItem("plantcode");
+    this.plant = "";
     this.selectedReportType = "mr";
     const plantCode = sessionStorage.getItem("plantcode");
-    this.isadmin = sessionStorage.getItem("isadmin") === "true";
-    this.Is_CFIN = sessionStorage.getItem("Is_CFIN") === "true"; // there is no col in employee 
-    this.Is_CHR = sessionStorage.getItem("Is_CHR") === "true"; 
-
-this.getContra()
+    this.isadmin = sessionStorage.getItem("isadmin");
+    /** get contractors */
+    this.getContra();
 
     if (this.isadmin == "false") {
       this.plant = plantCode;
@@ -104,94 +98,84 @@ this.getContra()
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
+    /** get plant code */
+    this.getPlant(this.plant);
   }
 
-
-  
-getContra() {
-  this.clApi.getContractor().subscribe(res => {
-    console.log('contractor res', res);
-
-    // Use selected plant if available, else fallback to default
-    const plantToFilter = this.plant && this.plant !== "" ? this.plant : this.plant_Code;
-
-    // Filter based on plant and active status
-    this.Con_list = res.filter((item: any) => {
-      return item.Status === true && (!plantToFilter || item.Plant_code == plantToFilter);
-    });
-
-    console.log('Filtered contractor list:', this.Con_list);
-  }, error => {
-    console.log(error);
-  });
-}
-
-  
-getData() {
-  this.loading = true;
-  let from: string;
-  let to: string;
-  console.log('date',this.from,this.to)
-  if (this.monthReport.includes(this.selectedReportType)) {
-    // Extract selected month/year from "from" value (yyyy-MM-dd) parseInt(this.from.split('-')[0]); parseInt(this.from.split('-')[1]);
-   let selectedMonth;
-   let selectedYear; 
-   selectedMonth = moment(this.from).month();
-   selectedYear = moment(this.from).year();
-   console.log('selected MONTH NG YEAR:',selectedMonth,selectedYear);
-
-    // Calculate previous month & year
-    let prevMonth = selectedMonth;
-    let prevMonthYear = selectedYear;
-    if (prevMonth === 0) {
-      prevMonth = 12;
-      prevMonthYear--;
-      selectedMonth = '01';
-    }else{
-      selectedMonth += 1;
-    }
-
-    // ✅ Corrected condition: check if plant is one of [8005, 8010, 8000]
-    if (this.plant == 8005 || this.plant == 8010 || this.plant == 8000 || this.plant == 5005) {
-      this.from = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`;
-      const lastDay = new Date(selectedYear, Number(selectedMonth), 0).getDate();
-      this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`;    } 
-      else {
-      this.from = `${prevMonthYear}-${prevMonth.toString().padStart(2, '0')}-26`;
-      this.to   = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-25`;
-    }
-
-    console.log('Updated date range:', this.from, 'to', this.to);
-
-  } else if (this.selectedReportType == 'CTSAL') {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth(); // 0-based
-    const currentYear = currentDate.getFullYear();
-
-    // Calculate previous month/year
-    let prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-    let prevMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-
-    this.from = `${prevMonthYear}-${(prevMonth + 1).toString().padStart(2, '0')}-26`;
-    this.to   = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-25`;
-
-    console.log('Updated date range for CTSAL:', this.from, 'to', this.to);
-
-  } else {
-    // If not monthReport & not CTSAL, keep user-selected values
-    from = this.from;
-    to   = this.to;
+  /**
+   * get plants
+   * @param plantCode
+   * */
+  getPlant(plantCode: any) {}
+  /** get contractors */
+  getContra() {
+    this.clApi.getContractor().subscribe(
+      (res) => {
+        this.Con_list = res;
+        // console.log(res)
+        this.Con_list = this.Con_list.filter(
+          (item: any) =>
+            item.Plant_code == this.plant_Code && item.Status === true,
+        );
+      },
+      (error) => {
+        console.log(error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    );
   }
+
+  getData() {
+    this.loading = true;
+    let from: string;
+    let to: string;
+    if (this.monthReport.includes(this.selectedReportType)) {
+      const selectedMonth: any = moment(this.from).format("MM");
+      const selectedYear: any = moment(this.from).format("yy");
+      console.log(selectedMonth, selectedYear);
+      const selectedMonthInWords = moment()
+        .month(selectedMonth - 1)
+        .format("MMMM");
+
+      // Set from date to 26th of previous month
+      let prevMonth = selectedMonth - 1;
+      let prevMonthYear = selectedYear;
+      if (prevMonth === 0) {
+        prevMonth = 12;
+        prevMonthYear--;
+      }
+      /**  selected month prev month caculation */
+      this.from = `${prevMonthYear}-${prevMonth.toString().padStart(2, "0")}-26`;
+      /** Set to date to 25th of selected month */
+      this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, "0")}-25`;
+      console.log("Updated date range:", this.from, "to", this.to);
+    } else if (this.selectedReportType == "CTSAL") {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+      console.log("currentMonth", currentMonth);
+      /** Set from date to 26th of previous month */
+      let prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+      let prevMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+      this.from = `${prevMonthYear}-${(prevMonth + 1).toString().padStart(2, "0")}-26`;
+      /** Set to date to 25th of current month */
+      this.to = `${currentYear}-${(currentMonth + 1).toString().padStart(2, "0")}-25`;
+      console.log("Updated date range for CTSAL:", this.from, "to", this.to);
+    } else {
+      // If selectedReportType is not in monthReport, use the selected dates
+      from = this.from;
+      to = this.to;
+    }
 
     let data = {
-    from: this.from,
-    to: this.to,
+      from: "2026-01-01",
+      to: "2026-01-31",
       type: this.selectedReportType,
       plant: this.plant,
       cont: this.selectedContractor,
     };
 
-  console.log('Final request:', data);
+    console.log(data);
     this.clApi.clSalReports(data).subscribe((resp: any) => {
       console.log(resp);
       if (resp.status === "success") {
@@ -211,8 +195,10 @@ getData() {
             severity: "info",
             summary: "No Data Found!",
           });
+          // alert('No data found');
           this.loading = false;
         } else {
+          // this.export_excel(resp.data);
           this.export_excel_New(resp.data);
           console.log(resp);
           this.from = "";
@@ -407,11 +393,6 @@ getData() {
         Night_shift_allowance: "NS Allowance",
         Skilled_allow_P3: "Skilled Allowance",
         Amenities_Allow: "Amenities Allowance",
-	// ---code added by karthi
-	Hostel_allowance:"Hostel_allowance",
-	Food_allowance:"Food_allowance",
-	Work_allowance:"Work_allowance",
-	// code end
         Other_allowance_1: "Other Allowance 1",
         Other_allowance_2: "Other Allowance 2",
         Other_allowance_3: "Other Allowance 3",
@@ -474,9 +455,6 @@ getData() {
         Night_Shift_Pay: "Er.Night Shift Allowance",
         Skilled_Allowance_Pay: "Er.Skilled Allowance",
         Amenities_Allowance_Pay: "Er.Amenities Allowance",
-	Hostel_Incentive_Pay:"Er.Hostel_Inc",
-	Food_Incentives_pay:"Er.Food Inc",
-	Work_Allowance_Pay:"Er.Work Inc",
         Other_Allowance_1_Pay: "Er.Other Allowance 1",
         Other_Allowance_2_Pay: "Er.Other Allowance 2",
         Other_Allowance_3_Pay: "Er.Other Allowance 3",
@@ -539,9 +517,7 @@ getData() {
         Da: "8DB4E2",
         HRA: "8DB4E2",
         Leave_Salary: "8DB4E2",
-	"Hostel_allowance":"8DB4E2",
-	"Food_allowance":"8DB4E2",
-	"Work_allowance":"8DB4E2",
+
         Washing_allow: "8DB4E2",
         Monthly_Bonus: "8DB4E2",
         Sat_and_Mon_Incentive: "8DB4E2",
@@ -609,9 +585,6 @@ getData() {
         Monthly_Bonus_Pay: "92D050",
         Sat_and_Mon_Incentive_Pay: "92D050",
         Monthly_Attn_Incentive_Pay: "92D050",
-	"Hostel_Incentive_Pay":"92D050",
-	"Food_Incentives_pay":"92D050",
-	"Work_Allowance_Pay":"92D050",
         Special_Allowance_Pay: "92D050",
         Night_Shift_Pay: "92D050",
         Skilled_Allowance_Pay: "92D050",
@@ -710,9 +683,6 @@ getData() {
         "Monthly_Bonus_Pay",
         "Sat_and_Mon_Incentive_Pay",
         "Monthly_Attn_Incentive_Pay",
-	'Hostel_Allowance_Pay',
-	'Hostel_Allowance',
-	'Food_Allowance',
         "Special_Allowance_Pay",
         "Night_Shift_Pay",
         "Skilled_Allowance_Pay",
