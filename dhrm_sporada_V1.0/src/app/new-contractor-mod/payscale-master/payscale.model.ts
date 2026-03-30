@@ -24,6 +24,10 @@ export class NewEarningAllowance{
     Amenities_allow_amt:number
     Retention__amt:number
     Night_shift_allow_amt:number
+    // new
+    hostel:number
+    Food:number
+    Workallowance:number
     Other_allow_1_amt: number
     Other_allow_2_amt: number
     Other_allow_3_amt: number
@@ -118,6 +122,13 @@ export class PayscaleObj{
     Other_allow_3_amt: number
     Other_allow_4: string
     Other_allow_4_amt: number
+    // new
+    hostel_4:string
+    hostel:number
+    Food_4:string
+    Food:number
+    Workallowance_4:string
+    Workallowance:number
     // Canteen_deduct: string
     PF_Check: string
     ESI_Check: string

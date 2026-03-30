@@ -1,36 +1,45 @@
-import { Component, OnInit,ViewChild,TemplateRef } from "@angular/core";
-import { FormArray, FormBuilder, Validators, FormGroup } from "@angular/forms";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { MatVerticalStepper } from "@angular/material/stepper";
-import { ApiService } from "src/app/home/api.service";
-import { ClamAPIService } from "../clam-api.service";
+import { Component, OnInit,ViewChild,TemplateRef } from '@angular/core';
+import { FormArray, FormBuilder,Validators,FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatVerticalStepper } from '@angular/material/stepper';
+import { ApiService } from 'src/app/home/api.service';
+import { ClamAPIService } from '../clam-api.service';
+import {PayscaleObj,NewPayScaleObj,NewEarningAllowance ,NewDeduction ,NewPaidToContractor,Emp_Payscale}  from './payscale.model'
+import { MatSidenav } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import {LoaderserviceService} from '../../loaderservice.service'
+import { checkServerIdentity } from 'tls';
+import { ToastComponent } from '../toast/toast.component';
+// import { MatDialog } from '@angular/material/dialog';
+import moment from 'moment';
+import * as XLSX from'xlsx'
+// import * as XLSX1 from 'xlsx-style';
+import { MessageService,MenuItem } from 'primeng/api';
 import {
-  PayscaleObj,
-  NewPayScaleObj,
-  NewEarningAllowance,
-  NewDeduction,
-  NewPaidToContractor,
-  Emp_Payscale,
-} from "./payscale.model";
-import { LoaderserviceService } from "../../loaderservice.service";
-import { ToastComponent } from "../toast/toast.component";
-import moment from "moment";
-import * as XLSX from "xlsx";
-import { MessageService, MenuItem } from "primeng/api";
-import {
+  MAT_DIALOG_DATA,
   MatDialog,
-} from "@angular/material/dialog";
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+
 
 @Component({
-  selector: "app-payscale-master",
-  templateUrl: "./payscale-master.component.html",
-  styleUrls: ["./payscale-master.component.css"],
+  selector: 'app-payscale-master',
+  templateUrl: './payscale-master.component.html',
+  styleUrls: ['./payscale-master.component.css']
 })
-
 export class PayscaleMasterComponent implements OnInit {
   @ViewChild(MatVerticalStepper) stepper!: MatVerticalStepper;
-  @ViewChild('viewPayscale', {read: TemplateRef}) viewPayscaleTemplate: TemplateRef<unknown> | undefined;
-  @ViewChild('payscaleModal', {read: TemplateRef}) payscaleModalTemplate: TemplateRef<unknown> | undefined;
+  @ViewChild("viewPayscale", { read: TemplateRef }) viewPayscaleTemplate:
+    | TemplateRef<unknown>
+    | undefined;
+  @ViewChild("payscaleModal", { read: TemplateRef }) payscaleModalTemplate:
+    | TemplateRef<unknown>
+    | undefined;
   PayscaleType = "Latest";
   showPayscaleForm = false;
   viewPayscaleForn = false;
@@ -38,10 +47,10 @@ export class PayscaleMasterComponent implements OnInit {
   payScale: FormGroup;
   allowance: FormGroup;
   deduction: FormGroup;
-  activeStatus:any = [
-    {label:'Active',value:'true'},
-    {label:'InActive',value:'false'}
-  ]
+  activeStatus: any = [
+    { label: "Active", value: "true" },
+    { label: "InActive", value: "false" },
+  ];
   paidToContractor: FormGroup;
   NewPayScaleFormGroup: FormGroup;
   Service_Details: FormGroup;
@@ -84,6 +93,10 @@ export class PayscaleMasterComponent implements OnInit {
     radio8: "No",
     radio9: "No",
     radio10: "No",
+    // new
+    radio11:'No',
+    radio12:'No',
+    radio13:'No',
   };
   initialDed = {
     radio1: "No",
@@ -140,14 +153,14 @@ export class PayscaleMasterComponent implements OnInit {
     private service: ApiService,
     public loader: LoaderserviceService,
     private dialog: MatDialog,
-    private modalService:NgbModal,
+    private modalService: NgbModal,
     private messageService: MessageService,
   ) {}
 
   // ng lifecycle hook
   ngOnInit(): void {
     /** logged in user data */
-    let details = sessionStorage.getItem("all");
+    let details = sessionStorage.getItem("all"); 
     if (details != null) {
       this.all = JSON.parse(details);
       this.userDetails =
@@ -156,9 +169,9 @@ export class PayscaleMasterComponent implements OnInit {
         "-" +
         this.all.dept_name +
         "-" +
-        this.all.plant_name;
+        this.all.plant_name; 
     }
-    this.isFin = this.all["is_fin"];
+    this.isFin = this.all["is_fin"]; 
 
     // PAYSCALE FROM
     this.NewPayScaleFormGroup = this.fb.group({
@@ -184,6 +197,13 @@ export class PayscaleMasterComponent implements OnInit {
       Other_allowance_2: [null],
       Other_allowance_3: [null],
       Other_allowance_4: [null],
+      Hostel_allowance: [null],
+      // new
+      Food_allowance: [null],
+      Food: [null],
+      Work_allowance: [null],
+      Workallowance: [null],
+      hostel: [null],
       Gross_Earning: [null],
 
       Canteen: [null],
@@ -270,6 +290,13 @@ export class PayscaleMasterComponent implements OnInit {
       Retention_Check: [this.initialRBV.radio9],
       Amenities: [null, { disabled: true }],
       Amenities_Check: [this.initialRBV.radio10],
+      // new 
+      Food: [null, { disabled: true }],
+      Food_Check: [this.initialRBV.radio11],
+      hostel: [null, { disabled: true }],
+      hostelCheck: [this.initialRBV.radio12],
+      Workallowance: [null, { disabled: true }],
+      Work_Check: [this.initialRBV.radio13],
       otherAllowance: this.fb.array([]),
       Gross_Earning: null,
     });
@@ -398,17 +425,18 @@ export class PayscaleMasterComponent implements OnInit {
     this.getPayscaleHeader_combine();
     // this.getContra()
     this.getPlant_compain();
+    
   }
 
   getContra() {
     this.api.getContractor().subscribe({
-      next:(res) => {
+      next: (res) => {
         // this.Con_list = res;
         // console.log(res)
         // this.Con_list =  this.Con_list.filter((item:any) => item.Plant_code == this.plant_Code  && item.Status=== true)
       },
       error: (error) => {
-        console.error('ERROR:',error);
+        console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -417,6 +445,9 @@ export class PayscaleMasterComponent implements OnInit {
   getContra_combine() {
     this.api.getContractor_combine(this.userEmpcode).subscribe({
       next: (res: any) => {
+        // console.log('plant_Code',this.plant_Code);
+        // console.log('ty',typeof(this.plant_Code));
+        // console.log('res',res);
         this.Con_list = res;
         console.log(res);
         if (this.plant_Code == "1300") {
@@ -430,7 +461,7 @@ export class PayscaleMasterComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('ERROR:',error);
+        console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -451,7 +482,8 @@ export class PayscaleMasterComponent implements OnInit {
   }
 
   newPayScale() {
-    // this.showPayscaleForm = true;
+  // changedh
+     this.showPayscaleForm = true;
     /** open modal */
     this.openModal(this.payscaleModalTemplate);
     this.getPlant();
@@ -498,6 +530,13 @@ export class PayscaleMasterComponent implements OnInit {
       Amenities_Check: [this.initialRBV.radio10],
       otherAllowance: this.fb.array([]),
       Gross_Earning: null,
+      // new
+      Food: [null, { disabled: true }],
+      Food_Check: [this.initialRBV.radio11],
+      hostel: [null, { disabled: true }],
+      hostelCheck: [this.initialRBV.radio12],
+      Workallowance: [null, { disabled: true }],
+      Work_Check: [this.initialRBV.radio13],
     });
 
     // DEDUCTION FORM
@@ -571,6 +610,10 @@ export class PayscaleMasterComponent implements OnInit {
     this.enableInput("leave_Salary_Check", "leave_Salary");
     this.enableInput("Attendance_bonus_Check", "Attendance_bonus");
     this.enableInput("Food_Allowance_Check", "Food_Allowance");
+    // new
+    this.enableInput("Food_Check", "Food");
+    this.enableInput("Work_Check", "Workallowance");
+    this.enableInput("hostelCheck", "hostel");
 
     this.enableInputDed("canteen_Check", "canteen_amt");
     this.enableInputDed("WC_Policy_Check", "WC_Policy_amt");
@@ -663,14 +706,14 @@ export class PayscaleMasterComponent implements OnInit {
   }
   getPlant() {
     this.api.getPlant_compain(this.userEmpcode).subscribe({
-      next:(res: any) => {
+      next: (res: any) => {
         console.log(res);
         this.plantArr = res;
         console.log(this.plantArr);
         this.updateFilteredPlantArr();
       },
       error: (error) => {
-        console.error('ERROR:',error);
+        console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -684,7 +727,7 @@ export class PayscaleMasterComponent implements OnInit {
         this.payScale.patchValue({ PayscaleCode: code });
       },
       error: (error) => {
-        console.log('ERROR:',error);
+        console.log("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -704,6 +747,7 @@ export class PayscaleMasterComponent implements OnInit {
       (item: any) => item.Plant_code == plant && item.Status === true,
     );
   }
+  /* OTHER EARNING AND DEDUCTION */
 
   others() {
     return this.allowance.get("otherAllowance") as FormArray;
@@ -742,6 +786,8 @@ export class PayscaleMasterComponent implements OnInit {
     this.deductions().removeAt(i);
   }
 
+  /* INPUT ENABLE */
+  
   enableInput(check: string, input: string) {
     this.allowance.get(check)?.valueChanges.subscribe((data: any) => {
       if (data === "Yes") {
@@ -820,7 +866,7 @@ export class PayscaleMasterComponent implements OnInit {
     this.getPlant();
     this.getPlant_compain();
     this.getPayScaleCode();
-    // this.stepper.selectedIndex = 0; throws error so cmtd
+     this.stepper.selectedIndex = 0; 
   }
 
   // submit Form
@@ -834,6 +880,7 @@ export class PayscaleMasterComponent implements OnInit {
     ) {
       const allowances = this.allowance.value.otherAllowance;
       const deduction = this.deduction.value.otherDeduction;
+      console.log(this.payScale.value);
       //Payscale Details
       this.newPayScaleObj.Con_Id = this.payScale.value.contractor;
       this.newPayScaleObj.Payscale_ID = this.payScale.value.payscale;
@@ -863,6 +910,10 @@ export class PayscaleMasterComponent implements OnInit {
       this.newEarningAllowance.Amenities_allow_amt =
         this.allowance.value.Amenities;
       this.newEarningAllowance.Retention__amt = this.allowance.value.Retention;
+      // new
+      this.newEarningAllowance.hostel = this.allowance.value.hostel;
+      this.newEarningAllowance.Food = this.allowance.value.Food;
+      this.newEarningAllowance.Workallowance = this.allowance.value.Workallowance;
 
       this.newEarningAllowance.Other_allow_1_amt = allowances[0]?.amount;
       this.newEarningAllowance.Other_allow_2_amt = allowances[1]?.amount;
@@ -923,7 +974,7 @@ export class PayscaleMasterComponent implements OnInit {
       };
       console.log(PayscaleData);
       this.api.add_Payscale_Master_new(PayscaleData).subscribe({
-        next:(res: any) => {
+        next: (res: any) => {
           console.log(res);
           this.openAlertDialog(`${res}`, "check");
           this.hidePayscale();
@@ -939,9 +990,15 @@ export class PayscaleMasterComponent implements OnInit {
         },
         error: (error) => {
           if (error.status === 400) {
-            this.messageService.add({severity:'error',summary:error?.error})
+            this.messageService.add({
+              severity: "error",
+              summary: error?.error,
+            });
           } else {
-            this.messageService.add({severity:'error',summary:error?.error})
+            this.messageService.add({
+              severity: "error",
+              summary: error?.error,
+            });
           }
         },
       });
@@ -1018,6 +1075,10 @@ export class PayscaleMasterComponent implements OnInit {
         this.allowance.value.Attendance_bonus || 0,
         this.allowance.value.leave_Salary || 0,
         this.allowance.value.nightShift || 0,
+	// new
+        this.allowance.value.Food || 0, 
+        this.allowance.value.Workallowance || 0, 
+        this.allowance.value.hostel || 0,
         this.allowance.value.washing || 0,
         this.allowance.value.Monthly_bonus || 0,
         this.allowance.value.nightShift || 0,
@@ -1044,7 +1105,10 @@ export class PayscaleMasterComponent implements OnInit {
           (allowances[0]?.amount || 0) +
           (allowances[1]?.amount || 0) +
           (allowances[2]?.amount || 0) +
-          (allowances[3]?.amount || 0),
+          (allowances[3]?.amount || 0) +
+          (this.allowance.value.Food || 0) +
+          (this.allowance.value.Workallowance || 0) +
+          (this.allowance.value.hostel || 0),
       );
 
       return 0;
@@ -1088,11 +1152,11 @@ export class PayscaleMasterComponent implements OnInit {
 
   getPayscaleMaster() {
     this.api.get_Payscale_Master(this.pln).subscribe({
-      next:(res) => {
+      next: (res) => {
         this.payscaleData = res;
         this.filter_Latest("Latest");
       },
-      error:(error) => {
+      error: (error) => {
         console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
@@ -1108,7 +1172,7 @@ export class PayscaleMasterComponent implements OnInit {
           this.payscaleData = res;
           this.filter_Latest("Latest");
         },
-        error:(error) => {
+        error: (error) => {
           console.error("ERROR:", error);
           this.messageService.add({
             severity: "error",
@@ -1125,14 +1189,14 @@ export class PayscaleMasterComponent implements OnInit {
     if (data === "Latest") {
       this.filteredPayscaleData = this.payscaleData.filter(
         (item: any) => item.Status == true,
-      );
+      ); 
       // console.log(this.filteredPayscaleData);
     } else if (data === "Old") {
       this.filteredPayscaleData = this.payscaleData.filter(
         (item: any) => item.Status == false,
-      );
+      ); 
     } else {
-      this.filteredPayscaleData = this.payscaleData;
+      this.filteredPayscaleData = this.payscaleData; 
     }
   }
 
@@ -1140,12 +1204,12 @@ export class PayscaleMasterComponent implements OnInit {
     this.api.get_Payscale_Header(this.plant_Code).subscribe({
       next: (res) => {
         console.log(res);
-        this.PayscaleHeader = res;
+        this.PayscaleHeader = res; 
       },
       error: (error) => {
-        console.log('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.message })
-      }
+        console.log("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
@@ -1153,24 +1217,24 @@ export class PayscaleMasterComponent implements OnInit {
     this.api
       .get_Payscale_Header_combine(this.plant_Code, this.userEmpcode)
       .subscribe({
-        next:(res: any) => {
+        next: (res: any) => {
           console.log(res);
 
           this.PayscaleHeader = res;
         },
         error: (error) => {
-          console.error('ERROR:',error);
+          console.error("ERROR:", error);
           this.messageService.add({
             severity: "error",
             summary: error.message,
-          })
-        }
+          });
+        },
       });
   }
 
   getPayrollList() {
     this.api.getPayroll().subscribe({
-      next:(res) => {
+      next: (res) => {
         this.PayrolList = res;
 
         this.PayrolList = this.PayrolList.filter(
@@ -1178,7 +1242,7 @@ export class PayscaleMasterComponent implements OnInit {
         );
         // console.log(this.PayrolList[0])
       },
-      error:(error:any) => {
+      error: (error: any) => {
         console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
@@ -1191,7 +1255,7 @@ export class PayscaleMasterComponent implements OnInit {
         this.conList = res;
       },
       error: (error) => {
-        console.error('ERROR:', error);
+        console.error("ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -1225,14 +1289,14 @@ export class PayscaleMasterComponent implements OnInit {
     this.openModal(this.viewPayscaleTemplate);
   }
 
-
   onEdit(data: any) {
     console.log("Data:", data);
     // console.log('PayScale_ID:', data.PayScale_ID);
 
     this.showAdd = false;
     this.edit = true;
-    // this.showPayscaleForm = true; manual
+    // changed
+    this.showPayscaleForm = true; //manual
 
     this.onContractorChange(data.Con_ID);
 
@@ -1269,6 +1333,9 @@ export class PayscaleMasterComponent implements OnInit {
       Retention_Check: data.Retention_Incentive > 0 ? "Yes" : "No",
       Amenities: data.Amenities_Allow || "",
       Amenities_Check: data.Amenities_Allow > 0 ? "Yes" : "No",
+      // new
+      // hostel: data.hostel || '',
+      // Hostel_Check: data.hostel > 0 ? 'Yes' : 'No',
       otherAllowance: [
         { name: "Other Allowance 1", amount: data.Other_allowance_1 },
         { name: "Other Allowance 2", amount: data.Other_allowance_2 },
@@ -1276,6 +1343,38 @@ export class PayscaleMasterComponent implements OnInit {
         { name: "Other Allowance 4", amount: data.Other_allowance_4 },
       ],
       Gross_Earning: data.Gross_Earning,
+      // new
+      hostel: data.Hostel_allowance || "",
+      hostelCheck: data.Hostel_allowance > 0 ? "Yes" : "No",
+      Food: data.Food_allowance || "",
+      Food_Check: data.Food_allowance > 0 ? "Yes" : "No",
+      Workallowance: data.Workallowance || "",
+      Work_Check: data.Workallowance > 0 ? "Yes" : "No",
+    });
+  // new
+    const otherAllowances = [
+      { name: "Other Allowance 1", amount: data.Other_allowance_1 },
+      { name: "Other Allowance 2", amount: data.Other_allowance_2 },
+      { name: "Other Allowance 3", amount: data.Other_allowance_3 },
+      { name: "Other Allowance 4", amount: data.Other_allowance_4 },
+    ];
+    // const oaArray = this.allowance.get('otherAllowance') as FormArray;
+    // oaArray.clear();
+    // otherAllowances.forEach(o =>
+    //   oaArray.push(this.fb.group({ name: [o.name], amount: [o.amount] }))
+    // );
+    const oaArray = this.allowance.get("otherAllowance") as FormArray;
+    oaArray.clear();
+
+    otherAllowances.forEach((o) => {
+      if (o.amount && o.amount > 0) {
+        oaArray.push(
+          this.fb.group({
+            name: [o.name],
+            amount: [o.amount],
+          }),
+        );
+      }
     });
 
     this.deduction.patchValue({
@@ -1369,6 +1468,10 @@ export class PayscaleMasterComponent implements OnInit {
       this.newEarningAllowance.Amenities_allow_amt =
         this.allowance.value.Amenities;
       this.newEarningAllowance.Retention__amt = this.allowance.value.Retention;
+      // new
+      this.newEarningAllowance.hostel = this.allowance.value.hostel;
+      this.newEarningAllowance.Food = this.allowance.value.Food;
+      this.newEarningAllowance.Workallowance = this.allowance.value.Workallowance;
 
       this.newEarningAllowance.Other_allow_1_amt = allowances[0]?.amount || 0;
       this.newEarningAllowance.Other_allow_2_amt = allowances[1]?.amount || 0;
@@ -1427,7 +1530,6 @@ export class PayscaleMasterComponent implements OnInit {
         Plant: sessionStorage.getItem("plantcode"),
         CreatedBy: sessionStorage.getItem("user_name"),
       };
-
       console.log(PayscaleData);
       this.api.Update_Payscale_Master(PayscaleData).subscribe(
         (res: any) => {
@@ -1603,7 +1705,7 @@ export class PayscaleMasterComponent implements OnInit {
    * open ngb modal
    * @param templateRef
    */
-  openModal(templateRef:any){
-    this.modalService.open(templateRef,{centered:true,});
+  openModal(templateRef: any) {
+    this.modalService.open(templateRef, { centered: true });
   }
 }
