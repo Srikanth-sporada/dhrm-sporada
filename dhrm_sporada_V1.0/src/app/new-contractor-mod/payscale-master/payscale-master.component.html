@@ -159,7 +159,7 @@
        <div class="absolute right-0 top-0">
          <button
           class="bg-gray-100 border-none outline-none hover:!bg-gray-100 hover:outline-none hover:border-none rounded px-2 py-1 text-gray-400"
-          (click)="closeAllForms();modal.close('add or update modal closed')"
+          (click)="modal.close('add or update modal closed')"
           >
           X
           </button>
@@ -191,6 +191,11 @@
                     styleClass="w-full"
                     (onChange)="generatePayscaleCode($event.value)"
                     placeholder="Select Plant">
+                    <ng-template let-plant pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                      <span>{{ plant?.plant_code + '-' + plant.plant_name }}</span>
+                  </div>
+                </ng-template>
                   </p-dropdown>
                   </div>
                  <!-- contractor -->
@@ -202,7 +207,7 @@
                   <p-dropdown 
                     [disabled]="edit"
                     formControlName="contractor"
-                    [options]="filterconList"
+                    [options]="Con_list"
                     optionLabel="Cont_company_name"
                     optionValue="Con_Id"
                     styleClass="w-full"
@@ -509,6 +514,75 @@
                   <!-- <h5 *ngIf="allowance.get('unskilled_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
                 </span>
               </div>
+              <!-- #new -->
+              <!-- hostel allowance -->
+              <div [formGroup]="allowance" class="row2 !w-full lg:!w-[80%] xl:!w-[80%] mb-4">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Hostel Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="hostelCheck"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="hostel"
+                    />
+                  </mat-form-field>
+                </span>
+              </div>
+              <!-- #new -->
+             <!--  work allowance -->
+              <div class="row2 !w-full lg:!w-[80%] xl:!w-[80%] mb-4">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Work Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Work_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Workallowance"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
             </div>
             <!-- col two -->
             <div class="col1" id="radio">
@@ -680,6 +754,42 @@
                       type="number"
                       class="quantity"
                       formControlName="Amenities"
+                    />
+                  </mat-form-field>
+                </span>
+                <span class="I5">
+                  <!-- <h5 *ngIf="allowance.get('washing_Check')?.value === 'Yes'" >/{{Wagetype}}</h5> -->
+                </span>
+              </div>
+              <!-- #new -->
+              <!-- food allowance -->
+              <div class="row2 !w-full lg:!w-[80%] xl:!w-[80%] mb-4">
+                <span class="I1">
+                  <mat-label class="text-blue-600">Food Allowance</mat-label>
+                </span>
+                <span class="I2">
+                  <p>&nbsp;:</p>
+                </span>
+                <span class="I3">
+                  <mat-radio-group
+                    aria-labelledby="example-radio-group-label"
+                    formControlName="Food_Check"
+                    class="example-radio-group"
+                  >
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+                <span class="I4">
+                  <mat-form-field
+                    appearance="outline"
+                    class="example-full-width"
+                  >
+                    <input
+                      matInput
+                      type="number"
+                      class="quantity"
+                      formControlName="Food"
                     />
                   </mat-form-field>
                 </span>
@@ -1794,6 +1904,46 @@
                   >
                     <p class="col" id="Skilled_allow_P3">Skilled Allowance</p>
                   </ng-container>
+            <!--  new paycsale components -->
+			<ng-container>
+                  <p
+                    class="col"
+                    id="Hostel_allowance"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Hostel_allowance')?.value >
+                        0 &&
+                      NewPayScaleFormGroup?.get('Hostel_allowance')?.value !== 0
+                    "
+                  >
+                    Hostel Allowance
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Food_allowance"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Food_allowance')?.value > 0 &&
+                      NewPayScaleFormGroup?.get('Food_allowance')?.value !== 0
+                    "
+                  >
+                    Food Allowance
+                  </p>
+                </ng-container>
+
+                <ng-container>
+                  <p
+                    class="col"
+                    id="Work_allowance"
+                    *ngIf="
+                      NewPayScaleFormGroup?.get('Work_allowance')?.value > 0 &&
+                      NewPayScaleFormGroup?.get('Work_allowance')?.value !== 0
+                    "
+                  >
+                    Work Allowance
+                  </p>
+                </ng-container>      
 
                   <ng-container
                     *ngIf="
@@ -1993,6 +2143,38 @@
                       : &#8377; {{ NewPayScaleFormGroup.get("Spl_allow")?.value }}
                     </p>
                   </ng-container>
+				  <!--  new payscale components  -->
+				   <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Hostel_allowance')?.value !==
+                      0 &&
+                    NewPayScaleFormGroup?.get('Hostel_allowance')?.value > 0
+                  "
+                >
+                  <p class="col" for="Hostel_allowance">
+                    : {{ NewPayScaleFormGroup.get("Hostel_allowance")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Food_allowance')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Food_allowance')?.value > 0
+                  "
+                >
+                  <p class="col" for="Food_allowance">
+                    : {{ NewPayScaleFormGroup.get("Food_allowance")?.value }}
+                  </p>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    NewPayScaleFormGroup?.get('Work_allowance')?.value !== 0 &&
+                    NewPayScaleFormGroup?.get('Work_allowance')?.value > 0
+                  "
+                >
+                  <p class="col" for="Work_allowance">
+                    : {{ NewPayScaleFormGroup.get("Work_allowance")?.value }}
+                  </p>
+                </ng-container>
 
                   <ng-container
                     *ngIf="
@@ -2418,7 +2600,7 @@
                   "
                 >
                   <p class="col" for="Transport">
-                    :  &#8377;{{ NewPayScaleFormGroup?.get("Transport")?.value }}
+                    :  	;{{ NewPayScaleFormGroup?.get("Transport")?.value }}
                   </p>
                 </ng-container>
                 </div>
@@ -2796,8 +2978,8 @@
     <!-- close btn -->
     <div class="modal-footer bg-gray-100">
       <button
-        (click)="closeViewForms();modal.close('modal closed..')"
-        class="bg-gray-300 rounded-md px-2 py-1 !text-gray-600 font-semibold"
+        (click)="modal.close('modal closed..')"
+        class="bg-gray-300 rounded-md px-2 py-2 !text-gray-600 font-semibold"
       >
         Close
       </button>
