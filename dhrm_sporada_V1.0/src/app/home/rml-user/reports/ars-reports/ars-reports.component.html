@@ -97,7 +97,7 @@
           <p-dropdown 
             [options]="plantlist"
            [(ngModel)]="plant"
-           [disabled]="!(isadmin === 'true' || (isHrappr === 'true' && selectedReportType === 'HRC'))"
+           [disabled]="!(isadmin || Is_CFIN || Is_CHR || (isHrappr && selectedReportType === 'HRC'))"
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full"

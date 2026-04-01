@@ -19,6 +19,9 @@ export class ArsReportsComponent implements OnInit {
   fromMax: any;
   plantlist: any[];
   isadmin: any;
+  // new
+  Is_CFIN: any;
+  Is_CHR: any;
   isHrappr: any;
   selectedReportType: any;
   employeeType:any='T';
@@ -84,6 +87,7 @@ export class ArsReportsComponent implements OnInit {
   { index: 24, name: "Muster Attendance Summary", code: "MAS", days: 365 , plant:'All'},
   { index: 25, name: "Middle Permission Report", code: "MPER", days: 365 , plant:'All'},
   { index: 26, name: "Van Delay Regularization Report", code: "VDR", days: 365 , plant:'All'},
+  { index: 27,name: "Punch Reprocess", code: "punchprocess", days: 2, plant: 'All' }, // new
 ];
   employeeTypes = [
   { label: 'Trainee', value: 'T' },
@@ -99,7 +103,10 @@ employeeTypeOptions = [
    userDetails:any;
   loading:any=false;
 
-  constructor(private api: ApiService, private messageService:MessageService) {}
+  constructor(
+    private api: ApiService, 
+    private messageService:MessageService
+  ) {}
 
   ngOnInit() {
      let details = sessionStorage.getItem("all");
@@ -110,11 +117,13 @@ employeeTypeOptions = [
     this.from= new Date();
     this.to = new Date();
     this.fromMax = new Date();
-    this.plant = "";
+    this.plant = sessionStorage.getItem('plantcode');
     this.selectedReportType = "mr";
     const plantCode = sessionStorage.getItem("plantcode");
-    this.isadmin = sessionStorage.getItem("isadmin");
-    this.isHrappr = sessionStorage.getItem("ishrappr");
+    this.isadmin = sessionStorage.getItem("isadmin") === "true";
+    this.Is_CFIN = sessionStorage.getItem("Is_CFIN") === "true"; // new
+    this.isHrappr = sessionStorage.getItem("ishrappr") === "true";
+    this.Is_CHR = sessionStorage.getItem("Is_CHR") === "true"; // new
     
     if (this.isadmin == "false") {
       this.plant = plantCode;
@@ -147,7 +156,7 @@ employeeTypeOptions = [
       this.to = null;
     }else if(isUnresrictedReport){
       let from = new Date(this.from);
-      from.setDate(from.getDate() + type[0].days);
+      from.setDate(from.getDate() + type[0].days); // set from date based on the report days
       let year = from.getFullYear();
       let month = from.getMonth() + 1;
       let day = from.getDate();
@@ -203,6 +212,7 @@ employeeTypeOptions = [
 
   getData() {
     this.loading = true;
+    console.log('from date:',this.from)
     /** report format */
     let data = {
       from: this.monthReport.includes(this.selectedReportType) ? moment(this.from).format('YYYY-MM-DD') : moment(this.from).format('YYYY-MM-DD'),
@@ -211,8 +221,9 @@ employeeTypeOptions = [
       plant: this.plant,
       cat: this.employeeType
     };
-    console.log(data)
-    this.api.arsReports(data).subscribe((resp: any) => {
+    console.log('ARS REPORT GET PARAMS:',data)
+    this.api.arsReports(data).subscribe({
+      next: (resp: any) => {
       console.log(resp);
       if (resp.status === 'success') {
         /** checking response is array & has length & non empty 2D array */
@@ -224,8 +235,12 @@ employeeTypeOptions = [
           this.messageService.add({severity:'info',summary:'No Data Found!'})
           this.loading = false;
         } else {
-          this.exportexcel(resp.data);
-          /** non empty array */
+	// new
+          if (this.selectedReportType === 'OT75') {
+            this.exportexcel(resp)
+          } else {
+            this.exportexcel(resp.data);
+          }
           console.log('IS NON EMPTY ARRAY',resp?.data.some((innerArray:any) => innerArray.length == 0))
           // console.log(resp);
           this.loading = false;
@@ -235,10 +250,12 @@ employeeTypeOptions = [
         this.messageService.add({severity:'warn',summary:resp.message})
         this.loading = false;
       }
-    },  (error) => {
-        console.log(error);
+    },  
+    error: (error:any) => {
+        console.log('ERROR:',error);
         this.messageService.add({severity:'error',summary:error.response})
-      });
+      }
+    });
   }
   
 
@@ -278,7 +295,7 @@ employeeTypeOptions = [
   //     XLSX.writeFile(wb, `${type[0].name}-report.xlsx`);
   //   }
 
-  exportexcel(data: any) {
+  exportexcel(data:any) {
     console.log('EXCEL DATA:',data);
     if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0])) {
       var wb = XLSX.utils.book_new();
@@ -290,7 +307,7 @@ employeeTypeOptions = [
         return;
       }
   
-      let sheets = [];
+      let sheets:any[] = [];
   
       if (type[0].code === 'HO_5or6_RPT') {
         if(this.from<='2024-08-25'){
@@ -317,31 +334,64 @@ employeeTypeOptions = [
         ];
       } 
        else if (type[0].code === 'HRC') {
+       // new
+      const financeColumns = [
+        'Work Type', 'FIN GROUP',
+        '1000', '1150', '1200', '1250', '1300', '1500', '8005', '8010', 'Total'
+      ];
 
         sheets = [
-          { sheetName: 'Head Count Details', dataArray: data[0] },
-          { sheetName: 'In-Direct Summary', dataArray: data[1] },
-
-        ];
-      } 
-      
-      else {
-        console.error('Unsupported report type');
-        this.messageService.add({severity:'warn',summary:'Unsupported report type'})
-        return;
+	      // { sheetName: 'Head Count Details', dataArray: data[0] },
+        //{ sheetName: 'In-Direct Summary', dataArray: data[1] },
+	      // new
+        { sheetName: 'HC Details', dataArray: data[0] },
+        { sheetName: 'Plant Working Days', dataArray: data[1] },
+        { sheetName: 'HC Summary', dataArray: data[2] },
+        { sheetName: 'HC Others', dataArray: data[3] },
+        { sheetName: 'In-Direct HC Plan Vs Actual', dataArray: data[4] },
+        { sheetName: 'RCC Format', dataArray: data[5] },
+        {
+          sheetName: 'Finance Format',
+          dataArray: data[6].map((row:any) =>
+            Object.fromEntries(financeColumns.map(col => [col, row[col]]))
+          ),
+          header: financeColumns   // 👈 Add this line
+        }
+      ];
       }
+      // new
+    // ✅ Special handling for OT75 throws type error
+    else if (type[0].code === 'OT75') {
+      sheets = [
+        { sheetName: 'Paid OT More Than 75 Hrs', dataArray: data },
+        { sheetName: 'Worked OT More Than 75 Hrs', dataArray: data }
+      ];
+    } 
+    else {
+      // fallback for single sheet reports
+      var ws = XLSX.utils.json_to_sheet(data);
+      XLSX.utils.book_append_sheet(wb, ws, "Report");
+      XLSX.writeFile(wb, `${type[0]?.name}-report.xlsx`);
+      return;
+    }
   
-      if (sheets.length === 0) {
+    if (sheets.length === 0) {
         console.error('No sheets defined for the selected report type');
         this.messageService.add({severity:'warn',summary:'No sheets defined for the selected report type'});
         return;
       }
-  
-      sheets.forEach((sheet, index) => {
+
+      sheets.forEach((sheet:any, index:any) => {
         console.log(sheet.dataArray);
         
         if (sheet.dataArray && sheet.dataArray.length) { 
-          var ws = XLSX.utils.json_to_sheet(sheet.dataArray);
+          // var ws = XLSX.utils.json_to_sheet(sheet.dataArray);
+	  
+	  // new
+          // 👇 Use sheet.header when available to control order
+        var ws = XLSX.utils.json_to_sheet(sheet.dataArray, {
+          header: sheet.header || Object.keys(sheet.dataArray[0])
+        });
           const headerRange = XLSX.utils.decode_range(ws['!ref']!);
 
           for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {

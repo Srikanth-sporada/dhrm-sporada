@@ -152,7 +152,7 @@ getData() {
     }
 
     // ✅ Corrected condition: check if plant is one of [8005, 8010, 8000]
-    if (this.plant == 8005 || this.plant == 8010 || this.plant == 8000 || this.plant == 5005) {
+    if (this.plant == 8005 || this.plant == 8010 || this.plant == 8000) {
       this.from = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`;
       const lastDay = new Date(selectedYear, Number(selectedMonth), 0).getDate();
       this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`;    } 
