@@ -459,7 +459,7 @@ items: MenuItem[] = [
           this.contractEmpReleavingDetails
             .get("reasonForReleaving")
             .setValidators([Validators.required]);
-          this.calculateServicePeriod();
+          // this.calculateServicePeriod();
         } else {
           this.contractEmpReleavingDetails.get("DOE").disable();
           this.contractEmpReleavingDetails.get("DOE").reset();
@@ -620,7 +620,7 @@ items: MenuItem[] = [
   }
 // calculate service years
   onDOESelected(event: MatDatepickerInputEvent<Date>) {
-    console.log(event);
+    console.log('DOE date change event:',event);
     if (event) {
       this.calculateServicePeriod();
     }
@@ -647,10 +647,16 @@ items: MenuItem[] = [
       });
     }
   }
-// calcaulate service period for employee releaving
+
+  /** 
+   * calcaulate service period for employee releaving
+   */
   calculateServicePeriod() {
+    console.log('contract employee details:', this.contractEmpDetails.value)
     const doj = new Date(this.contractEmpDetails.get("DOJ").value);
     const doe = new Date(this.contractEmpReleavingDetails.get("DOE").value);
+    console.log('DOJ:',doj);
+    console.log('DOE',doe);
     //  console.log(doj, doe);
     if (isNaN(doj.getTime()) || isNaN(doe.getTime())) {
       // console.log('hai')
@@ -673,11 +679,39 @@ items: MenuItem[] = [
 
       this.contractEmpReleavingDetails
         .get("servicePeriod")
-        .setValue(
-          `${diffInYears} years, ${diffInMonths} months, ${diffInDays} days`
-        );
+        .setValue(this.calculateServiceDuration(this.contractEmpDetails.get("DOJ").value,this.contractEmpReleavingDetails.get("DOE").value));
     }
+
+    console.log('service period:', this.calculateServiceDuration(this.contractEmpDetails.get("DOJ").value,this.contractEmpReleavingDetails.get("DOE").value))
   }
+
+  calculateServiceDuration(doj: string, dol: string): string {
+  const startDate = new Date(doj);
+  const endDate = new Date(dol);
+
+  if (endDate < startDate) {
+    throw new Error("Date of Leaving cannot be before Date of Joining");
+  }
+
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  let months = endDate.getMonth() - startDate.getMonth();
+  let days = endDate.getDate() - startDate.getDate();
+
+  // Adjust days
+  if (days < 0) {
+    months -= 1;
+    const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+
+  // Adjust months
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  return `${years} years,${months} months,${days} days`;
+}
 
   forReleaving(event: any) {
     const selectedStatus = this.contractEmpReleavingDetails.value.status;
@@ -1418,7 +1452,7 @@ items: MenuItem[] = [
       data.emergency_name
     );
     this.contractEmpOtherDetails.controls["emergencyContactRelation"].setValue(
-      data.emergency_rel.toString()
+      data.emergency_rel ? data.emergency_rel?.toString() : ''
     );
     this.contractEmpOtherDetails.controls["PF_UAN"].setValue(data.uan_number);
     this.contractEmpOtherDetails.controls["ESI_No"].setValue(data.esi_no);
