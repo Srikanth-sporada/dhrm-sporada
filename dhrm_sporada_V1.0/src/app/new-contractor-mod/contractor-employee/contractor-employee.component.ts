@@ -29,6 +29,10 @@ export class ContractorEmployeeComponent implements OnInit {
   contractEmpDetails: any;
   contractEmpPayscaleDetails: any;
   contractEmpReleavingDetails: any;
+  // new
+  contractEmpDetails2 : any
+  payscaledetails: any;
+  
   searchForm: any;
   /** filter status options */
  statusOption=[
@@ -139,7 +143,8 @@ items: MenuItem[] = [
   contractorEmployee: ContractorEmployee = new ContractorEmployee();
   plant_Code: any = sessionStorage.getItem("plantcode");
   userEmpcode: string | null = sessionStorage.getItem("user_name");
-
+  // new
+  plant: any = sessionStorage.getItem("plantcode");
   religionData: any;
   conSubmitData: any;
   ClHRdata: any;
@@ -147,7 +152,8 @@ items: MenuItem[] = [
   ClHrApprdata: any;
   Searchfilter: any[] = [];
   searchQuery: string;
-  selectedPhoto: any;
+  // type changed
+  selectedPhoto: File | null;
   dolUpdate = false;
   obj: any;
   dept: any;
@@ -177,6 +183,12 @@ items: MenuItem[] = [
   maxDate = new Date();
   all:any;
   userDetails:any;
+  payscales: any;
+  // new changes from RML
+  NewPayScaleFormGroup: FormGroup;
+  payscaleForm = false;
+  payscale_Data: any;
+  cont_id: any;
   payrollArea:any = [];
   constructor(
     private fb1: UntypedFormBuilder,
@@ -432,6 +444,14 @@ items: MenuItem[] = [
       apln_status: ["PENDING"],
       rejectionReason: [""],
     });
+    // new chages from RML
+    this.payscaledetails = this.fb.group({
+      payscaledetails: ['', Validators.required],
+    });
+    this.contractEmpDetails2 = this.fb.group({
+    pay: ['', Validators.required],
+    // other controls if needed
+  });
 
     this.currentDate = new Date();
     if (this.ishrappr == "true") {
@@ -459,7 +479,7 @@ items: MenuItem[] = [
           this.contractEmpReleavingDetails
             .get("reasonForReleaving")
             .setValidators([Validators.required]);
-          // this.calculateServicePeriod();
+          // this.calculateServicePeriod(); -- by sporada
         } else {
           this.contractEmpReleavingDetails.get("DOE").disable();
           this.contractEmpReleavingDetails.get("DOE").reset();
@@ -475,11 +495,18 @@ items: MenuItem[] = [
     });
 
     this.getContractorDetails();
+    // new
+    // this.getPayscale()
+    // this.getPayroll()
     this.getPincode();
     this.getReligion();
     this.getAllClEmployees();
     this.getClHrAppr();
+    // new
+    // this.applySearch()
     this.get_Last_EmpID();
+    // new
+    this.getReligion();
     this.get_dept();
     this.getReason();
     /** 
@@ -657,9 +684,8 @@ items: MenuItem[] = [
     const doe = new Date(this.contractEmpReleavingDetails.get("DOE").value);
     console.log('DOJ:',doj);
     console.log('DOE',doe);
-    //  console.log(doj, doe);
+
     if (isNaN(doj.getTime()) || isNaN(doe.getTime())) {
-      // console.log('hai')
       this.contractEmpReleavingDetails.get("servicePeriod").setValue("");
     } else {
       const diffInMilliseconds = Math.abs(doe.getTime() - doj.getTime());

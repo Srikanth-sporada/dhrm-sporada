@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": " node generateImagelist.js && ng serve --host 0.0.0.0",
+    "start": " node generateImagelist.js && ng serve --host 0.0.0.0 ",
     "build": "ng build -c=production --base-href=./",
     "test": "ng test",
     "lint": "ng lint",

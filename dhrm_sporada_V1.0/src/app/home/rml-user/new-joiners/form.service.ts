@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.prod';
@@ -343,8 +343,8 @@ checkcategory(category:any,mob:any){
   return this.http.get(this.url+`/hrOperation/checkcategory?cat=${category}&mob=${mob}`)
 }
 
-
-submitCategory2(Bodhi_training: any, dept_Id: any, Role_id: any, line_id: any) {
+// extra param added payscale
+submitCategory2(Bodhi_training: any, dept_Id: any, Role_id: any, line_id: any, payscale: any) {
   return this.http.post(this.url + `/hrOperation/submitCategory2`, {
     cat: this.category,
     mob: this.mobile,
@@ -352,26 +352,64 @@ submitCategory2(Bodhi_training: any, dept_Id: any, Role_id: any, line_id: any) {
     Bodhi_training: Bodhi_training,
     dept_Id: dept_Id,
     Role_id: Role_id,
-    line_id: line_id 
+    line_id: line_id ,
+    payscale: payscale // new
   });
 }
 
-submitCategory(Bodhi_training: any, dept_Id: any, Role_id: any) {
-  return this.http.post(this.url + `/hrOperation/submitCategory`, {
-    cat: this.category,
-    mob: this.mobile,
-    cont: this.cont_id,
-    Bodhi_training: Bodhi_training,
-    dept_Id: dept_Id,
-    Role_id: Role_id
-  });
+// submitCategory(Bodhi_training: any, dept_Id: any, Role_id: any) {
+//   return this.http.post(this.url + `/hrOperation/submitCategory`, {
+//     cat: this.category,
+//     mob: this.mobile,
+//     cont: this.cont_id,
+//     Bodhi_training: Bodhi_training,
+//     dept_Id: dept_Id,
+//     Role_id: Role_id
+//   });
+// }
+
+/** 
+ * extra param added
+ * check while integrating form.component.ts
+ *  */
+submitCategory(
+  Bodhi_training: any,
+  dept_Id: any,
+  Role_id: any,
+  payscale?: any // check while integrating form.component.ts
+): Observable<HttpEvent<any>> {
+  console.log("Submitting category with values:");
+  console.log("Category:", this.category);
+  console.log("Mobile:", this.mobile);
+  console.log("Contractor ID:", this.cont_id);
+  console.log("Bodhi_training:", Bodhi_training);
+  console.log("Department ID:", dept_Id);
+  console.log("Role ID:", Role_id);
+  console.log("Payscale:", payscale);
+
+  return this.http.post<any>(
+    this.url + `/hrOperation/submitCategory`,
+    {
+      cat: this.category,
+      mob: this.mobile,
+      cont: this.cont_id,
+      Bodhi_training,
+      dept_Id,
+      Role_id,
+      payscale
+    },
+    {
+      reportProgress: true,
+      observe: 'events'
+    }
+  );
 }
+
 DojoTrainingProcess(trainingData:any){
   return this.http.post(this.url + '/hrOperation/submitCategory', trainingData);
 }
-//  .subscribe(reponse=>{
-//   })
-//}
+
+
 submitCategory1(Bodhi_training:any,dept_Id:any,Role_id:any){
  return this.http.post(this.url+`/hrOperation/submitCategory1`,
   {
@@ -405,5 +443,20 @@ getLineName(dept:any){
   return this.http.get(`${this.url}/master/getLineName?dept_slno=${dept}`)
   
 }
-}
 
+  /** new API
+   * @param cont_id
+   */
+  getContPayscale(cont_id: any) {
+    const queryParams = new URLSearchParams({ cont_id }).toString();
+    return this.http.get(`${this.url}/clam/get_Cont_Pay_Scale?${queryParams}`)
+
+  }
+  /** new API 
+   * @param data
+  */
+  getSinglePayscale(data: any) {
+    return this.http.post(`${this.url}/salary/SinglePay`, data)
+  }
+
+}

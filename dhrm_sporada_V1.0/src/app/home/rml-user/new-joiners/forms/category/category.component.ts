@@ -58,7 +58,7 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.category);
+    console.log(this.category); 
     this.get_Dept()
     this.route.params.subscribe((params) => {
       this.mob = params["mobile_no1"];
@@ -68,7 +68,7 @@ export class CategoryComponent implements OnInit {
     /** get categories */
     this.fromservice.getCategories().subscribe({
       next: (data: any) => {
-       this.categories = data;
+       this.categories = data; 
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -423,17 +423,17 @@ get_Line_Name(): Promise<any> {
   getPayScales(selectedConId: number): Promise<any> {
     return new Promise((resolve, reject) => {
       // need FE and API file
-      // this.fromservice.getContPayscale(selectedConId).subscribe({
-      //   next: (res: any) => {
-      //     this.payscales = res;
-      //     resolve(res);
-      //   },
-      //   error: (err:any) => {
-      //     console.log('ERROR:',err);
-      //     this.messageService.add({severity:'error',summary:err?.message});
-      //     reject(err);
-      //   },
-      // });
+      this.fromservice.getContPayscale(selectedConId).subscribe({
+        next: (res: any) => {
+          this.payscales = res;
+          resolve(res);
+        },
+        error: (err:any) => {
+          console.log('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err?.message});
+          reject(err);
+        },
+      });
     });
   }
 
@@ -445,19 +445,19 @@ get_Line_Name(): Promise<any> {
       PayScale_ID: payId,
     };
     /** need FE and API */
-    // this.fromservice.getSinglePayscale(data).subscribe({
-    //   next: (res: any) => {
-    //     this.payscale_Data = res;
-    //     if (Array.isArray(res) && res.length > 0) {
-    //       this.payscaleForm = true;
-    //       this.NewPayScaleFormGroup.patchValue(res[0]);
-    //     }
-    //   },
-    //   error: (error:any) => {
-    //     console.error('ERROR:',error);
-    //     this.messageService.add({severity:'error',summary:error?.message})
-    //   }
-    // });
+    this.fromservice.getSinglePayscale(data).subscribe({
+      next: (res: any) => {
+        this.payscale_Data = res;
+        if (Array.isArray(res) && res.length > 0) {
+          this.payscaleForm = true;
+          this.NewPayScaleFormGroup.patchValue(res[0]);
+        }
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+    });
   }
 
   // #new
@@ -686,7 +686,7 @@ get_Line_Name(): Promise<any> {
           this.dept_Id.value,
           this.Role_id.value,
           this.line_Id.value,
-          // this.selectedPayscale
+          this.selectedPayscale
         )
         .subscribe({
           next:  (res: any) => {
