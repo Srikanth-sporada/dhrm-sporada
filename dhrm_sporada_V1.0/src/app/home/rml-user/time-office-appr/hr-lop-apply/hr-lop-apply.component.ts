@@ -119,7 +119,7 @@ export class HrLopApplyComponent implements OnInit {
         }
         /** checking if lop is already applied */
         else if(!response?.status){
-          this.messageService.add({severity:'info',summary:response?.message});
+          this.messageService.add({severity:'warn',summary:response?.message});
         }
         /** lop applied status */
         else if(response?.status){

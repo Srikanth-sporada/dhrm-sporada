@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-import { UntypedFormGroup,UntypedFormControl,UntypedFormBuilder,} from "@angular/forms";
+import {
+  UntypedFormGroup,
+  UntypedFormControl,
+  UntypedFormBuilder,
+} from "@angular/forms";
 import { Location } from "@angular/common";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ClamAPIService } from "../clam-api.service";
@@ -16,7 +20,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { DelPopupComponent } from "../del-popup/del-popup.component";
 import { environment } from "src/environments/environment.prod";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import {MessageService,MenuItem} from 'primeng/api'
+import { MessageService, MenuItem } from "primeng/api";
 @Component({
   selector: "app-contractor-employee",
   templateUrl: "./contractor-employee.component.html",
@@ -26,90 +30,93 @@ export class ContractorEmployeeComponent implements OnInit {
   @ViewChild(MatVerticalStepper) stepper!: MatVerticalStepper;
   contractEmpBasicDetails: any;
   contractEmpOtherDetails: any;
-  contractEmpDetails: any;
+  contractEmpDetails: any; 
   contractEmpPayscaleDetails: any;
   contractEmpReleavingDetails: any;
   // new
-  contractEmpDetails2 : any
+  contractEmpDetails2: any;
   payscaledetails: any;
-  
+
   searchForm: any;
   /** filter status options */
- statusOption=[
-  { value: "PENDING", label: "PENDING" },
-  { value: "SUBMITTED", label: "SUBMITTED" },
-  { value: "APPOINTED", label: "APPOINTED" },
-  { value: "Deleted", label: "DELETED" },
-  { value: "REJECTED", label: "REJECTED" },
-  { value: "RELIEVED", label: "RELIEVED" }
-];
-/** form marital status options */
-maritalStatusOptions = [
-  { label: "UNMARRIED", value: "UNMARRIED" },
-  { label: "MARRIED", value: "MARRIED" },
-  { label: "WIDOW", value: "WIDOW" },
-  { label: "SINGLE", value: "SINGLE" }
-];
-/** gender option */
-genderOptions = [
-  { label: "Male", value: "Male" },
-  { label: "Female", value: "Female" },
-  { label: "Transgender", value: "Transgender" }
-];
-/** relation options */
-realtionOptions = [
-  { value: "Father", label: "Father" },
-  { value: "Mother", label: "Mother" },
-  { value: "Brother", label: "Brother" },
-  { value: "Sister", label: "Sister" },
-  { value: "Friend", label: "Friend" },
-  { value: "Spouse", label: "Spouse" },
-  { value: "Others", label: "Others" }
-];
-/** blood gruop options */
-bloodGroupOptions = [
-  { label: "A+", value: "A+"},
-  { label: "A-", value: "A-"},
-  { label: "B+", value: "B+"},
-  { label: "B-", value: "B-"},
-  { label: "O+", value: "O+"},
-  { label: "O-", value: "O-"},
-  { label: "AB+", value: "AB+"},
-  { label: "AB-", value: "AB-"}
-];
-/** active status options */
-activestatusOptions = [
-  { value: 'Y', label: 'Active' },
-  { value: 'N', label: 'InActive' }
-];
+  statusOption = [
+    { value: "PENDING", label: "PENDING" },
+    { value: "SUBMITTED", label: "SUBMITTED" },
+    { value: "APPOINTED", label: "APPOINTED" },
+    { value: "Deleted", label: "DELETED" },
+    { value: "REJECTED", label: "REJECTED" },
+    { value: "RELIEVED", label: "RELIEVED" },
+  ];
+  /** form marital status options */
+  maritalStatusOptions = [
+    { label: "UNMARRIED", value: "UNMARRIED" },
+    { label: "MARRIED", value: "MARRIED" },
+    { label: "WIDOW", value: "WIDOW" },
+    { label: "SINGLE", value: "SINGLE" },
+  ];
+  /** gender option */
+  genderOptions = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Transgender", value: "Transgender" },
+  ];
+  /** relation options */
+  realtionOptions = [
+    { value: "Father", label: "Father" },
+    { value: "Mother", label: "Mother" },
+    { value: "Brother", label: "Brother" },
+    { value: "Sister", label: "Sister" },
+    { value: "Friend", label: "Friend" },
+    { value: "Spouse", label: "Spouse" },
+    { value: "Others", label: "Others" },
+  ];
+  /** blood gruop options */
+  bloodGroupOptions = [
+    { label: "A+", value: "A+" },
+    { label: "A-", value: "A-" },
+    { label: "B+", value: "B+" },
+    { label: "B-", value: "B-" },
+    { label: "O+", value: "O+" },
+    { label: "O-", value: "O-" },
+    { label: "AB+", value: "AB+" },
+    { label: "AB-", value: "AB-" },
+  ];
+  /** active status options */
+  activestatusOptions = [
+    { value: "Y", label: "Active" },
+    { value: "N", label: "InActive" },
+  ];
 
-/** menu items */
-items: MenuItem[] = [
-            {
-                icon: 'pi pi-plus-circle',
-                tooltipOptions:{
-                  tooltipLabel: 'Add Employee',
-                },
-                command: () => {
-                    this.showContractorForm();
-                    this.showUpdateButton();
-                    this.showApprovebutton();
-                }
-            },
-            {
-              icon: 'pi pi-download',
-              tooltipOptions:{
-                tooltipLabel: 'Download',
-              },
-              command: () => {
-                this.exportexcel();
-                this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
-              }
-            }
-];
+  /** menu items */
+  items: MenuItem[] = [
+    {
+      icon: "pi pi-plus-circle",
+      tooltipOptions: {
+        tooltipLabel: "Add Employee",
+      },
+      command: () => {
+        this.showContractorForm();
+        this.showUpdateButton();
+        this.showApprovebutton();
+      },
+    },
+    {
+      icon: "pi pi-download",
+      tooltipOptions: {
+        tooltipLabel: "Download",
+      },
+      command: () => {
+        this.exportexcel();
+        this.messageService.add({
+          severity: "info",
+          summary: "Data Converted.",
+        });
+      },
+    },
+  ];
 
   form: any;
-  filterinfo: any =  []
+  filterinfo: any = [];
   colname: any;
   colvalue: any;
   searchfilterinfo: any;
@@ -118,7 +125,7 @@ items: MenuItem[] = [
   DOJmaxDate: Date;
   DOJminDate: Date;
 
-  lockDate:any;
+  lockDate: any;
 
   DoEminDate: any;
   DoEmaxDate: any;
@@ -181,15 +188,15 @@ items: MenuItem[] = [
   isadmin: string | null = sessionStorage.getItem("isadmin");
   ishr: string | null = sessionStorage.getItem("ishr");
   maxDate = new Date();
-  all:any;
-  userDetails:any;
+  all: any;
+  userDetails: any;
   payscales: any;
   // new changes from RML
   NewPayScaleFormGroup: FormGroup;
   payscaleForm = false;
   payscale_Data: any;
   cont_id: any;
-  payrollArea:any = [];
+  payrollArea: any = [];
   constructor(
     private fb1: UntypedFormBuilder,
     private location: Location,
@@ -201,7 +208,7 @@ items: MenuItem[] = [
     private apiService: ApiService,
     private dialog: MatDialog,
     private api: ClamAPIService,
-    private messageService:MessageService,
+    private messageService: MessageService,
   ) {
     this.DOJmaxDate = new Date();
     this.DOJminDate = new Date();
@@ -223,7 +230,13 @@ items: MenuItem[] = [
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
     /** contractor basic form */
     this.contractEmpBasicDetails = this.fb.group({
@@ -424,10 +437,10 @@ items: MenuItem[] = [
           disabled: false,
         },
       ],
-      payrollArea: ['',Validators.required],
-      costCenter: ['',],
-      legacyNumberOne: [''],
-      legacyNumberTwo:[''],
+      payrollArea: ["", Validators.required],
+      costCenter: [""],
+      legacyNumberOne: [""],
+      legacyNumberTwo: [""],
     });
     /** employee payscale details */
     this.contractEmpPayscaleDetails = this.fb.group({
@@ -438,7 +451,9 @@ items: MenuItem[] = [
       actOrInAct: ["Yes"],
       servicePeriod: [{ value: "", disabled: true }],
       DOJ: [{ value: this.contractEmpDetails.get("DOJ")?.value }],
-      DOE: [{ value: this.contractEmpDetails.get("DOJ")?.value, disabled: true }],
+      DOE: [
+        { value: this.contractEmpDetails.get("DOJ")?.value, disabled: true },
+      ],
       reasonForReleaving: [{ value: "", disabled: true }],
       status: ["Y"],
       apln_status: ["PENDING"],
@@ -446,12 +461,12 @@ items: MenuItem[] = [
     });
     // new chages from RML
     this.payscaledetails = this.fb.group({
-      payscaledetails: ['', Validators.required],
+      payscaledetails: ["", Validators.required],
     });
     this.contractEmpDetails2 = this.fb.group({
-    pay: ['', Validators.required],
-    // other controls if needed
-  });
+      pay: ["", Validators.required],
+      // other controls if needed
+    });
 
     this.currentDate = new Date();
     if (this.ishrappr == "true") {
@@ -464,11 +479,13 @@ items: MenuItem[] = [
     this.form.controls["CName"].setValue("");
     this.form.controls["EName"].setValue("");
     this.searchfilter();
-    /** 
+    /**
      * detect value changes @property {*} contractEmpReleavingDetails
      * add validations and enable input fields
      *  */
-    this.contractEmpReleavingDetails.get("status").valueChanges.subscribe((value: string) => {
+    this.contractEmpReleavingDetails
+      .get("status")
+      .valueChanges.subscribe((value: string) => {
         if (value === "N") {
           this.contractEmpReleavingDetails.get("DOE").enable();
           this.contractEmpReleavingDetails.get("reasonForReleaving").enable();
@@ -492,7 +509,7 @@ items: MenuItem[] = [
             .get("reasonForReleaving")
             .clearValidators();
         }
-    });
+      });
 
     this.getContractorDetails();
     // new
@@ -509,15 +526,15 @@ items: MenuItem[] = [
     this.getReligion();
     this.get_dept();
     this.getReason();
-    /** 
+    /**
      * register observable to find dept_slno on value changes
-     * update @property {*} contracEmpDetails line and reporting authority 
+     * update @property {*} contracEmpDetails line and reporting authority
      */
     this.contractEmpDetails
       .get("dept")
       .valueChanges.subscribe((deptSlno: any) => {
         const selectedDept = this.dept.find(
-          (d: any) => d.dept_slno === deptSlno
+          (d: any) => d.dept_slno === deptSlno,
         );
         /** check and patchvalue */
         if (selectedDept) {
@@ -527,34 +544,152 @@ items: MenuItem[] = [
           });
         }
       });
-}
+     // new payscale form
+    this.NewPayScaleFormGroup = this.fb.group({
+      PayScale_ID: [null],
+      Plant_Code: [null],
+      Cont_ID: [null],
+      PayScale_Name: [null],
+      Stipend: [null],
+      Basic: [null],
+      DA: [null],
+      HRA: [null],
+      Leave_Salary: [null],
+      Washing_allow: [null],
+      Monthly_Bonus: [null],
+      Sat_and_Mon_Incentive: [null],
+      Monthly_Attn_Incentive: [null],
+      Retention_Incentive: [null],
+      Spl_allow: [null],
+      Night_shift_allowance: [null],
+      Skilled_allow_P3: [null],
+      Amenities_Allow: [null],
+      Other_allowance_1: [null],
+      Other_allowance_2: [null],
+      Other_allowance_3: [null],
+      Other_allowance_4: [null],
+      Gross_Earning: [null],
+      Canteen: [null],
+      Transport: [null],
+      Professional_Tax: [null],
+      WC_Policy: [null],
+      Insurance: [null],
+      Shoe_FirstTime: [null],
+      Glass_FirstTime: [null],
+      Uniform_FirstTime: [null],
+      Coat_FirstTime: [null],
+      Other_deduction_1: [null],
+      Other_deduction_2: [null],
+      Other_deduction_3: [null],
+      Other_deduction_4: [null],
+      Gross_Deduction: [null],
+      Service_Charge_Fixed: [null],
+      Service_charges_Percentage: [null],
+      SC_Base: [null],
+      NSDC_Contribution: [null],
+      Uniform_Charges: [null],
+      Labour_Welfare_Fund: [null],
+      Insurance_Premium: [null],
+      Learning_Fees: [null],
+      Workmen_Compensation: [null],
+      Emp_Comp_Ins: [null],
+      Higher_Education_Fee: [null],
+      EM_ESI_Cal_Val: [null],
+      EM_PF_Cal_Val: [null],
+      EMP_PF_Cal_Val: [null],
+      EMP_ESI_Cal_Val: [null],
+      EM_PF_Percent: [null],
+      EM_ESI_Percent: [null],
+      EMP_PF_Percent: [null],
+      EMP_ESI_Percent: [null],
+      Service_Tax_Val: [null],
+      Servive_Charge_Val: [null],
+      Effective_Date: [null],
+      Effective_Date1: [null],
+      CTC: [null],
+      ToTal_Base_Value: [null],
+      Net_Take_Home: [null],
+    })
+  }
 
-  log(){
+  /** #new */
+ onOptionSelected(selectedData: any) {
+    console.log("Selected data:", selectedData);
+    this.selectedPayscale = selectedData;
+    this.payscaleForm = true;
+    this.get_Payscale(selectedData);   // Pass selected pay scale ID
+    // Do not patch the form here anymore
+  }
+  /** 
+   * get payscale by payscale ID #new
+   * @param payId
+   */
+   get_Payscale(payId: any) {
+    console.log('user selected Pay scale ID:',payId);
+    /** payload */
+    const data = {
+      plant_Code: this.plant,
+      con_id: this.cont_id,
+      PayScale_ID: payId
+    };
+
+    this.api.getSinglePayscale(data).subscribe({
+      next: (res: any) => {
+        this.payscale_Data = res;
+        console.log('Seleceted Payscale Data:',res);
+        if (Array.isArray(res) && res.length > 0) {
+          this.payscaleForm = true;
+          this.NewPayScaleFormGroup.patchValue(res[0]);
+        } else {
+          console.warn("No payscale data found or invalid format.");
+          this.messageService.add({severity:'info',summary:'Payscale Not Found!'})
+        }
+      },
+      error: (error) => {
+        console.error("Error fetching payscale:", error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
+    });
+  }
+  /**
+   *  change payscal form value #new
+   * @param event
+   * @param controlName
+   */
+   onInputChanged(event: any, controlName: string) {
+    const newValue = event.target.value;
+    const numericValue = parseFloat(newValue);
+    this.NewPayScaleFormGroup.get(controlName)?.patchValue(numericValue);
+  }
+  log() {
     console.log(this.contractEmpBasicDetails.value);
     console.log(this.contractEmpDetails.value);
-    console.log(this.contractEmpOtherDetails.value)
+    console.log(this.contractEmpOtherDetails.value);
   }
-  
-  /** 
+
+  /**
    * handle transport if selected
    */
-  handletransport(){
-  this.contractEmpOtherDetails.get('Van_Eligible').valueChanges.subscribe((value:any) => {
-    const transporterControl = this.contractEmpOtherDetails.get('transporter');
-    const villageControl = this.contractEmpOtherDetails.get('village');
+  handletransport() {
+    this.contractEmpOtherDetails
+      .get("Van_Eligible")
+      .valueChanges.subscribe((value: any) => {
+        const transporterControl =
+          this.contractEmpOtherDetails.get("transporter");
+        const villageControl = this.contractEmpOtherDetails.get("village");
 
-    if (value === 'Yes') {
-      transporterControl.setValidators([Validators.required]);
-      villageControl.setValidators([Validators.required]);
-    } else {
-      transporterControl.clearValidators();
-      villageControl.clearValidators();
-    }
+        if (value === "Yes") {
+          transporterControl.setValidators([Validators.required]);
+          villageControl.setValidators([Validators.required]);
+        } else {
+          transporterControl.clearValidators();
+          villageControl.clearValidators();
+        }
 
-    transporterControl.updateValueAndValidity();
-    villageControl.updateValueAndValidity();
-  });
-}
+        transporterControl.updateValueAndValidity();
+        villageControl.updateValueAndValidity();
+      });
+  }
 
   formatDateWithHr(inputDate: Date): String {
     const parsedDate = moment(inputDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
@@ -570,17 +705,17 @@ items: MenuItem[] = [
     return formattedDate;
   }
 
-  // calculate min for DOE 
-  calculateMinDate(dateDoj :any) {
+  // calculate min for DOE
+  calculateMinDate(dateDoj: any) {
+    this.service.getlockdateByCategory("T").subscribe((response: any) => {
+      console.log("lock date", new Date(response.date));
+      console.log("DOJ", dateDoj);
 
-    this.service.getlockdateByCategory('T').subscribe((response:any) =>{
-      console.log('lock date',  new Date(response.date));
-      console.log('DOJ', dateDoj);
-      
-      this.lockDate= new Date(response.date);
-      this.DoEminDate = this.lockDate > dateDoj? this.lockDate : new Date(dateDoj)
-      console.log(this.DoEminDate)
-    })
+      this.lockDate = new Date(response.date);
+      this.DoEminDate =
+        this.lockDate > dateDoj ? this.lockDate : new Date(dateDoj);
+      console.log(this.DoEminDate);
+    });
 
     const currentDate = new Date();
     // this.DoEminDate = new Date(currentDate.setDate(currentDate.getDate() - 60));
@@ -610,20 +745,23 @@ items: MenuItem[] = [
     }
   }
 
-  /** 
+  /**
    * get contract onboard details based on application status
    * @property {*} filterinfo
    */
   searchfilter() {
     this.api.searchFilter(this.form.value).subscribe({
-      next:  (res) => {
+      next: (res) => {
         this.filterinfo = res;
-        console.log('Contractor employee data:',res);
+        console.log("Contractor employee data:", res);
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({severity:'error',summary:error?.error?.message})
-      }
+        console.error("ERROR:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: error?.error?.message,
+        });
+      },
     });
   }
 
@@ -631,23 +769,24 @@ items: MenuItem[] = [
     this.selectPayscale = true;
     const selectedPayscaleSlNo = event;
     this.selectedPayscale = this.payscaleData.find(
-      (data: any) => data.Payscale_SlNo === selectedPayscaleSlNo
+      (data: any) => data.Payscale_SlNo === selectedPayscaleSlNo,
     );
     // console.log(this.selectedPayscale)
     this.selectedPayrollData = this.payrollData.filter(
-      (data: any) => data.Plant_code === this.plant_Code && data.Status === true
+      (data: any) =>
+        data.Plant_code === this.plant_Code && data.Status === true,
     );
     // console.log(this.selectedPayrollData)
     this.selectedContractorData = this.contractorData.filter(
       (data: any) =>
-        data.Con_Id === this.contractEmpBasicDetails.value.contractorName
+        data.Con_Id === this.contractEmpBasicDetails.value.contractorName,
     );
     // console.log(this.selectedContractorData)
     // this.apln_slno
   }
-// calculate service years
+  // calculate service years
   onDOESelected(event: MatDatepickerInputEvent<Date>) {
-    console.log('DOE date change event:',event);
+    console.log("DOE date change event:", event);
     if (event) {
       this.calculateServicePeriod();
     }
@@ -675,15 +814,15 @@ items: MenuItem[] = [
     }
   }
 
-  /** 
+  /**
    * calcaulate service period for employee releaving
    */
   calculateServicePeriod() {
-    console.log('contract employee details:', this.contractEmpDetails.value)
+    console.log("contract employee details:", this.contractEmpDetails.value);
     const doj = new Date(this.contractEmpDetails.get("DOJ").value);
     const doe = new Date(this.contractEmpReleavingDetails.get("DOE").value);
-    console.log('DOJ:',doj);
-    console.log('DOE',doe);
+    console.log("DOJ:", doj);
+    console.log("DOE", doe);
 
     if (isNaN(doj.getTime()) || isNaN(doe.getTime())) {
       this.contractEmpReleavingDetails.get("servicePeriod").setValue("");
@@ -695,49 +834,60 @@ items: MenuItem[] = [
       const millisecondsPerYear = millisecondsPerDay * 365.25;
       const diffInYears = Math.floor(diffInMilliseconds / millisecondsPerYear);
       const diffInMonths = Math.floor(
-        (diffInMilliseconds % millisecondsPerYear) / millisecondsPerMonth
+        (diffInMilliseconds % millisecondsPerYear) / millisecondsPerMonth,
       );
       const diffInDays = Math.floor(
-        (diffInMilliseconds % millisecondsPerMonth) / millisecondsPerDay
+        (diffInMilliseconds % millisecondsPerMonth) / millisecondsPerDay,
       );
 
       // console.log(`${diffInYears} years, ${diffInMonths} months, ${diffInDays} days`)
 
       this.contractEmpReleavingDetails
         .get("servicePeriod")
-        .setValue(this.calculateServiceDuration(this.contractEmpDetails.get("DOJ").value,this.contractEmpReleavingDetails.get("DOE").value));
+        .setValue(
+          this.calculateServiceDuration(
+            this.contractEmpDetails.get("DOJ").value,
+            this.contractEmpReleavingDetails.get("DOE").value,
+          ),
+        );
     }
 
-    console.log('service period:', this.calculateServiceDuration(this.contractEmpDetails.get("DOJ").value,this.contractEmpReleavingDetails.get("DOE").value))
+    console.log(
+      "service period:",
+      this.calculateServiceDuration(
+        this.contractEmpDetails.get("DOJ").value,
+        this.contractEmpReleavingDetails.get("DOE").value,
+      ),
+    );
   }
 
   calculateServiceDuration(doj: string, dol: string): string {
-  const startDate = new Date(doj);
-  const endDate = new Date(dol);
+    const startDate = new Date(doj);
+    const endDate = new Date(dol);
 
-  if (endDate < startDate) {
-    throw new Error("Date of Leaving cannot be before Date of Joining");
+    if (endDate < startDate) {
+      throw new Error("Date of Leaving cannot be before Date of Joining");
+    }
+
+    let years = endDate.getFullYear() - startDate.getFullYear();
+    let months = endDate.getMonth() - startDate.getMonth();
+    let days = endDate.getDate() - startDate.getDate();
+
+    // Adjust days
+    if (days < 0) {
+      months -= 1;
+      const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+
+    // Adjust months
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    return `${years} years,${months} months,${days} days`;
   }
-
-  let years = endDate.getFullYear() - startDate.getFullYear();
-  let months = endDate.getMonth() - startDate.getMonth();
-  let days = endDate.getDate() - startDate.getDate();
-
-  // Adjust days
-  if (days < 0) {
-    months -= 1;
-    const prevMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 0);
-    days += prevMonth.getDate();
-  }
-
-  // Adjust months
-  if (months < 0) {
-    years -= 1;
-    months += 12;
-  }
-
-  return `${years} years,${months} months,${days} days`;
-}
 
   forReleaving(event: any) {
     const selectedStatus = this.contractEmpReleavingDetails.value.status;
@@ -757,31 +907,33 @@ items: MenuItem[] = [
     throw new Error(message);
   }
 
-  getPayscale(){
-    this.api.get_Payscale_Master(this.plant_Code).subscribe(res =>{
-        this.payscaleData = res
-        // console.log(this.payscaleData)
-      },error=>{
-        console.log(error)
-      })
-    }
-
+  // getPayscale() {
+  //   this.api.get_Payscale_Master(this.plant_Code).subscribe(
+  //     (res) => {
+  //       this.payscaleData = res;
+  //       // console.log(this.payscaleData)
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     },
+  //   );
+  // }
 
   // get playroll data api call function
   getPayroll() {
-    this.api.get_Payroll_Master().subscribe(
-      (res) => {
+    this.api.get_Payroll_Master().subscribe({
+      next: (res) => {
         this.payrollData = res;
         this.plntWise = this.payrollData.filter(
           (data: any) =>
-            data.Plant_code === this.plant_Code && data.Status === true
+            data.Plant_code === this.plant_Code && data.Status === true,
         );
       },
-      (error) => {
+      error: (error) => {
         console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
   }
 
   // function to copy permanant address to temp address
@@ -818,35 +970,38 @@ items: MenuItem[] = [
   /** get contractors details  */
   getContractorDetails() {
     this.api.getContractor().subscribe({
-      next:(res) => {
+      next: (res) => {
         this.contractorData = res;
         /** filter active status and plant contractors */
-        this.activeData = this.contractorData.filter((item: any) => item.Status === true && item.Plant_code === this.plant_Code);
+        this.activeData = this.contractorData.filter(
+          (item: any) =>
+            item.Status === true && item.Plant_code === this.plant_Code,
+        );
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+        console.error("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
-  /** 
+  /**
    * get pincodes
    * @property {*} pincodeData
    *   */
   getPincode() {
     this.api.get_pincode().subscribe({
-      next:  (res) => {
+      next: (res) => {
         this.pincodeData = res;
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+        console.error("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
-  /** 
+  /**
    * get reliving details
    * @property {*} reasonData
    */
@@ -854,29 +1009,30 @@ items: MenuItem[] = [
     this.api.get_ror().subscribe({
       next: (res) => {
         this.reasonData = res;
-        console.log('Relive resaon',res);
+        console.log("Relive resaon", res);
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({severity:"error",summary:error.message})
-      }
+        console.error("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     });
   }
 
-  /** 
+  /**
    * get religion data
    * @property {*} religionData
    */
   getReligion() {
     this.api.get_religion().subscribe({
-      next: (res:any) => {
+      next: (res: any) => {
         this.religionData = res;
-        console.log('religion data:',res);
+        console.log("religion data:", res);
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }});
+        console.error("ERROR:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
   }
 
   // permanent address state and city by pincode function
@@ -884,7 +1040,7 @@ items: MenuItem[] = [
     const enteredPincode = event.value;
     // console.log(enteredPincode)
     const selectedPincode = this.pincodeData.find(
-      (item: any) => item.pincode.toString() === enteredPincode.toString()
+      (item: any) => item.pincode.toString() === enteredPincode.toString(),
     );
     if (selectedPincode) {
       this.contractEmpOtherDetails.patchValue({
@@ -898,11 +1054,11 @@ items: MenuItem[] = [
       });
     }
   }
-// temp address state and city by pincode function
+  // temp address state and city by pincode function
   getCity_State_Temp(event: any) {
     const enteredPincode = event.value;
     const selectedPincode = this.pincodeData.find(
-      (item: any) => item.pincode.toString() === enteredPincode.toString()
+      (item: any) => item.pincode.toString() === enteredPincode.toString(),
     );
     // console.log(selectedPincode)
     if (selectedPincode) {
@@ -920,67 +1076,96 @@ items: MenuItem[] = [
 
   // get dept api call function
   get_dept() {
-    this.api.getDepList(this.plant_Code).subscribe(
-      (res) => {
+    this.api.getDepList(this.plant_Code).subscribe({
+      next:(res) => {
         this.dept = res;
+        console.log('department res:',res)
       },
-      (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
+      error: (error) => {
+        console.log('DEPT API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
   }
 
   // get line and role
-  getline_Role_1(event :any){
-    this.getLineName(event)
-    this.getRoleMaster(event)
+  getline_Role_1(event: any) {
+    this.getLineName(event);
+    this.getRoleMaster(event);
   }
   // get line and role
-  getline_Role(event :any){
-    console.log('vent',event.value);
-    console.log('vent',event);
-    
-    this.getLineName(event.value)
-    this.getRoleMaster(event.value)
+  getline_Role(event: any) {
+    console.log("vent", event.value);
+    console.log("vent", event);
+
+    this.getLineName(event.value);
+    this.getRoleMaster(event.value);
   }
   // get line api call function
   getLineName(event: any) {
-    this.api.getLine(event).subscribe(
-      (res: any) => {
+    this.api.getLine(event).subscribe({
+      next:(res: any) => {
         this.line = res[0];
         this.repTo = res[1];
       },
-      (error) => {
-        console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
+      error: (error) => {
+        console.log('GET LINE API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
   }
-// get  role master api call function
+
+  /** 
+   * get payscales
+   * @param event
+   * @param selectedPayScaleId
+   */
+  getPayScales(event: any, selectedPayScaleId?: number) {
+    console.log('get payscale event: ', event);
+    // this.api.getContPayscale(event).subscribe({
+    //   next:(res: any) => {
+    //     this.payscales = res;
+
+    //     // Set the selected payscale if provided and the control exists
+    //     if (selectedPayScaleId != null) {
+    //       this.contractEmpDetails2.controls['pay'].setValue(selectedPayScaleId);
+    //     }
+    //   },
+    //   error: (error:any) => {
+    //     console.log('GET PAYSCALES ERROR:',error);
+    //     this.messageService.add({severity:'error',summary:error?.message})
+    //   }
+    // });
+  }
+
+  // get  role master api call function
   getRoleMaster(event: any) {
-  console.log('Roelevent',event);
+    console.log("Role event", event);
     this.api.getRoleName(event).subscribe(
       (res: any) => {
         this.Roles = res[0];
       },
       (error) => {
         console.log(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
     );
   }
   // dropdown role change handle function
   onRoleChange_1(event: any) {
-    console.log('Selected Role ID:', event.value);
-  
+    console.log("Selected Role ID:", event.value);
+
     const selectedRoleId = Number(event.value); // Access value directly from the event
-    const selectedRole = this.Roles.find((role: any) => role.Role_Id === selectedRoleId);
-  
+    const selectedRole = this.Roles.find(
+      (role: any) => role.Role_Id === selectedRoleId,
+    );
+
     if (selectedRole) {
-      this.contractEmpDetails.get('DorInD')?.setValue(selectedRole.Category_Name);
+      this.contractEmpDetails
+        .get("DorInD")
+        ?.setValue(selectedRole.Category_Name);
     } else {
-      this.contractEmpDetails.get('DorInD')?.setValue('');
+      this.contractEmpDetails.get("DorInD")?.setValue("");
     }
   }
   // line and report to handle function
@@ -994,11 +1179,11 @@ items: MenuItem[] = [
 
   // to Get All CL Employee Details
   getAllClEmployees() {
-    this.api.get_Cl_Emp_Hr().subscribe(
-      (res) => {
+    this.api.get_Cl_Emp_Hr().subscribe({
+      next: (res) => {
         this.ClHRdata = res;
         this.ClHRdata = this.ClHRdata.filter(
-          (data: any) => data.plant_code === this.plant_Code
+          (data: any) => data.plant_code === this.plant_Code,
         );
         // console.log(this.ClHRdata)
         // this.filteredClHRdata = this.ClHRdata
@@ -1013,14 +1198,15 @@ items: MenuItem[] = [
         //   this.ClHRdata = this.ClHRdata;
         // }
       },
-      (error) => {
+      error: (error) => {
         if (error.status === 400) {
-          alert("Error while retreiving Data ");
+          this.messageService.add({severity:'warn',summary:'Error while retreiving Data'})
         } else {
-          alert("Something went wrong");
+          this.messageService.add({severity:'error',summary:error?.message})
         }
-      }
-    );
+        console.error('GET ALL CL EMPLOYEES ERROR:',error?.message)
+      },
+    });
   }
 
   getClHrAppr() {
@@ -1040,9 +1226,16 @@ items: MenuItem[] = [
 
   // get last employee id api call function
   get_Last_EmpID() {
-    this.api.get_Last_EmpID().subscribe((res) => {
-      this.lastId = res;
-    },(error) => this.messageService.add({severity:"error",summary:error.message}));
+    this.api.get_Last_EmpID().subscribe({
+      next: (res) => {
+        console.log('LAST EMP ID:',res);
+        this.lastId = res;
+      },
+      error: (error) => {
+        console.error('GET LAST EMP ID ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
+    });
   }
 
   // contract employee temp password
@@ -1055,7 +1248,7 @@ items: MenuItem[] = [
     return day + month + year;
   }
 
-  // file change event 
+  // file change event
   onFileChange(input: HTMLInputElement) {
     if (input.files && input.files.length > 0) {
       this.selectedPhoto = input.files[0];
@@ -1096,7 +1289,7 @@ items: MenuItem[] = [
       this.contractorEmployee.marital_status =
         this.contractEmpBasicDetails.value.maritalStatus;
       this.contractorEmployee.birthdate = this.formatDate(
-        this.contractEmpBasicDetails.value.DOB
+        this.contractEmpBasicDetails.value.DOB,
       ).toString();
       this.contractorEmployee.gender =
         this.contractEmpBasicDetails.value.gender;
@@ -1106,8 +1299,7 @@ items: MenuItem[] = [
         this.contractEmpBasicDetails.value.adhaarNo;
       this.contractorEmployee.religion =
         this.contractEmpBasicDetails.value.religion;
-      this.contractorEmployee.Caste =
-        this.contractEmpBasicDetails.value.Caste;
+      this.contractorEmployee.Caste = this.contractEmpBasicDetails.value.Caste;
 
       this.contractorEmployee.permanent_address =
         this.contractEmpOtherDetails.value.address;
@@ -1158,24 +1350,27 @@ items: MenuItem[] = [
       this.contractorEmployee.village_name =
         this.contractEmpOtherDetails.value.village;
       this.contractorEmployee.created_dt = this.formatDate(
-        new Date()
+        new Date(),
       ).toString();
       // this.contractorEmployee.apln_status = this.contractEmpReleavingDetails.value.actOrInAct
 
-      this.api.add_cl_Emp_ByCon(this.contractorEmployee).subscribe(
-        (res: any) => {
+      this.api.add_cl_Emp_ByCon(this.contractorEmployee).subscribe({
+        next: (res: any) => {
           const formData = new FormData();
           formData.append("photo", this.selectedPhoto);
 
-          this.api.photo_upload(formData, this.lastId).subscribe(
-            (res) => {
+          this.api.photo_upload(formData, this.lastId).subscribe({
+            next: (res) => {
               console.log("file Uploaded", res);
             },
-            (error) => {
+            error: (error) => {
               console.log("file not Uploaded", error);
-              this.messageService.add({severity:'error',summary:error.message})
-            }
-          );
+              this.messageService.add({
+                severity: "error",
+                summary: error.message,
+              });
+            },
+          });
           //  this.openAlertDialog("Application Submitted succesfully, Waiting For HR to Submit")
           this.openAlertDialog(res, "check");
           this.hideContractorForm();
@@ -1183,20 +1378,26 @@ items: MenuItem[] = [
           this.searchfilter();
           this.reset();
         },
-        (error) => {
+        error:(error) => {
           if (error.status === 400) {
-            this.openAlertDialog(`${error.error}`, "error");
+            // this.openAlertDialog(`${error.error}`, "error");
+            console.log('FILE UPLOAD ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message});
           } else {
             this.throwError("Error in connection");
+            this.messageService.add({severity:'error',summary:error?.message})
           }
-        }
-      );
-    }else{
-      this.messageService.add({severity:'warn',summary:'Please Fill All Fields!'})
+        },
+      });
+    } else {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Please Fill All Fields!",
+      });
     }
   }
 
-// update contractor
+  /** update contractor details */
   updateByContractor() {
     this.contractorEmployee.plant_code =
       this.contractEmpBasicDetails.value.plantCode;
@@ -1218,8 +1419,7 @@ items: MenuItem[] = [
       this.contractEmpBasicDetails.value.adhaarNo;
     this.contractorEmployee.religion =
       this.contractEmpBasicDetails.value.religion;
-    this.contractorEmployee.Caste =
-      this.contractEmpBasicDetails.value.Caste;
+    this.contractorEmployee.Caste = this.contractEmpBasicDetails.value.Caste;
 
     this.contractorEmployee.permanent_address =
       this.contractEmpOtherDetails.value.address;
@@ -1262,7 +1462,7 @@ items: MenuItem[] = [
       this.contractEmpOtherDetails.value.PF_UAN;
     this.contractorEmployee.esi_no = this.contractEmpOtherDetails.value.ESI_No;
     this.contractorEmployee.Van_Eligible =
-    this.contractEmpOtherDetails.value.Van_Eligible;
+      this.contractEmpOtherDetails.value.Van_Eligible;
     this.contractorEmployee.transporter_name =
       this.contractEmpOtherDetails.value.transporter;
     this.contractorEmployee.village_name =
@@ -1271,30 +1471,36 @@ items: MenuItem[] = [
     // console.log(this.contractorEmployee)
     this.api.edit_Cl_Emp_ByCon(
         this.contractorEmployee,
-        this.contractorEmployee.apln_slno
-      ).subscribe(
-        (res: any) => {
+        this.contractorEmployee.apln_slno,
+      ).subscribe({
+        next: (res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
-            this.contractEmpBasicDetails.value.Photo_File
+            this.contractEmpBasicDetails.value.Photo_File,
           );
           // photo upload api call
           this.api
             .photo_upload(
               formData,
-              this.contractEmpBasicDetails.value.apln_slno
+              this.contractEmpBasicDetails.value.apln_slno,
             )
-            .subscribe(
-              (res) => {
+            .subscribe({
+              next:(res) => {
                 console.log("file Uploaded", res);
-                this.messageService.add({severity:'info',summary:`File Uploaded: ${res}`})
+                this.messageService.add({
+                  severity: "info",
+                  summary: `File Uploaded: ${res}`,
+                });
               },
-              (error) => {
-                console.log("file not Uploaded", error);
-                this.messageService.add({severity:'error',summary:error.message})
-              }
-            );
+              error: (error) => {
+                console.error("FILE UPLOAD API ERROR:", error);
+                this.messageService.add({
+                  severity: "error",
+                  summary: error.message,
+                });
+              },
+            });
 
           this.openAlertDialog(res, "check");
           // this.getAllClEmployees()
@@ -1302,36 +1508,48 @@ items: MenuItem[] = [
           this.reset();
           this.hideContractorForm();
         },
-        (error) => {
+        error: (error) => {
           if (error.status === 400) {
-            this.openAlertDialog("Data already exist ", "error");
+            // this.openAlertDialog("Data already exist ", "error");
+            console.error('UPDATE CONTRACTOR ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message})
           } else {
-            this.throwError("Error in connection");
+            // this.throwError("Error in connection");
+            console.error('UPDATE CONTRACTOR ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message});
           }
-        }
-      );
+        },
+      });
   }
 
-  // delete contract employee
+  /**
+   * delete contractor employee
+   * @param apln_slno 
+   * @param reason 
+   * @param status 
+   */
   delete_Cl_Emp_ByCon(apln_slno: any, reason: string, status: string) {
     // console.log(status)
-    this.api.del_cl_Emp_byCon(apln_slno, reason, status).subscribe(
-      (res: any) => {
+    this.api.del_cl_Emp_byCon(apln_slno, reason, status).subscribe({
+      next:(res: any) => {
         this.openAlertDialog(res, "check");
         // console.log(res);
         this.getAllClEmployees();
         this.searchfilter();
         this.reset();
       },
-      (error) => {
+      error: (error) => {
         if (error.status === 400) {
-          console.log(error);
-          this.openAlertDialog(`${error.error}`, "error");
+          console.error('DELETE CL API ERROR:',error);
+          // this.openAlertDialog(`${error.error}`, "error");
+          this.messageService.add({severity:'error',summary:error?.message})
         } else {
-          this.openAlertDialog("Error in connection", "error");
+          // this.openAlertDialog("Error in connection", "error");
+          console.log('DELETE CL API ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message});
         }
-      }
-    );
+      },
+    });
   }
 
   openDeleteConfirmationDialog(apln_slno: any): void {
@@ -1355,8 +1573,13 @@ items: MenuItem[] = [
     });
   }
 
+  /**
+   * show apln delete toast
+   * @param data
+   */
   showAplnDelete(data: any) {
-    this.openAlertDialog(`${data} Application is Already Deleted`, "error");
+    // this.openAlertDialog(`${data} Application is Already Deleted`, "error");
+    this.messageService.add({severity:'warn',summary:`${data} Application is already DELETED`})
   }
 
   showRel(value: boolean) {
@@ -1368,17 +1591,20 @@ items: MenuItem[] = [
     this.editable = !this.editable;
   }
 
-  //To view CL Employee Basic Details Details
+  /** To view CL Employee Basic Details Details */
   onEditByHr(data: any, showButton: boolean) {
     this.Pay_apln_slno = data.apln_slno;
     this.showContractorForm();
     this.status = data.apln_status;
     this.showeditButton(showButton);
-
+    /** new from RML*/
+    this.cont_id = data.cont_id;
+    this.plant = data.plant_code;
+    this.getPayScales(data.cont_id, data.PayScale_ID);
     // this.showApprovebutton(showButton)
     // this.allowedit(showButton)
 
-    console.log('data',data)
+    console.log("CL EDIT DATA:", data);
     // console.log(this.status)
 
     if (data.apln_status == "SUBMITTED" && this.ishrappr) {
@@ -1411,7 +1637,7 @@ items: MenuItem[] = [
     // const line_code= data.line_code?data.line_code.toString() :'';
     const remarks_rejd = data.remarks_rejd ? data.remarks_rejd.toString() : "";
     const reporting_to = data.reporting_to ? data.reporting_to.toString() : "";
-    const Van_Eligible = data.Van_Eligible == true ?"Yes" : "No";
+    const Van_Eligible = data.Van_Eligible == true ? "Yes" : "No";
 
     // const workcontract = data.workcontract?data.workcontract.toString() :'';
     const rejectionreason = data.rejectionreason
@@ -1420,37 +1646,41 @@ items: MenuItem[] = [
 
     this.contractEmpBasicDetails.controls["apln_slno"].setValue(data.apln_slno);
     this.contractEmpBasicDetails.controls["plantCode"].setValue(
-      data.plant_code
+      data.plant_code,
     );
     this.contractEmpBasicDetails.controls["contractorName"].setValue(
-      data.cont_id
+      data.cont_id,
     );
+    // #NEW from RML
+    this.getPayScales(data.cont_id, data.PayScale_ID);
+    this.cont_id = data.cont_id;
+    
     this.contractEmpBasicDetails.controls["employeeName"].setValue(
-      data.fullname
+      data.fullname,
     );
     this.contractEmpBasicDetails.controls["spouseName"].setValue(
-      data.fathername
+      data.fathername,
     );
     this.contractEmpBasicDetails.controls["maritalStatus"].setValue(
-      data.marital_status
+      data.marital_status,
     );
     this.contractEmpBasicDetails.controls["DOB"].setValue(data.birthdate);
     this.contractEmpBasicDetails.controls["EmpMobileNo"].setValue(
-      data.mobile_no1
+      data.mobile_no1,
     );
     this.contractEmpBasicDetails.controls["gender"].setValue(data.gender);
     this.contractEmpBasicDetails.controls["adhaarNo"].setValue(data.aadhar_no);
     this.contractEmpBasicDetails.controls["Caste"].setValue(data.caste_name);
     this.contractEmpBasicDetails.controls["religion"].setValue(
-      Number(data.religion_sl)
+      Number(data.religion_sl),
     );
     this.contractEmpBasicDetails.controls["Photo_Name"].setValue(
-      data.photo_filename
+      data.photo_filename,
     );
     // this.contractEmpBasicDetails.controls['Photo_Name'].setValue(data.photo_filename)
 
     this.contractEmpOtherDetails.controls["address"].setValue(
-      data.permanent_address
+      data.permanent_address,
     );
     this.contractEmpOtherDetails.controls["pincode"].setValue(data.pincode);
     // this.contractEmpOtherDetails.controls['empId'].setValue(data.gen_id)
@@ -1459,72 +1689,78 @@ items: MenuItem[] = [
 
     this.contractEmpOtherDetails.controls["state"].setValue(data.state_name);
     this.contractEmpOtherDetails.controls["TempAddress"].setValue(
-      data.present_address
+      data.present_address,
     );
     this.contractEmpOtherDetails.controls["TempPincode"].setValue(
-      data.pres_pincode
+      data.pres_pincode,
     );
     this.contractEmpOtherDetails.controls["TempCity"].setValue(data.pres_city);
     this.contractEmpOtherDetails.controls["TempState"].setValue(
-      data.pres_state_name
+      data.pres_state_name,
     );
     this.contractEmpOtherDetails.controls["bloodGroup"].setValue(
-      data.blood_group
+      data.blood_group,
     );
     this.contractEmpOtherDetails.controls["emergencyContactNo"].setValue(
-      data.mobile_no2
+      data.mobile_no2,
     );
     this.contractEmpOtherDetails.controls["emergencyContactPerson"].setValue(
-      data.emergency_name
+      data.emergency_name,
     );
     this.contractEmpOtherDetails.controls["emergencyContactRelation"].setValue(
-      data.emergency_rel ? data.emergency_rel?.toString() : ''
+      data.emergency_rel ? data.emergency_rel?.toString() : "",
     );
     this.contractEmpOtherDetails.controls["PF_UAN"].setValue(data.uan_number);
     this.contractEmpOtherDetails.controls["ESI_No"].setValue(data.esi_no);
-    this.contractEmpOtherDetails.controls["Van_Eligible"].setValue(Van_Eligible);
+    this.contractEmpOtherDetails.controls["Van_Eligible"].setValue(
+      Van_Eligible,
+    );
     this.contractEmpOtherDetails.controls["transporter"].setValue(
-      data.transporter_name
+      data.transporter_name,
     );
     this.contractEmpOtherDetails.controls["village"].setValue(
-      data.village_name
+      data.village_name,
     );
-// contract employee HR Details
+    // contract employee HR Details
     this.contractEmpDetails.controls["empId"].setValue(data.gen_id);
     this.contractEmpDetails.controls["bioMiD"].setValue(data.biometric_no);
-    this.contractEmpDetails.controls["DorInD"].setValue(data.Category_Name );
+    this.contractEmpDetails.controls["DorInD"].setValue(data.Category_Name);
     this.contractEmpDetails.controls["dept"].setValue(data.dept_slno);
     this.getline_Role_1(data.dept_slno);
     this.contractEmpDetails.controls["line"].setValue(data.line_code);
     this.contractEmpDetails.controls["Role"].setValue(data.Role_Id);
-    this.contractEmpDetails.controls["reToPerson"].setValue(data.reporting_to); 
+    this.contractEmpDetails.controls["reToPerson"].setValue(data.reporting_to);
     this.contractEmpDetails.controls["DOJ"].setValue(data.doj);
     // new fields
-    this.contractEmpDetails.controls['payrollArea'].setValue(data?.payrollArea);
-    this.contractEmpDetails.controls['costCenter'].setValue(data?.cost_center);
-    this.contractEmpDetails.controls['legacyNumberOne'].setValue(data?.legacy_no1);
-    this.contractEmpDetails.controls['legacyNumberTwo'].setValue(data?.legacy_no2);
+    this.contractEmpDetails.controls["payrollArea"].setValue(data?.payrollArea);
+    this.contractEmpDetails.controls["costCenter"].setValue(data?.cost_center);
+    this.contractEmpDetails.controls["legacyNumberOne"].setValue(
+      data?.legacy_no1,
+    );
+    this.contractEmpDetails.controls["legacyNumberTwo"].setValue(
+      data?.legacy_no2,
+    );
 
     this.contractEmpReleavingDetails.controls["DOE"]?.setValue(data.dol);
     // this.contractEmpReleavingDetails.controls['DOE']?.setValue(dolValue)
     this.contractEmpReleavingDetails.controls["apln_status"]?.setValue(
-      data.apln_status
+      data.apln_status,
     );
     this.contractEmpReleavingDetails.controls["status"]?.setValue(
-      data.isapproved
+      data.isapproved,
     );
     // this.contractEmpReleavingDetails.controls['status']?.setValue(isapproved)
     this.contractEmpReleavingDetails.controls["reasonForReleaving"]?.setValue(
-      data.rejectionreason
+      data.rejectionreason,
     );
 
     // this.contractEmpReleavingDetails.controls['rejectionReason']?.setValue(rejectionreason)
 
     // console.log(this.contractEmpDetails.value)
-
-
-
-
+    /** #NEW FROM RML */
+     if (data.PayScale_ID) {
+      this.get_Payscale(data.PayScale_ID);
+    }
     this.calculateMinDate(data.doj);
 
     // getpayroll for contract employee based on plant;
@@ -1540,35 +1776,51 @@ items: MenuItem[] = [
       this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
       this.contractEmpBasicDetails.controls["Photo_File"].setValue(fileUrl);
 
-      const licenseFileValue = this.contractEmpBasicDetails.controls["Photo_File"].value;
+      const licenseFileValue =
+        this.contractEmpBasicDetails.controls["Photo_File"].value;
       if (licenseFileValue === fileUrl) {
         console.log("File successfully bound to Photo_File control.");
-      this.messageService.add({severity:'info',summary:"File successfully bound to Photo_File control."})
-        
+        this.messageService.add({
+          severity: "info",
+          summary: "File successfully bound to Photo_File control.",
+        });
       } else {
         console.log("File binding failed.");
-      this.messageService.add({severity:'info',summary:"File binding failed."})
+        this.messageService.add({
+          severity: "info",
+          summary: "File binding failed.",
+        });
       }
     } else {
       console.log("No file provided.");
-      this.messageService.add({severity:'warn',summary:"No file provided."})
+      this.messageService.add({
+        severity: "warn",
+        summary: "No file provided.",
+      });
     }
   }
 
   // get payroll for contract employee onboard.#3B82F6
-  getPayrollArea(plantcode:any){
+  getPayrollArea(plantcode: any) {
     this.service.getPayrollAreaByPlantcode(plantcode).subscribe({
-      next: (response:any) => {
-        if(response?.message){
-          this.messageService.add({severity:'info',summary:response.message})
+      next: (response: any) => {
+        if (response?.message) {
+          this.messageService.add({
+            severity: "info",
+            summary: response.message,
+          });
         }
         this.payrollArea = response;
         console.log(response);
       },
       error: (error) => {
-        this.messageService.add({severity:'error',summary:error?.error?.message})
-      }
-    })
+        console.error('PAYROLL AREA API ERROR:',error);
+        this.messageService.add({
+          severity: "error",
+          summary: error?.error?.message,
+        });
+      },
+    });
   }
 
   // submit for approval function
@@ -1578,7 +1830,8 @@ items: MenuItem[] = [
       this.validateStep(2) &&
       this.validateStep(3) &&
       this.validateStep(4) &&
-      this.validateStep(5)
+      this.validateStep(5) &&
+      this.validateStep(6) // #NEW FROM RML
     ) {
       this.contractorEmployee.apln_slno =
         this.contractEmpBasicDetails.value.apln_slno;
@@ -1594,7 +1847,7 @@ items: MenuItem[] = [
       this.contractorEmployee.marital_status =
         this.contractEmpBasicDetails.value.maritalStatus;
       this.contractorEmployee.birthdate = this.formatDate(
-        this.contractEmpBasicDetails.value.DOB
+        this.contractEmpBasicDetails.value.DOB,
       ).toString();
       this.contractorEmployee.gender =
         this.contractEmpBasicDetails.value.gender;
@@ -1604,8 +1857,7 @@ items: MenuItem[] = [
         this.contractEmpBasicDetails.value.adhaarNo;
       this.contractorEmployee.religion =
         this.contractEmpBasicDetails.value.religion;
-      this.contractorEmployee.Caste =
-        this.contractEmpBasicDetails.value.Caste;
+      this.contractorEmployee.Caste = this.contractEmpBasicDetails.value.Caste;
 
       this.contractorEmployee.permanent_address =
         this.contractEmpOtherDetails.value.address;
@@ -1649,7 +1901,7 @@ items: MenuItem[] = [
       this.contractorEmployee.esi_no =
         this.contractEmpOtherDetails.value.ESI_No;
 
-        this.contractorEmployee.Van_Eligible =
+      this.contractorEmployee.Van_Eligible =
         this.contractEmpOtherDetails.value.Van_Eligible;
       this.contractorEmployee.transporter_name =
         this.contractEmpOtherDetails.value.transporter;
@@ -1658,26 +1910,30 @@ items: MenuItem[] = [
 
       this.contractorEmployee.workcontract =
         this.contractEmpDetails.value.DorInD;
-        // contract empoyee HR APPROVER details
+      // contract empoyee HR APPROVER details
       this.contractorEmployee.dept_slno = this.contractEmpDetails.value.dept;
       this.contractorEmployee.line_code = this.contractEmpDetails.value.line;
       this.contractorEmployee.Role_ID = this.contractEmpDetails.value.Role;
       // new fields
-      this.contractorEmployee.payrollArea = this.contractEmpDetails.value.payrollArea;
-      this.contractorEmployee.costCenter = this.contractEmpDetails.value.costCenter;
-      this.contractorEmployee.legacyNumberOne = this.contractEmpDetails.value.legacyNumberOne;
-      this.contractorEmployee.legacyNumberTwo = this.contractEmpDetails.value.legacyNumberTwo;
+      this.contractorEmployee.payrollArea =
+        this.contractEmpDetails.value.payrollArea;
+      this.contractorEmployee.costCenter =
+        this.contractEmpDetails.value.costCenter;
+      this.contractorEmployee.legacyNumberOne =
+        this.contractEmpDetails.value.legacyNumberOne;
+      this.contractorEmployee.legacyNumberTwo =
+        this.contractEmpDetails.value.legacyNumberTwo;
       this.contractorEmployee.reporting_to =
         this.contractEmpDetails.value.reToPerson;
       this.contractorEmployee.doj = this.formatDate(
-        this.contractEmpDetails.value.DOJ
+        this.contractEmpDetails.value.DOJ,
       ).toString();
       this.contractorEmployee.apln_status =
         this.contractEmpReleavingDetails.value.apln_status;
 
       if (this.contractEmpReleavingDetails.value.status === "N") {
         this.contractorEmployee.dol = this.formatDate(
-          this.contractEmpReleavingDetails.value.DOE
+          this.contractEmpReleavingDetails.value.DOE,
         ).toString();
         this.contractorEmployee.remarks_rejd =
           this.contractEmpReleavingDetails.value.reasonForReleaving;
@@ -1691,44 +1947,65 @@ items: MenuItem[] = [
       //  console.log(this.contractEmpReleavingDetails.value.apln_status)
       //  console.log(this.contractEmpReleavingDetails.value.plant_code)
       console.log("CONTRACT EMPLOYEE HR APPROVAL:", this.contractorEmployee);
-      // submit for hr approval
-      this.api.submit_cl_Emp_ByHR(this.contractorEmployee,this.contractorEmployee.apln_slno).subscribe(
-          (res: any) => {
+      /** #NEW FROM RML */
+      console.log('Selected PayScale:', this.selectedPayscale);
+      const submissionData = {
+        ...this.contractorEmployee,
+        PayScale_ID: this.selectedPayscale,
+        Created: this.userEmpcode
+      };
+
+    /** submit for HR approval */
+      this.api
+        .submit_cl_Emp_ByHR(
+          submissionData, // NEW FROM RML
+          this.contractorEmployee.apln_slno,
+        )
+        .subscribe({
+          next:(res: any) => {
             const formData = new FormData();
             formData.append(
               "photo",
-              this.contractEmpBasicDetails.value.Photo_File
+              this.contractEmpBasicDetails.value.Photo_File,
             );
             // photo api call
             this.api
               .photo_upload(
                 formData,
-                this.contractEmpBasicDetails.value.apln_slno
+                this.contractEmpBasicDetails.value.apln_slno,
               )
-              .subscribe(
-                (res) => {
+              .subscribe({
+                next:(res) => {
                   console.log("file Uploaded", res);
-                  this.messageService.add({severity:'info',summary:res})
+                  this.messageService.add({ severity: "info", summary: res });
                 },
-                (error) => {
-                  this.messageService.add({severity:"error",summary:error.message})
-                  console.log("file not Uploaded", error);
-                }
-              );
+                error: (error) => {
+                  this.messageService.add({
+                    severity: "error",
+                    summary: error.message,
+                  });
+                  console.error('FILE UPLOAD ERROR:',error);
+                },
+              });
 
-            this.openAlertDialog(`${res}`, "check");
+            // this.openAlertDialog(`${res}`, "check");
+            this.messageService.add({severity:'info',summary:res});
             this.searchfilter();
             this.reset();
             this.hideContractorForm();
           },
-          (error) => {
+          error: (error) => {
             if (error.status === 400) {
-              this.openAlertDialog(`${error.error}`, "error");
+              // this.openAlertDialog(`${error.error}`, "error");
+              console.error('SUBMIT CL TRAINEE API ERROR:',error);
+              this.messageService.add({severity:'error',summary:error?.message})
             } else {
-              this.openAlertDialog(`Error in connection`, "error");
+              // this.openAlertDialog(`Error in connection`, "error");
+              console.error('SUBMIT CL TRAINE API ERROR:',error)
+              this.messageService.add({severity:'error',summary:error?.message})
             }
-          }
-      );
+          },
+        });
     }
   }
 
@@ -1753,9 +2030,9 @@ items: MenuItem[] = [
     this.contractorEmployee.uan_number =
       this.contractEmpOtherDetails.value.PF_UAN;
     this.contractorEmployee.esi_no = this.contractEmpOtherDetails.value.ESI_No;
-    
+
     this.contractorEmployee.Van_Eligible =
-    this.contractEmpOtherDetails.value.Van_Eligible;
+      this.contractEmpOtherDetails.value.Van_Eligible;
 
     this.contractorEmployee.transporter_name =
       this.contractEmpOtherDetails.value.transporter;
@@ -1780,7 +2057,7 @@ items: MenuItem[] = [
         this.dolUpdate = true;
       } else {
         this.contractorEmployee.dol = this.formatDate(
-          this.contractEmpReleavingDetails.value.DOE
+          this.contractEmpReleavingDetails.value.DOE,
         ).toString();
         this.contractorEmployee.remarks_rejd =
           this.contractEmpReleavingDetails.value.reasonForReleaving;
@@ -1797,59 +2074,71 @@ items: MenuItem[] = [
     this.api
       .edit_cl_Emp_ByHR(
         this.contractorEmployee,
-        this.contractorEmployee.apln_slno
+        this.contractorEmployee.apln_slno,
       )
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next:(res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
-            this.contractEmpBasicDetails.value.Photo_File
+            this.contractEmpBasicDetails.value.Photo_File,
           );
           // photo upload api call
           this.api
             .photo_upload(
               formData,
-              this.contractEmpBasicDetails.value.apln_slno
+              this.contractEmpBasicDetails.value.apln_slno,
             )
-            .subscribe(
-              (res) => {
+            .subscribe({
+              next: (res) => {
                 console.log("file Uploaded", res);
-                this.messageService.add({severity:"info",summary:res})
+                this.messageService.add({ severity: "info", summary: res });
               },
-              (error) => {
-                console.log("file not Uploaded", error);
-                this.messageService.add({severity:"error",summary:error.message})
-              }
-            );
+              error: (error) => {
+                console.error("FILE UPLOAD API ERROR:", error);
+                this.messageService.add({
+                  severity: "error",
+                  summary: error.message,
+                });
+              },
+            });
           this.openAlertDialog(res, "check");
           this.searchfilter();
           this.reset();
           this.hideContractorForm();
         },
-        (error) => {
+        error: (error) => {
           if (error.status === 400) {
-            this.openAlertDialog(`${error.error}`, "error");
+            // this.openAlertDialog(`${error.error}`, "error");
+            console.error('HR UPDATE API ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message})
           } else {
-            this.openAlertDialog(`Error in connection`, "error");
+            // this.openAlertDialog(`Error in connection`, "error");
+            console.error('HR UPDATE API ERROR:',error);
+            this.messageService.add({severity:'error',summary:error?.message})
           }
-        }
-      );
+        },
+      });
   }
 
-// approve contract employee
+  // approve contract employee
   approveByHrAppr() {
     console.log("ApproveByHrAppr");
     // gen id generation for contract employee
     const genId = "C" + this.contractEmpBasicDetails.value.apln_slno;
-    
-    // new extra fields
-      this.contractorEmployee.payrollArea = this.contractEmpDetails.value.payrollArea;
-      this.contractorEmployee.costCenter = this.contractEmpDetails.value.costCenter;
-      this.contractorEmployee.legacyNumberOne = this.contractEmpDetails.value.legacyNumberOne;
-      this.contractorEmployee.legacyNumberTwo = this.contractEmpDetails.value.legacyNumberTwo;
 
-      this.contractorEmployee.apln_slno = this.contractEmpBasicDetails.value.apln_slno;
+    // new extra fields
+    this.contractorEmployee.payrollArea =
+      this.contractEmpDetails.value.payrollArea;
+    this.contractorEmployee.costCenter =
+      this.contractEmpDetails.value.costCenter;
+    this.contractorEmployee.legacyNumberOne =
+      this.contractEmpDetails.value.legacyNumberOne;
+    this.contractorEmployee.legacyNumberTwo =
+      this.contractEmpDetails.value.legacyNumberTwo;
+
+    this.contractorEmployee.apln_slno =
+      this.contractEmpBasicDetails.value.apln_slno;
     // set employee form value from gen id
     this.contractorEmployee.gen_id = genId;
     this.contractorEmployee.biometric_no =
@@ -1874,43 +2163,52 @@ items: MenuItem[] = [
     this.contractorEmployee.village_name =
       this.contractEmpOtherDetails.value.village;
 
-      // temp passowrd for contract employee
+    // temp passowrd for contract employee
     this.contractorEmployee.TempPassword = this.createTempPassword(
-      this.formatDate(this.contractEmpBasicDetails.value.DOB).toString()
+      this.formatDate(this.contractEmpBasicDetails.value.DOB).toString(),
     );
     this.contractorEmployee.approved_dt = this.formatDate(
-      new Date()
+      new Date(),
     ).toString();
     this.contractorEmployee.apln_status =
       this.contractEmpReleavingDetails.value.apln_status;
-    console.log("CONTRACT APPROVE DATA:" , this.contractorEmployee)
+    console.log("CONTRACT APPROVE DATA:", this.contractorEmployee);
+    /** sumbit payload */
+    const SubmitData = {
+      ...this.contractorEmployee,
+      Created: this.userEmpcode
+    }
+   console.log('HR APPROVE PAYLOAD:',SubmitData)
     this.api
       .app_cl_Emp_By_HRappr(
-        this.contractorEmployee,
-        this.contractorEmployee.apln_slno
+        SubmitData, // #NEW FROM RMl
+        this.contractorEmployee.apln_slno,
       )
       .subscribe(
         (res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
-            this.contractEmpBasicDetails.value.Photo_File
+            this.contractEmpBasicDetails.value.Photo_File,
           );
           // photo upload api call
           this.api
             .photo_upload(
               formData,
-              this.contractEmpBasicDetails.value.apln_slno
+              this.contractEmpBasicDetails.value.apln_slno,
             )
             .subscribe(
               (res) => {
                 console.log("file Uploaded", res);
-                this.messageService.add({severity:'info',summary:res})
+                this.messageService.add({ severity: "info", summary: res });
               },
               (error) => {
                 console.log("file not Uploaded", error);
-                this.messageService.add({severity:'error',summary:error.message})
-              }
+                this.messageService.add({
+                  severity: "error",
+                  summary: error.message,
+                });
+              },
             );
           this.searchfilter();
           this.getAllClEmployees();
@@ -1925,11 +2223,11 @@ items: MenuItem[] = [
           } else {
             this.openAlertDialog(`Error in connection`, "error");
           }
-        }
+        },
       );
   }
 
-// reject by hr
+  // reject by hr
   rejectByHrAppr(apln_slno: any, reason: any) {
     this.api.rej_by_Hrappr(apln_slno, reason).subscribe(
       (res) => {
@@ -1950,7 +2248,7 @@ items: MenuItem[] = [
           this.reset();
           this.hideContractorForm();
         }
-      }
+      },
     );
   }
 
@@ -1974,7 +2272,7 @@ items: MenuItem[] = [
       });
     }
   }
-// validate steps
+  // validate steps
   validateStep(stepNumber: number): boolean {
     switch (stepNumber) {
       case 1:
@@ -2073,7 +2371,7 @@ items: MenuItem[] = [
   }
   showeditButton(value: boolean) {
     this.showedit = value;
-    console.log(this.showedit)
+    console.log(this.showedit);
   }
   // form reset
   reset() {
