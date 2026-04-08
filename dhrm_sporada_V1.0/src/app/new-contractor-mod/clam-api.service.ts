@@ -287,6 +287,11 @@ export class ClamAPIService {
     return this.http.get<any>(this.url + '/clam/hrSearch?status=' + data.status + '&CName=' + data.CName + '&EName=' + data.EName + '&plantcode=' + data.plantcode + '&emp_code=' + data.emp_code,)
   }
 
+  // #new from RML
+  PrsearchFilter(data: any) {
+    // console.log(data)
+    return this.http.get<any>(this.url + '/clam/PrhrSearch?status=' + data.status + '&CName=' + data.CName + '&EName=' + data.EName + '&plantcode=' + data.plantcode + '&emp_code=' + data.emp_code,)
+  }
 
   add_cl_Emp_ByCon(data: any) {
     return this.http.post(this.url + '/clam/addclemp', data)
@@ -312,16 +317,37 @@ export class ClamAPIService {
     return this.http.put(`${this.url}/clam/clemphr?${queryParams}`, data)
   }
 
+ // #NEW FROM RML
+    submit_Pr_Emp_ByHR(data: any, id: any) {
+    console.log(data)
+    const queryParams = new URLSearchParams({ id }).toString();
+    return this.http.put(`${this.url}/clam/Pr_Hr_Submit?${queryParams}`, data)
+  }
+  
   edit_cl_Emp_ByHR(data: any, id: any) {
     console.log(data)
     const queryParams = new URLSearchParams({ id }).toString();
     return this.http.put(`${this.url}/clam/cleedithr?${queryParams}`, data)
   }
 
+ // #NEW FROM RML
+    edit_Pr_Emp_ByHR(data: any, id: any) {
+    console.log(data)
+    const queryParams = new URLSearchParams({ id }).toString();
+    return this.http.put(`${this.url}/clam/Pr_Hr_Update?${queryParams}`, data)
+  }
   app_cl_Emp_By_HRappr(data: any, id: any) {
     console.log(data)
     const queryParams = new URLSearchParams({ id }).toString();
     return this.http.put(`${this.url}/clam/clemphrappr?${queryParams}`, data)
+  }
+  
+  
+   // #NEW FROM RML
+    app_pr_Emp_By_HRappr(data: any, id: any) {
+    console.log(data)
+    const queryParams = new URLSearchParams({ id }).toString();
+    return this.http.put(`${this.url}/clam/Pr_emp_hrappr?${queryParams}`, data)
   }
 
   edit_cl_Emp(data: any, id: any) {
@@ -337,6 +363,12 @@ export class ClamAPIService {
     return this.http.put(`${this.url}/clam/rejcl?${queryParams}`, reason)
   }
 
+// #NEW FROM RML
+ getContPayscale(cont_id: any) {
+    const queryParams = new URLSearchParams({ cont_id }).toString();
+    return this.http.get(`${this.url}/clam/get_Cont_Pay_Scale?${queryParams}`)
+
+  }
 
   getLinebyplant(plant_Code: any, dept: any, hr: any) {
     const plant = new URLSearchParams({ plant_Code }).toString();
@@ -908,5 +940,9 @@ export class ClamAPIService {
     return this.http.get(`${this.url}/clam/plantFor_Report`)
   }
 
+ // #NEW FROM RML
+  Bulk_punch_process(data: any) {
+    return this.http.post<any>(`${this.url}/salary/bulk_punch_process`, data);
+  }
 
 }

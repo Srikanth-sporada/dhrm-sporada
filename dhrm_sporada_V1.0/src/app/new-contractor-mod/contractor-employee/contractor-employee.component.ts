@@ -159,8 +159,8 @@ export class ContractorEmployeeComponent implements OnInit {
   ClHrApprdata: any;
   Searchfilter: any[] = [];
   searchQuery: string;
-  // type changed
-  selectedPhoto: File | null;
+  /** type changed */
+  selectedPhoto: any;
   dolUpdate = false;
   obj: any;
   dept: any;
@@ -1116,42 +1116,46 @@ export class ContractorEmployeeComponent implements OnInit {
   }
 
   /** 
-   * get payscales
+   * get payscales #integrate API
    * @param event
    * @param selectedPayScaleId
    */
   getPayScales(event: any, selectedPayScaleId?: number) {
     console.log('get payscale event: ', event);
-    // this.api.getContPayscale(event).subscribe({
-    //   next:(res: any) => {
-    //     this.payscales = res;
+    this.api.getContPayscale(event).subscribe({
+      next:(res: any) => {
+        this.payscales = res;
 
-    //     // Set the selected payscale if provided and the control exists
-    //     if (selectedPayScaleId != null) {
-    //       this.contractEmpDetails2.controls['pay'].setValue(selectedPayScaleId);
-    //     }
-    //   },
-    //   error: (error:any) => {
-    //     console.log('GET PAYSCALES ERROR:',error);
-    //     this.messageService.add({severity:'error',summary:error?.message})
-    //   }
-    // });
+        // Set the selected payscale if provided and the control exists
+        if (selectedPayScaleId != null) {
+          this.contractEmpDetails2.controls['pay'].setValue(selectedPayScaleId);
+        }
+      },
+      error: (error:any) => {
+        console.log('GET PAYSCALES ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+    });
   }
 
   // get  role master api call function
   getRoleMaster(event: any) {
     console.log("Role event", event);
-    this.api.getRoleName(event).subscribe(
-      (res: any) => {
+    this.api.getRoleName(event).subscribe({
+      next: (res: any) => {
         this.Roles = res[0];
+        console.log('ROLE RES:',res);
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET ROLE MASTER API ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
-    );
+    });
   }
-  // dropdown role change handle function
+  /**
+   * dropdown role change handle function
+   * @param event 
+   */
   onRoleChange_1(event: any) {
     console.log("Selected Role ID:", event.value);
 
@@ -1168,7 +1172,11 @@ export class ContractorEmployeeComponent implements OnInit {
       this.contractEmpDetails.get("DorInD")?.setValue("");
     }
   }
-  // line and report to handle function
+
+  /**
+   * line and report to handle function
+   * @param deptSlno
+   */
   populateLineAndRepTo(deptSlno: number) {
     const selectedDept = this.dept.find((d: any) => d.dept_slno === deptSlno);
     this.contractEmpDetails.patchValue({
@@ -1177,7 +1185,10 @@ export class ContractorEmployeeComponent implements OnInit {
     });
   }
 
-  // to Get All CL Employee Details
+  /**
+   * to Get All CL Employee Details
+   * 
+   */
   getAllClEmployees() {
     this.api.get_Cl_Emp_Hr().subscribe({
       next: (res) => {
@@ -1224,7 +1235,7 @@ export class ContractorEmployeeComponent implements OnInit {
     //   })
   }
 
-  // get last employee id api call function
+  /** get last employee id api call function */
   get_Last_EmpID() {
     this.api.get_Last_EmpID().subscribe({
       next: (res) => {
@@ -1273,8 +1284,6 @@ export class ContractorEmployeeComponent implements OnInit {
   }
 
   //TO SUBMIT THE FORM
-
-  // this will filled by contractor
   SubmitBasicDetails(event: any) {
     event.preventDefault();
     if (this.validateStep(1) && this.validateStep(2)) {
@@ -1987,8 +1996,6 @@ export class ContractorEmployeeComponent implements OnInit {
                   console.error('FILE UPLOAD ERROR:',error);
                 },
               });
-
-            // this.openAlertDialog(`${res}`, "check");
             this.messageService.add({severity:'info',summary:res});
             this.searchfilter();
             this.reset();
@@ -1996,11 +2003,9 @@ export class ContractorEmployeeComponent implements OnInit {
           },
           error: (error) => {
             if (error.status === 400) {
-              // this.openAlertDialog(`${error.error}`, "error");
               console.error('SUBMIT CL TRAINEE API ERROR:',error);
               this.messageService.add({severity:'error',summary:error?.message})
             } else {
-              // this.openAlertDialog(`Error in connection`, "error");
               console.error('SUBMIT CL TRAINE API ERROR:',error)
               this.messageService.add({severity:'error',summary:error?.message})
             }
@@ -2109,11 +2114,9 @@ export class ContractorEmployeeComponent implements OnInit {
         },
         error: (error) => {
           if (error.status === 400) {
-            // this.openAlertDialog(`${error.error}`, "error");
             console.error('HR UPDATE API ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.message})
           } else {
-            // this.openAlertDialog(`Error in connection`, "error");
             console.error('HR UPDATE API ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.message})
           }
@@ -2315,6 +2318,15 @@ export class ContractorEmployeeComponent implements OnInit {
           this.stepper.selectedIndex = 4;
           return false;
         }
+	// NEW FROM RML
+        case 6:
+        if (this.contractEmpDetails2.valid) {
+          return true;
+        } else {
+          this.markFormGroupAsTouched(this.contractEmpDetails2);
+          this.stepper.selectedIndex = 5;
+          return false;
+        }
       default:
         return false;
     }
@@ -2336,6 +2348,8 @@ export class ContractorEmployeeComponent implements OnInit {
     this.hideContractorForm();
     this.reset();
     this.stepper.selectedIndex = 0;
+    // #NEW FOMR RML
+    this.payscaleForm = false;
   }
 
   //TO Reject the Application
