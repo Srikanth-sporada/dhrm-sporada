@@ -872,7 +872,9 @@
               <mat-form-field appearance="outline" style="width: 40%;">
                 <mat-label>Select Payscale</mat-label>
                 <!-- [disabled]="ishrappr == 'true'" -->
-                <mat-select required  formControlName="pay"
+                <mat-select 
+                  required  
+                  formControlName="pay"
                   (selectionChange)="onOptionSelected($event.value)">
                   <mat-option *ngFor="let scale of payscales" [value]="scale.PayScale_ID">
                     {{ scale.PayScale_Name }}
@@ -883,7 +885,7 @@
               </mat-form-field>
             </div>
             <!--Salary Window #NEW FROM RML -->
-            <div >
+            <div *ngIf="payscaleForm">
               <form [formGroup]="NewPayScaleFormGroup">
                 <div id="ndLine">
                   <div class="row" style="display: flex; justify-content: space-around;    ">

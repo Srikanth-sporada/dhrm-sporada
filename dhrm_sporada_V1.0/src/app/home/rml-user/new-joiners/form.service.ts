@@ -244,7 +244,7 @@ fileupload(file:any,uniqueId:any,company:any, id_no :any, fileno:any){
  * genreate trainee id
  */
 submitted(uniqueId: any){
-  console.log("----------------------------", uniqueId)
+  console.log("SUBMITTED API DATA:", uniqueId)
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)
   .subscribe({
     next: (response:any) => { 
@@ -254,13 +254,14 @@ submitted(uniqueId: any){
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('SUBMITTED API ERROR:',error);
       this.messageService.add({severity:'error',summary:error?.message})
     }
   })
 }
 
 pending(uniqueId: any){
+  console.log('SUBMITTED API DATA:',uniqueId);
   this.http.put(this.url+'/hrOperation/pending',uniqueId)
   .subscribe({
     next: (response:any) => { 
@@ -270,14 +271,14 @@ pending(uniqueId: any){
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('PENDING API ERROR:',error);
       this.messageService.add({severity:'error',summary:error?.message});
     },
   })
 }
 
 approved(uniqueId:any){
-
+  console.log('APPROVED API DATA:',uniqueId);
   this.http.put(this.url+'/hrOperation/approved', uniqueId) .subscribe({
     next: (response:any) =>{ 
       console.log(response);
@@ -286,15 +287,14 @@ approved(uniqueId:any){
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('APPROVED API ERROR:',error);
       this.messageService.add({severity:'error',summary:error?.message});
     },
   })
 }
 
 rejected(uniqueId:any){
-  console.log(this.uniqueId);
-
+  console.log('REJECTED API DATA:',uniqueId);
   this.http.put(this.url+'/hrOperation/rejected', uniqueId)
   .subscribe({
     next: (response:any) => { 
@@ -304,7 +304,7 @@ rejected(uniqueId:any){
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('REJECTED API ERROR:',error);
       this.messageService.add({severity:'error',summary:error?.message});
     },
   })
@@ -371,12 +371,12 @@ submitCategory2(Bodhi_training: any, dept_Id: any, Role_id: any, line_id: any, p
 /** 
  * extra param added
  * check while integrating form.component.ts
- *  */
+ * */
 submitCategory(
   Bodhi_training: any,
   dept_Id: any,
   Role_id: any,
-  payscale?: any // check while integrating form.component.ts
+  payscale: any // check while integrating form.component.ts
 ): Observable<HttpEvent<any>> {
   console.log("Submitting category with values:");
   console.log("Category:", this.category);

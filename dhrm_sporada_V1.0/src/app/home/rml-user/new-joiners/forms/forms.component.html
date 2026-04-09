@@ -162,4 +162,10 @@
   <br />
   <br />
   <!-- </div> -->
+ <!-- #NEW CHANGE FROM RML -->
+<div *ngIf="isUploading" class="overlay">
+  <div class="progress-box">
+    <p>Submitting... {{ uploadProgress }}%</p>
+    <progress [value]="uploadProgress" max="100"></progress>
+  </div>
 </div>
