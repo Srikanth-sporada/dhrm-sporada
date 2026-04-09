@@ -9,6 +9,7 @@ import { ApiService } from "src/app/home/api.service";
 import { MatDialog } from "@angular/material/dialog";
 import { RejectComponent } from "./reject/reject.component";
 import { MessageService } from "primeng/api";
+import { FormGroup, FormBuilder } from "@angular/forms"; // #NEW FROM RML
 @Component({
   selector: "app-hr-view-data",
   templateUrl: "./hr-view-data.component.html",
@@ -46,6 +47,13 @@ export class HrViewDataComponent implements OnInit {
   // trainee details for onboard form
   apln_status: any;
   applicationNumber:any;
+  // #NEW FROM RML
+  NewPayScaleFormGroup: FormGroup;
+  payscale_Data: any;
+  plant: any = sessionStorage.getItem("plantcode");
+  genid : any = sessionStorage.getItem('user_name');
+  payscaleForm = false;
+  cont_id: any;
   constructor(
     private http: HttpClient,
     public location: Location,
@@ -54,7 +62,8 @@ export class HrViewDataComponent implements OnInit {
     private service: FormService,
     private apiservice: ApiService,
     private dailog:MatDialog,
-    private messageService:MessageService
+    private messageService:MessageService,
+    private fb: FormBuilder, // #NEW FROM RML
   ) {
     this.action = this.active.snapshot.paramMap.get("action");
   }
@@ -64,6 +73,7 @@ export class HrViewDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** get Trainee data API's */
     this.getdatabasic();
     this.getdataqualifn();
     this.getdatacareer();
@@ -113,6 +123,72 @@ export class HrViewDataComponent implements OnInit {
 
       console.log(this.urlforResume);
     }, 1000);
+     // #NEW FROM RML
+    this.NewPayScaleFormGroup = this.fb.group({
+      PayScale_ID: [null],
+      Plant_Code: [null],
+      Cont_ID: [null],
+      PayScale_Name: [null],
+      Stipend: [null],
+      Basic: [null],
+      DA: [null],
+      HRA: [null],
+      Leave_Salary: [null],
+      Washing_allow: [null],
+      Monthly_Bonus: [null],
+      Sat_and_Mon_Incentive: [null],
+      Monthly_Attn_Incentive: [null],
+      Retention_Incentive: [null],
+      Spl_allow: [null],
+      Night_shift_allowance: [null],
+      Skilled_allow_P3: [null],
+      Amenities_Allow: [null],
+      Other_allowance_1: [null],
+      Other_allowance_2: [null],
+      Other_allowance_3: [null],
+      Other_allowance_4: [null],
+      Gross_Earning: [null],
+      Canteen: [null],
+      Transport: [null],
+      Professional_Tax: [null],
+      WC_Policy: [null],
+      Insurance: [null],
+      Shoe_FirstTime: [null],
+      Glass_FirstTime: [null],
+      Uniform_FirstTime: [null],
+      Coat_FirstTime: [null],
+      Other_deduction_1: [null],
+      Other_deduction_2: [null],
+      Other_deduction_3: [null],
+      Other_deduction_4: [null],
+      Gross_Deduction: [null],
+      Service_Charge_Fixed: [null],
+      Service_charges_Percentage: [null],
+      SC_Base: [null],
+      NSDC_Contribution: [null],
+      Uniform_Charges: [null],
+      Labour_Welfare_Fund: [null],
+      Insurance_Premium: [null],
+      Learning_Fees: [null],
+      Workmen_Compensation: [null],
+      Emp_Comp_Ins: [null],
+      Higher_Education_Fee: [null],
+      EM_ESI_Cal_Val: [null],
+      EM_PF_Cal_Val: [null],
+      EMP_PF_Cal_Val: [null],
+      EMP_ESI_Cal_Val: [null],
+      EM_PF_Percent: [null],
+      EM_ESI_Percent: [null],
+      EMP_PF_Percent: [null],
+      EMP_ESI_Percent: [null],
+      Service_Tax_Val: [null],
+      Servive_Charge_Val: [null],
+      Effective_Date: [null],
+      Effective_Date1: [null],
+      CTC: [null],
+      ToTal_Base_Value: [null],
+      Net_Take_Home: [null],
+    })
   }
 
   approved() {
@@ -128,13 +204,15 @@ export class HrViewDataComponent implements OnInit {
       })
       .subscribe({
         next: (response: any) => {
-          console.log(response);
+          console.log('APPROVED MAIL RESPONSE:',response);
         },
-        error: (err) => this.messageService.add({severity:'error',summary:err.message})
+        error: (err) => {
+          console.error('HR APPROVE MAIL API ERROR:',err);
+          this.messageService.add({severity:'error',summary:err.message})
+        }
       });
       this.messageService.add({severity:'info',summary:'Application has been approved'})
-    // window.alert("Application has been approved");
-    this.router.navigate(["rhrm/new_joiners/hr-approval"]);
+      this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
   rejected() {
@@ -143,7 +221,6 @@ export class HrViewDataComponent implements OnInit {
 
     this.service.rejected(this.uniqueId);
     this.messageService.add({severity:'info',summary:'Application has been rejected'})
-    // window.alert("Application has been rejected");
     this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
@@ -158,8 +235,18 @@ export class HrViewDataComponent implements OnInit {
         // setting trainee details for onboard
         this.apln_status = this.basic[0]?.apln_status;
         this.applicationNumber = this.basic[0]?.apln_slno;
+        /** #NEW FROM RML */
+        this.cont_id = this.basic[0]?.cont_id;
+        const payScaleId = this.basic[0]?.payScaleInfo?.PayScale_ID;
+        if (this.cont_id && payScaleId) {
+          console.log('TRAINEE PAYSCALE ID:',payScaleId);
+          this.get_Payscale(payScaleId);
+        }
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.error('GET BASIC API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message})
+      }
     });
   }
 
@@ -172,7 +259,10 @@ export class HrViewDataComponent implements OnInit {
         console.log("qual", response);
         this.education = response;
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.error('GET QUALIFICATION API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
+      }
     });
   }
 
@@ -185,7 +275,10 @@ export class HrViewDataComponent implements OnInit {
         console.log("fam", response);
         this.family = response;
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.error('GET FAMILY DATA API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message});
+      },
     });
   }
 
@@ -198,13 +291,17 @@ export class HrViewDataComponent implements OnInit {
         console.log("career", response);
         this.career = response;
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.error('GET CAREER API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.message});
+      },
     });
   }
 
-  openDailog(){
-    const rejectDailog=this.dailog.open(RejectComponent,{disableClose:false,
-    width:'600px',
+  openDailog() {
+    const rejectDailog = this.dailog.open(RejectComponent, {
+      disableClose: false, // #NEW FROM RML
+      width: '600px',
     })
     rejectDailog.afterClosed().subscribe(data=>{
       if(data){
@@ -221,5 +318,45 @@ export class HrViewDataComponent implements OnInit {
       this.uniqueId.company,
     ]);
     window.open(url.toString(), "_blank");
+  }
+
+  // #NEW FROM RML
+  /**
+   * get trainee payscale data #SINGLE
+   * @param {*} payId
+   * @memberof HrViewDataComponent
+   */
+  get_Payscale(payId: any) {
+    const data = {
+      plant_Code: this.plant,
+      con_id: this.cont_id,
+      PayScale_ID: payId,
+    };
+
+    this.service.getSinglePayscale(data).subscribe({
+      next: (res: any) => {
+        this.payscale_Data = res;
+        if (Array.isArray(res) && res.length > 0) {
+          this.payscaleForm = true;
+          this.NewPayScaleFormGroup.patchValue(res[0]);
+        }
+      },
+      error: (error) => {
+        console.error("GET PAYSCALE API ERROR:", error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+    });
+  }
+
+// #NEW FROM RML
+/**
+ * @param {*} event
+ * @param {string} controlName
+ * @memberof HrViewDataComponent
+ */
+onInputChanged(event: any, controlName: string) {
+    const newValue = event.target.value;
+    const numericValue = parseFloat(newValue);
+    this.NewPayScaleFormGroup.get(controlName)?.patchValue(numericValue);
   }
 }
