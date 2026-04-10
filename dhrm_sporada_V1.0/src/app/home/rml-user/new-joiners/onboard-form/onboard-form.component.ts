@@ -194,9 +194,11 @@ export class OnboardFormComponent implements OnInit {
           // this.cat = this.category.map((a: any) => a.categorynm);
           // console.log(this.obj[0]);
           // api call for geting roles data for 2nd approver
+          /** #NEW FROM RML */
+          this.created_dt= response[0][0].created_dt;
           this.getRolesFor2ndApporver();
           /** 
-           * disbaled costcenter based on the category in approvals
+           * disabled costcenter based on the category in approvals
            * @param category
            */
           this.onCategorySelect(this.basic[0]?.apprentice_type)
@@ -284,7 +286,7 @@ export class OnboardFormComponent implements OnInit {
               }
             },
             error:(error:any) => {
-              console.error('ERROR:',error);
+              console.error('GET LOCKDATE API ERROR:',error);
               this.messageService.add({severity:'error',summary:error?.message});
             }
           })
@@ -354,15 +356,21 @@ export class OnboardFormComponent implements OnInit {
           this.oprn = this.oprn.map((a: any) => a.oprn_desc);
         },
         (err) => {
-          console.log('ERROR:',err)
+          console.log('GET ONBOARD API ERROR:',err)
           this.messageService.add({severity:'error',summary:err.message});
         }
       );
-      this.service.getreliveReason().subscribe((res:any)=>{
+      /** get relive reason */
+      this.service.getreliveReason().subscribe({
+        next:(res:any) => {
         this.rfr=res.data
-        // console.log(this.rfr)
+        console.log('RFR:', this.rfr);
       },
-      (err) => this.messageService.add({severity:'error',summary:err.message}))
+      error: (err) => {
+        console.error('GET RELIVE REASON API ERROR:',err)
+        this.messageService.add({severity:'error',summary:err.message});
+      }
+      })
     if (this.readonly == true) {
       this.form.controls["dol"].setValidators(Validators.required);
       this.form.controls["rfr"].setValidators(Validators.required);
@@ -611,7 +619,6 @@ export class OnboardFormComponent implements OnInit {
                 })
                 .subscribe({
                   next: (response) => {
-                    // console.log("down", response);
                     this.down = response;
                     this.exportexcel();
                   },
@@ -642,11 +649,9 @@ export class OnboardFormComponent implements OnInit {
           // console.log(response);
           if (response.message == "success") {
             this.messageService.add({severity:'info',summary:'The Employee has been Relieve'})
-            // alert("The Employee has been Relieved ");
             this.router.navigate(["/rhrm/new_joiners/onboard"]);
           }else if(response.message == "failure"){
             this.messageService.add({severity:'error',summary:`${response.status}`})
-            //  alert(`${response.status}`)
           }else{
             this.messageService.add({severity:'error',summary:'An Error Occured!'})
           }
@@ -761,9 +766,21 @@ export class OnboardFormComponent implements OnInit {
       next: (response: any) => {
         // console.log('role',response);
         this.Role = response[0];
-      },
+       // #NEW FROM RML
+      // 👇 auto-bind Role → w_contract if already selected
+      if (this.basic[0]?.Role_Id) {
+        const selectedRole = this.Role.find(
+          (r: any) => r.Role_Id == this.basic[0].Role_Id
+        );
+        if (selectedRole) {
+          this.w_contract = [selectedRole.Category_Name];
+          this.form.patchValue({ wcontract: selectedRole.Category_Name });
+          this.isWContractDisabled = true;
+        }
+      }
+    },
       error: (err) => {
-        console.log('ERROR:',err);
+        console.log('GET ROLE API ERROR:',err);
         this.messageService.add({severity:'error',summary:err.message})
       }
     });
@@ -805,7 +822,7 @@ export class OnboardFormComponent implements OnInit {
   }
 
   printid() {
-    console.log(this.form.value)
+    console.log('ONBOARD FORM VALUES:',this.form.value)
     const url = this.router.createUrlTree([
       // `/${environment.prodLink}`,
       "perm-idcard",

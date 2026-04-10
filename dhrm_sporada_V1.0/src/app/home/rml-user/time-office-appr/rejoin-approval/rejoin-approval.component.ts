@@ -61,14 +61,11 @@ export class RejoinApprovalComponent implements OnInit {
       /** get PHR requests */
       this.service.GetPhrTable(this.plant).subscribe({
         next: (res: any) => {
-          // for(let i=0; i <= 10; i++){
-          //   this.tableData.push(res.data[0])
-          // }
           console.log('PHR:',res.data)
           this.tableData = res.data;
         },
         error:(error:any) => {
-          console.error('ERROR:',error);
+          console.error('GET PHR TABLE API ERROR:',error);
           this.messageService.add({severity:'error',summary:error?.message})
         }
       })
@@ -81,7 +78,7 @@ export class RejoinApprovalComponent implements OnInit {
           this.tableData = res.data;
         },
         error:(error:any) => {
-          console.error('ERROR:',error);
+          console.error('GET CHR TABLE API ERROR:',error);
           this.messageService.add({severity:'error',summary:error?.message})
         }
       })
@@ -134,8 +131,7 @@ export class RejoinApprovalComponent implements OnInit {
         this.showModal = false;
       },
       error: (err) => {
-        console.error('Request Error', err);
-        // alert(err?.error?.message);
+        console.error('UPDATE PHR APPROVAL API ERROR:', err);
         this.messageService.add({severity:'error',summary:err?.error?.message})
         this.initialLoad();
         this.clear();
@@ -169,14 +165,14 @@ export class RejoinApprovalComponent implements OnInit {
 
     this.service.UpdateCHRApproval(payload).subscribe({
       next: (res: any) => {
-        console.log('Update PHR Response', res);
+        console.log('Update CHR Response', res);
          this.messageService.add({severity:'info',summary:res.message})
         this.initialLoad();
         this.clear();
         this.showModal = false;
       },
       error: (err) => {
-        console.error('Request Error', err);
+        console.error('UPDATE CHR API ERROR:', err);
          this.messageService.add({severity:'error',summary:err?.error?.message})
         this.initialLoad();
         this.clear();

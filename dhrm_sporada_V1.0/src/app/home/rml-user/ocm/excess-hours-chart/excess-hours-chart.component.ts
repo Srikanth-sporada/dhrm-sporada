@@ -62,7 +62,7 @@ export class ExcessHoursChartComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["date"] || changes["plant"]) {
-      this.getData()
+      this.getData();
     }
   }
 

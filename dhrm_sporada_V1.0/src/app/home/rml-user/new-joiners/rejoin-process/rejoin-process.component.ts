@@ -43,6 +43,7 @@ export class RejoinProcessComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -58,7 +59,10 @@ export class RejoinProcessComponent implements OnInit {
         console.log('cate resp', resp);
         this.CatList = resp.data;
       },
-      error: (err) => this.messageService.add({severity:'error',summary:err.message})
+      error: (err) => {
+        console.error('GET CATEGORY API ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message});
+      }
     });
   }
 
@@ -69,7 +73,10 @@ export class RejoinProcessComponent implements OnInit {
         this.ReportData = res.NotNew;
         this.checkForRejected();
       },
-      error: (err) => this.messageService.add({severity:'error',summary:err.message})
+      error: (err) => {
+        console.error('GET REJOIN API ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message});
+      }
     })
   }
 
@@ -101,7 +108,10 @@ getRejectedComment(item: any): string {
           this.messageService.add({severity:'info',summary:`Gen ID Not Found: ${this.form.value.genid}`})
         }
       },
-      error: (err) => this.messageService.add({severity:'error',summary:err.message})
+      error: (err) => {
+        console.error('SEARCH REJOIN API ERROR:',err);
+        this.messageService.add({severity:'error',summary:err.message});
+      }
     })
     }
     
@@ -152,7 +162,7 @@ getRejectedComment(item: any): string {
         this.initialLoad();
       },
       error: (err) => {
-        console.error('HTTP Error:', err);
+        console.error('ADD REJOIN TRAINEE API ERROR:', err);
         this.messageService.add({severity:'error',summary:err?.error?.message});
         this.clear()
       }
@@ -235,7 +245,7 @@ getRejectedComment(item: any): string {
         this.initialLoad();
       },
       error: (err) => {
-        console.error('HTTP Error:', err);
+        console.error('UPDATE  REJOIN API ERROR:', err);
         this.messageService.add({severity:'error',summary: err?.error?.message || 'Submission failed'})
         // alert(err?.error?.message || 'Submission failed');
         this.initialLoad();

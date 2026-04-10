@@ -23,6 +23,7 @@ export class ShiftUploadComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private messageService:MessageService) { }
 
   ngOnInit(): void {
+    /** logged in user data */
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
@@ -34,7 +35,8 @@ export class ShiftUploadComponent implements OnInit {
 
   download() {
     if (this.plant) {
-      this.apiService.shift_template(this.plant).subscribe((res: any) => {
+      this.apiService.shift_template(this.plant).subscribe({
+        next: (res: any) => {
         console.log('response', res.data);
 
         const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(res.data);
@@ -44,14 +46,17 @@ export class ShiftUploadComponent implements OnInit {
         };
         XLSX.writeFile(workbook, 'ShiftTemplate.xlsx');
         this.messageService.add({severity:'info',summary:'Shift Template Downloaded!'})
-      }, (error) => {
-        console.log(error);
+      }, 
+      error: (error) => {
+        console.error('TEMPLATE DOWLOAD API ERROR:',error)
         this.messageService.add({severity:'error',summary:error.message})
+      }
       });
     }
   }
 
   onFileChange(event: any) {
+    console.log('FILE UPLOAD:',)
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       this.file = target.files[0];
@@ -62,7 +67,6 @@ export class ShiftUploadComponent implements OnInit {
 
   upload() {
     if (!this.file) {
-      // alert("Please Select File Before Uploading");
       this.messageService.add({severity:'warn',summary:'Please Select File Befor Uploading!'})
     } else {
       const formData = new FormData();
@@ -70,30 +74,29 @@ export class ShiftUploadComponent implements OnInit {
       formData.append('gen', this.gen);
       console.log('gen id',sessionStorage.getItem('user_name'))
 
-      this.apiService.shift_upload(formData).subscribe(
-        (res: any) => {
+      this.apiService.shift_upload(formData).subscribe({
+        next:  (res: any) => {
           console.log('File uploaded successfully', res);
-          // alert("File uploaded successfully");
           this.messageService.add({severity:'info',summary:'File Uploaded Sucessfully'})
           this.clearFileInput();
         },
-        (err) => {
-          console.error('Upload error', err);
+        error: (err) => {
+          console.error('SHIFT UPLOAD API ERROR:',err);
           if (err.error && err.error.message) {
-            // alert(err.error.message);
             this.messageService.add({severity:'warn',summary:err.error.message})
           } else {
-            // alert("Something went wrong");
             this.messageService.add({severity:'error',summary:err.messages})
           }
+          console.error('SHIFT UPLOAD API ERROR:',err);
           this.clearFileInput();
         }
-      );
+      });
     }
   }
 
   clearFileInput() {
     this.file = null;
+    console.log('FILE:',this.file)
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
