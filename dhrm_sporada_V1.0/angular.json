@@ -31,8 +31,8 @@
               }
             ],
             "styles": [
-               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-               "node_modules/primeng/resources/themes/lara-dark-blue/theme.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/themes/lara-dark-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "./node_modules/ngx-toastr/toastr.css",
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
@@ -78,7 +78,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "allowedHosts": ["sporada-rane"]
+            "allowedHosts": [
+              "sporada-rane"
+            ]
           },
           "configurations": {
             "production": {
@@ -110,7 +112,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "./node_modules/ngx-toastr/toastr.css",
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
@@ -119,6 +121,41 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "project:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "project:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "project:serve:production"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "project:serve:production"
+            }
           }
         }
       }

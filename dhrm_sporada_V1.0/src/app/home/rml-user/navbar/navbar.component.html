@@ -355,6 +355,7 @@
                 <mat-icon class="icon-pad">recent_actors</mat-icon>Contract
                 Employee
               </a>
+
               <a
                 mat-list-item
                 *ngIf="isadmin == 'true'"
@@ -364,6 +365,35 @@
               >
                 <mat-icon class="icon-pad">device_hub</mat-icon>Contractor
                 Registration
+              </a>
+
+              <!-- CL piece rate employee #NEW FROM RML -->
+               <a
+                mat-list-item
+                routerLink="/rhrm/contra/pr-employee"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
+              >
+                <mat-icon class="icon-pad">recent_actors</mat-icon> PR Employee
+              </a>
+
+              <!-- CL PR MACHINE PUNCH #NEW FROM RML  -->
+                <a
+                mat-list-item
+                routerLink="/rhrm/contra/pr-machine-punch"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
+              >
+                <mat-icon class="icon-pad">history</mat-icon> PR Machine Punch
+              </a>
+              <!-- CL PR PRESENT/ABSENT #NEW FROM RML -->
+               <a
+                mat-list-item
+                routerLink="/rhrm/contra/pr-present-absent"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
+              >
+                <mat-icon class="icon-pad">how_to_reg</mat-icon> PR Present/Absent
               </a>
             </mat-nav-list>
           </mat-expansion-panel>

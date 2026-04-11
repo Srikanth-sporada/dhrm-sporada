@@ -87,6 +87,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CheckboxModule } from 'primeng/checkbox';
+/** #NEW FROM RML */
+import { PrEmployeeComponent } from './pr-employee/pr-employee.component';
+import { PrMachinePunchComponent } from './pr-machine-punch/pr-machine-punch.component';
+import { PrPresentAbsentComponent } from './pr-present-absent/pr-present-absent.component';
 // import { RequestDetailsDialogComponentComponent } from './request-details-dialog-component/request-details-dialog-component.component'
 @NgModule({
   declarations: [
@@ -134,6 +138,10 @@ import { CheckboxModule } from 'primeng/checkbox';
     RequestDetailsDialogComponent,
     CLSalaryReportComponent,
     PayscaleHeaderMasterComponent,
+    /** NEW COMPONENTS FROM RML */
+    PrEmployeeComponent,
+    PrMachinePunchComponent,
+    PrPresentAbsentComponent,
   ],
   imports: [
     CommonModule,

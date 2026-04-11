@@ -36,6 +36,10 @@ import { ShiftChangeComponent } from "./shift-change/shift-change.component";
 import { OneTimeSalaryApprovalComponent } from "./non-sap-salary/one-time-salary-approval/one-time-salary-approval.component";
 import { CLSalaryReportComponent } from "./cl-salary-report/cl-salary-report.component";
 import { IndirectHeadCountMasterComponent } from "./indirect-head-count-master/indirect-head-count-master.component";
+/** #NEW CHANGES FROM RML */
+import { PrEmployeeComponent } from "./pr-employee/pr-employee.component";
+import { PrMachinePunchComponent } from "./pr-machine-punch/pr-machine-punch.component";
+import { PrPresentAbsentComponent } from "./pr-present-absent/pr-present-absent.component";
 
 const routes: Routes = [
   {
@@ -49,7 +53,20 @@ const routes: Routes = [
     component: ContractorOnboardComponent,
     canActivate: [Admin_HrApp_Hr],
   },
-
+  /** NEW FROM RML */
+   {
+    path: "pr-employee",
+    component: PrEmployeeComponent,
+  },
+  {
+    path: "pr-present-absent",
+    component: PrPresentAbsentComponent,
+  },
+  {
+    path: "pr-machine-punch",
+    component: PrMachinePunchComponent,
+  },
+  
   { path: "payroll", component: PayrollMasterComponent, canActivate: [Admin] },
   {
     path: "canteen",

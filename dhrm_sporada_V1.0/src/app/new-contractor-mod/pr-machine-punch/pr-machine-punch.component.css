@@ -1,0 +1,59 @@
+.controlbox {
+  width: 80%;
+}
+
+.input2 {
+  min-width: 200px;
+  background-color: #f5f5f5;
+  color: #242424;
+  padding: 0.15rem 0.5rem;
+  min-height: 40px;
+  border-radius: 6px;
+  outline: 10px;
+  border: 15px;
+  font-size: 16px;
+  line-height: 1.15;
+  box-shadow: 0px 10px 20px -18px;
+}
+
+.form-container1 {
+  margin: 5% auto;
+  -webkit-box-shadow: 9px 10px 30px 0px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 9px 10px 30px 0px rgba(0, 0, 0, 0);
+  box-shadow: 9px 10px 30px 0px rgba(0, 0, 0, 0);
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 100px;
+  min-width: 800px;
+  width: 90%;
+  background-color: rgba(211, 204, 204, 0.618); /* Update opacity here */
+  align-items: center;
+}
+
+.controls{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: last baseline;
+}
+
+
+.data{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.rawdata{
+  width: 100%;
+}
+
+.download{
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+
+}
+
+.downloadbtn{
+  margin-left: 95%;
+  margin-bottom: 10px;
+} 

@@ -1,0 +1,93 @@
+<h1>Piece Rate CL - Biometric Data (easyWDMS)</h1>
+
+<div>
+  <div class="form-container1">
+    <div class="controls">
+      <div>
+        <b><p>From date</p></b>
+        <input type="date" class="input2" [(ngModel)]="from" (change)="datechnage()" [max]="fromMax">
+      </div>
+      <div>
+        <b><p>To date</p></b>
+        <input type="date" class="input2" [(ngModel)]="to" [min]="from" [max]="max"/>
+      </div>
+      <div> 
+        <b><p>Plant Code</p></b>
+        <mat-select class="input2" [(ngModel)]="plant" style="margin-top: 10px;" [disabled]="isadmin=='false'">
+          <mat-option value="" selected>All</mat-option>
+          <mat-option *ngFor="let plant of plantlist" [value]="plant.plant_code">{{plant.plant_code}}</mat-option>
+        </mat-select>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="getData()">Search</button>
+      </div>
+    </div>
+    <div style="margin-left:9% ;">
+      <div>
+        <b><p>Punch Id</p></b>
+      <input type="text" class="input2" id="swipid" [(ngModel)]="id"/>
+      <button mat-raised-button color="primary" style="margin-left: 20px;" (click)="swipId=id">search</button>
+      </div>
+      
+      
+    </div>
+  </div>
+  <app-loader *ngIf="loader.isLoding | async;else show"></app-loader>
+  <ng-template #show>
+    <div class="download">
+      <button mat-fab color="primary" class="downloadbtn" [disabled]="punchData==[]?true:false" (click)="export()"><mat-icon>arrow_downward</mat-icon></button>
+    </div>
+    <div class="data">
+      <table class="table table-bordered table-striped table-hover" id="rawdata" style="font-size: smaller;">
+        <thead>
+          <tr
+            style="
+              background-color: darkblue;
+              color: whitesmoke;
+              text-align: center;
+            "
+          ><th style="width: 50px;">Sl. No</th>
+          <th style="width: 50px;">Apln No</th>
+            <th style="width: 50px;">Plant</th>
+            <th style="width: 70px;">Punch Id</th>
+            <th style="width: 100px;">Employee ID</th>
+            <th>Employee Name</th>
+            <th>DOB</th>
+            <th>DOJ</th>
+            <th>DOL</th>
+            <th>Department</th>
+            <th>Line</th>
+            <th style="width: 100px;">Emp_Category</th>
+            <th style="width: 100px;">Type</th>
+            <th style="width: 100px;">Punch Date</th>
+            <th>Punch Time</th>
+            <th style="width: 30px;">I/O</th>
+            <th>Apln Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of filteredPunchData; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{data.apln_slno}}</td>
+            <td>{{data.plant}}</td>
+            <td>{{data.punchID}}</td>
+            <td>{{data.employeeid}}</td>
+            <td>{{data.employeename}}</td>
+            <td>{{data.dob==null?'NA':data.dob.split('T')[0]}}</td>
+            <td>{{data.doj==null?'NA':data.doj.split('T')[0]}}</td>
+            <td>{{data.dol==null?'NA':data.dol.split('T')[0]}}</td>
+            <td>{{data.dept}}</td>
+            <td>{{data.line}}</td>
+            <td>{{data.category}}</td>
+            <td>{{data.contract}}</td>
+            <td>{{data.date.split('T')[0]}}</td>
+            <td>{{data.time}}</td>
+            <td>{{data.process}}</td>
+            <td>{{data.apln_status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+  </ng-template>
+</div>
+  
