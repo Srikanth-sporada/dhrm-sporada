@@ -199,4 +199,9 @@ export class Utility {
     return isValid ? null : { numberOnly: true };
   };
 }
+
+handleApiErrors(error:any,logMessage:any,toastType:any,errorStack:any){
+  console.error(logMessage,error);
+  this.messageService.add({severity:toastType,summary:errorStack})
+}
 }

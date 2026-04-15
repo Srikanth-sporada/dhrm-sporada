@@ -21,12 +21,15 @@ import { DelPopupComponent } from "../del-popup/del-popup.component";
 import { environment } from "src/environments/environment.prod";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { PieceRateEmployee } from "./pr-employee.model";
+import { MessageService } from "primeng/api";
+import { Utility } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-pr-employee',
   templateUrl: './pr-employee.component.html',
   styleUrls: ['./pr-employee.component.css']
 })
+
 export class PrEmployeeComponent implements OnInit {
   @ViewChild(MatVerticalStepper) stepper!: MatVerticalStepper;
   form: any;
@@ -83,7 +86,9 @@ export class PrEmployeeComponent implements OnInit {
     private modalService: NgbModal,
     private apiService: ApiService,
     private dialog: MatDialog,
-    private api: ClamAPIService
+    private api: ClamAPIService,
+    private messageService:MessageService,
+    public utils:Utility,
   ) {
     this.DOJmaxDate = new Date();
     this.DOJminDate = new Date();
@@ -352,50 +357,56 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
 
 
   getContractorDetails() {
-    this.api.getContractor().subscribe(
-      (res) => {
+    this.api.getContractor().subscribe({
+      next: (res) => {
         this.contractorData = res;
         this.activeData = this.contractorData.filter(
           (item: any) =>
             item.Status === true && item.Plant_code === this.plant_Code
         );
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET CONTRACTORS API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
 
   getPincode() {
-    this.api.get_pincode().subscribe(
-      (res) => {
+    this.api.get_pincode().subscribe({
+      next:(res) => {
         this.pincodeData = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET PINCODE API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
+
   getReason() {
-    this.api.get_ror().subscribe(
-      (res) => {
+    this.api.get_ror().subscribe({
+      next: (res) => {
         console.log('releving reasons', res)
         this.reasonData = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET REASON API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
+
   getReligion() {
-    this.api.get_religion().subscribe(
-      (res) => {
+    this.api.get_religion().subscribe({
+      next:(res) => {
         this.religionData = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+       console.error('GET RELIGION API ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
 
   getCity_State_Perm(event: any) {
@@ -436,32 +447,34 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
   }
 
   get_dept() {
-    this.api.getDepList(this.plant_Code).subscribe(
-      (res) => {
+    this.api.getDepList(this.plant_Code).subscribe({
+      next:  (res) => {
         this.dept = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+       console.error('GET DEPT API ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.message})
       }
-    );
+    });
   }
 
   getAllClEmployees() {
-    this.api.get_Cl_Emp_Hr().subscribe(
-      (res) => {
+    this.api.get_Cl_Emp_Hr().subscribe({
+      next:(res) => {
         this.ClHRdata = res;
         this.ClHRdata = this.ClHRdata.filter(
           (data: any) => data.plant_code === this.plant_Code
         );
       },
-      (error) => {
+      error: (error) => {
+        console.error('GET ALL EMPLOYEE API ERROR:',error);
         if (error.status === 400) {
-          alert("Error while retreiving Data ");
+         this.messageService.add({severity:'error',summary:error?.message});
         } else {
-          alert("Something went wrong");
+          this.messageService.add({severity:'error',summary:'Oops! Something went wrong.'})
         }
       }
-    );
+    });
   }
 
   get_Last_EmpID() {
@@ -519,14 +532,15 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
   }
 
   searchfilter() {
-    this.api.PrsearchFilter(this.form.value).subscribe(
-      (res) => {
+    this.api.PrsearchFilter(this.form.value).subscribe({
+      next: (res) => {
         this.filterinfo = res;
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+       console.error('SEARCH FILTER API ERROR:',error);
+       this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
 
   onDOESelected(event: MatDatepickerInputEvent<Date>) {
@@ -648,32 +662,32 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     this.getLineName(event.value)
     this.getRoleMaster(event.value)
   }
+
   getLineName(event: any) {
-    this.api.getLine(event).subscribe(
-      (res: any) => {
+    this.api.getLine(event).subscribe({
+      next: (res: any) => {
         this.line = res[0];
         this.repTo = res[1];
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET LINE API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
 
   getRoleMaster(event: any) {
-
     console.log('Roelevent', event);
-
-
-    this.api.getRoleName(event).subscribe(
-      (res: any) => {
+    this.api.getRoleName(event).subscribe({
+      next:(res: any) => {
         this.Roles = res[0];
 
       },
-      (error) => {
-        console.log(error);
+      error: (error) => {
+        console.error('GET ROLE MASTER API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message});
       }
-    );
+    });
   }
 
   showContractorForm() {
@@ -971,8 +985,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
           submissionData,
           this.PieceRateEmployee.apln_slno
         )
-        .subscribe(
-          (res: any) => {
+        .subscribe({
+          next:(res: any) => {
             const formData = new FormData();
             formData.append(
               "photo",
@@ -983,28 +997,24 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
                 formData,
                 this.basicDetails.value.apln_slno
               )
-              .subscribe(
-                (res) => {
+              .subscribe({
+                next:(res) => {
                   console.log("file Uploaded", res);
                 },
-                (error) => {
-                  console.log("file not Uploaded", error);
+                error: (error) => {
+                  this.utils.handleApiErrors(error,'SUMBIT FILE UPLOAD API ERROR:','error',error?.message);
                 }
-              );
+              });
 
             this.openAlertDialog(`${res}`, "check");
             this.searchfilter();
             this.reset();
             this.hideContractorForm();
           },
-          (error) => {
-            if (error.status === 400) {
-              this.openAlertDialog(`${error.error}`, "error");
-            } else {
-              this.openAlertDialog(`Error in connection`, "error");
-            }
+          error: (error) => {
+            this.utils.handleApiErrors(error,'SUBMIT PR EMPLOYEE API ERROR:','error',error?.message);
           }
-        );
+        });
     }
   }
 
@@ -1074,8 +1084,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
         this.PieceRateEmployee,
         this.PieceRateEmployee.apln_slno
       )
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
@@ -1086,27 +1096,23 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
               formData,
               this.basicDetails.value.apln_slno
             )
-            .subscribe(
-              (res) => {
+            .subscribe({
+              next: (res) => {
                 console.log("file Uploaded", res);
               },
-              (error) => {
-                console.log("file not Uploaded", error);
+              error: (error) => {   
+                this.utils.handleApiErrors(error,'PR UPDATE FILE UPLOAD API ERROR:','error',error?.message);
               }
-            );
+            });
           this.openAlertDialog(res, "check");
           this.searchfilter();
           this.reset();
           this.hideContractorForm();
         },
-        (error) => {
-          if (error.status === 400) {
-            this.openAlertDialog(`${error.error}`, "error");
-          } else {
-            this.openAlertDialog(`Error in connection`, "error");
-          }
+        error: (error) => {
+          this.utils.handleApiErrors(error,'PR UPDATE BY HR API ERROR:','error',error?.message);
         }
-      );
+      });
   }
 
   createTempPassword(dateOfBirth: any) {
@@ -1165,8 +1171,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
         SubmitData,
         this.PieceRateEmployee.apln_slno
       )
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next:(res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
@@ -1177,14 +1183,14 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
               formData,
               this.basicDetails.value.apln_slno
             )
-            .subscribe(
-              (res) => {
+            .subscribe({
+              next: (res) => {
                 console.log("file Uploaded", res);
               },
-              (error) => {
-                console.log("file not Uploaded", error);
+              error: (error) => {
+                this.utils.handleApiErrors(error,'SUMBIT FILE UPLOAD API ERROR:','error',error?.message);
               }
-            );
+            });
           this.searchfilter();
           this.getAllClEmployees();
           this.reset();
@@ -1192,14 +1198,10 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
           // this.openAlertDialog(` ${this.PieceRateEmployee.apln_slno} - ${this.PieceRateEmployee.fullname}  Appointed  `)
           this.openAlertDialog(res, "check");
         },
-        (error) => {
-          if (error.status === 400) {
-            this.openAlertDialog(`${error.error}`, "error");
-          } else {
-            this.openAlertDialog(`Error in connection`, "error");
-          }
+        error: (error) => {
+         this.utils.handleApiErrors(error,'APPROVE BY HR API ERROR:','error',error?.message);
         }
-      );
+      });
   }
 
   exportexcel(): void {
@@ -1445,12 +1447,7 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
         this.reset();
       },
       (error) => {
-        if (error.status === 400) {
-          console.log(error);
-          this.openAlertDialog(`${error.error}`, "error");
-        } else {
-          this.openAlertDialog("Error in connection", "error");
-        }
+        this.utils.handleApiErrors(error,'DELETE PR API ERROR:','error',error?.message);
       }
     );
   }

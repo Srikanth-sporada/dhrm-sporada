@@ -265,6 +265,14 @@
               inputId="reporting-auth" ></p-checkbox>
               <label for="reporting-auth" class="mb-0 text-blue-600">Reporting Authority</label>
             </div>
+              <!-- CORPORATE FINANCE #NEW FROM RML-->
+            <div class="flex items-center gap-2 ml-2 mb-2">
+              <p-checkbox 
+             formControlName="is_cfin"
+              [binary]="true" 
+              inputId="c_fin" ></p-checkbox>
+              <label for="c_fin" class="mb-0 text-blue-600">Corp Fin</label>
+            </div>
             <!-- <input type="checkbox" formControlName="is_admin" /> Admin <br />
             <input type="checkbox" formControlName="Is_HR" /> HR User <br />
             <input type="checkbox" formControlName="Is_HRAppr" /> HR Approver

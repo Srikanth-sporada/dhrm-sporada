@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import moment from 'moment';
 import { ApiService } from "src/app/home/api.service";
-
+import { Utility } from 'src/app/utils/utils';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-pr-present-absent',
   templateUrl: './pr-present-absent.component.html',
@@ -22,23 +23,42 @@ export class PrPresentAbsentComponent implements OnInit {
   lines: any;
   filteredData: any[] = [];
 
-  constructor(private api: ApiService) { }
+  constructor(
+    private api: ApiService,
+    public utils:Utility,
+    private messageService:MessageService,
+  ) { }
 
   ngOnInit(): void {
     const plantCode = sessionStorage.getItem("plantcode");
     this.isadmin = sessionStorage.getItem("isadmin");
     this.plant = plantCode;
+    this.getPlantCode(plantCode)
+    this.getData();
+    this.getLineByDept();
+    
+  }
 
+  getPlantCode(plantCode:any){
     this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
       },
-      error: (error) => console.log(error),
+      error: (error) => {
+        this.utils.handleApiErrors(error,'GET PLANT API ERROR:','error',error?.message)
+      }
     });
-    this.getData();
-    this.api.getlineBydept().subscribe((response: any) => {
-      this.lines = response;
+  }
 
+  getLineByDept(){
+    this.api.getlineBydept().subscribe({
+      next:(response: any) => {
+      this.lines = response;
+    
+    },
+    error: (error) => {
+        this.utils.handleApiErrors(error,'GET PLANT API ERROR:','error',error?.message)
+      }
     });
   }
 
@@ -50,21 +70,26 @@ getData() {
     month: this.date.split("-")[1],
   };
 
-  // this.api.pieceatndReport(data).subscribe((response: any) => {
-  //   if (response.status === "success") {
-  //     this.atndData = response.data;
-  //     this.displayDate = moment(this.date, "yyyy-MM");
+  this.api.pieceatndReport(data).subscribe({
+    next:(response: any) => {
+    if (response.status === "success") {
+      this.atndData = response.data;
+      this.displayDate = moment(this.date, "yyyy-MM");
 
-  //     // Apply filter here
-  //     this.filteredData = this.atndData.filter(item => {
-  //       let matchCat = this.cat ? item.apprentice_type === this.cat : true;
-  //       let matchLine = this.selectedLine ? item.Line_Name === this.selectedLine : true;
-  //       return matchCat && matchLine;
-  //     });
-  //   } else {
-  //     alert(response.message);
-  //   }
-  // });
+      // Apply filter here
+      this.filteredData = this.atndData.filter(item => {
+        let matchCat = this.cat ? item.apprentice_type === this.cat : true;
+        let matchLine = this.selectedLine ? item.Line_Name === this.selectedLine : true;
+        return matchCat && matchLine;
+      });
+    } else {
+      this.messageService.add({severity:'error',summary:response?.message});
+    }
+  },
+  error: (error) => {
+   this.utils.handleApiErrors(error,'GET PR ATTENDANCE REPOR API ERROR:','error',error?.message);
+  }
+  });
 }
 
 submit() {

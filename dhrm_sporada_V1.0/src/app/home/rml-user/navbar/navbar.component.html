@@ -368,37 +368,90 @@
               </a>
 
               <!-- CL piece rate employee #NEW FROM RML -->
-               <a
+               <!-- <a
                 mat-list-item
                 routerLink="/rhrm/contra/pr-employee"
                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">recent_actors</mat-icon> PR Employee
-              </a>
+              </a> -->
 
               <!-- CL PR MACHINE PUNCH #NEW FROM RML  -->
-                <a
+                <!-- <a
                 mat-list-item
                 routerLink="/rhrm/contra/pr-machine-punch"
                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">history</mat-icon> PR Machine Punch
-              </a>
+              </a> -->
               <!-- CL PR PRESENT/ABSENT #NEW FROM RML -->
-               <a
+               <!-- <a
                 mat-list-item
                 routerLink="/rhrm/contra/pr-present-absent"
                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
                 <mat-icon class="icon-pad">how_to_reg</mat-icon> PR Present/Absent
-              </a>
+              </a> -->
             </mat-nav-list>
           </mat-expansion-panel>
         </div>
 
+        <!-- PIECE RATE #NEW FROM RML  -->
+           <div *ngIf="
+           ishr == 'true' || 
+           ishrappr == 'true' || 
+           isadmin == 'true' || 
+           issupervisor =='true' || 
+           isFin== 'true' ">
+          <mat-expansion-panel 
+            [class.mat-elevation-z0]="true"
+            dense
+            class=" mx-2 my-2 rounded-lg"
+            [(expanded)]="isPrExpanded">
+              <mat-expansion-panel-header 
+              [ngClass]="isPrExpanded ? 'text-gray-600 font-semibold border-2 border-blue-600 bg-[var(--transparent)]' : 'text-gray-600 font-semibold'">
+                  <mat-icon class="icon-pad">
+                      supervisor_account
+                  </mat-icon>
+                 Piece Rate CL
+              </mat-expansion-panel-header>
+              <mat-nav-list class="!mx-1 text-gray-600">
+      
+                <a 
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' " 
+                mat-list-item
+                routerLink="/rhrm/contra/pr-employee"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm !text-[16px]" >
+                  <mat-icon class="icon-pad">person_add_alt</mat-icon>Piece Rate Workmen 
+                </a>
+
+                <a 
+                mat-list-item 
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' " 
+                routerLink="/rhrm/contra/pr-present-absent"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm !text-[16px]"  >
+                  <mat-icon class="icon-pad">event_available</mat-icon>Attendance (PR-CL) 
+                </a>
+
+                <a 
+                 mat-list-item 
+                *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' " 
+                mat-list-item
+                routerLink="/rhrm/contra/pr-machine-punch"
+                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm !text-[16px]" >
+                  <mat-icon class="icon-pad">devices</mat-icon>PR Biometric Record
+                </a>
+        
+              </mat-nav-list>
+          </mat-expansion-panel>
+
+      </div>
         <!-- Salary Master -->
        <div *ngIf="!hideSalaryMaster">
          <div *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin">

@@ -67,6 +67,7 @@ export class NavbarComponent implements OnInit {
   isadmin: any;
   isOtAppr: any;
   isFin: any;
+  Is_CFIN:any; // #NEW FROM RML
   isCmed: any;
   isPlantHead: any;
   isOperator: boolean;
@@ -116,6 +117,7 @@ export class NavbarComponent implements OnInit {
   isPmpdExpanded: boolean = false;
   isReportsExpanded: boolean = false;
   isUsermannualExpanded: boolean = false;
+  isPrExpanded:boolean = false;
   /** payroll navigation */
   authToken:any = sessionStorage.getItem('token');
   /** logged in user company code & plant code */
@@ -248,7 +250,7 @@ export class NavbarComponent implements OnInit {
         sessionStorage.setItem("istou", this.ishrappr[0]?.Is_TOU);
         sessionStorage.setItem("plantcode", this.ishrappr[0]?.plant_code);
         sessionStorage.setItem("Is_CHR", this.ishrappr[0]?.Is_CHR);
-
+        sessionStorage.setItem('Is_CFIN', this.ishrappr[0]?.Is_CFIN); // #NEW FROM RML
         if (this.username.user == "emp")
           sessionStorage.setItem("emp_name", this.ishrappr[0]?.Emp_Name);
         else sessionStorage.setItem("emp_name", this.ishrappr[0]?.fullname);
@@ -293,7 +295,7 @@ export class NavbarComponent implements OnInit {
     this.istou = sessionStorage.getItem("istou");
     this.issupervisor = sessionStorage.getItem("issupervisor");
     this.Is_CHR = sessionStorage.getItem("Is_CHR");
-
+    this.Is_CFIN = sessionStorage.getItem('Is_CFIN'); // #NEW FROM RML
     if (sessionStorage.getItem("istrainee")) {
       this.genid = sessionStorage.getItem("gen_id");
     }

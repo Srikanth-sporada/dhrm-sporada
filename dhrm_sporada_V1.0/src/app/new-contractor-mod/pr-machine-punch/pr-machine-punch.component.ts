@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from 'xlsx';
+import { Utility } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-pr-machine-punch',
@@ -19,7 +20,11 @@ export class PrMachinePunchComponent implements OnInit {
   plantlist: any[];
   swipId: any;
   isadmin: any;
-  constructor(private api: ApiService, public loader: LoaderserviceService) { }
+  constructor(
+    private api: ApiService, 
+    public loader: LoaderserviceService,
+    public utils:Utility,
+  ) { }
 
   ngOnInit() {
     this.plant = ''
@@ -35,21 +40,23 @@ export class PrMachinePunchComponent implements OnInit {
       next: (response: any) => {
         this.plantlist = response
       },
-      error: (error) => console.log(error)
+      error: (error) => {
+        this.utils.handleApiErrors(error,'GET PLANT API ERROR:','error',error?.message)
+      }
     })
   }
 
   getData() {
     this.swipId = ''
-    // this.api?.piece_raw_punch_data({ from: this.from, to: this.to, plant: this.plant })
-    //   .subscribe({
-    //     next: (response) => {
-    //       this.punchData = response;
-    //     },
-    //     error: (msg) => {
-    //       console.log(msg);
-    //     },
-    //   });
+    this.api.piece_raw_punch_data({ from: this.from, to: this.to, plant: this.plant })
+      .subscribe({
+        next: (response) => {
+          this.punchData = response;
+        },
+        error: (error) => {
+        this.utils.handleApiErrors(error,'GET PR RAW PUNCH API ERROR:','error',error?.message)
+      },
+      });
   }
 
   datechnage() {

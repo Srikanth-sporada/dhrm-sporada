@@ -742,6 +742,13 @@ export class ApiService {
     return this.http.get(this.url + `/report/getrawpunchdata?plant=${params.plant}&from=${params.from}&to=${params.to}`
     );
   }
+  
+  // #NEW FROM RML
+  piece_raw_punch_data(params: any) {
+    return this.http.get(this.url + `/report/piece_getrawpunchdata?plant=${params.plant}&from=${params.from}&to=${params.to}`
+    );
+  }
+  
   //////////////////////////////////////////////////////////////////////////
 
   people_planning(form: any) {
@@ -1052,6 +1059,12 @@ export class ApiService {
 
   atndReport(data: any) {
     return this.http.get(this.url + `/report/presentAbsentReport?plant=${data.plant}&year=${data.year}&month=${data.month}&id=${data.id}&dept=${sessionStorage.getItem("ishr") == "true" ? undefined : sessionStorage.getItem("dept_slno")}`
+    );
+  }
+
+ // #NEW FROM RML
+  pieceatndReport(data: any) {
+    return this.http.get(this.url + `/report/Piece_presentAbsentReport?plant=${data.plant}&year=${data.year}&month=${data.month}&id=${data.id}&dept=${sessionStorage.getItem("ishr") == "true" ? "" : sessionStorage.getItem("dept_slno")}`
     );
   }
 
@@ -1386,7 +1399,15 @@ export class ApiService {
       `/report/getexcesshourschart?plant=${data.plant}&year=${data.year}`
     );
   }
+  
+  // #NEW FORM RML
 
+    getexcesshourschart_75(data: any) {
+    return this.http.get(
+      this.url +
+      `/report/getexcesshourschart_75?plant=${data.plant}&year=${data.year}`
+    );
+  }
   getMissPunchTrend(data: any) {
     return this.http.get(
       this.url +
@@ -1406,6 +1427,11 @@ export class ApiService {
     );
   }
 
+ // #NEW FROM RML
+ getPunchprocess(data: any) {
+    return this.http.get(this.url + `/report/getdeptreport?plant=${sessionStorage.getItem('plantcode')}&from=${data.from}&to=${data.to}&dept=${sessionStorage.getItem('dept_slno')}`
+    );
+  }
   getSkillTest(genid: string) {
     return this.http.get(`${this.url}/skilldev/Skill_Test?genid=${genid}`);
   }

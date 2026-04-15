@@ -74,7 +74,7 @@ import { TraineeHeadCountSummaryComponent } from "./dashboard/hr-dashboard/train
 import { TraineePlantWiseHeadCountComponent } from "./dashboard/hr-dashboard/trainee-plant-wise-head-count/trainee-plant-wise-head-count.component";
 import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.component";
 import { AttendanceReprocessNewComponent } from "./time-office-appr/attendance-reprocess-new/attendance-reprocess-new.component";
-
+import { ExcessHourChartLargerComponent } from "./ocm/excess-hour-chart-larger/excess-hour-chart-larger.component";
 @NgModule({
   declarations: [
     CompanyComponent,
@@ -97,6 +97,8 @@ import { AttendanceReprocessNewComponent } from "./time-office-appr/attendance-r
     BackdatePopupComponent,
     OcmComponent,
     ExcessHoursChartComponent,
+    // #NEW FROM RML
+    ExcessHourChartLargerComponent,
     MissPicnhTrendComponent,
     ContworkingComponent,
     CanteenBiRptComponent,
