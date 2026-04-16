@@ -1269,6 +1269,7 @@ export class ContractorEmployeeComponent implements OnInit {
         Photo_File: this.selectedPhoto,
         Photo_Name: this.selectedPhoto.name,
       });
+      
     }
   }
 

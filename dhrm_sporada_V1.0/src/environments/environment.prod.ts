@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  path: "https://rane.ssipl.org", // 192.168.1.205:8080
+  path: "https://rane.ssipl.org", // rane.ssipl.org
   path2: "https://rane.ssipl.org", // 192.168.1.205:8080
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 

@@ -830,6 +830,7 @@
                 </button>
                 <!-- submit approval -->
                 <button 
+                 [hidden]="true"
                  *ngIf="ishr== 'true' && showedit" 
                  (click)="submitEmployeeDetails()"  
                  [disabled]="status === 'RELIEVED' || status === 'APPOINTED'"
@@ -838,6 +839,14 @@
                  >
                   <mat-icon class="text-[20px]">approval_delegation</mat-icon>
                   Submit For Approval
+                </button>
+                 <!-- save btn for next stepper -->
+                <button 
+                 *ngIf="issupervisor=='false'"  
+                 matStepperNext
+                 class="!bg-[#3B82F6] !text-white !font-bold !px-8 !py-2 !rounded-[1rem] flex items-center justify-center gap-1" >
+                   <mat-icon class="text-[20px]">save</mat-icon>
+                 Save
                 </button>
                 <!-- update -->
                 <button 
@@ -1709,6 +1718,7 @@
             </div>
           </form>
         </mat-step>
+
          <!-- Payscale Details  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" -->
           <mat-step  *ngIf = " issupervisor=='false' && ishr=='false'&& isadmin=='false' && ishrappr=='false'" required label="Payscale Details"  [stepControl]="contractEmpPayscaleDetails">
             <form  [formGroup]="contractEmpPayscaleDetails" >
