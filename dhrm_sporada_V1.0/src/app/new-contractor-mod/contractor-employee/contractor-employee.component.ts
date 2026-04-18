@@ -1372,6 +1372,7 @@ export class ContractorEmployeeComponent implements OnInit {
           this.api.photo_upload(formData, this.lastId).subscribe({
             next: (res) => {
               console.log("file Uploaded", res);
+              this.messageService.add({severity:'info',summary:res?.message})
             },
             error: (error) => {
               console.log("file not Uploaded", error);
@@ -1500,7 +1501,7 @@ export class ContractorEmployeeComponent implements OnInit {
                 console.log("file Uploaded", res);
                 this.messageService.add({
                   severity: "info",
-                  summary: `File Uploaded: ${res}`,
+                  summary: res?.message,
                 });
               },
               error: (error) => {
@@ -1987,7 +1988,7 @@ export class ContractorEmployeeComponent implements OnInit {
               .subscribe({
                 next:(res) => {
                   console.log("file Uploaded", res);
-                  this.messageService.add({ severity: "info", summary: res });
+                  this.messageService.add({ severity: "info", summary: res?.message });
                 },
                 error: (error) => {
                   this.messageService.add({
@@ -2098,7 +2099,7 @@ export class ContractorEmployeeComponent implements OnInit {
             .subscribe({
               next: (res) => {
                 console.log("file Uploaded", res);
-                this.messageService.add({ severity: "info", summary: res });
+                this.messageService.add({ severity: "info", summary: res?.message });
               },
               error: (error) => {
                 console.error("FILE UPLOAD API ERROR:", error);
@@ -2204,7 +2205,7 @@ export class ContractorEmployeeComponent implements OnInit {
             .subscribe(
               (res) => {
                 console.log("file Uploaded", res);
-                this.messageService.add({ severity: "info", summary: res });
+                this.messageService.add({ severity: "info", summary: res?.message});
               },
               (error) => {
                 console.log("file not Uploaded", error);

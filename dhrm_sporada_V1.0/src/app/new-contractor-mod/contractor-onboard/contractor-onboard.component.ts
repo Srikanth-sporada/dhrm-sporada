@@ -1,157 +1,243 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { FormArray, FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
-import moment from 'moment';
-import {ConBasicDetails} from './contractor-model'
-import { MatVerticalStepper } from '@angular/material/stepper';
-import {ClamAPIService} from '../clam-api.service'
-import { FormService } from '../../home/rml-user/new-joiners/form.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { LoaderComponent } from '../../loader/loader.component';
-import {LoaderserviceService} from '../../loaderservice.service'
-import { environment } from 'src/environments/environment.prod';
-import * as XLSX from'xlsx';
-import { ToastComponent } from '../toast/toast.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MessageService,MenuItem } from 'primeng/api';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import moment from "moment";
+import { ConBasicDetails } from "./contractor-model";
+import { MatVerticalStepper } from "@angular/material/stepper";
+import { ClamAPIService } from "../clam-api.service";
+import { FormService } from "../../home/rml-user/new-joiners/form.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { MomentDateAdapter } from "@angular/material-moment-adapter";
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from "@angular/material/core";
+import { LoaderComponent } from "../../loader/loader.component";
+import { LoaderserviceService } from "../../loaderservice.service";
+import { environment } from "src/environments/environment.prod";
+import * as XLSX from "xlsx";
+import { ToastComponent } from "../toast/toast.component";
+import { MatDialog } from "@angular/material/dialog";
+import { MessageService, MenuItem } from "primeng/api";
 
 @Component({
-  selector: 'app-contractor-onboard',
-  templateUrl: './contractor-onboard.component.html',
-  styleUrls: ['./contractor-onboard.component.css'],
+  selector: "app-contractor-onboard",
+  templateUrl: "./contractor-onboard.component.html",
+  styleUrls: ["./contractor-onboard.component.css"],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE],
+    },
   ],
 })
-
 export class ContractorOnboardComponent implements OnInit {
   @ViewChild(MatVerticalStepper) stepper!: MatVerticalStepper;
-  @ViewChild('fileInput') fileInput: any;
+  @ViewChild("fileInput") fileInput: any;
   fileName: string | null = null;
   selectedFile: any;
   selectedFileName: string | null = null;
   fileUrl: SafeUrl | null = null;
-	license_file_name: any = ''
-	url: any = environment.path+'/'
-  activeData:any;
-  contractorBasicDetails:FormGroup;
-  contractorLicenseDetails:any;
+  license_file_name: any = "";
+  url: any = environment.path + "/";
+  activeData: any;
+  contractorBasicDetails: FormGroup;
+  contractorLicenseDetails: any;
   searchForm: FormGroup;
-  contractorForm=false;
+  contractorForm = false;
   file_list: Array<string> = [];
   file_store: FileList;
-  showAdd :boolean;
+  showAdd: boolean;
   showUpdate: boolean;
-  submit1:boolean;
-  submit2:boolean;
-  License_file: File|null = null;
-  plantArr:any
-  size:any
-	flag_for_size:any = false
+  submit1: boolean;
+  submit2: boolean;
+  License_file: File | null = null;
+  plantArr: any;
+  size: any;
+  flag_for_size: any = false;
   isServiceChargePercentEnabled = true;
   isServiceChargeChargeEnabled = true;
   basicDetailsObj: ConBasicDetails = new ConBasicDetails();
-  contractorData:any;
-  plant_Code: any = sessionStorage.getItem('plantcode');
+  contractorData: any;
+  plant_Code: any = sessionStorage.getItem("plantcode");
   plant_Id: any;
-  userEmpcode:string |null = sessionStorage.getItem('user_name');
+  userEmpcode: string | null = sessionStorage.getItem("user_name");
+  userSelectedContractor: any;
   // IsAdmin:string |null = sessionStorage.getItem('is_admin');
-  edit:boolean=true;
+  edit: boolean = true;
   submitted = false;
-  code:any;
-  license_file:any=''
-  all:any;
-  userDetails:any;
-  searchResults:any;
+  code: any;
+  license_file: any = "";
+  all: any;
+  userDetails: any;
+  searchResults: any;
   items: MenuItem[] = [
-            {
-                icon: 'pi pi-plus-circle',
-                tooltipOptions:{
-                  tooltipLabel: 'Add Contractor',
-                },
-                command: () => {
-                    this.showContractorForm();
-                    this.clickAddContractor();
-                }
-            },
-            {
-              icon: 'pi pi-download',
-              tooltipOptions:{
-                tooltipLabel: 'Download',
-              },
-              command: () => {
-                this.exportExcel();
-                this.messageService.add({ severity: 'info', summary: 'Data Converted.' });
-              }
-            }
+    {
+      icon: "pi pi-plus-circle",
+      tooltipOptions: {
+        tooltipLabel: "Add Contractor",
+      },
+      command: () => {
+        this.showContractorForm();
+        this.clickAddContractor();
+      },
+    },
+    {
+      icon: "pi pi-download",
+      tooltipOptions: {
+        tooltipLabel: "Download",
+      },
+      command: () => {
+        this.exportExcel();
+        this.messageService.add({
+          severity: "info",
+          summary: "Data Converted.",
+        });
+      },
+    },
   ];
   statusOptions = [
-  { label: "Active", value: "true" },
-  { label: "Inactive", value: "false" }
-];
+    { label: "Active", value: "true" },
+    { label: "Inactive", value: "false" },
+  ];
 
-  selectedPlant:any;
-  issupervisor : string |null = sessionStorage.getItem('issupervisor');
-  ishrappr:string |null= sessionStorage.getItem('ishrappr')
-  isadmin:string |null= sessionStorage.getItem('isadmin')
-  ishr:string |null= sessionStorage.getItem('ishr')
+  selectedPlant: any;
+  issupervisor: string | null = sessionStorage.getItem("issupervisor");
+  ishrappr: string | null = sessionStorage.getItem("ishrappr");
+  isadmin: string | null = sessionStorage.getItem("isadmin");
+  ishr: string | null = sessionStorage.getItem("ishr");
 
-
-  constructor(private fb:FormBuilder ,private dialog: MatDialog, private api:ClamAPIService,private service: FormService, private sanitizer: DomSanitizer,public loader: LoaderserviceService,private messageService:MessageService){
-
-   }
-// ng lifecycle hook
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private api: ClamAPIService,
+    private service: FormService,
+    private sanitizer: DomSanitizer,
+    public loader: LoaderserviceService,
+    private messageService: MessageService,
+  ) {}
+  // ng lifecycle hook
   ngOnInit(): void {
+    /** logged in user data */
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
     // contractor basic details
-    this.contractorBasicDetails=this.fb.group({
-      cont_code:[''],
-      plant_Code:[''],
-      contraCompName:['',{validators : [Validators.required, Validators.minLength(3)],updateOn: 'blur'}],
-      contrOwnerName:['',{validators : [Validators.required, Validators.minLength(3)],updateOn: 'blur'}],
-      contraOwnerNumber:['',{validators : [Validators.required, Validators.pattern(("[0-9]\\d{9}"))],updateOn: 'blur'}],
-      contraOwnerEmail:['', {validators: [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],updateOn: 'blur'}],
-      pocPerson:[''],
-      number:['',{validators : [Validators.pattern(("[0-9]\\d{9}"))],updateOn: 'blur'}],
-      email:['', {validators: [ Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],updateOn: 'blur'}],
-      address:['',{validators : [Validators.required, ],updateOn: 'blur'}],
-    })
+    this.contractorBasicDetails = this.fb.group({
+      cont_code: [""],
+      plant_Code: [""],
+      contraCompName: [
+        "",
+        {
+          validators: [Validators.required, Validators.minLength(3)],
+          updateOn: "blur",
+        },
+      ],
+      contrOwnerName: [
+        "",
+        {
+          validators: [Validators.required, Validators.minLength(3)],
+          updateOn: "blur",
+        },
+      ],
+      contraOwnerNumber: [
+        "",
+        {
+          validators: [Validators.required, Validators.pattern("[0-9]\\d{9}")],
+          updateOn: "blur",
+        },
+      ],
+      contraOwnerEmail: [
+        "",
+        {
+          validators: [
+            Validators.required,
+            Validators.email,
+            Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
+          ],
+          updateOn: "blur",
+        },
+      ],
+      pocPerson: [""],
+      number: [
+        "",
+        { validators: [Validators.pattern("[0-9]\\d{9}")], updateOn: "blur" },
+      ],
+      email: [
+        "",
+        {
+          validators: [
+            Validators.email,
+            Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
+          ],
+          updateOn: "blur",
+        },
+      ],
+      address: ["", { validators: [Validators.required], updateOn: "blur" }],
+    });
 
-  //  contractor license details
-    this.contractorLicenseDetails=this.fb.group({
-      Sap_vendor_Code:['',{validators : [Validators.required, ],updateOn: 'blur'}],
-      panNo:[''],
-      gstNo:[''],
-      esiEmpCode:[''],
-      pFEmpCode:[''],
-      License_Attachment:[''],
-      License_File:[''],
-      status:['',{validators : [Validators.required, ],updateOn: 'blur'}],
-      is_Security:['N',{validators : [Validators.required, ],updateOn: 'blur'}],
-      MaxHeadLimit:['',{validators : [Validators.required, ],updateOn: 'blur'}],
-      L_Number:['',{validators : [Validators.required, ],updateOn: 'blur'}],
-      L_Valid_From:['',{validators : [Validators.required, ]}],
-      L_Valid_To:['',{validators : [Validators.required, ]}],
-    EffectIveDate:['',{validators : [Validators.required, ]}],
-    serviceOption:['Y',{validators : [Validators.required, ],updateOn: 'blur'}],
-    serviceChargePercent:[null,{validators : [Validators.required, ],updateOn: 'blur'}],
-    serviceChargeValue:[null,{validators : [Validators.required, ],updateOn: 'blur'}],
-    serviceTax:['',{validators : [Validators.required, ],updateOn: 'blur'}]
-    })
+    //  contractor license details
+    this.contractorLicenseDetails = this.fb.group({
+      Sap_vendor_Code: [
+        "",
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      panNo: [""],
+      gstNo: [""],
+      esiEmpCode: [""],
+      pFEmpCode: [""],
+      License_Attachment: [""],
+      License_File: [""],
+      status: ["", { validators: [Validators.required], updateOn: "blur" }],
+      is_Security: [
+        "N",
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      MaxHeadLimit: [
+        "",
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      L_Number: ["", { validators: [Validators.required], updateOn: "blur" }],
+      L_Valid_From: ["", { validators: [Validators.required] }],
+      L_Valid_To: ["", { validators: [Validators.required] }],
+      EffectIveDate: ["", { validators: [Validators.required] }],
+      serviceOption: [
+        "Y",
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      serviceChargePercent: [
+        null,
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      serviceChargeValue: [
+        null,
+        { validators: [Validators.required], updateOn: "blur" },
+      ],
+      serviceTax: ["", { validators: [Validators.required], updateOn: "blur" }],
+    });
 
     this.getAllContractor();
-    this.createConCode()
-    this.getPlant()
+    this.createConCode();
+    this.getPlant();
 
-
-  this.searchForm = this.fb.group({
-    searchParams: ['']
-  });
+    this.searchForm = this.fb.group({
+      searchParams: [""],
+    });
   }
 
   // onInputKeyDown(event: KeyboardEvent): void {
@@ -162,13 +248,15 @@ export class ContractorOnboardComponent implements OnInit {
   // }
 
   // reduce max head count to 3 digit
-  onInput(event:any): void {
+  onInput(event: any): void {
     const inputElement = event;
     const value = inputElement.value;
-    console.log(typeof value, value)
+    console.log(typeof value, value);
     if (value.toString().length > 3) {
       inputElement.value = value.toString().slice(0, 3);
-      this.contractorLicenseDetails.patchValue({ MaxHeadLimit: value.toString().slice(0, 3) });
+      this.contractorLicenseDetails.patchValue({
+        MaxHeadLimit: value.toString().slice(0, 3),
+      });
     }
   }
   mobileNumber(event: Event, controlName: string): void {
@@ -176,7 +264,9 @@ export class ContractorOnboardComponent implements OnInit {
     const value = inputElement.value;
     if (value.length > 10) {
       inputElement.value = value.slice(0, 10);
-      this.contractorBasicDetails.patchValue({ [controlName]: value.slice(0, 10) });
+      this.contractorBasicDetails.patchValue({
+        [controlName]: value.slice(0, 10),
+      });
     }
   }
   sapNumber(event: Event): void {
@@ -184,85 +274,99 @@ export class ContractorOnboardComponent implements OnInit {
     const value = inputElement.value;
     if (value.length > 7) {
       inputElement.value = value.slice(0, 7);
-      this.contractorLicenseDetails.patchValue({ Sap_vendor_Code: value.slice(0, 7) });
+      this.contractorLicenseDetails.patchValue({
+        Sap_vendor_Code: value.slice(0, 7),
+      });
     }
   }
   onServiceOptionChange(event: any) {
     const selectedValue = event.value;
 
-    if (selectedValue === 'Y') {
-     
-      this.contractorLicenseDetails.get('serviceChargeValue').enable();
-      this.contractorLicenseDetails.get('serviceChargePercent').disable();
-      this.contractorLicenseDetails.get('serviceChargePercent').setValue(null);
-    } else if (selectedValue === 'N') {
-      
-      this.contractorLicenseDetails.get('serviceChargePercent').enable();
-      this.contractorLicenseDetails.get('serviceChargeValue').disable();
-      this.contractorLicenseDetails.get('serviceChargeValue').setValue(null);
+    if (selectedValue === "Y") {
+      this.contractorLicenseDetails.get("serviceChargeValue").enable();
+      this.contractorLicenseDetails.get("serviceChargePercent").disable();
+      this.contractorLicenseDetails.get("serviceChargePercent").setValue(null);
+    } else if (selectedValue === "N") {
+      this.contractorLicenseDetails.get("serviceChargePercent").enable();
+      this.contractorLicenseDetails.get("serviceChargeValue").disable();
+      this.contractorLicenseDetails.get("serviceChargeValue").setValue(null);
     }
   }
 
-keyPressAlphaNumeric(event:any) {
-  var inp = String.fromCharCode(event.keyCode);
-  if (/[a-zA-Z0-9]/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
-  }
-}
-keyPressAlpha(event: any) {
-  var inp = String.fromCharCode(event.keyCode);
-  if (/[a-zA-Z\s]/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
-  }
-}
-
-getPlant(){
-  this.api.getPlant().subscribe(res => {
-    if(res){
-       console.log(res)
-      this.plantArr = res;
-    }else{
-      this.messageService.add({severity:'warn',summary:'Cannot Get Plant!'})
+  keyPressAlphaNumeric(event: any) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
-  },error => {
-    console.log("plant list not getting",error);
-    this.messageService.add({severity:'error',summary:error.message})
-  })
-}
+  }
+  keyPressAlpha(event: any) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z\s]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
-// search api call
-search(): void {
-    const searchParams = this.searchForm.get('searchParams')?.value;
-    console.log(searchParams)
+  getPlant() {
+    this.api.getPlant().subscribe({
+      next:(res) => {
+        if (res) {
+          console.log(res);
+          this.plantArr = res;
+        } else {
+          this.messageService.add({
+            severity: "warn",
+            summary: "Cannot Get Plant!",
+          });
+        }
+      },
+      error: (error) => {
+        console.error('GET PLANT API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+
+  // search api call
+  search(): void {
+    const searchParams = this.searchForm.get("searchParams")?.value;
+    console.log(searchParams);
     const keyParams = this.parseSearchParams(searchParams);
-    console.log(searchParams)
-    this.api.clamSearch(keyParams).subscribe(
-      (res) => {
+    console.log(searchParams);
+    this.api.clamSearch(keyParams).subscribe({
+      next:  (res) => {
         console.log(res);
         this.searchResults = res;
       },
-      (error) => {
-        console.error(error);
-        this.messageService.add({severity:'error',summary:error.message})
-      }
-    );
-}
-  parseSearchParams(searchParams: string): { contCode?: string, companyName?: string, sapVendor?: string } {
-    const keyParams: { contCode?: string, companyName?: string, sapVendor?: string } = {};
+      error: (error) => {
+        console.error('SEARCH APPLICATION ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+  parseSearchParams(searchParams: string): {
+    contCode?: string;
+    companyName?: string;
+    sapVendor?: string;
+  } {
+    const keyParams: {
+      contCode?: string;
+      companyName?: string;
+      sapVendor?: string;
+    } = {};
     const paramsArray = searchParams.split(/[ ,]+/);
     paramsArray.forEach((param) => {
-      const [key, value] = param.split(':');
-      if (key === 'contCode') {
+      const [key, value] = param.split(":");
+      if (key === "contCode") {
         keyParams.contCode = value;
-      } else if (key === 'companyName') {
+      } else if (key === "companyName") {
         keyParams.companyName = value;
-      } else if (key === 'sapVendor') {
+      } else if (key === "sapVendor") {
         keyParams.sapVendor = value;
       }
     });
@@ -270,427 +374,606 @@ search(): void {
     return keyParams;
   }
 
-clickAddContractor(){
-  this.reset()
-  this.showAdd=true;
-}
+  clickAddContractor() {
+    this.reset();
+    this.showAdd = true;
+  }
 
-formatDateWithHr(inputDate: Date): String {
-  const parsedDate = moment(inputDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-  const formattedDate = parsedDate.format('YYYY-MM-DD HH:mm:ss.SSS');
-  return formattedDate;
-}
+  formatDateWithHr(inputDate: Date): String {
+    const parsedDate = moment(inputDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+    const formattedDate = parsedDate.format("YYYY-MM-DD HH:mm:ss.SSS");
+    return formattedDate;
+  }
 
- formatDate(inputDate: Date): String {
-  const parsedDate = moment(inputDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
-  const formattedDate = parsedDate.format('YYYY-MM-DD');
-  return formattedDate;
-}
+  formatDate(inputDate: Date): String {
+    const parsedDate = moment(inputDate, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+    const formattedDate = parsedDate.format("YYYY-MM-DD");
+    return formattedDate;
+  }
 
-showContractorForm(){
-  this.reset()
-   this.contractorForm=true;
- }
+  showContractorForm() {
+    this.reset();
+    this.contractorForm = true;
+  }
 
- hideContractorForm(){
-   this.reset()
-   this.contractorForm=false;
- }
+  hideContractorForm() {
+    this.reset();
+    this.contractorForm = false;
+  }
 
- selectFile(): void {
-  this.fileInput.nativeElement.click();
-}
+  selectFile(): void {
+    this.fileInput.nativeElement.click();
+  }
 
- closeAllForms(event:any){
-   this.hideContractorForm() 
- }
-//  reset form
- reset(){
-  this.contractorBasicDetails.reset()
-  this.contractorLicenseDetails.reset()
-  this.stepper.selectedIndex=0;
- }
-// GET CONTRACTOR CODE Eg: CO01,CO02
-createConCode(){
-  this.api.getConcode().subscribe(res=>{
-    if(res){
-      this.code = res;
-    }else{
-      this.messageService.add({severity:'warn',summary:'Cannot Get Contractor Code.'})
-    }
-    // console.log(this.code)
-  },error=>{
-    // alert("Last ID was not getting");
-    this.messageService.add({severity:'error',summary:error.message})
-  })
-}
-// GET PLANT ID
-getPlantId(plant_Code:any){
-  this.api.getPlantCode(plant_Code).subscribe(res=>{
-    if(res){
-    this.plant_Id = res;
-    }else{
-      this.messageService.add({severity:'info',summary:'Cannot Get Plant Code!'})
-    }
-    // console.log(this.plant_Id)
-  },error=>{
-    this.messageService.add({severity:'error',summary:error.message})
-  })
-}
-// GET ALL CONTRACTRO
-getAllContractor(){
-  this.api.getContractor().subscribe(res =>{
-    this.contractorData = res
-// console.log(res)
-    if(this.isadmin === 'true'){
-      this.activeData= res
-      // console.log('admin', this.activeData)
-    }
-    else{
-      this.activeData = this.contractorData.filter((item:any) => (item.Status === true && item.Plant_code === this.plant_Code))
-      // console.log('Not Admin', this.activeData)
-    }
-  },
-  error => {
-    this.messageService.add({severity:'error',summary:error.message})
-  });
-}
-openAlertDialog(message: string): void {
-  this.dialog.open(ToastComponent, {
-    data: {
-      icon: 'Check',
-      message: message
-    }
-  });
-}
-// EDIT VIEW FORM CONTRACTOR MASTER
-OnEdit(data:any){
-this.showContractorForm()
+  closeAllForms(event: any) {
+    this.hideContractorForm();
+  }
+  //  reset form
+  reset() {
+    this.contractorBasicDetails.reset();
+    this.contractorLicenseDetails.reset();
+    this.stepper.selectedIndex = 0;
+  }
+  // GET CONTRACTOR CODE Eg: CO01,CO02
+  createConCode() {
+    this.api.getConcode().subscribe({
+      next: (res) => {
+        if (res) {
+          this.code = res;
+        } else {
+          this.messageService.add({
+            severity: "warn",
+            summary: "Cannot Get Contractor Code.",
+          });
+        }
+      },
+      error: (error) => {
+        // alert("Last ID was not getting");
+        console.error("GET CON CODE API ERRO:", error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+  // GET PLANT ID
+  getPlantId(plant_Code: any) {
+    this.api.getPlantCode(plant_Code).subscribe({
+      next:  (res) => {
+        if (res) {
+          this.plant_Id = res;
+        } else {
+          this.messageService.add({
+            severity: "info",
+            summary: "Cannot Get Plant Code!",
+          });
+        }
+        // console.log(this.plant_Id)
+      },
+      error: (error) => {
+        console.error('GET PLANT ID API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+  // GET ALL CONTRACTRO
+  getAllContractor() {
+    this.api.getContractor().subscribe({
+      next:  (res) => {
+        this.contractorData = res;
+        // console.log(res)
+        if (this.isadmin === "true") {
+          this.activeData = res;
+          // console.log('admin', this.activeData)
+        } else {
+          this.activeData = this.contractorData.filter(
+            (item: any) =>
+              item.Status === true && item.Plant_code === this.plant_Code,
+          );
+          // console.log('Not Admin', this.activeData)
+        }
+      },
+      error: (error) => {
+        console.error('GET ALL CONTRACTORS API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    });
+  }
+  openAlertDialog(message: string): void {
+    this.dialog.open(ToastComponent, {
+      data: {
+        icon: "Check",
+        message: message,
+      },
+    });
+  }
+  // EDIT VIEW FORM CONTRACTOR MASTER
+  OnEdit(data: any) {
+    this.showContractorForm();
 
-console.log(data)
+    console.log("user selected contractor:", data);
+    this.userSelectedContractor = data;
+    this.contractorBasicDetails.controls["plant_Code"].setValue(
+      data.Plant_code,
+    );
+    this.contractorBasicDetails.controls["cont_code"].setValue(data.Cont_code);
+    this.contractorBasicDetails.controls["contraCompName"].setValue(
+      data.Cont_company_name,
+    );
+    this.contractorBasicDetails.controls["contrOwnerName"].setValue(
+      data.Cont_onwer_name,
+    );
+    this.contractorBasicDetails.controls["contraOwnerNumber"].setValue(
+      data.Cont_Number,
+    );
+    this.contractorBasicDetails.controls["contraOwnerEmail"].setValue(
+      data.Cont_email,
+    );
+    this.contractorBasicDetails.controls["pocPerson"].setValue(
+      data.PContact_Person,
+    );
+    this.contractorBasicDetails.controls["number"].setValue(data.P_Mobile_No);
+    this.contractorBasicDetails.controls["email"].setValue(data.P_Email);
+    this.contractorBasicDetails.controls["address"].setValue(data.Cont_address);
+    this.contractorLicenseDetails.controls["Sap_vendor_Code"].setValue(
+      data.Sap_vendor_Code,
+    );
 
-    this.contractorBasicDetails.controls['plant_Code'].setValue(data.Plant_code);
-    this.contractorBasicDetails.controls['cont_code'].setValue(data.Cont_code);
-    this.contractorBasicDetails.controls['contraCompName'].setValue(data.Cont_company_name);
-    this.contractorBasicDetails.controls['contrOwnerName'].setValue(data.Cont_onwer_name);
-    this.contractorBasicDetails.controls['contraOwnerNumber'].setValue(data.Cont_Number);
-    this.contractorBasicDetails.controls['contraOwnerEmail'].setValue(data.Cont_email);
-    this.contractorBasicDetails.controls['pocPerson'].setValue(data.PContact_Person);
-    this.contractorBasicDetails.controls['number'].setValue(data.P_Mobile_No);
-    this.contractorBasicDetails.controls['email'].setValue(data.P_Email);
-    this.contractorBasicDetails.controls['address'].setValue(data.Cont_address);
-    this.contractorLicenseDetails.controls['Sap_vendor_Code'].setValue(data.Sap_vendor_Code);
-   
     // this.contractorLicenseDetails.controls['License_File'].setValue(this.fileUrl)
-    this.contractorLicenseDetails.controls['panNo'].setValue(data.PAN_No)
-    this.contractorLicenseDetails.controls['gstNo'].setValue(data.GST_No)
-    this.contractorLicenseDetails.controls['esiEmpCode'].setValue(data.Esi_Reg_no)
-    this.contractorLicenseDetails.controls['pFEmpCode'].setValue(data.Pf_reg_No)
-    this.contractorLicenseDetails.controls['License_Attachment'].setValue(data.Lic_File)
-    this.contractorLicenseDetails.controls['MaxHeadLimit'].setValue(data.Max_head_count)
-    this.contractorLicenseDetails.controls['L_Number'].setValue(data.Lic_No)
-    this.contractorLicenseDetails.controls['L_Valid_From']
-    .setValue(moment(data?.Lic_FromDate).format("YYYY-MM-DD"))
-    this.contractorLicenseDetails.controls['L_Valid_To']
-    .setValue(moment(data?.Lic_ToDate).format("YYYY-MM-DD"))
+    this.contractorLicenseDetails.controls["panNo"].setValue(data.PAN_No);
+    this.contractorLicenseDetails.controls["gstNo"].setValue(data.GST_No);
+    this.contractorLicenseDetails.controls["esiEmpCode"].setValue(
+      data.Esi_Reg_no,
+    );
+    this.contractorLicenseDetails.controls["pFEmpCode"].setValue(
+      data.Pf_reg_No,
+    );
+    this.contractorLicenseDetails.controls["License_Attachment"].setValue(
+      data.Lic_File,
+    );
+    this.contractorLicenseDetails.controls["MaxHeadLimit"].setValue(
+      data.Max_head_count,
+    );
+    this.contractorLicenseDetails.controls["L_Number"].setValue(data.Lic_No);
+    this.contractorLicenseDetails.controls["L_Valid_From"].setValue(
+      moment(data?.Lic_FromDate).format("YYYY-MM-DD"),
+    );
+    this.contractorLicenseDetails.controls["L_Valid_To"].setValue(
+      moment(data?.Lic_ToDate).format("YYYY-MM-DD"),
+    );
     // this.contractorLicenseDetails.controls['License_File'].setValue(data.Lic_File)
-    this.contractorLicenseDetails.controls['EffectIveDate']
-    .setValue(moment(data?.Effective_from).format('YYYY-MM-Dd'))
+    this.contractorLicenseDetails.controls["EffectIveDate"].setValue(
+      moment(data?.Effective_from).format("YYYY-MM-Dd"),
+    );
 
     // this.contractorLicenseDetails.controls['serviceChargePercent'].setValue(data.Service_Charge.toString() || 0)
     // this.contractorLicenseDetails.controls['serviceChargeValue'].setValue(data.Service_Charge_Value.toString() || 0)
 
     if (data?.Service_Charge !== undefined && data?.Service_Charge !== null) {
-      this.contractorLicenseDetails.controls['serviceChargePercent'].setValue(data.Service_Charge.toString());
-  }
-  
-  if (data?.service_Charge_value !== undefined && data?.service_Charge_value !== null) {
-      this.contractorLicenseDetails.controls['serviceChargeValue'].setValue(data.service_Charge_value.toString());
-  }
-  
-  if (data?.ServiceOptions !== undefined && data?.ServiceOptions !== null) {
-      this.contractorLicenseDetails.controls['serviceOption'].setValue(data.ServiceOptions.toString());
-  }
-  
+      this.contractorLicenseDetails.controls["serviceChargePercent"].setValue(
+        data.Service_Charge.toString(),
+      );
+    }
 
-    this.contractorLicenseDetails.controls['serviceTax'].setValue(data.Service_Tax)
-    this.contractorLicenseDetails.controls['is_Security'].setValue(data.Is_Security.toString())
-    this.contractorLicenseDetails.controls['status'].setValue(data.Status.toString())
-    
+    if (
+      data?.service_Charge_value !== undefined &&
+      data?.service_Charge_value !== null
+    ) {
+      this.contractorLicenseDetails.controls["serviceChargeValue"].setValue(
+        data.service_Charge_value.toString(),
+      );
+    }
+
+    if (data?.ServiceOptions !== undefined && data?.ServiceOptions !== null) {
+      this.contractorLicenseDetails.controls["serviceOption"].setValue(
+        data.ServiceOptions.toString(),
+      );
+    }
+
+    this.contractorLicenseDetails.controls["serviceTax"].setValue(
+      data.Service_Tax,
+    );
+    this.contractorLicenseDetails.controls["is_Security"].setValue(
+      data.Is_Security.toString(),
+    );
+    this.contractorLicenseDetails.controls["status"].setValue(
+      data.Status.toString(),
+    );
+
     const fileName = data.Lic_File;
     if (fileName) {
       const fileUrl = this.url + `Licns_Upload/${fileName}`;
       this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
-      this.contractorLicenseDetails.controls['License_File'].setValue(fileUrl);
+      this.contractorLicenseDetails.controls["License_File"].setValue(fileUrl);
 
-      const licenseFileValue = this.contractorLicenseDetails.controls['License_File'].value;
+      const licenseFileValue =
+        this.contractorLicenseDetails.controls["License_File"].value;
       if (licenseFileValue === fileUrl) {
-        console.log('File successfully bound to License_File control.');
-        this.messageService.add({severity:'info',summary:'License File Successfully Bound.'})
+        console.log("File successfully bound to License_File control.");
+        this.messageService.add({
+          severity: "info",
+          summary: "License File Successfully Bound.",
+        });
       } else {
-        console.log('File binding failed.');
-        this.messageService.add({severity:'warn',summary:'File Binding Failed!'})
+        console.log("File binding failed.");
+        this.messageService.add({
+          severity: "warn",
+          summary: "File Binding Failed!",
+        });
       }
-
-    }else {
-      console.log('No file provided.');
-      this.messageService.add({severity:'warn',summary:'No File Provided'})
-    }
-    this.edit=true;
-    this.showAdd=false;
-}
-
-// UPDATE CONTRACTOR MASTER
-updateContractor(){
-// basic details
-
-if(this.contractorLicenseDetails.value.status){
-this.basicDetailsObj.Cont_code = this.contractorBasicDetails.value.cont_code;
-this.basicDetailsObj.Plant_id = this.contractorBasicDetails.value.plant_Code;
-this.basicDetailsObj.Cont_Company_name = this.contractorBasicDetails.value.contraCompName;
-this.basicDetailsObj.Cont_Onwer_name = this.contractorBasicDetails.value.contrOwnerName;
-this.basicDetailsObj.Cont_Number = (this.contractorBasicDetails.value.contraOwnerNumber).toString();
-this.basicDetailsObj.Cont_email = this.contractorBasicDetails.value.contraOwnerEmail;
-this.basicDetailsObj.PContact_Person = this.contractorBasicDetails.value.pocPerson;
-this.basicDetailsObj.P_Mobile_No = (this.contractorBasicDetails.value.number).toString();
-this.basicDetailsObj.P_Email = this.contractorBasicDetails.value.email;
-this.basicDetailsObj.Cont_address = this.contractorBasicDetails.value.address;
-
-this.basicDetailsObj.Sap_vendor_Code = this.contractorLicenseDetails.value.Sap_vendor_Code;
-this.basicDetailsObj.Pan_No = this.contractorLicenseDetails.value.panNo;
-this.basicDetailsObj.Gst_No = this.contractorLicenseDetails.value.gstNo;
-this.basicDetailsObj.Esi_Reg_no = this.contractorLicenseDetails.value.esiEmpCode;
-this.basicDetailsObj.Pf_reg_No = this.contractorLicenseDetails.value.pFEmpCode;
-this.basicDetailsObj.Lic_File = this.contractorLicenseDetails.value.License_Attachment;
-this.basicDetailsObj.Max_Head_Count = this.contractorLicenseDetails.value.MaxHeadLimit;
-this.basicDetailsObj.Lic_No = this.contractorLicenseDetails.value.L_Number;
-this.basicDetailsObj.Lic_FromDate = this.formatDate(this.contractorLicenseDetails.value.L_Valid_From).toString();
-this.basicDetailsObj.Lic_ToDate = this.formatDate(this.contractorLicenseDetails.value.L_Valid_To).toString();
-this.basicDetailsObj.Effective_from = this.formatDate(this.contractorLicenseDetails.value.EffectIveDate).toString();
-this.basicDetailsObj.Service_Charge_percent = (this.contractorLicenseDetails.value.serviceChargePercent);
-this.basicDetailsObj.Service_Charge_value = (this.contractorLicenseDetails.value.serviceChargeValue);
-this.basicDetailsObj.Service_Tax = this.contractorLicenseDetails.value.serviceTax;
-this.basicDetailsObj.Is_Security  = this.contractorLicenseDetails.value.is_Security;
-this.basicDetailsObj.Status = this.contractorLicenseDetails.value.status;
-this.basicDetailsObj.Modified_By = this.userEmpcode;
-this.basicDetailsObj.Modified_On = this.formatDateWithHr(new Date())
-
-const file = this.contractorLicenseDetails.value.License_File;
-
-console.log(this.basicDetailsObj)
-
-const formData = new FormData();
-formData.append('file',this.selectedFile)
- formData.append('Concode', this.contractorBasicDetails.value.cont_code)
-
-this.api.updateContractor(this.basicDetailsObj, this.basicDetailsObj.Cont_code)
-.subscribe( res=>{
-  console.log(res);
- 
-  this.api.license_file(formData,this.basicDetailsObj.Cont_code).subscribe(res =>{
-    console.log("file Uploaded",res);
-    this.messageService.add({severity:'info',summary:'License File Updated.'})
-  },error=>{
-    // console.log("file not Uploaded",error);
-    this.messageService.add({severity:'error',summary:error.message})
-  })
-  this.openAlertDialog(`Contractor  successfully updated`)
-  // alert("Contractor  successfully updated")
-  this.getAllContractor()
-  this.reset()
-  this.closeAllForms(event)
-},
-err => {
-  console.log(err);
-  this.messageService.add({severity:'error',summary:err.message})
-})
-}
-else{
-  alert("select status Active")
-  this.messageService.add({severity:'warn',summary:'Select Status Active'})
-  // this.showContractorForm()
-}
-
-}
-// DELETE CONTRACTOR
-deleteContractor(data:any){
-if(data.Status){
-  this.api.deleteContractor(data.Cont_code)
-  .subscribe( res => {
-    this.getAllContractor()
-    // alert("Contractor Deleted successfully")
-    this.openAlertDialog('Contractor Deleted successfully')
-  }, (error) => this.messageService.add({severity:'error',summary:error.message}))
-}else{
-  // alert('Data already Deleted');
-  this.messageService.add({severity:'warn',summary:'Contractor Already Deleted!'})
-}
-}
-// add new contractor
-submitForm() {
-  if (this.validateStep(1) && this.validateStep(2)  ) {
-  
-    console.log('this.contractorLicenseDetails.value.serviceChargePercent',this.contractorLicenseDetails.value.serviceChargePercent);
-    
-    this.basicDetailsObj.Cont_code = this.code
-    this.basicDetailsObj.Plant_id=  this.contractorBasicDetails.value.plant_Code
-    this.basicDetailsObj.Cont_Company_name = this.contractorBasicDetails.value.contraCompName;
-    this.basicDetailsObj.Cont_Onwer_name = this.contractorBasicDetails.value.contrOwnerName;
-    this.basicDetailsObj.Cont_Number = (this.contractorBasicDetails.value.contraOwnerNumber).toString();
-    this.basicDetailsObj.Cont_email = this.contractorBasicDetails.value.contraOwnerEmail;
-    this.basicDetailsObj.PContact_Person = this.contractorBasicDetails.value.pocPerson;
-    // this.basicDetailsObj.P_Mobile_No = (this.contractorBasicDetails.value.number).toString();
-    this.basicDetailsObj.P_Mobile_No = (this.contractorBasicDetails?.value?.number ?? "").toString();
-
-    this.basicDetailsObj.P_Email = this.contractorBasicDetails.value.email;
-    this.basicDetailsObj.Cont_address = this.contractorBasicDetails.value.address;
-  
-    this.basicDetailsObj.Sap_vendor_Code = this.contractorLicenseDetails.value.Sap_vendor_Code;
-    this.basicDetailsObj.Pan_No = this.contractorLicenseDetails.value.panNo;
-  this.basicDetailsObj.Gst_No = this.contractorLicenseDetails.value.gstNo;
-  this.basicDetailsObj.Esi_Reg_no = this.contractorLicenseDetails.value.esiEmpCode;
-  this.basicDetailsObj.Pf_reg_No = this.contractorLicenseDetails.value.pFEmpCode;
-
-  this.basicDetailsObj.Lic_File =this.contractorLicenseDetails.value.License_Attachment ;
-  // this.basicDetailsObj.Lic_File = 'F:/license'+this.code;
-
-  this.basicDetailsObj.Max_Head_Count = this.contractorLicenseDetails.value.MaxHeadLimit;
-  this.basicDetailsObj.Lic_No = this.contractorLicenseDetails.value.L_Number;
-  this.basicDetailsObj.Lic_FromDate = this.formatDate(this.contractorLicenseDetails.value.L_Valid_From);
-  this.basicDetailsObj.Lic_ToDate = this.formatDate(this.contractorLicenseDetails.value.L_Valid_To).toString();
-  this.basicDetailsObj.Effective_from = this.formatDate(this.contractorLicenseDetails.value.EffectIveDate).toString();
-  this.basicDetailsObj.Service_Charge_percent = (this.contractorLicenseDetails.value.serviceChargePercent ?? 0).toString();
-  this.basicDetailsObj.Service_Charge_value = (this.contractorLicenseDetails.value.serviceChargeValue ?? 0).toString();
-  this.basicDetailsObj.Service_Tax = this.contractorLicenseDetails.value.serviceTax;
-  this.basicDetailsObj.Is_Security  = this.contractorLicenseDetails.value.is_Security;
-    this.basicDetailsObj.Status = this.contractorLicenseDetails.value.status;
-    this.basicDetailsObj.Created_On= this.formatDateWithHr(new Date()).toString()
-    this.basicDetailsObj.Created_By = this.userEmpcode;
-  
-    console.log(this.basicDetailsObj)
-  
-    this.api.addContractor(this.basicDetailsObj)
-    .subscribe(res =>{
-      // console.log(res);
-      const formData = new FormData();
-      formData.append('file', this.selectedFile);
-      // formData.append('Concode', this.code);
-        this.api.license_file(formData ,this.code).subscribe(res =>{
-          console.log("file Uploaded",res);
-          this.messageService.add({severity:'info',summary:'File Uploaded',detail:res})
-        },error=>{
-          console.log(error);
-          this.messageService.add({severity:'error',summary:error.message})
-        })
-
-      // alert("Contractor added successfully")
-      this.openAlertDialog("Contractor Added successfully");
-      console.log(res)
-      this.getAllContractor()
-      this.reset()
-      // this.fileupload(this.code)
-      this.closeAllForms(event)
-    },
-    error =>{
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    })
-  }else{
-    this.messageService.add({severity:'warn',summary:'Please Fill All Details!'})
-  }
-}
-
-validateStep(stepNumber: number): boolean {
-  switch (stepNumber) {
-    case 1:
-   
-      if (this.contractorBasicDetails.valid) {
-        return true;
-      } else {
-      
-        this.markFormGroupAsTouched(this.contractorBasicDetails);
-        this.stepper.selectedIndex=0;
-        return false;
-      }
-    case 2:
-     
-      if (this.contractorLicenseDetails.valid) {
-        return true;
-      } else {
-       
-        this.markFormGroupAsTouched(this.contractorLicenseDetails);
-        this.stepper.selectedIndex=1;
-        return false;
-      }
-    default:
-      return false;
-  }
-}
-
-markFormGroupAsTouched(formGroup: FormGroup) {
-  Object.keys(formGroup.controls).forEach((key) => {
-    const control = formGroup.controls[key];
-    if (control instanceof FormGroup) {
-      this.markFormGroupAsTouched(control);
     } else {
-      control.markAsTouched();
+      console.log("No file provided.");
+      this.messageService.add({
+        severity: "warn",
+        summary: "No File Provided",
+      });
     }
-  });
-}
+    this.edit = true;
+    this.showAdd = false;
+  }
 
-onFileChange(event: any) {
-  if (event.target.files && event.target.files.length > 0) {
-    this.selectedFile = event.target.files[0];
-    const file= event.target.files[0];
-    this.contractorLicenseDetails.patchValue({
-      License_File: file,
-      License_Attachment: file.name
+  // UPDATE CONTRACTOR MASTER
+  updateContractor() {
+    // basic details
+
+    if (this.contractorLicenseDetails.value.status) {
+      this.basicDetailsObj.Cont_code =
+        this.contractorBasicDetails.value.cont_code;
+      this.basicDetailsObj.Plant_id =
+        this.contractorBasicDetails.value.plant_Code;
+      this.basicDetailsObj.Cont_Company_name =
+        this.contractorBasicDetails.value.contraCompName;
+      this.basicDetailsObj.Cont_Onwer_name =
+        this.contractorBasicDetails.value.contrOwnerName;
+      this.basicDetailsObj.Cont_Number =
+        this.contractorBasicDetails.value.contraOwnerNumber.toString();
+      this.basicDetailsObj.Cont_email =
+        this.contractorBasicDetails.value.contraOwnerEmail;
+      this.basicDetailsObj.PContact_Person =
+        this.contractorBasicDetails.value.pocPerson;
+      this.basicDetailsObj.P_Mobile_No =
+        this.contractorBasicDetails.value.number.toString();
+      this.basicDetailsObj.P_Email = this.contractorBasicDetails.value.email;
+      this.basicDetailsObj.Cont_address =
+        this.contractorBasicDetails.value.address;
+
+      this.basicDetailsObj.Sap_vendor_Code =
+        this.contractorLicenseDetails.value.Sap_vendor_Code;
+      this.basicDetailsObj.Pan_No = this.contractorLicenseDetails.value.panNo;
+      this.basicDetailsObj.Gst_No = this.contractorLicenseDetails.value.gstNo;
+      this.basicDetailsObj.Esi_Reg_no =
+        this.contractorLicenseDetails.value.esiEmpCode;
+      this.basicDetailsObj.Pf_reg_No =
+        this.contractorLicenseDetails.value.pFEmpCode;
+      this.basicDetailsObj.Lic_File =
+        this.contractorLicenseDetails.value.License_Attachment;
+      this.basicDetailsObj.Max_Head_Count =
+        this.contractorLicenseDetails.value.MaxHeadLimit;
+      this.basicDetailsObj.Lic_No =
+        this.contractorLicenseDetails.value.L_Number;
+      this.basicDetailsObj.Lic_FromDate = this.formatDate(
+        this.contractorLicenseDetails.value.L_Valid_From,
+      ).toString();
+      this.basicDetailsObj.Lic_ToDate = this.formatDate(
+        this.contractorLicenseDetails.value.L_Valid_To,
+      ).toString();
+      this.basicDetailsObj.Effective_from = this.formatDate(
+        this.contractorLicenseDetails.value.EffectIveDate,
+      ).toString();
+      this.basicDetailsObj.Service_Charge_percent =
+        this.contractorLicenseDetails.value.serviceChargePercent;
+      this.basicDetailsObj.Service_Charge_value =
+        this.contractorLicenseDetails.value.serviceChargeValue;
+      this.basicDetailsObj.Service_Tax =
+        this.contractorLicenseDetails.value.serviceTax;
+      this.basicDetailsObj.Is_Security =
+        this.contractorLicenseDetails.value.is_Security;
+      this.basicDetailsObj.Status = this.contractorLicenseDetails.value.status;
+      this.basicDetailsObj.Modified_By = this.userEmpcode;
+      this.basicDetailsObj.Modified_On = this.formatDateWithHr(new Date());
+
+      const file = this.contractorLicenseDetails.value.License_File;
+
+      console.log(this.basicDetailsObj);
+
+      const formData = new FormData();
+      formData.append("file", this.selectedFile);
+      formData.append("Concode", this.contractorBasicDetails.value.cont_code);
+      console.log("selected contractor ID", this.userSelectedContractor.Con_Id);
+      this.api
+        .updateContractor(
+          {
+            ...this.basicDetailsObj,
+            con_id: this.userSelectedContractor.Con_Id,
+          },
+          this.basicDetailsObj.Cont_code,
+          this.userSelectedContractor.Con_Id,
+        )
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+
+            this.api
+              .license_file(formData, this.basicDetailsObj.Cont_code)
+              .subscribe({
+                next: (res) => {
+                  console.log("file Uploaded", res);
+                  this.messageService.add({
+                    severity: "info",
+                    summary: "License File Updated.",
+                  });
+                },
+                error: (error) => {
+                  console.error('LICENSE FILE UPLOAD ERROR:',error);
+                  this.messageService.add({
+                    severity: "error",
+                    summary: error.message,
+                  });
+                },
+              });
+            // this.openAlertDialog(`Contractor  successfully updated`);
+            this.messageService.add({severity:'info',summary:'Contractor Updated Successfully'})
+            this.messageService.add({
+              severity: "info",
+              summary: "Contractor updated successfully!",
+            });
+            this.getAllContractor();
+            this.reset();
+            /** reset con code */
+            this.createConCode();
+            this.closeAllForms(event);
+          },
+          error: (err) => {
+            console.error("UPDATE CON API ERROR:", err);
+            this.messageService.add({
+              severity: "error",
+              summary: err.message,
+            });
+          },
+        });
+    } else {
+      // alert("select status Active")
+      this.messageService.add({
+        severity: "warn",
+        summary: "Select Status Active",
+      });
+      // this.showContractorForm()
+    }
+  }
+  // DELETE CONTRACTOR
+  deleteContractor(data: any) {
+    if (data.Status) {
+      this.api.deleteContractor(data.Cont_code).subscribe({
+        next: (res) => {
+          this.getAllContractor();
+          // alert("Contractor Deleted successfully")
+          // this.openAlertDialog("Contractor Deleted successfully");
+          this.messageService.add({severity:'info',summary:'Contractor Deleted Successfully.'})
+        },
+        error: (error) => {
+          console.error('DELETE CONTRACTOR API ERROR:',error);
+          this.messageService.add({severity:'error',summary:error?.message});
+        }
+      });
+    } else {
+      // alert('Data already Deleted');
+      this.messageService.add({
+        severity: "warn",
+        summary: "Contractor Already Deleted!",
+      });
+    }
+  }
+  // add new contractor
+  submitForm() {
+    if (this.validateStep(1) && this.validateStep(2)) {
+      console.log(
+        "this.contractorLicenseDetails.value.serviceChargePercent",
+        this.contractorLicenseDetails.value.serviceChargePercent,
+      );
+
+      this.basicDetailsObj.Cont_code = this.code;
+      this.basicDetailsObj.Plant_id =
+        this.contractorBasicDetails.value.plant_Code;
+      this.basicDetailsObj.Cont_Company_name =
+        this.contractorBasicDetails.value.contraCompName;
+      this.basicDetailsObj.Cont_Onwer_name =
+        this.contractorBasicDetails.value.contrOwnerName;
+      this.basicDetailsObj.Cont_Number =
+        this.contractorBasicDetails.value.contraOwnerNumber.toString();
+      this.basicDetailsObj.Cont_email =
+        this.contractorBasicDetails.value.contraOwnerEmail;
+      this.basicDetailsObj.PContact_Person =
+        this.contractorBasicDetails.value.pocPerson;
+      // this.basicDetailsObj.P_Mobile_No = (this.contractorBasicDetails.value.number).toString();
+      this.basicDetailsObj.P_Mobile_No = (
+        this.contractorBasicDetails?.value?.number ?? ""
+      ).toString();
+
+      this.basicDetailsObj.P_Email = this.contractorBasicDetails.value.email;
+      this.basicDetailsObj.Cont_address =
+        this.contractorBasicDetails.value.address;
+
+      this.basicDetailsObj.Sap_vendor_Code =
+        this.contractorLicenseDetails.value.Sap_vendor_Code;
+      this.basicDetailsObj.Pan_No = this.contractorLicenseDetails.value.panNo;
+      this.basicDetailsObj.Gst_No = this.contractorLicenseDetails.value.gstNo;
+      this.basicDetailsObj.Esi_Reg_no =
+        this.contractorLicenseDetails.value.esiEmpCode;
+      this.basicDetailsObj.Pf_reg_No =
+        this.contractorLicenseDetails.value.pFEmpCode;
+
+      this.basicDetailsObj.Lic_File =
+        this.contractorLicenseDetails.value.License_Attachment;
+      // this.basicDetailsObj.Lic_File = 'F:/license'+this.code;
+
+      this.basicDetailsObj.Max_Head_Count =
+        this.contractorLicenseDetails.value.MaxHeadLimit;
+      this.basicDetailsObj.Lic_No =
+        this.contractorLicenseDetails.value.L_Number;
+      this.basicDetailsObj.Lic_FromDate = this.formatDate(
+        this.contractorLicenseDetails.value.L_Valid_From,
+      );
+      this.basicDetailsObj.Lic_ToDate = this.formatDate(
+        this.contractorLicenseDetails.value.L_Valid_To,
+      ).toString();
+      this.basicDetailsObj.Effective_from = this.formatDate(
+        this.contractorLicenseDetails.value.EffectIveDate,
+      ).toString();
+      this.basicDetailsObj.Service_Charge_percent = (
+        this.contractorLicenseDetails.value.serviceChargePercent ?? 0
+      ).toString();
+      this.basicDetailsObj.Service_Charge_value = (
+        this.contractorLicenseDetails.value.serviceChargeValue ?? 0
+      ).toString();
+      this.basicDetailsObj.Service_Tax =
+        this.contractorLicenseDetails.value.serviceTax;
+      this.basicDetailsObj.Is_Security =
+        this.contractorLicenseDetails.value.is_Security;
+      this.basicDetailsObj.Status = this.contractorLicenseDetails.value.status;
+      this.basicDetailsObj.Created_On = this.formatDateWithHr(
+        new Date(),
+      ).toString();
+      this.basicDetailsObj.Created_By = this.userEmpcode;
+
+      console.log(this.basicDetailsObj);
+
+      this.api.addContractor(this.basicDetailsObj).subscribe({
+        next: (res) => {
+          // console.log(res);
+          const formData = new FormData();
+          formData.append("file", this.selectedFile);
+          // formData.append('Concode', this.code);
+          this.api.license_file(formData, this.code).subscribe({
+            next: (res) => {
+              console.log("file Uploaded", res);
+              this.messageService.add({
+                severity: "info",
+                summary: "File Uploaded",
+                detail: res,
+              });
+            },
+            error: (error:any) => {
+              console.error('LICENSE FILE UPLOAD API ERROR:',error);
+              this.messageService.add({severity:'error',summary:error?.message})
+            }
+          });
+
+          // alert("Contractor added successfully")
+          // this.openAlertDialog("Contractor Added successfully");
+          this.messageService.add({severity:'info',summary:'Contractor Added Successfully.'})
+          console.log(res);
+          this.getAllContractor();
+          /** reset cont code generation */
+          this.createConCode(); // con code duplication bug fixed
+          this.reset();
+          // this.fileupload(this.code)
+          this.closeAllForms(event);
+        },
+        error: (error) => {
+          console.error('SUBMIT CONTRACTOR FORM API ERROR:',error);
+          this.messageService.add({
+            severity: "error",
+            summary: error.message,
+          });
+        },
+      });
+    } else {
+      this.messageService.add({
+        severity: "warn",
+        summary: "Please Fill All Details!",
+      });
+    }
+  }
+
+  validateStep(stepNumber: number): boolean {
+    switch (stepNumber) {
+      case 1:
+        if (this.contractorBasicDetails.valid) {
+          return true;
+        } else {
+          this.markFormGroupAsTouched(this.contractorBasicDetails);
+          this.stepper.selectedIndex = 0;
+          return false;
+        }
+      case 2:
+        if (this.contractorLicenseDetails.valid) {
+          return true;
+        } else {
+          this.markFormGroupAsTouched(this.contractorLicenseDetails);
+          this.stepper.selectedIndex = 1;
+          return false;
+        }
+      default:
+        return false;
+    }
+  }
+
+  markFormGroupAsTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.controls[key];
+      if (control instanceof FormGroup) {
+        this.markFormGroupAsTouched(control);
+      } else {
+        control.markAsTouched();
+      }
     });
-    // this.fileName = file.name; 
   }
-}
 
-viewFile(): void {
-  const fileName = this.contractorLicenseDetails.get('License_Attachment')?.value;
-  console.log(fileName);
-  if (fileName) {
-    const fileUrl = this.url+`Licns_Upload/${fileName}`;
-    this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
-    this.contractorLicenseDetails.controls['License_File'].setValue(fileUrl);
-  }else{
-    const fileUrl = this.url;
-    this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
-    this.contractorLicenseDetails.controls['License_File'].setValue(fileUrl);
+  onFileChange(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      const file = event.target.files[0];
+      this.contractorLicenseDetails.patchValue({
+        License_File: file,
+        License_Attachment: file.name,
+      });
+      // this.fileName = file.name;
+    }
   }
-}
 
-exportExcel() : void{
-  const transformedArray:any = this.activeData.map((data: any) =>{
-    const transformedObj:any = {};
-    Object.keys(data).forEach(key => {
-      const newKey = key.replace(/_/g, ' '); 
-      transformedObj[newKey] = data[key];
-     
+  viewFile(): void {
+    const fileName =
+      this.contractorLicenseDetails.get("License_Attachment")?.value;
+    console.log(fileName);
+    if (fileName) {
+      const fileUrl = this.url + `Licns_Upload/${fileName}`;
+      this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
+      this.contractorLicenseDetails.controls["License_File"].setValue(fileUrl);
+    } else {
+      const fileUrl = this.url;
+      this.fileUrl = this.sanitizer.bypassSecurityTrustUrl(fileUrl);
+      this.contractorLicenseDetails.controls["License_File"].setValue(fileUrl);
+    }
+  }
+
+  /** EXPORT TO EXCELL FN */
+  exportExcel(): void {
+    const transformedArray: any = this.activeData.map((data: any) => {
+      const transformedObj: any = {};
+      Object.keys(data).forEach((key) => {
+        const newKey = key.replace(/_/g, " ");
+        transformedObj[newKey] = data[key];
+      });
+      return transformedObj;
     });
-    return transformedObj;
-  })
-  console.log(transformedArray);
-  var ws = XLSX.utils.json_to_sheet(transformedArray);
-  var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Contractor Master");
-  XLSX.writeFile(wb,"Mst_Contractor.xlsx");
-
-}
-
-// contractor filter by plant
-filterContractorByPlant(){
-  const filteredData = this.contractorData.filter((item:any) => (item.Plant_code === this.selectedPlant));
-  if(filteredData.length){
-    this.activeData = filteredData;
-  }else{
-    this.activeData = this.contractorData;
-    this.messageService.add({severity:'info',summary:`Contractors Not Found For Plant: ${this.selectedPlant}`})
+    console.log(transformedArray);
+    var ws = XLSX.utils.json_to_sheet(transformedArray);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Contractor Master");
+    XLSX.writeFile(wb, "Mst_Contractor.xlsx");
   }
-}
 
+  // contractor filter by plant
+  filterContractorByPlant() {
+    const filteredData = this.contractorData.filter(
+      (item: any) => item.Plant_code === this.selectedPlant,
+    );
+    if (filteredData.length) {
+      this.activeData = filteredData;
+    } else {
+      this.activeData = this.contractorData;
+      this.messageService.add({
+        severity: "info",
+        summary: `Contractors Not Found For Plant: ${this.selectedPlant}`,
+      });
+    }
+  }
 }

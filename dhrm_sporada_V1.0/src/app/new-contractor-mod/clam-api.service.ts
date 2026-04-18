@@ -49,8 +49,8 @@ export class ClamAPIService {
     return this.http.get<any>(this.url + '/clam/payroll')
   }
 
-  updateContractor(data: any, concode: any) {
-    const queryParams = new URLSearchParams({ concode }).toString();
+  updateContractor(data: any, concode: any, contID:any) {
+    const queryParams = new URLSearchParams({ concode,con_id:contID }).toString();
     return this.http.put<any>(`${this.url}/clam/editcon?${queryParams}`, data)
   }
   deleteContractor(id: any) {
