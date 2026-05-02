@@ -77,14 +77,14 @@
   </ng-container>
   <hr />
   <!-- trainee category *ngIf="showCategory"-->
-  <app-category (emit)="category_event($event)"  ></app-category>
+  <app-category (emit)="category_event($event)" *ngIf="false"></app-category>
 
-  <!-- new joiner onboard form -->
+  <!-- new joiner onboard form *ngIf="showOnboard" -->
    <app-onboard-form 
      [applicationNumber]="details[0]?.apln_slno"
      [applicationStatus]="details[0]?.apln_status"
      [applicationData]="details[0]" 
-     *ngIf="showOnboard">
+     *ngIf="true">
   </app-onboard-form>
 
   <!-- rejection reason -->

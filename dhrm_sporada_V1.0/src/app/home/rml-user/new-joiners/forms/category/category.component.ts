@@ -426,6 +426,7 @@ get_Line_Name(): Promise<any> {
       this.fromservice.getContPayscale(selectedConId).subscribe({
         next: (res: any) => {
           this.payscales = res;
+          console.log('CONT PAYSCALE LIST:',res);
           resolve(res);
         },
         error: (err:any) => {
@@ -568,7 +569,7 @@ get_Line_Name(): Promise<any> {
         const cat_details = this.categories.find(
           (el: any) => el.categorynm == this.category.value
         );
-        this.is_contract = !cat_details?.file_drop;
+        this.is_contract = !cat_details?.file_drop; // check if the company trainee category based on file_drop.
 
         if (response.isInvalid) {
           this.category.setErrors({ invalidCategory: true });

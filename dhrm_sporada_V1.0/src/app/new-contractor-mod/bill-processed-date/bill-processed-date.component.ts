@@ -463,7 +463,7 @@ export class BillProcessedDateComponent implements OnInit {
       const formData = { ...this.billForm.value };
       // check box index value
       formData.category = this.billForm.value.category[0];
-      formData.companyTraineeLock = this.billForm.value.companyTraineeLock[0];
+      formData.companyTraineeLock =  'Y';
       formData.weekoff_paid = this.billForm.value.weekoff_paid[0];
       formData.payrollArea = this.selecetedPayrollArea.PayrollArea;
       formData.process_start_date = this.formatDate(

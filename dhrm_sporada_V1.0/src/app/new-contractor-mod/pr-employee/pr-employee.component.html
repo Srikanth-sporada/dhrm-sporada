@@ -321,8 +321,17 @@
                 </mat-select>
                 <mat-error *ngIf="ContractDetails.get('dept')?.hasError('required')">Please Select Dept.</mat-error>
               </mat-form-field>
-
+              <!-- payroll area -->
+                <mat-form-field appearance="outline">
+                <mat-label>payroll Area</mat-label>
+                <mat-select formControlName="payrollArea" required>
+                  <mat-option [disabled]="isDOJReadOnly" value="">Select</mat-option>
+                  <mat-option [disabled]="isDOJReadOnly" *ngFor="let pa of payrollArea" [value]="pa.PayrollArea">{{ pa.PayrollArea}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="ContractDetails.get('payrollArea')?.hasError('required')">Please Select Dept.</mat-error>
+                </mat-form-field>
             </div>
+
             <div class="column">
 
               <mat-form-field appearance="outline">

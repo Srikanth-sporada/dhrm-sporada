@@ -103,6 +103,15 @@ export class OnboardFormComponent implements OnInit {
    * used to seperate contract trainee & company trainee
    */
   contractorsList:any =  environment?.contractorsList || []
+  /** payscale form #NEW FROM RML */
+   // new
+  payscales: any[] = [];
+  payscale_Data: any;
+  selectedPayscale: any;
+  payscaleForm:any;
+  NewPayScaleFormGroup: FormGroup;
+  traineePayscale:any;
+  plant_Code: any = sessionStorage.getItem('plantcode');
   constructor(
     private fb: UntypedFormBuilder,
     private formservice: FormService,
@@ -145,8 +154,76 @@ export class OnboardFormComponent implements OnInit {
       category: ["",Validators.required],
       // contractor
       cont_id:[''],
+      payscale:[''],
       trainee_type:[1,Validators.required],
     });
+    /** #NEW PAYSCALE FORM */
+    // #NEW PAYSCALE FORM
+    this.NewPayScaleFormGroup = this.fb.group({
+      PayScale_ID: [null],
+      Plant_Code: [null],
+      Cont_ID: [null],
+      PayScale_Name: [null],
+      Stipend: [null],
+      Basic: [null],
+      DA: [null],
+      HRA: [null],
+      Leave_Salary: [null],
+      Washing_allow: [null],
+      Monthly_Bonus: [null],
+      Sat_and_Mon_Incentive: [null],
+      Monthly_Attn_Incentive: [null],
+      Retention_Incentive: [null],
+      Spl_allow: [null],
+      Night_shift_allowance: [null],
+      Skilled_allow_P3: [null],
+      Amenities_Allow: [null],
+      Other_allowance_1: [null],
+      Other_allowance_2: [null],
+      Other_allowance_3: [null],
+      Other_allowance_4: [null],
+      Gross_Earning: [null],
+      Canteen: [null],
+      Transport: [null],
+      Professional_Tax: [null],
+      WC_Policy: [null],
+      Insurance: [null],
+      Shoe_FirstTime: [null],
+      Glass_FirstTime: [null],
+      Uniform_FirstTime: [null],
+      Coat_FirstTime: [null],
+      Other_deduction_1: [null],
+      Other_deduction_2: [null],
+      Other_deduction_3: [null],
+      Other_deduction_4: [null],
+      Gross_Deduction: [null],
+      Service_Charge_Fixed: [null],
+      Service_charges_Percentage: [null],
+      SC_Base: [null],
+      NSDC_Contribution: [null],
+      Uniform_Charges: [null],
+      Labour_Welfare_Fund: [null],
+      Insurance_Premium: [null],
+      Learning_Fees: [null],
+      Workmen_Compensation: [null],
+      Emp_Comp_Ins: [null],
+      Higher_Education_Fee: [null],
+      EM_ESI_Cal_Val: [null],
+      EM_PF_Cal_Val: [null],
+      EMP_PF_Cal_Val: [null],
+      EMP_ESI_Cal_Val: [null],
+      EM_PF_Percent: [null],
+      EM_ESI_Percent: [null],
+      EMP_PF_Percent: [null],
+      EMP_ESI_Percent: [null],
+      Service_Tax_Val: [null],
+      Servive_Charge_Val: [null],
+      Effective_Date: [null],
+      Effective_Date1: [null],
+      CTC: [null],
+      ToTal_Base_Value: [null],
+      Net_Take_Home: [null],
+    })
   }
   values: any;
 
@@ -179,6 +256,7 @@ export class OnboardFormComponent implements OnInit {
           this.getbackDate_Doj(response[0][0].created_dt);
        //   console.log('4');
           this.basic = this?.obj[0] || [];
+          this.traineePayscale = this.obj[0][1];
           this.designation = this?.obj[1] || [];
           this.department = this?.obj[2] || [];
           this.line = this?.obj[3] || [];
@@ -189,10 +267,13 @@ export class OnboardFormComponent implements OnInit {
           /** trainee process trained value */
           this.oprn = this?.obj[7] || [];
           this.DOJ = response[0][0]?.doj;
-
-          // this.oprn = this.oprn.map((a: any) => a.oprn_desc);
-          // this.cat = this.category.map((a: any) => a.categorynm);
-          // console.log(this.obj[0]);
+          /** update payscale data if already exists #NEW for RML integration*/
+           if(this.basic[0]?.cont_id !== null){
+            console.log('this.traineePayscale',this.traineePayscale)
+             this.form.controls["payscale"].setValue(this.traineePayscale.PayScale_ID);
+             console.log('trainee payscale:',this.form.value.payscale);
+             this.getPayScales(this.traineePayscale.cont_id);
+           }
           // api call for geting roles data for 2nd approver
           /** #NEW FROM RML */
           this.created_dt= response[0][0].created_dt;
@@ -848,6 +929,7 @@ export class OnboardFormComponent implements OnInit {
       Bodhi_training: this.form.value.dojoTraining,
       dept_Id: this.form.value.department,
       Role_id: this.form.value.Role_Id,
+      payscale: this.form.value.payscale,
     }).subscribe({
       next: (response:any) => {
        console.log('category submitted',response);
@@ -952,5 +1034,53 @@ export class OnboardFormComponent implements OnInit {
    */
   showContractor():boolean{
     return this.contractorsList?.includes(this.form?.value?.category) || this.basic[0]?.cont_id !== null
+  }
+
+  /** 🔹 Get single payscale details #new */
+  get_Payscale(payId: any) {
+    const data = {
+      plant_Code: this.plant_Code,
+      con_id: this.form.getRawValue()?.cont_id, // get contr ID fomr user
+      PayScale_ID: payId,
+    };
+    /** need FE and API */
+    this.formservice.getSinglePayscale(data).subscribe({
+      next: (res: any) => {
+        this.payscale_Data = res;
+        if (Array.isArray(res) && res.length > 0) { 
+          this.payscaleForm = true;
+          this.NewPayScaleFormGroup.patchValue(res[0]);
+        }
+      },
+      error: (error:any) => {
+        console.error('ERROR:',error);
+        this.messageService.add({severity:'error',summary:error?.message})
+      }
+    });
+  }
+
+  /** [payscal onchange event] */
+   // #new
+  onInputChanged(event: any, controlName: string) {
+    const newValue = event.target.value;
+    const numericValue = parseFloat(newValue);
+    this.NewPayScaleFormGroup.get(controlName)?.patchValue(numericValue);
+  }
+  /** 🔹 Get payscales for contractor #new */
+  getPayScales(selectedConId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // need FE and API file
+      this.formservice.getContPayscale(selectedConId).subscribe({
+        next: (res: any) => {
+          this.payscales = res;
+          resolve(res);
+        },
+        error: (err:any) => {
+          console.log('ERROR:',err);
+          this.messageService.add({severity:'error',summary:err?.message});
+          reject(err);
+        },
+      });
+    });
   }
 }

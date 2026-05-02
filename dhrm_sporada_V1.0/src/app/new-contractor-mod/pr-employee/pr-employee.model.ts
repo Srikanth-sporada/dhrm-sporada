@@ -58,6 +58,7 @@ Caste:any
 
     // created_by:string|null //need to create
     created_dt:string //need to create
+    payrollArea:string // added by sporada 424
     // modified_by:string|null //need to create
     // modified_on:string //need to create
 }

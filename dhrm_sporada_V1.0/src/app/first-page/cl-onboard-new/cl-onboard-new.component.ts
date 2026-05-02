@@ -19,7 +19,7 @@ export class ClOnboardNewComponent implements OnInit {
   apln_slno:any;
   apprenticeType: any = [
     { label: "CL-Labour", value: "CL" },
-    { label: "CL-Piece Rate", value: "CL - PIECE RATE" },
+    { label: "CL-Piece Rate", value: "CL_PIECE_RATE" },
   ];
   clApplicationForm: FormGroup;
 

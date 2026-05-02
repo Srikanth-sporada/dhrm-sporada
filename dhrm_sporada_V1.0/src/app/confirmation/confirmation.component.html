@@ -13,9 +13,10 @@
        (click)="confirmDelete()" 
         style="color: white; padding: 8px 16px; border: none; border-radius: 4px;"
         class="bg-blue-600">
-        Yes
+       {{buttonText ? buttonText : 'Yes'}}
       </button>
       <button
+      *ngIf="!buttonText"
         (click)="activeModal.close('no clicked!')"
         style="padding: 8px 16px; border: none; border-radius: 4px;"
         class="text-blue-600">

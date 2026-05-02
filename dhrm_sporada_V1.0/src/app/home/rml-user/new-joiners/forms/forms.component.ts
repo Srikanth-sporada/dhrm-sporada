@@ -116,7 +116,7 @@ export class FormsComponent implements OnInit, OnDestroy {
          * @var showCategory if application is filled by supervisor true to show category
          * **/
         if (
-          this.details[0]?.apprentice_type == "CL" &&
+          (this.details[0]?.apprentice_type == "CL" || this.details[0]?.apprentice_type == 'CL - PIECE RATE' || this.details[0]?.apprentice_type == 'CL_PIECE_RATE') &&
           this.details[0]?.cont_id
         ) {
           this.showOnboard = false;

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { ActivatedRoute, ParamMap,Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Confirmation, MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/home/api.service';
 import moment from 'moment';
 import { Utility } from 'src/app/utils/utils';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 @Component({
   selector: 'app-cl-onboard-form',
   templateUrl: './cl-onboard-form.component.html',
@@ -60,6 +62,7 @@ export class ClOnboardFormComponent implements OnInit {
     private apiService:ApiService,
     private formBuilder:FormBuilder,
     protected utils:Utility,
+    private modalService:NgbModal,
   ) { 
     const today = new Date();
     /** 18 year old date check */
@@ -261,7 +264,7 @@ export class ClOnboardFormComponent implements OnInit {
   /** 
    * sumbit form application
    */
-  submitFormData(){
+  submitFormData(event:any){
     console.log(this.aadharFile,this.photoFile)
     /** format DOB */
     const formattedDOB = moment(this.clOnboardForm.value.birthdate).format('YYYY-MM-DD')
@@ -280,13 +283,28 @@ export class ClOnboardFormComponent implements OnInit {
       next: (response:any) => {
         console.log('response',response);
         if(response?.success){
-         this.navigator.navigateByUrl('/');
+          this.showPopupModal();
         }
       },
       error:(error:any) => {
         console.error('ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.error?.message})
       }
+    })
+  }
+   /** 
+   * open modal popup modal
+   */
+  showPopupModal(){
+    const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
+    confirmModalRef.componentInstance.confirmFunction = () => this.navigator.navigate(['/']);
+    confirmModalRef.componentInstance.buttonText = 'Ok'
+    /** modal text */
+    confirmModalRef.componentInstance.confirmText = `Your application ${this.apln_slno} has been submitted.Contact HR for more information.`
+    console.log('modal opened...');
+    /** set success and failed count to default */
+    confirmModalRef.closed.subscribe(() => {
+      this.navigator.navigate(['/'])
     })
   }
 }

@@ -26,6 +26,7 @@ setDefaultOptions({ weekStartsOn: 1 });
 export class CalComponent implements OnInit {
  /** shift & present full width */
   shiftFullWidth:boolean = environment.shiftFullWidth;
+  plantCode:any = sessionStorage.getItem('plantcode')
   firstDayOfWeek: number;
   today: any = new Date();
   month: any = new Date();
@@ -322,5 +323,8 @@ export class CalComponent implements OnInit {
     }
   }
 
+  exoprtToExcell(){
+    this.utils.jsonToExcellExport(this.attData,this.plantCode,`attendance_record_${this.genid}`)
+  }
 
 }

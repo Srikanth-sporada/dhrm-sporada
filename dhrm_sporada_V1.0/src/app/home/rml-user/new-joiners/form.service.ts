@@ -404,7 +404,7 @@ submitCategory(
     }
   );
 }
-
+/** here they add an PAYSCALE #NEW FORM RML */
 DojoTrainingProcess(trainingData:any){
   return this.http.post(this.url + '/hrOperation/submitCategory', trainingData);
 }

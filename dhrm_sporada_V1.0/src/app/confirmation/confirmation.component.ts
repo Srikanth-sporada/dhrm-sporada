@@ -14,6 +14,7 @@ export class ConfirmationComponent implements OnInit {
    * */
   @Input() confirmFunction:any;
   @Input() confirmText:any;
+  @Input() buttonText:any;
   // @ViewChild('ngbModal', {read: TemplateRef}) ngbModalTemplateRef: TemplateRef<unknown> | undefined;
   constructor(public activeModal:NgbActiveModal) { }
 

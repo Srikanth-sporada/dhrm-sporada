@@ -352,8 +352,8 @@ export class ApprovePayscaleComponent implements OnInit {
   /** approve salary */
   approve_Salary() {
     const data = {
-      Effective_Date: this.newSalarySlipForm.get("Effective_Date")?.value,
-      PayScale_ID: this.newSalarySlipForm.get("PayScale_ID")?.value,
+      Effective_Date: this.newSalarySlipForm.get("Effective_Date")?.value || this.Effective_Date,
+      PayScale_ID: this.newSalarySlipForm.get("PayScale_ID")?.value || this.PayScale_ID,
       Apln_slno: this.Apln_slno,
     };
    console.log('approve salary data:',data);

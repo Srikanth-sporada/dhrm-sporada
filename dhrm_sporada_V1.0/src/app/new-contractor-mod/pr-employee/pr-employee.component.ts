@@ -75,7 +75,8 @@ export class PrEmployeeComponent implements OnInit {
   dolUpdate = false;
   userEmpcode: string | null = sessionStorage.getItem("user_name");
   PieceRateEmployee: PieceRateEmployee = new PieceRateEmployee();
-
+  /** added by sporad 424 */
+  payrollArea:any = [];
   constructor(
     private fb1: UntypedFormBuilder,
     private location: Location,
@@ -310,6 +311,7 @@ export class PrEmployeeComponent implements OnInit {
           disabled: false,
         },
       ],
+      payrollArea:['', Validators.required]
     });
 
 
@@ -355,7 +357,7 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     this.searchfilter();
   };
 
-
+  
   getContractorDetails() {
     this.api.getContractor().subscribe({
       next: (res) => {
@@ -948,6 +950,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
       this.PieceRateEmployee.dept_slno = this.ContractDetails.value.dept;
       this.PieceRateEmployee.line_code = this.ContractDetails.value.line;
       this.PieceRateEmployee.Role_ID = this.ContractDetails.value.Role;
+      /** payroll area for PR */
+      this.PieceRateEmployee.payrollArea = this.ContractDetails.value.payrollArea;
       this.PieceRateEmployee.reporting_to =
         this.ContractDetails.value.reToPerson;
       this.PieceRateEmployee.doj = this.formatDate(
@@ -980,12 +984,7 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
         Created: this.userEmpcode
       };
 
-      this.api
-        .submit_Pr_Emp_ByHR(
-          submissionData,
-          this.PieceRateEmployee.apln_slno
-        )
-        .subscribe({
+      this.api.submit_Pr_Emp_ByHR(submissionData,this.PieceRateEmployee.apln_slno).subscribe({
           next:(res: any) => {
             const formData = new FormData();
             formData.append(
@@ -1014,7 +1013,7 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
           error: (error) => {
             this.utils.handleApiErrors(error,'SUBMIT PR EMPLOYEE API ERROR:','error',error?.message);
           }
-        });
+      });
     }
   }
 
@@ -1129,7 +1128,7 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     const genId = "C" + this.basicDetails.value.apln_slno;
     this.PieceRateEmployee.apln_slno =
       this.basicDetails.value.apln_slno;
-    this.PieceRateEmployee.gen_id = genId;
+    this.PieceRateEmployee.gen_id = genId; // genid
     this.PieceRateEmployee.biometric_no =
       this.basicDetails.value.apln_slno;
     this.PieceRateEmployee.marital_status =
@@ -1155,6 +1154,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     this.PieceRateEmployee.TempPassword = this.createTempPassword(
       this.formatDate(this.basicDetails.value.DOB).toString()
     );
+    /** payroll area */
+    this.PieceRateEmployee.payrollArea = this.ContractDetails.value.payrollArea;
     this.PieceRateEmployee.approved_dt = this.formatDate(
       new Date()
     ).toString();
@@ -1267,7 +1268,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     this.showContractorForm();
     this.status = data.apln_status;
     this.showeditButton(showButton);
-
+    /** GET PAYROLL AREA */
+    this.getPayrollAreaByPlantCode(data.plant_code);
     console.log('data', data)
 
     if (data.apln_status == "PENDING" || data.apln_status == "Deleted") {
@@ -1377,7 +1379,8 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     this.ContractDetails.controls["Role"].setValue(data.Role_Id);
     this.ContractDetails.controls["reToPerson"].setValue(data.reporting_to);
     this.ContractDetails.controls["DOJ"].setValue(data.doj);
-
+    /** set payroll area if already exists*/
+    this.ContractDetails.controls['payrollArea'].setValue(data?.payrollArea)
     this.releiveDetails.controls["DOE"]?.setValue(data.dol);
     // this.releiveDetails.controls['DOE']?.setValue(dolValue)
     this.releiveDetails.controls["apln_status"]?.setValue(
@@ -1413,6 +1416,22 @@ this.releiveDetails.get("status")?.valueChanges.subscribe((val:any) => {
     } else {
       console.log("No file provided.");
     }
+  }
+  
+  /** 
+   * get payroll area by trainee plant code
+   * @param plantCode
+   *  */
+  getPayrollAreaByPlantCode(plantCode:any){
+    this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
+      next: (response:any) => {
+        console.log('PAYROLL AREA:',response);
+        this.payrollArea = response;
+      },
+      error : (error:any) => {
+        this.utils.handleApiErrors(error,'PAYROLL AREA API ERROR:','error',error.message);
+      }
+    })
   }
 
   openDeleteConfirmationDialog(apln_slno: any): void {
