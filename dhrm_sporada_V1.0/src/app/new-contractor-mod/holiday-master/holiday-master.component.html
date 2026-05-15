@@ -78,6 +78,7 @@
               <p-checkbox 
               formControlName="holidayType"
               value="F" 
+              [disabled]="!showAdd ? true : false"
               inputId="admin" ></p-checkbox>
               <label for="admin" class="mb-0 text-blue-600">Festival</label>
             </div>
@@ -85,6 +86,7 @@
             <div class="flex items-center gap-2 ml-2 mb-2">
               <p-checkbox 
               formControlName="holidayType"
+              [disabled]="!showAdd ? true : false"
               value="N" 
               inputId="national" ></p-checkbox>
               <label for="national" class="mb-0 text-blue-600">National</label>
@@ -97,6 +99,7 @@
             <!-- add btn -->
             <button
               *ngIf="showAdd"
+              [disabled]="!holidayForm.valid"
               (click)="onSubmit()"
               class="btn btn-primary btn-lg rounded-[1.25rem] px-3 shadow-md bg-blue-600 mr-2"
             >
@@ -112,6 +115,7 @@
             <!-- update btn -->
             <button
               *ngIf="!showAdd"
+               [disabled]="!holidayForm.valid"
               class="btn btn-warning btn-lg rounded-[1.25rem] px-3 shadow-md text-white mr-2"
               (click)="update()"
             >

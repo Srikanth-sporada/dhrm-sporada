@@ -305,7 +305,7 @@ export class PayscaleHeaderMasterComponent implements OnInit {
           console.error('ERROR:', error);
           this.messageService.add({
             severity: "error",
-            summary: error.message,
+            summary: error?.error?.error,
           });
         },
       });

@@ -39,7 +39,7 @@ export class HrLopApplyComponent implements OnInit {
 
   ngOnInit(): void {
     /** get bill lock date based n logged in user */
-    this.getLockDateByCategory();
+    // this.getLockDateByCategory();
   }
 
    /** 
@@ -60,6 +60,7 @@ export class HrLopApplyComponent implements OnInit {
         if(response.length){
           this.traineeData = response;
           /** set leave details to true */
+          this.getLockDateByCategory(this.userEnteredGenId);
           this.showTraineeDetails = true;
           console.log('TRAINEE DATA:',response);
         }else{
@@ -195,9 +196,10 @@ export class HrLopApplyComponent implements OnInit {
    * get lock date for min calendar date
    * @property {Date} minDate
    * @property {*}  loggedInUserID
+   * @param {*} gen_id
    */
-  getLockDateByCategory(){
-    this.apiService.getlockdateByCategory('T').subscribe({
+  getLockDateByCategory(gen_id:any){
+    this.apiService.getLastProcesedBill(this.plantCode,'T',gen_id).subscribe({
       next: (response:any) => {
         console.log('LOCK DATE:',response);
         if(response?.date){

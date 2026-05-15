@@ -657,6 +657,8 @@
                     [maxDate]="DOJmaxDate" -->
                   <p-calendar 
                     formControlName="DOJ"
+                    [minDate]="DOJminDate"
+                    [maxDate]="DOJmaxDate"
                     dateFormat="yy-mm-dd"
                     [disabled]="isDOJReadOnly"
                     [showIcon]="true" >

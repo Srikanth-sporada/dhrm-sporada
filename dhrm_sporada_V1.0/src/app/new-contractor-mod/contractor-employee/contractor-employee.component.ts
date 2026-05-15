@@ -124,7 +124,7 @@ export class ContractorEmployeeComponent implements OnInit {
   Date: any = "Date";
   DOJmaxDate: Date;
   DOJminDate: Date;
-
+  DOJLimit:number;
   lockDate: any;
 
   DoEminDate: any;
@@ -705,16 +705,25 @@ export class ContractorEmployeeComponent implements OnInit {
     return formattedDate;
   }
 
-  // calculate min for DOE
+  /** calculate DOL min date and DOJmin date based on last lock date 
+   * @param dateDoj
+  */
   calculateMinDate(dateDoj: any) {
     this.service.getlockdateByCategory("T").subscribe((response: any) => {
       console.log("lock date", new Date(response.date));
       console.log("DOJ", dateDoj);
 
       this.lockDate = new Date(response.date);
-      this.DoEminDate =
-        this.lockDate > dateDoj ? this.lockDate : new Date(dateDoj);
+      this.DoEminDate = this.lockDate > dateDoj ? this.lockDate : new Date(dateDoj);
       console.log(this.DoEminDate);
+      /** calculate DOJ MIN & MAX DATE */
+      if(this.DOJLimit){
+       console.log('DOJ LIMIT:',this.DOJLimit);
+       console.log('LOCK DATE:',this.lockDate);
+       this.DOJminDate = moment(this.lockDate).subtract(this.DOJLimit, 'days').toDate();
+       this.DOJmaxDate = moment().toDate(); // current date
+       console.log('DOJ MIN,MAX DATE:',this.DOJminDate,this.DOJmaxDate)
+      }
     });
 
     const currentDate = new Date();
@@ -723,6 +732,21 @@ export class ContractorEmployeeComponent implements OnInit {
     // console.log(currentDate);
 
     //  this.DoEmaxDate = new Date(currentDate.setDate(currentDate.getDate() ))
+  }
+
+  /** get back date DOJ */
+  getDOJBackDate(){
+    this.apiService.getbackdate().subscribe({
+      next:(response:any) => {
+        if(response?.status == 'success'){
+          this.DOJLimit = response.data.doj_limit
+        }
+      },
+      error: (error:any) => {
+      console.log('DOJ BACKDATE API ERROR:',error);
+      this.messageService.add({severity:'error',summary:error?.message})
+      }
+    })
   }
 
   keyPressAlphaNumeric(event: any) {
@@ -756,7 +780,7 @@ export class ContractorEmployeeComponent implements OnInit {
         console.log("Contractor employee data:", res);
       },
       error: (error) => {
-        console.error("ERROR:", error);
+        console.error("SEARCH API ERROR:", error);
         this.messageService.add({
           severity: "error",
           summary: error?.error?.message,
@@ -930,7 +954,7 @@ export class ContractorEmployeeComponent implements OnInit {
         );
       },
       error: (error) => {
-        console.log(error);
+        console.log('GET PAYROLL API ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -979,7 +1003,7 @@ export class ContractorEmployeeComponent implements OnInit {
         );
       },
       error: (error) => {
-        console.error("ERROR:", error);
+        console.error("GET CONTRACTOR API ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -995,7 +1019,7 @@ export class ContractorEmployeeComponent implements OnInit {
         this.pincodeData = res;
       },
       error: (error) => {
-        console.error("ERROR:", error);
+        console.error("GET PINCODE API ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -1012,7 +1036,7 @@ export class ContractorEmployeeComponent implements OnInit {
         console.log("Relive resaon", res);
       },
       error: (error) => {
-        console.error("ERROR:", error);
+        console.error("GET RELIVE REASON API ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -1029,7 +1053,7 @@ export class ContractorEmployeeComponent implements OnInit {
         console.log("religion data:", res);
       },
       error: (error) => {
-        console.error("ERROR:", error);
+        console.error("GET RELIGION API ERROR:", error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
     });
@@ -1375,7 +1399,7 @@ export class ContractorEmployeeComponent implements OnInit {
               this.messageService.add({severity:'info',summary:res?.message})
             },
             error: (error) => {
-              console.log("file not Uploaded", error);
+              console.log("FILE UPLOAD API ERROR:", error);
               this.messageService.add({
                 severity: "error",
                 summary: error.message,
@@ -1604,6 +1628,11 @@ export class ContractorEmployeeComponent implements OnInit {
 
   /** To view CL Employee Basic Details Details */
   onEditByHr(data: any, showButton: boolean) {
+    /** get DOJ back date
+     * @property {number} DOJLimit
+     */
+    this.getDOJBackDate();
+
     this.Pay_apln_slno = data.apln_slno;
     this.showContractorForm();
     this.status = data.apln_status;
@@ -2224,9 +2253,12 @@ export class ContractorEmployeeComponent implements OnInit {
         },
         (error) => {
           if (error.status === 400) {
-            this.openAlertDialog(`${error.error}`, "error");
+            // this.openAlertDialog(`${error.error}`, "error");
+            this.messageService.add({severity:'error',summary:error?.error});
+            console.log('APPROVE BY HR API ERROR',error)
           } else {
             this.openAlertDialog(`Error in connection`, "error");
+            this.messageService.add({severity:'error',summary:'Oops! something went wrong.'})
           }
         },
       );
@@ -2239,15 +2271,18 @@ export class ContractorEmployeeComponent implements OnInit {
         this.hideContractorForm();
         this.getAllClEmployees();
         this.reset();
-        this.openAlertDialog(`${apln_slno} is Application Rejected  `, "error");
+        // this.openAlertDialog(`${apln_slno} is Application Rejected  `, "error");
+        this.messageService.add({severity:'info',summary:`Application No: ${apln_slno} is rejected.`})
 
         // this.getConSubmittedData()
       },
       (error) => {
         if (error.status === 400) {
-          this.openAlertDialog(`${error.error}`, "error");
+          // this.openAlertDialog(`${error.error}`, "error");
+          this.messageService.add({severity:'error',summary:error?.error});
         } else {
-          this.openAlertDialog("Error in connection", "error");
+          // this.openAlertDialog("Error in connection", "error");
+          this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
           this.getAllClEmployees();
           this.searchfilter();
           this.reset();

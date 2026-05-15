@@ -71,7 +71,7 @@ export class FullMonthLopComponent implements OnInit {
         if(response.length){
           this.traineeData = response;
           /** get last processed bill date */
-          this.getLastBillProcessedDate(response[0]?.plant_code);
+          this.getLastBillProcessedDate(response[0]?.plant_code, this.fullMonthLopForm.value.gen_id);
           console.log(response);
         }else{
           this.messageService.add({severity:'warn',summary:'Gen ID not found!'})
@@ -88,9 +88,10 @@ export class FullMonthLopComponent implements OnInit {
    * @property {*} lastProcessedBillDate js date object for calander minDate prop
    * @var {*} lastProcessedBillDate formatted bill date
    * @param {*} plantCode
+   * @param {*} gen_id
    */
-  getLastBillProcessedDate(plantCode:any){
-    this.service.getLastProcesedBill(plantCode,'T').subscribe({
+  getLastBillProcessedDate(plantCode:any, gen_id:any){
+    this.service.getLastProcesedBill(plantCode,'T', gen_id).subscribe({
       next: (response:any) => {
         this.lastProcessedBillDate = new Date(response?.date);
         const formattedLockDate = moment(response?.date).format('YYYY-MM-DD')

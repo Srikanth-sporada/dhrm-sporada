@@ -685,7 +685,7 @@ export class ContractorOnboardComponent implements OnInit {
             con_id: this.userSelectedContractor.Con_Id,
           },
           this.basicDetailsObj.Cont_code,
-          this.userSelectedContractor.Con_Id,
+          //this.userSelectedContractor.Con_Id,
         )
         .subscribe({
           next: (res) => {

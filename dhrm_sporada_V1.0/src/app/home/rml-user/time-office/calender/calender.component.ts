@@ -91,7 +91,7 @@ export class CalenderComponent implements OnInit {
       this.lockdate = res.date;
     }, (error) => {
       console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
+      this.messageService.add({severity:'error',summary:error.error?.mesasge})
     });
 
     this.service.getbackdate().subscribe((res: any) => {

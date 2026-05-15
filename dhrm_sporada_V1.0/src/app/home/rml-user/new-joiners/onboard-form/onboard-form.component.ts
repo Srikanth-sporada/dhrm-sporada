@@ -507,7 +507,8 @@ export class OnboardFormComponent implements OnInit {
    */
   getbackDate_Doj(created_dt:any){
     console.log('CREATED DATE:',this.created_dt)
-    this.service.getbackdate().subscribe((response:any)=>{
+    this.service.getbackdate().subscribe({
+      next:(response:any)=>{
       if (response.status=='success'){
       //  console.log(response.data.doj_limit)
         this.backdate = response.data.doj_limit
@@ -524,10 +525,11 @@ export class OnboardFormComponent implements OnInit {
         this.messageService.add({severity:'warn',summary:response.message})
       }
     },
-   (err) => {
-    console.log('ERROR:',err);
+    error: (err) => {
+    console.log('GET BACKDATE DOJ API ERROR:',err);
     this.messageService.add({severity:'error',summary:err.message})
-   })
+   }
+    })
   }
   setDOJ(doj:any){
   //  console.log('3');
@@ -624,7 +626,7 @@ export class OnboardFormComponent implements OnInit {
                     this.exportexcel();
                   },
                   error:(err) => {
-                    console.log('ERROR:',err)
+                    console.log('GET FILE DROP API ERROR:',err)
                     this.messageService.add({severity:'error',summary:err.message});
                   }
                 });
@@ -638,7 +640,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('ERROR:',err)
+          console.error('ONBOARD FORM API ERROR:',err)
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -661,7 +663,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('ERROR:',err);
+          console.error('SEPERATION API ERROR:',err);
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -704,7 +706,7 @@ export class OnboardFormComponent implements OnInit {
                     this.exportexcel();
                   },
                   error:(err) => {
-                    console.log('ERROR:',err)
+                    console.log('GET FILE DROP API ERROR:',err)
                     this.messageService.add({severity:'error',summary:err.message});
                   }
                 });
@@ -714,7 +716,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('ERROR:',err)
+          console.error('TRAINEE FINAL APPROVE API ERROR:',err)
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -738,7 +740,7 @@ export class OnboardFormComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('ERROR:',err);
+          console.error('TRAINEE RELIEVE API ERROR:',err);
           this.messageService.add({severity:'error',summary:err.message})
         },
       });
@@ -810,10 +812,10 @@ export class OnboardFormComponent implements OnInit {
 
     this.service.filedrop(formData).subscribe({
       next: (response) => {
-        // console.log(response);
+        console.log('FILE DROP API RESPONE',response);
       },
       error: (error:any) => {
-        console.error('ERROR:',error)
+        console.error('FILE DROP API ERROR:',error)
       }
     });
   }
@@ -835,7 +837,7 @@ export class OnboardFormComponent implements OnInit {
         // this.reporting_to = this.reporting_to.map((a:any) => a.emp_name)
       },
       error: (err) => {
-        console.log('ERROR:',err);
+        console.log('GET LINE API ERROR:',err);
         this.messageService.add({severity:'error',summary:err.message})
       }
     });
@@ -968,6 +970,7 @@ export class OnboardFormComponent implements OnInit {
     this.formservice.rejected(rejectData);
     this.messageService.add({severity:'info',summary:'Application has been rejected'})
     // window.alert("Application has been rejected");
+    /** route to ht approval page */
     this.router.navigate(["rhrm/new_joiners/hr-approval"]);
   }
 
@@ -980,7 +983,7 @@ export class OnboardFormComponent implements OnInit {
               this.Role = response[0];
             },
             error: (error) => {
-              console.error('ERROR:',error);
+              console.error('GET ROLE API ERROR:',error);
               this.messageService.add({severity:'error',summary:error.message})
             }
           })
@@ -995,7 +998,7 @@ export class OnboardFormComponent implements OnInit {
       console.log('CONTRACTORS:', response.data)
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('GET CONTRACTOR API ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     }
    })
@@ -1019,7 +1022,7 @@ export class OnboardFormComponent implements OnInit {
        console.log(response)
       },
       error: (err) => {
-        console.error('ERROR:',err)
+        console.error('GET COST CENTER API ERROR:',err)
         this.messageService.add({severity:'error',summary:err.error?.message})
       }
     })
@@ -1053,7 +1056,7 @@ export class OnboardFormComponent implements OnInit {
         }
       },
       error: (error:any) => {
-        console.error('ERROR:',error);
+        console.error('GET PAYSCALE API ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.message})
       }
     });
@@ -1076,7 +1079,7 @@ export class OnboardFormComponent implements OnInit {
           resolve(res);
         },
         error: (err:any) => {
-          console.log('ERROR:',err);
+          console.log('GET PAYSCALE API ERROR:',err);
           this.messageService.add({severity:'error',summary:err?.message});
           reject(err);
         },

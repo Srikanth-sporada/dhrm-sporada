@@ -898,7 +898,7 @@ export class ApiService {
   }
   calendar(form: any) {
     return this.http.get(
-      this.url2 + "/ars/calendar?id=" + form.id + "&date=" + form.date,
+      this.url + "/ars/calendar?id=" + form.id + "&date=" + form.date,
       form
     );
   }
@@ -994,15 +994,22 @@ export class ApiService {
       `/ars/getlockdateByPlant?plant=${sessionStorage.getItem("plantcode")}`
     );
   }
+  /** get processed bill by plant code & category */
   getlockdateByCategory(category: any) {
     return this.http.get(
       this.url +
       `/ars/getlockdateByCategory?plant=${sessionStorage.getItem("plantcode")}&cat=${category}`
     );
   }
-
-  getLastProcesedBill(plantCode:any,category:any){
-    return this.http.get(this.url + `/ars/getlockdateByCategory?plant=${plantCode}&cat=${category}`)
+/** 
+ * get last processed bill by gen_id based on the payroll area
+ * @param plantCode
+ * @param category
+ * @param gen_id
+ * @param payrollArea
+ *  */
+  getLastProcesedBill(plantCode:any,category:any, gen_id?:any,payrollArea?:any){
+    return this.http.get(this.url + `/ars/getlockdateByCategory?plant=${plantCode}&cat=${category}&gen_id=${gen_id}&payrollArea=${payrollArea}`)
   }
 
   
@@ -1072,9 +1079,10 @@ export class ApiService {
     return this.http.get(this.url + "/hrOperation/getcategory");
   }
 
-  getExcessHours() {
-    return this.http.get(this.url + `/ars/getExcessHours?empl_slno=${sessionStorage.getItem("emp_id")}`);
+  getExcessHours(fromDate:string,toDate:string) {
+    return this.http.get(this.url + `/ars/getExcessHours?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}`);
   }
+  
   getExcessHours_Report() {
     return this.http.get(this.url + `/ars/getExcessHours_Report?empl_slno=${sessionStorage.getItem("emp_id")}`);
   }

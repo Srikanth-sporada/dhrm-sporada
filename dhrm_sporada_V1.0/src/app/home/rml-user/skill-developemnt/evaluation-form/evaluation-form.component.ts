@@ -391,6 +391,8 @@ export class EvaluationFormComponent implements OnInit {
             setTimeout(() => {
               this.router.navigate(["/rhrm/skill-developement/trainer-evaluation",]);
             }, 2100);
+          }else{
+            this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
           }
         },
         error: (error) => {
@@ -432,6 +434,8 @@ export class EvaluationFormComponent implements OnInit {
               this.router.navigate([
                 "/rhrm/skill-developement/supervisor-evaluation",
               ]);
+            }else{
+              this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
             }
           },
           error: (error:any) => {

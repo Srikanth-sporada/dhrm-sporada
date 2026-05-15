@@ -237,7 +237,8 @@ employeeTypeOptions = [
         } else {
 	// new
           if (this.selectedReportType === 'OT75') {
-            this.exportexcel(resp)
+            this.exportexcel(resp);
+            this.loading = false;
           } else {
             this.exportexcel(resp.data);
           }
@@ -252,7 +253,8 @@ employeeTypeOptions = [
       }
     },  
     error: (error:any) => {
-        console.log('ERROR:',error);
+        console.log('GET ARS REPOTS API ERROR:',error);
+        this.loading = false;
         this.messageService.add({severity:'error',summary:error.response})
       }
     });
@@ -297,10 +299,10 @@ employeeTypeOptions = [
 
   exportexcel(data:any) {
     console.log('EXCEL DATA:',data);
-    if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0])) {
+    if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0]) || data) {
       var wb = XLSX.utils.book_new();
       let type = this.reportType.filter((element: any) => element.code == this.selectedReportType);
-      console.log(type[0].code);
+      console.log('REPORT TYPE:',type[0].code);
       if (!type || type.length === 0) {
         console.error('Invalid report type selected');
         this.messageService.add({severity:'warn',summary:'Invalid report type selected'})
@@ -363,8 +365,8 @@ employeeTypeOptions = [
     // ✅ Special handling for OT75 throws type error
     else if (type[0].code === 'OT75') {
       sheets = [
-        { sheetName: 'Paid OT More Than 75 Hrs', dataArray: data },
-        { sheetName: 'Worked OT More Than 75 Hrs', dataArray: data }
+        { sheetName: 'Paid OT More Than 75 Hrs', dataArray: data?.data1 },
+        { sheetName: 'Worked OT More Than 75 Hrs', dataArray: data?.data2 }
       ];
     } 
     else {
@@ -380,11 +382,16 @@ employeeTypeOptions = [
         this.messageService.add({severity:'warn',summary:'No sheets defined for the selected report type'});
         return;
       }
-
+      /** OT 75 DATA CHECK */
+       if (data?.data1?.length == 0 || data?.data2?.length == 0){
+          console.log('OT75 HAS NO DATA');
+          this.messageService.add({severity:'warn',summary:'Data not found!'});
+          return;
+        }
       sheets.forEach((sheet:any, index:any) => {
         console.log(sheet.dataArray);
         
-        if (sheet.dataArray && sheet.dataArray.length) { 
+        if (sheet.dataArray && sheet.dataArray.length !== 0) { 
           // var ws = XLSX.utils.json_to_sheet(sheet.dataArray);
 	  
 	  // new
@@ -416,7 +423,8 @@ employeeTypeOptions = [
         ws["!cols"] = columnWidths;
           // Append the sheet to the workbook
           XLSX.utils.book_append_sheet(wb, ws, `${sheet.sheetName}`);
-        } else {
+        } 
+        else {
           console.error(`Invalid data format for ${sheet.sheetName}.`);
           this.messageService.add({severity:'warn',summary:`Invalid data format for ${sheet.sheetName}.`})
           var ws = XLSX.utils.json_to_sheet(sheet.dataArray);
@@ -426,7 +434,8 @@ employeeTypeOptions = [
   
       XLSX.writeFile(wb, `${type[0].name}-report.xlsx`);
       this.messageService.add({severity:'info',summary:'Data Downloaded!'})
-    } else {
+    } 
+    else {
       let type = this.reportType.filter((element: any) => element.code == this.selectedReportType);
       var ws = XLSX.utils.json_to_sheet(data);
       var wb = XLSX.utils.book_new();

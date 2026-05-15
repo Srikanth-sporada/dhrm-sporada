@@ -10,7 +10,7 @@ import { Utility } from 'src/app/utils/utils';
   styleUrls: ['./week-off.component.css']
 })
 export class WeekOffComponent implements OnInit {
-  date:any = new Date() // current date;
+  date:any = new Date();
   departmentList:any[];
   selectedDept:any="";
   lineList:any[];
@@ -25,6 +25,8 @@ export class WeekOffComponent implements OnInit {
   genIdInput:any;
   isCorrectDate:boolean;
   endOfWeek:string = '';
+  payrollArea:any = [];
+  selectedPayrollArea:any;
   roles = [
   { value: 'T', label: 'Trainee/CL' },
   { value: 'O', label: 'Operator' }
@@ -52,14 +54,30 @@ export class WeekOffComponent implements OnInit {
     }
     /** get dept by plant */
     this.getDeptByPlant();
-    /** get lock date & get data */
-    this.getLockDate();
     /** get line */
     this.getLine();
+    /** get payroll area by plantcode */
+    this.getPayrollArea(this.all.plant_code)
     // this.date < this.today ? this.getData() : "";
 
   }
 
+  /** get payroll area by plant */
+  getPayrollArea(plantCode:any){
+    this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
+      next: (response) => {
+        this.payrollArea = response;
+        /** set first record for selected payrollArea */
+        this.selectedPayrollArea = this.payrollArea[0]?.PayrollArea;
+        /** get lock date by payroll area */
+        this.getLockDate();
+      },
+      error:(error:any) => {
+        console.log('GET PAYROLL AREA API ERROR:');
+        this.messageService.add({severity:'error',summary:error?.error?.message});
+      }
+    })
+  }
   /** get department by plant */
   getDeptByPlant(){
      this.apiService.getDeptByPlant().subscribe((data: any) => {
@@ -195,13 +213,14 @@ export class WeekOffComponent implements OnInit {
    */
   getLockDate(){
     console.log(this.cat)
-    this.apiService.getlockdateByCategory(this.cat).subscribe({
+    this.apiService.getLastProcesedBill(this.all.plant_code,this.cat,'',this.selectedPayrollArea).subscribe({
       next: (res:any) => {
       if(res.date){
         this.lockDate = new Date(res.date);
-      // console.log(this.lockDate)
+        /** set default date to lock date */
+        // this.date = this.lockDate;
       /** add lockdate + 5 weeks */
-      this.today = new Date(moment(this.lockDate,'yyyy-MM-DD').add(5,'weeks').format('yyyy-MM-DD'))
+      this.today = new Date(moment(this.lockDate,'yyyy-MM-DD').add(1,'month').format('yyyy-MM-DD'))
       console.log(moment(this.lockDate,'yyyy-MM-DD').add(5,'weeks').format('yyyy-MM-DD'));
       console.log('Today:', this.today)
       /** check current date is correct  & get week off data */
@@ -246,14 +265,15 @@ export class WeekOffComponent implements OnInit {
     console.log(selected);
     /** 2 days week off mapping */
     if (selected.length > 2 && fiveDaysMapping == 'Y') {
-      selected.shift() // remove the first element
+      /** remove the first element */
+      selected.shift();
       item.week_off_day_arr = [...selected];
       console.log(item.week_off_day);
       /** finding changed week of id */
       const weekOfIdArr = item.week_off_day.map((weekoff:any) => {
         return weekoff.trn_woff_id
       });
-      console.log('ID ARR',weekOfIdArr)
+      console.log('ID ARR',weekOfIdArr);
       const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
       console.log('Changed Week Off Five Days:',changedWeekOff);
       this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr, itemIndex);
@@ -261,7 +281,8 @@ export class WeekOffComponent implements OnInit {
     } 
     /** 1 day week off mapping */
     else if(selected.length > 1 && (!fiveDaysMapping || fiveDaysMapping == 'N')){
-      selected.shift() // remove the first element
+      /** remove the first element */
+      selected.shift(); 
       item.week_off_day_arr = [...selected];
       console.log(item.week_off_day);
       /** finding changed week of id */

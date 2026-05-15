@@ -19,6 +19,8 @@ import { ConfirmationComponent } from 'src/app/confirmation/confirmation.compone
 export class ExcesshrApproveComponent implements OnInit {
   data: any = [];
   filterDate: any = "";
+  fromDate:Date = moment().subtract(1,'days').toDate();
+  toDate:Date = moment().toDate();
   lines: any;
   selectedLine: any = "All";
   userEnteredGenID: any;
@@ -113,7 +115,11 @@ export class ExcesshrApproveComponent implements OnInit {
    * @property {*} data mapped with approverHr & reason
    */
   getData() {
-    this.apiService.getExcessHours().subscribe({
+    /** format dates */
+    const fromDate = moment(this.fromDate).format('YYYY-MM-DD');
+    const toDate = moment(this.toDate).format('YYYY-MM-DD');
+
+    this.apiService.getExcessHours(fromDate,toDate).subscribe({
       next: (response: any) => {
         if (response.status == "failed") {
           // alert(response.message);

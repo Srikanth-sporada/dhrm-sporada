@@ -82,15 +82,17 @@ export class CalComponent implements OnInit {
       this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
     }
     this.firstDayOfWeek = 1; 
-    this.service.getlockDate().subscribe((res:any)=>{
-      this.lockdate = res.date;
-      if(res?.status == 'failed'){
-        this.messageService.add({severity:'error',summary:res?.message});
-      }
-    }, (error) => {
-      console.error('ERROR:',error);
-      this.messageService.add({severity:'error',summary:error.message})
-    });
+
+    // this.service.getlockDate().subscribe((res:any)=>{
+    //   this.lockdate = res.date;
+    //   if(res?.status == 'failed'){
+    //     this.messageService.add({severity:'error',summary:res?.message});
+    //   } 
+    // }, (error) => {
+    //   console.error('ERROR:',error);
+    //   this.messageService.add({severity:'error',summary:error?.error?.message})
+    // });
+
     /** get attedance data when route is not null */
     if(this.routeGenID){
       /** set gen id to route gen id */
