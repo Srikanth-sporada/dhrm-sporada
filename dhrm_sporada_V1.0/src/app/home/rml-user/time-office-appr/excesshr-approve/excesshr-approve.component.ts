@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy,ChangeDetectorRef } from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
@@ -42,6 +42,7 @@ export class ExcesshrApproveComponent implements OnInit {
     public loader: LoaderserviceService,
     public utlis:Utility,
     private modalService:NgbModal,
+    private cd:ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -69,6 +70,14 @@ export class ExcesshrApproveComponent implements OnInit {
    
   }
 
+  logPageEvent(event:any){
+    console.clear();
+    console.log('PAGINATION',event);
+     const page = event.first / event.rows + 1; // current page (1-based)
+     const limit = event.rows;
+     console.log('PAGE:',page);
+     console.log('LIMIT:',limit);
+  }
   /**
    * get Allowed OT hours
    * @property {*} max_hrs allowed ot hours day
@@ -130,12 +139,15 @@ export class ExcesshrApproveComponent implements OnInit {
         } else {
           console.log('EH DATA:',response.data);
           /** map with approvedHr, reason, selected props */
-          this.data = response.data.map((element: any) => {
+          const constructedData = response.data.map((element: any) => {
             return { ...element, approvedHr: null, reason: "", selected:false };
           });
+          this.data = [...constructedData]
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
           console.log('MAPPED EH DATA:',this.data);
+          /** change detection */
+          this.cd.detectChanges();
         }
       },
       error: (error) => {
