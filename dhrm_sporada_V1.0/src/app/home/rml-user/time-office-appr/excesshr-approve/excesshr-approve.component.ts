@@ -123,7 +123,7 @@ export class ExcesshrApproveComponent implements OnInit {
    * get EH data
    * @property {*} data mapped with approverHr & reason
    */
-  getData() {
+  getData(page?:string|number , limit?:string|number) {
     /** format dates */
     const fromDate = moment(this.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.toDate).format('YYYY-MM-DD');
