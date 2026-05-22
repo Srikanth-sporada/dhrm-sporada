@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  path: "https://rane.ssipl.org", // rane.ssipl.org
-  path2: "https://rane.ssipl.org", // 192.168.1.205:8080
+  path: "http://192.168.1.205:8080", // rane.ssipl.org
+  path2: "http://192.168.1.205:8080", // 192.168.1.205:8080
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
@@ -74,8 +74,6 @@ export const environment = {
   hidePayrollHrAppr:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
-
-
 
 export const powerBiLink = {
   Canteen_Report: 'https://app.powerbi.com/view?r=eyJrIjoiZTcyYzNmYjQtZTg2OS00ZWQzLWJlYWUtOGJmMDQ3ZWM0YjAwIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',

@@ -128,7 +128,7 @@ export class ExcesshrApproveComponent implements OnInit {
     const fromDate = moment(this.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.toDate).format('YYYY-MM-DD');
 
-    this.apiService.getExcessHours(fromDate,toDate).subscribe({
+    this.apiService.getExcessHours(fromDate,toDate,'','').subscribe({
       next: (response: any) => {
         if (response.status == "failed") {
           // alert(response.message);

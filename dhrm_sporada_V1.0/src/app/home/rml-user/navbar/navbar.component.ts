@@ -262,7 +262,10 @@ export class NavbarComponent implements OnInit {
         sessionStorage.setItem("dept_slno", this.ishrappr[0]?.Department);
         this.getitems();
       },
-      error: (error) => this.messageService.add({severity:'error',summary:error.message}),
+      error: (error) => {
+        console.log('GET HR API ERROR:',error);
+         this.messageService.add({severity:'error',summary:error.message});
+      },
     });
   }
 
