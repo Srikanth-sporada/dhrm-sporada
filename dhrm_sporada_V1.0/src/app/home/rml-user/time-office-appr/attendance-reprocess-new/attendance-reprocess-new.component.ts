@@ -133,7 +133,7 @@ export class AttendanceReprocessNewComponent implements OnInit {
             }
           },
           error: (error:any) => {
-            console.error('ERROR:',error);
+            console.error('REPROCESS API ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.error?.message});
           }
         })
