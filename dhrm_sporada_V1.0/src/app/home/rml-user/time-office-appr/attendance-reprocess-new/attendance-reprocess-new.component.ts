@@ -124,12 +124,14 @@ export class AttendanceReprocessNewComponent implements OnInit {
         this.clamApiService.reprocessAttendance(formData).subscribe({
           next: (response:any) => {
             console.log('response:',response);
-            if(response.success && response?.data.length){
+            if(response.success && response?.data.length !== 0){
               this.openStatusModal(response)
               this.attendanceReprocessForm.reset();
+            } else if(response?.success && response?.data.length == 0){
+              this.messageService.add({severity:'warn',summary:'No data to reprocess!'})
             }
             else{
-              this.messageService.add({severity:'warn',summary:response?.message});
+              this.messageService.add({severity:'info',summary:response?.message});
             }
           },
           error: (error:any) => {
