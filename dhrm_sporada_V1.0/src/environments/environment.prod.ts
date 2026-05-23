@@ -21,6 +21,7 @@ export const environment = {
   hideLopReport:false,
   hideMachineReport:true,
   hideCanteenReport:true,
+  /** test */
   hideHrmsNewTab:true,
   /** attedance calander */
   shiftFullWidth:true,
