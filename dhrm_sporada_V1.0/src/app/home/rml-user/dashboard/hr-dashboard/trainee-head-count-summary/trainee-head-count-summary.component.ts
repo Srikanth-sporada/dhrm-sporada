@@ -79,6 +79,10 @@ export class TraineeHeadCountSummaryComponent implements OnInit {
     console.log('plant:',this.plantCode);
   }
 
+  logPageEvent(event:any){
+    console.clear();
+    console.log('PAGEGINATION EVENT',event)
+  }
   /**
      * @memberof TraineePresentTrendComponent
      * @property {*} plantOptions

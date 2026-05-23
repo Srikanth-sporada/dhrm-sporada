@@ -96,6 +96,7 @@
     [paginator]="true"
     [rowsPerPageOptions]="[5,10,15]"
     [rows]="5"
+    (onPage)="logPageEvent($event)"
     [tableStyle]="{'min-width': '50rem'}"
     [scrollable]="true"
     scrollHeight="53vh"

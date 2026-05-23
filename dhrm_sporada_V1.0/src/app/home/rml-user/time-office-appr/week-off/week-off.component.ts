@@ -133,7 +133,6 @@ export class WeekOffComponent implements OnInit {
       this.messageService.add({severity:'error',summary:error.message})
     }
       });
-
   }
 
   /**
@@ -159,10 +158,11 @@ export class WeekOffComponent implements OnInit {
    * @property {*} weekOfData 
    */
   getWeekOffData(){
-    console.log('LINE', this.slectedLine)
+    console.log('LINE', this.slectedLine);
     this.apiService
     .getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine,this.endOfWeek)
-    .subscribe((response:any) => {
+    .subscribe({
+      next:(response:any) => {
       let data;
       if(response.status == 'success'){
         data = response.data.map((element:any) => {
@@ -171,11 +171,11 @@ export class WeekOffComponent implements OnInit {
             const weekOfArrray = element?.week_off_day.map((data:any) => {
             return data?.week_off_day?.toString();
           });
-          // default select for saturday and sunday if six day mapping
+          /** default select for saturday and sunday if six day mapping */
           weekOfArrray.unshift('6');
             return {...element,week_off_day_arr:weekOfArrray}
           }else{
-            // constructing the respose data for mat multiselect
+            /** constructing API response data for mat multi select */
             return {...element,week_off_day_arr:element?.week_off_day.map((data:any) => {
             return data?.week_off_day.toString();
           })}
@@ -196,12 +196,13 @@ export class WeekOffComponent implements OnInit {
         this.weekOfData = data;
       }
       else{
-        // alert(response.message)
         this.messageService.add({severity:'warn',summary:response.message})
       }
-    }, (error) => {
-      console.error('ERROR:',error);
+    }, 
+    error: (error) => {
+      console.error('GET WEEK OFF DATA API ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
+    }
     })
   }
 
@@ -229,7 +230,7 @@ export class WeekOffComponent implements OnInit {
       }
     }, 
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('GET LAST PROCESSED BILL API ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     }
     })
@@ -240,14 +241,12 @@ export class WeekOffComponent implements OnInit {
    * @param number
    *  */
   getdatebyno(number:any){
-// console.log('number',number);
-  // console.log(number)
+    console.log('get date by number fun param:',number)
     let date = this.weekDates.filter((element:any)=>{
        return element.day == +number
     })
     // console.log(date[0].date);
-    // console.log(date)
-    
+    console.log('get date by number fn return data:',date)
     return date[0].date;
   }
 
@@ -277,7 +276,6 @@ export class WeekOffComponent implements OnInit {
       const changedWeekOff = item.week_off_day?.find((data:any) => data.week_off_day !== dayValue)
       console.log('Changed Week Off Five Days:',changedWeekOff);
       this.checkIfAbsent(item,item.apln_slno, item.week_off_day_arr, weekOfIdArr, itemIndex);
-      
     } 
     /** 1 day week off mapping */
     else if(selected.length > 1 && (!fiveDaysMapping || fiveDaysMapping == 'N')){
@@ -378,7 +376,7 @@ export class WeekOffComponent implements OnInit {
         }
       }
     }, (error) => {
-      console.error('ERROR:',error);
+      console.error('CHECK TRAINEE ABSENT API ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     })
     })
@@ -402,7 +400,7 @@ export class WeekOffComponent implements OnInit {
          }
       },
       error: (error) => {
-        console.error('ERROR:',error);
+        console.error('CHANGEALREADYUPDATED WOFF API ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.error?.message})
       }
     })
@@ -464,7 +462,7 @@ export class WeekOffComponent implements OnInit {
       }
    }, 
    error: (error) => {
-    console.error('ERROR:',error);
+    console.error('UPDATE BULK WOFF API ERROR:',error);
     this.messageService.add({severity:'error',summary:error.message})
    }
    })
@@ -476,7 +474,7 @@ export class WeekOffComponent implements OnInit {
    * if some of data.already-applied = 1 TRUE else FALSE
    * */
   checkAlreadyApplied() {
-    console.log('ALREADY APPLIED:',this.data.some((weekoffData:any) => weekoffData.already_applied == 1))
+    console.log('ALREADY APPLIED:',this.weekOfData.some((weekoffData:any) => weekoffData.already_applied == 1))
     return this.weekOfData.some((weekoffData:any) => weekoffData.already_applied == 1);
   }
 
@@ -521,7 +519,10 @@ export class WeekOffComponent implements OnInit {
   checkWeekOffDate(doj:any,weekOffDay:any):boolean{
     const traineeDOJ = new Date(doj);
     const weekDate = new Date(this.getdatebyno(weekOffDay));
-    /** find DOJ in user selected week off  */
+    /**
+     *  find DOJ in user selected week off to handle DOJ based week off date change.
+     * 
+    */
     if(this.weekDates.find((weekDate:any) => weekDate.date == doj) ){
       // console.log('RETURN', traineeDOJ > weekDate)
       return traineeDOJ > weekDate

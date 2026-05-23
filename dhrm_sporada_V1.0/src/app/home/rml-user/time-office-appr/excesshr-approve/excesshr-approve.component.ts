@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy,ChangeDetectorRef,ViewChildren,QueryList,ElementRef} from "@angular/core";
 import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
@@ -8,7 +8,7 @@ import { environment } from "src/environments/environment.prod";
 import { Utility } from "src/app/utils/utils";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
-
+import { Table } from "primeng/table";
 @Component({
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
@@ -19,7 +19,7 @@ import { ConfirmationComponent } from 'src/app/confirmation/confirmation.compone
 export class ExcesshrApproveComponent implements OnInit {
   data: any = [];
   filterDate: any = "";
-  fromDate:Date = moment().subtract(1,'days').toDate();
+  fromDate:Date = moment().subtract(120,'days').toDate();
   toDate:Date = moment().toDate();
   lines: any;
   selectedLine: any = "All";
@@ -32,16 +32,23 @@ export class ExcesshrApproveComponent implements OnInit {
   selectAll:boolean=  false;
   bulkApproveData:any = [];
   setActualEH:boolean =  environment?.setActualEH;
+  startCount:number = 0; // init page number
+  endCount:number = environment?.paginationRowLimit // init end count
+  paginationRowLimit:number = environment?.paginationRowLimit
   successDataCount:number = 0;
   failedDataCount:number = 0;
   plantCode:any = sessionStorage.getItem("plantcode");
   userName:any = sessionStorage.getItem("user_name");
+  /** primeng data table ref */
+  @ViewChildren('rowRef') rows!: QueryList<ElementRef>;
+
   constructor(
     private apiService: ApiService,
     private messageService: MessageService,
     public loader: LoaderserviceService,
     public utlis:Utility,
     private modalService:NgbModal,
+    private cd:ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -66,9 +73,22 @@ export class ExcesshrApproveComponent implements OnInit {
     this.getLineByDepartment();
     /** get EH data */
     this.getData();
+    console.log('curent page number',this.startCount)
    
   }
 
+  logPageEvent(event:any){
+    console.clear();
+    console.log('PAGINATION',event);
+     const page = event.first / event.rows + 1; // current page (1-based)
+     const limit = event.rows;
+     this.startCount = event.first;
+     this.endCount = page * limit;
+     console.log('start count',this.startCount);
+     console.log('end count:', this.endCount);
+     console.log('PAGE:',page);
+     console.log('LIMIT:',limit);
+  }
   /**
    * get Allowed OT hours
    * @property {*} max_hrs allowed ot hours day
@@ -114,12 +134,12 @@ export class ExcesshrApproveComponent implements OnInit {
    * get EH data
    * @property {*} data mapped with approverHr & reason
    */
-  getData() {
+  getData(page?:string|number , limit?:string|number) {
     /** format dates */
     const fromDate = moment(this.fromDate).format('YYYY-MM-DD');
     const toDate = moment(this.toDate).format('YYYY-MM-DD');
 
-    this.apiService.getExcessHours(fromDate,toDate).subscribe({
+    this.apiService.getExcessHours(fromDate,toDate,'','').subscribe({
       next: (response: any) => {
         if (response.status == "failed") {
           // alert(response.message);
@@ -130,12 +150,15 @@ export class ExcesshrApproveComponent implements OnInit {
         } else {
           console.log('EH DATA:',response.data);
           /** map with approvedHr, reason, selected props */
-          this.data = response.data.map((element: any) => {
+          const constructedData = response.data.map((element: any) => {
             return { ...element, approvedHr: null, reason: "", selected:false };
           });
+          this.data = [...constructedData]
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
           console.log('MAPPED EH DATA:',this.data);
+          /** change detection */
+          this.cd.detectChanges();
         }
       },
       error: (error) => {
@@ -320,12 +343,14 @@ export class ExcesshrApproveComponent implements OnInit {
    * @param isSelectAll -- handle if @property {boolean} selectAll is selected based on this prop map filtered data
    */
   handelSelectAll(isSelectAll?:boolean) {
-    /** actual hours 
-     * here checked expect_othr is > ot per day limit
+    /** actual hours here checked expect_othr is > ot per day limit
     */
    console.log('BULK SELECTED:',this.selectAll);
   /** filtered EH data based on the use applied filters @var filteredEHData */
    let filteredEHData:any = [];
+  /** slice array based on the rendered table row for bulk select */
+   const pagedLimitData = [...this.data].slice(this.startCount, this.endCount);
+   console.log('PAGED LIMIT:', pagedLimitData);
   /** format js date object to YYYY-MM-DD @var formattedDate */
    const formattedDate:any = this.filterDate == '' ? '' : moment(this.filterDate).format('YYYY-MM-DD');
    console.log(formattedDate,this.selectedLine,this.filterDate)
@@ -333,7 +358,7 @@ export class ExcesshrApproveComponent implements OnInit {
       /** check if data & line filter applied */
       if(formattedDate && this.selectedLine !== 'All' && this.selectedLine !== null){
         /** filter user applied filter. check only expired */
-        filteredEHData = this.data.filter((ehData:any) => {
+        filteredEHData = pagedLimitData.filter((ehData:any) => {
           if(ehData.att_date == formattedDate && ehData.Line_Name == this.selectedLine && ehData.expired == 0){
             return ehData;
           }
@@ -341,7 +366,7 @@ export class ExcesshrApproveComponent implements OnInit {
       }
       /** checking if date filter applied */
       else if(formattedDate ){
-        filteredEHData = this.data.filter((ehData:any) => {
+        filteredEHData = pagedLimitData.filter((ehData:any) => {
           if(ehData.att_date == formattedDate && ehData.expired == 0){
             return ehData;
           }
@@ -349,14 +374,14 @@ export class ExcesshrApproveComponent implements OnInit {
       }
       /** checking if line filter applied */
       else if(this.selectedLine !== 'All' && this.selectedLine !== null){
-       filteredEHData = this.data.filter((ehData:any) => {
+       filteredEHData = pagedLimitData.filter((ehData:any) => {
           if(ehData.Line_Name == this.selectedLine && ehData.expired == 0){
             return ehData;
           }
         })
       }else{
         /** set not expired data EH data */
-        filteredEHData = this.data.filter((ehData:any) => ehData.expired == 0);
+        filteredEHData = pagedLimitData.filter((ehData:any) => ehData.expired == 0);
       }
       /** mapping filtered data  */
       console.log('FILTERED DATA:',filteredEHData)
@@ -374,7 +399,6 @@ export class ExcesshrApproveComponent implements OnInit {
         ehData.approvedHr = approvedEH;
         ehData.reason = `BULK EH APPROVED:${ehData.gen_id}`;
         ehData.selected = true;
-        /** */
         return ehData;
       // return {
       //   ...ehData,
@@ -382,13 +406,12 @@ export class ExcesshrApproveComponent implements OnInit {
       //   reason:`BULK EH APPROVED:${ehData.gen_id}`,
       //   selected:true}
       });
-     console.log('BULK DATA:',this.bulkApproveData);
-    /** set selected value to @property {*} data */
-    // this.data =  this.bulkApproveData;
+       console.log('BULK DATA:',this.bulkApproveData);
       }
       /** if user de select all filter only selected */
       else{
         this.bulkApproveData =  this.bulkApproveData.filter((ehData:any) => ehData.selected == true)
+        console.log('DE SELECT',this.bulkApproveData)
       }
     
     } else{

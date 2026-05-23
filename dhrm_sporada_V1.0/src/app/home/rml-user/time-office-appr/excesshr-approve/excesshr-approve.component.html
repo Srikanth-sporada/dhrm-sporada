@@ -169,7 +169,7 @@
   </div>
    </div>
 
-<div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
+<div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md rounded-md border border-gray-400  mx-2 relative" *ngIf="false">
 
   <table id="table" class="table-auto !w-full" >
     <!-- table head -->
@@ -273,3 +273,133 @@
   <!-- loader -->
    <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
 </div>
+
+<!-- Head Count Summary Prime NG table -->
+  <p-table 
+    #dt
+    [value]="data" 
+    responsiveLayout="scroll" 
+    [resizableColumns]="true"
+    [paginator]="true"
+    [rows]="paginationRowLimit"
+    (onPage)="logPageEvent($event)"
+    [tableStyle]="{'min-width': '50rem'}"
+    tableStyleClass="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md"
+    [scrollable]="true"
+    scrollHeight="75vh"
+    styleClass="shadow-md rounded-lg mx-2 p-datatable-striped">
+    <!-- table head -->
+    <ng-template pTemplate="header">
+      <tr class="!sticky !top-0 !z-10 !border-none !border-0">
+         <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white rounded-s-lg">
+         Sno
+        </th>
+        <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white"
+            pSortableColumn="gen_id">
+          Gen ID
+           <p-sortIcon field="gen_id"></p-sortIcon>
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+         Biometric ID
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" >
+         Name
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          Line
+        </th>
+         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          Category
+        </th>
+         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="att_date">
+          Date
+           <p-sortIcon field="att_date" ></p-sortIcon>
+        </th>
+         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          IN
+        </th>
+         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          OUT
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+         Excess Work Hrs
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          Actual Worked Hrs
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          Reason
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white rounded-e-lg">
+          Action
+        </th>
+      </tr>
+    </ng-template>
+<!-- table body -->
+    <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+      <tr class="!font-poppins !border-none !border-0" #rowRef>
+        <td>
+          <p-checkbox 
+              [(ngModel)]="row.selected" 
+              [binary]="true"
+              [disabled]="row.expired == 1"
+              (onChange)="handleSingleSelect($event,row)" 
+              [inputId]="row.emp_id"></p-checkbox>
+            {{ rowIndex + 1 }}
+        </td>
+        <td>{{ row.gen_id }}</td>
+        <td>{{ row.biometric_no }}</td>
+        <td>{{ row.fullname }}</td>
+        <td>{{ row.Line_Name}}</td>
+        <td>{{ row.apprentice_type }}</td>
+        <td>
+           {{ row.att_date | date:'dd-MM-yyyy'}}
+            <!-- attendance type -->
+               <p-badge [value]="row?.type" [severity]="row.type == 'R' ? 'warning' : 'info'">
+               </p-badge>
+        </td>
+        <td>{{ row.in_time }}</td>
+        <td>{{ row.out_time}}</td>
+        <td>{{ row.expect_othr }}</td>
+        <td>
+           <input
+                class="text-center w-[100px] h-[40px]"
+                type="number"
+                [(ngModel)]="row.approvedHr"
+                pInputText
+                [id]="row.gen_id"
+              />
+            <p *ngIf="row.approvedHr > row.expect_othr " class="text-red-500" >Invalid worked Hours</p>
+            <p *ngIf=" row.approvedHr > getMaxHours(row)" class="text-red-500" >OT  Cannot be Greater Than {{max_hrs}} Hours</p>
+        </td>
+        <td>
+           <input 
+              type='text' 
+              pInputText 
+              [(ngModel)]="row.reason"
+              [id]="row.emp_id" 
+              class="w-[100px] h-[40px]"/>
+        </td>
+        <td>
+           <p *ngIf="row.expired == 1" class="text-red-500 font-semibold px-2 bg-red-200 rounded text-center">Expired</p>
+            <button *ngIf="row.expired==0"
+              pButton
+              icon="pi pi-check-circle"
+              [disabled]="
+                row.approvedHr > row.expect_othr 
+                || row.approvedHr == null 
+                || row.reason == '' 
+                || row.reason.length < 10 
+                || row.approvedHr > getMaxHours(row.type)  
+                || loading
+                || row.approvedHr < 0 
+                || row.selected
+              "
+              (click)="approve(row)"
+              aria-label="approve button"
+            >
+            </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
