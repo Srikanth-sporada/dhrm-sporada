@@ -72,6 +72,10 @@ export const environment = {
   /**payroll */
   hidePayrollHR:false,
   hidePayrollHrAppr:false,
+  /** pagination row limit */
+  paginationRowLimit:60,
+  /** AD */
+  enableADLogin:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
 };
 

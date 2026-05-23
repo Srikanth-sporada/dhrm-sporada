@@ -276,11 +276,12 @@
 
 <!-- Head Count Summary Prime NG table -->
   <p-table 
+    #dt
     [value]="data" 
     responsiveLayout="scroll" 
     [resizableColumns]="true"
     [paginator]="true"
-    [rows]="50"
+    [rows]="paginationRowLimit"
     (onPage)="logPageEvent($event)"
     [tableStyle]="{'min-width': '50rem'}"
     tableStyleClass="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md"
@@ -336,7 +337,7 @@
     </ng-template>
 <!-- table body -->
     <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
-      <tr class="!font-poppins !border-none !border-0">
+      <tr class="!font-poppins !border-none !border-0" #rowRef>
         <td>
           <p-checkbox 
               [(ngModel)]="row.selected" 

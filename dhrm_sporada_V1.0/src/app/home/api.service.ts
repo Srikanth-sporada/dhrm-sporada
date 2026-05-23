@@ -7,7 +7,7 @@ import { report } from "process";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
 import { PayrollArea } from "./rml-user/masters/types/payrollArea.type";
-// import { ProductModel } from './models/product.model';
+
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +23,11 @@ export class ApiService {
   }
 
   login(User_Name: string, Password: string) {
-    return this.http.post(this.url + "/login/emp-login", { User_Name, Password, });
+    if(environment?.enableADLogin){
+      return this.http.post(this.url + "/login/emp/ad", { User_Name, Password, });
+    }else{
+     return this.http.post(this.url + "/login/emp-login", { User_Name, Password, });
+    }
   }
   traineeLogin(formvalue: any) {
     return this.http.post(this.url + "/login/trainee-login", formvalue);
