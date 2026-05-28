@@ -328,19 +328,21 @@ export class PayscaleHeaderMasterComponent implements OnInit {
       this.NewPayScaleFormGroup.value;
       this.api.updatePayscaleHeader(formData, this.userEmpcode).subscribe({
         next:(res: any) => {
-          // this.getPayscale_Header()
+         if(res?.status){
+           // this.getPayscale_Header()
           this.getPayscale_Header_combine();
           this.closeAllForms1();
           this.messageService.add({
             severity: "info",
-            summary: "Payscale Header Updated!",
+            summary:res?.message,
           });
+         }
         },
         error:(error) => {
           console.error('ERROR:', error);
           this.messageService.add({
             severity: "error",
-            summary: error.message,
+            summary: error?.error?.message,
           });
         },
       });
