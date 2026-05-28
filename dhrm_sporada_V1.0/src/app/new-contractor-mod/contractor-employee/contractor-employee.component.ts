@@ -2134,7 +2134,7 @@ export class ContractorEmployeeComponent implements OnInit {
                 console.error("FILE UPLOAD API ERROR:", error);
                 this.messageService.add({
                   severity: "error",
-                  summary: error.message,
+                  summary: error?.error?.message,
                 });
               },
             });
