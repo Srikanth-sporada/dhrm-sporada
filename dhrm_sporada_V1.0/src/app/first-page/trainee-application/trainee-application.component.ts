@@ -158,7 +158,7 @@ export class TraineeApplicationComponent implements OnInit {
                   this.router.navigate([
                     "/forms",
                     this.mobilenum,
-                    this.companyname,
+                    this.traineeApplicationForms.value.company,
                   ]);
                 },
               });
@@ -166,7 +166,7 @@ export class TraineeApplicationComponent implements OnInit {
             this.messageService.add({severity:'info',summary:'Already Registered! Contact HR'})
             this.traineeApplicationForms.reset();
             console.log(this.traineeApplicationForms.value);
-          }else if(this.errmsg.status == "failed"){
+          }else if(this.errmsg.status == "failed" || !this.errmsg?.success){
            this.messageService.add({severity:'info',summary:this.errmsg.message});
           /** window reload function */
            setTimeout(() => {
@@ -176,7 +176,7 @@ export class TraineeApplicationComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('ERROR:',error);
-          this.messageService.add({severity:'error',summary:error?.message})
+          this.messageService.add({severity:'error',summary:error?.error?.message})
         },
       });
     }
