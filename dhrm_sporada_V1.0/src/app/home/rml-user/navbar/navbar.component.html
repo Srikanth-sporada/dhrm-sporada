@@ -884,7 +884,7 @@
 
               <!-- attendance reprocess new -->
                 <a
-                *ngIf="isadmin == 'true'"
+                *ngIf="isadmin == 'true' || ishr == 'true' || ishrappr == 'true'"
                   mat-list-item
                   class="rounded-sm"
                   routerLink="/rhrm/time-office-appr/attendance/reprocess/new"

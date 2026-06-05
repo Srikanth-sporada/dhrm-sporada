@@ -8,6 +8,8 @@ import { Utility } from 'src/app/utils/utils';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
+import { ReturnStatement } from '@angular/compiler';
+import { validateBasis } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-attendance-reprocess-new',
@@ -18,16 +20,21 @@ import { LoaderserviceService } from 'src/app/loaderservice.service';
 export class AttendanceReprocessNewComponent implements OnInit {
 
   attendanceReprocessForm:FormGroup;
-      all:any;
-      userDetails:any;
-      plantData:any = [];
-      payrollAreaData:any = [];
-      cummulativeReportData:any = [];
-      isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');  
-      reprocessTable:any = [
-        {label:'Attendance Table',value:'Y'},
-        {label:'Punch Table',value:'N'}
-      ]
+  all:any;
+  userDetails:any;
+  plantData:any = [];
+  payrollAreaData:any = [];
+  cummulativeReportData:any = [];
+  isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
+  isHr:boolean;
+  isHrApprover:any;
+  lastBillLokedDate:Date;  
+  userPlantCode:any = sessionStorage.getItem('plantcode');
+  toMinDate:Date;
+  reprocessTable:any = [
+    {label:'Attendance Table',value:'Y'},
+    {label:'Punch Table',value:'N'}
+  ]
   constructor(
     private clamApiService:ClamAPIService,
     private apiService:ApiService,
@@ -37,20 +44,40 @@ export class AttendanceReprocessNewComponent implements OnInit {
     private modalService:NgbModal,
     protected loader:LoaderserviceService,
   ) { 
-    /** cummulative report filter form */
+    /** attendance filter form */
           this.attendanceReprocessForm = this.fb.group({
-            plantCode: new UntypedFormControl(''),
+            plantCode: new UntypedFormControl(this.userPlantCode),
             payrollArea: new UntypedFormControl('', Validators.required),
-            fromDate: new UntypedFormControl(),
-            toDate: new UntypedFormControl(),
-            genId: [null,Validators.pattern(/\S+/)],
+            fromDate: new UntypedFormControl('', Validators.required),
+            toDate: new UntypedFormControl('', Validators.required),
+            genId: new UntypedFormControl(null,[Validators.pattern(/\S+/)]),
             attendanceReprocess:['Y',Validators.required]
           });
   }
 
   ngOnInit(): void {
+    /** logged in user details */
+    let details = sessionStorage.getItem("all");
+      if (details != null) {
+        this.all = JSON.parse(details);
+        this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      }
+      /** setting required restrictions */
+      this.userPlantCode = this.all.plant_code;
+      this.isHr = this.all.Is_HR;
+      this.isHrApprover =  this.all.Is_HRAppr;
     /** get plants */
     this.getPlants();
+    /** get payroll area */
+    this.getPayrollAreaByPlant(this.userPlantCode);
+
+    /** gen id validation based on the user role */
+    if (this.isAdmin) {
+      this.attendanceReprocessForm.get('genId')?.removeValidators(Validators.required);
+    } else if(this.isHr || this.isHrApprover) {
+      this.attendanceReprocessForm.get('genId')?.addValidators(Validators.required);
+    }
+    this.attendanceReprocessForm.get('genId')?.updateValueAndValidity();
   }
 
   /** get plant API */
@@ -143,10 +170,10 @@ export class AttendanceReprocessNewComponent implements OnInit {
 
       /** 
        * get min date based on the selected from date
-      * @returns {date}
        */
-      getMinDate():Date{
-        return new Date(this.attendanceReprocessForm.value.fromDate)
+      getMinDate(){
+       this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+       this.attendanceReprocessForm.controls['toDate'].setValue('')
       }
 
       /**
@@ -168,5 +195,16 @@ export class AttendanceReprocessNewComponent implements OnInit {
     /** modal text */
     confirmModalRef.componentInstance.confirmText = `${apiResponse?.message}. Click Yes to download data.`
     console.log('modal opened...');
+  }
+
+  isPlantDisabled():boolean{
+    let isDisabled:boolean = false;
+    if(this.isAdmin){
+      isDisabled = false;
+    }
+    else if(this.isHr || this.isHrApprover){
+      isDisabled = true;
+    } 
+    return isDisabled;
   }
 }
