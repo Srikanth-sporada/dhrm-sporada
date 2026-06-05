@@ -71,6 +71,8 @@ export class AttendanceReprocessNewComponent implements OnInit {
     /** get payroll area */
     this.getPayrollAreaByPlant(this.userPlantCode);
 
+    
+
     /** gen id validation based on the user role */
     if (this.isAdmin) {
       this.attendanceReprocessForm.get('genId')?.removeValidators(Validators.required);
