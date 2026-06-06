@@ -12,8 +12,8 @@
     "dev": "node generateImagelist.js && ng serve --host 0.0.0.0",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "pm2":"pm2 start ecosystem.config.js",
-    "pm22":"pm2 start npm --name dhrm_frontend -- run dev"
+    "pm2": "pm2 start ecosystem.config.js",
+    "pm22": "pm2 start npm --name dhrm_frontend -- run dev"
   },
   "private": true,
   "dependencies": {
@@ -76,25 +76,18 @@
     "@angular/compiler-cli": "^14.0.2",
     "@angular/language-service": "^14.0.2",
     "@angular/localize": "^14.0.2",
-    "@types/jasmine": "~3.6.0",
-    "@types/jasminewd2": "~2.0.3",
+    "@playwright/test": "^1.60.0",
     "@types/node": "^12.11.1",
     "angular-cli-ghpages": "^1.0.0-rc.1",
     "autoprefixer": "^10.4.21",
     "codelyzer": "^0.0.28",
     "install": "^0.13.0",
-    "jasmine-core": "~3.6.0",
-    "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~6.3.2",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.6.4",
-    "cypress": "latest"
+    "typescript": "~4.6.4"
   }
 }
