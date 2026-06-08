@@ -8,8 +8,7 @@ import { Utility } from 'src/app/utils/utils';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
-import { ReturnStatement } from '@angular/compiler';
-import { validateBasis } from '@angular/flex-layout';
+
 
 @Component({
   selector: 'app-attendance-reprocess-new',
@@ -31,6 +30,7 @@ export class AttendanceReprocessNewComponent implements OnInit {
   lastBillLokedDate:Date;  
   userPlantCode:any = sessionStorage.getItem('plantcode');
   toMinDate:Date;
+  toMaxDate:Date;
   reprocessTable:any = [
     {label:'Attendance Table',value:'Y'},
     {label:'Punch Table',value:'N'}
@@ -97,14 +97,19 @@ export class AttendanceReprocessNewComponent implements OnInit {
        /** get payroll area by plant code
        * @property {UntypedForm} form.plantCode
        * @param {boolean} onComponentInit to get report data with default payrollArea
+       * @method getLastBillLockDate 
        */
       getPayrollAreaByPlant(onComponentInit:boolean){
         const plantCode:any = this.attendanceReprocessForm.value.plantCode;
         // console.log(plantCode)
         this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
-          next: (response) => {
+          next: (response:any) => {
             this.payrollAreaData = response;
             console.log('PAYROLL AREA:',this.payrollAreaData);
+            /** set first occurance payroll area */
+            this.attendanceReprocessForm.controls['payrollArea'].setValue(response[0].PayrollArea);
+            /** get Last locked date */
+            this.getLastBillLockDate();
           },
           error: (error:any) => {
             console.error('ERROR:',error);
@@ -170,10 +175,18 @@ export class AttendanceReprocessNewComponent implements OnInit {
 
       /** 
        * get min date based on the selected from date
+       * date control for HR and HR approver
        */
       getMinDate(){
-       this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
-       this.attendanceReprocessForm.controls['toDate'].setValue('')
+        if(this.isAdmin){
+          this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMaxDate = moment(this.attendanceReprocessForm.value.fromDate).endOf('month').toDate();
+          this.attendanceReprocessForm.controls['toDate'].setValue('')
+        }else if(this.isHr || this.isHrApprover){
+          this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMaxDate = new Date(this.attendanceReprocessForm.value.fromDate);
+          this.attendanceReprocessForm.controls['toDate'].setValue('')
+        }
       }
 
       /**
@@ -206,5 +219,24 @@ export class AttendanceReprocessNewComponent implements OnInit {
       isDisabled = true;
     } 
     return isDisabled;
+  }
+
+  /** 
+   * get last bill lock date and calculate min date
+   * @property {*} apiService
+   *  */
+  getLastBillLockDate(){
+    console.log('FORM ',this.attendanceReprocessForm.value.payrollArea)
+    this.apiService.getLastProcesedBill(this.userPlantCode , 'T', '', this.attendanceReprocessForm.value.payrollArea).subscribe({
+      next: (response:any) => {
+        console.log('Last Bill Lock Date:',response);
+        this.lastBillLokedDate = moment(response.date).toDate();
+        this.toMinDate = this.lastBillLokedDate;
+      },
+      error:(error:any) => {
+        console.error('GET LAST LOCKED DATE API ERROR:',error);
+        this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
+      }
+    })
   }
 }

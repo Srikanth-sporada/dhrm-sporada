@@ -51,6 +51,7 @@
           <p-dropdown 
             [options]="payrollAreaData"
             formControlName="payrollArea"
+            (onChange)="getLastBillLockDate()"
             optionLabel="PayrollArea"
             optionValue="PayrollArea"
             styleClass="w-full" 
@@ -79,6 +80,7 @@
             id="fromdate"
             styleClass="w-full !font-poppins"
             (onSelect)="getMinDate()"
+            [minDate]="lastBillLokedDate"
             dateFormat="yy-mm-dd"
             [showIcon]="true" >
         </p-calendar>
@@ -90,6 +92,7 @@
             formControlName="toDate"
             id="todate"
             [minDate]="toMinDate"
+            [maxDate]="toMaxDate"
             dateFormat="yy-mm-dd"
             styleClass="w-full !font-poppins"
             [showIcon]="true" >
