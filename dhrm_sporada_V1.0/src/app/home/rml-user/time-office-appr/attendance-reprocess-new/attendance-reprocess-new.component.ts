@@ -158,7 +158,20 @@ export class AttendanceReprocessNewComponent implements OnInit {
             console.log('response:',response);
             if(response.success && response?.data.length !== 0){
               this.openStatusModal(response)
-              this.attendanceReprocessForm.reset();
+              /** user based form reset */
+              if(this.isAdmin){
+                this.attendanceReprocessForm.reset();
+              }
+              else if(this.isHr || this.isHrApprover){
+                this.attendanceReprocessForm.reset({
+                  plantCode:this.userPlantCode,
+                  payrollArea: this.payrollAreaData[0]?.PayrollArea,
+                  fromDate: new Date(),
+                  toDate: new Date(),
+                  genId: '',
+                  attendanceReprocess:'Y'
+                })
+              }
             } else if(response?.success && response?.data.length == 0){
               this.messageService.add({severity:'warn',summary:'No data to reprocess!'})
             }

@@ -8,4 +8,7 @@ dist/
 *.pem
 ai-ref
 dhrm_rbac.png
+test-results
+playwright-report
+
 
