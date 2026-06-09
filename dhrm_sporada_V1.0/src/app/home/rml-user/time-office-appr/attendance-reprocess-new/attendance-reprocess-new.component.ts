@@ -48,8 +48,8 @@ export class AttendanceReprocessNewComponent implements OnInit {
           this.attendanceReprocessForm = this.fb.group({
             plantCode: new UntypedFormControl(this.userPlantCode),
             payrollArea: new UntypedFormControl('', Validators.required),
-            fromDate: new UntypedFormControl('', Validators.required),
-            toDate: new UntypedFormControl('', Validators.required),
+            fromDate: new UntypedFormControl(new Date(), Validators.required),
+            toDate: new UntypedFormControl(new Date(), Validators.required),
             genId: new UntypedFormControl(null,[Validators.pattern(/\S+/)]),
             attendanceReprocess:['Y',Validators.required]
           });
@@ -154,8 +154,21 @@ export class AttendanceReprocessNewComponent implements OnInit {
           next: (response:any) => {
             console.log('response:',response);
             if(response.success && response?.data.length !== 0){
-              this.openStatusModal(response)
-              this.attendanceReprocessForm.reset();
+              this.openStatusModal(response);
+              /** user based form reset */
+              if(this.isAdmin){
+                this.attendanceReprocessForm.reset();
+              }
+              else if(this.isHr || this.isHrApprover){
+                this.attendanceReprocessForm.reset({
+                  plantCode:this.userPlantCode,
+                  payrollArea: this.payrollAreaData[0]?.PayrollArea,
+                  fromDate: new Date(),
+                  toDate: new Date(),
+                  genId: '',
+                  attendanceReprocess:'Y'
+                })
+              }
             } else if(response?.success && response?.data.length == 0){
               this.messageService.add({severity:'warn',summary:'No data to reprocess!'})
             }

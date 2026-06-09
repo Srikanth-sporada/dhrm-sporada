@@ -23,6 +23,7 @@ export class ArsReportsComponent implements OnInit {
   Is_CFIN: any;
   Is_CHR: any;
   isHrappr: any;
+  isAdmin:boolean;
   selectedReportType: any;
   employeeType:any='T';
   monthReport:any[]=['coff']
@@ -112,7 +113,7 @@ employeeTypeOptions = [
      let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name;
     }
     this.from= new Date();
     this.to = new Date();

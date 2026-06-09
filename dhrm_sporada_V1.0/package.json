@@ -10,8 +10,7 @@
     "e2e": "ng e2e",
     "https": "node generateImagelist.js && ng serve --ssl true --ssl-key key.pem --ssl-cert cert.pem --host 0.0.0.0",
     "dev": "node generateImagelist.js && ng serve --host 0.0.0.0",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
+    "playwright": "npx playwright test --ui",
     "pm2": "pm2 start ecosystem.config.js",
     "pm22": "pm2 start npm --name dhrm_frontend -- run dev"
   },

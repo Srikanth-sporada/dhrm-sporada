@@ -1,18 +1,22 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test('executive login', async ({page}) => {
+  await page.goto('http://192.168.1.205:4200');
+  const dropDown =  page.locator('#pr_id_2_label');
+   await dropDown.click();
+  const executiveLogin =  page.getByRole('option', { name: 'Executive Login' });
+  await executiveLogin.click();
+  const username = page.locator('#username');
+  await username.fill('12345');
+  const password = page.locator('#password');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-});
+  await password.fill('123');
+  await page.getByRole('button', { name: 'LogIn' }).click();
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  await page.waitForURL('**/rhrm');
+  await page.pause();
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
+  await page.screenshot({path:'ss.png'});
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
+  await page.close();
+})
