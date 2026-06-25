@@ -276,12 +276,16 @@
 
 <!-- Head Count Summary Prime NG table -->
   <p-table 
+  *ngIf="true"
     #dt
-    [value]="data" 
-    responsiveLayout="scroll" 
+    [value]="data | datefilter:filterDate | lineFilter:selectedLine"
+    responsiveLayout="scroll"
+    [globalFilterFields]="['att_date','Line_Name']" 
     [resizableColumns]="true"
     [paginator]="true"
-    [rows]="paginationRowLimit"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="paginationRowsPerPage"
+    [rows]="toNumber(paginationRowsPerPage[0])"
     (onPage)="logPageEvent($event)"
     [tableStyle]="{'min-width': '50rem'}"
     tableStyleClass="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md"
@@ -305,15 +309,51 @@
         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" >
          Name
         </th>
-        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" *ngIf="true">
           Line
         </th>
+         <!-- Line column with dropdown filter -->
+        <th *ngIf="false">
+          Line
+          <p-columnFilter 
+              field="Line_Name" 
+              matchMode="equals" 
+              [showMenu]="false" 
+              type="text">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-dropdown 
+                    [options]="lines" 
+                    optionLabel="Line_Name" 
+                    optionValue="Line_Name"
+                    [ngModel]="selectedLine" 
+                    (onChange)="filter($event.value)">
+                </p-dropdown>
+              </ng-template>
+          </p-columnFilter>
          <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
           Category
         </th>
-         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="att_date">
+         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="att_date" *ngIf="true">
           Date
            <p-sortIcon field="att_date" ></p-sortIcon>
+        </th>
+         <!-- Date column with calendar filter -->
+        <th *ngIf="false">
+          Date
+          <p-columnFilter 
+              field="att_date" 
+              matchMode="equals" 
+              [showMenu]="false" 
+              type="date">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-calendar 
+                    [(ngModel)]="filterDate" 
+                    dateFormat="dd-mm-yy" 
+                    [showIcon]="true"
+                    (onSelect)="filter($event)">
+                </p-calendar>
+              </ng-template>
+          </p-columnFilter>
         </th>
          <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
           IN

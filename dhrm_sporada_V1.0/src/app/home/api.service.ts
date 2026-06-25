@@ -511,6 +511,7 @@ export class ApiService {
   pretest(formvalue: any) {
     return this.http.post(this.url + "/training/pretest", formvalue);
   }
+  
   posttest(formvalue: any) {
     return this.http.post(this.url + "/training/posttest", formvalue);
   }
