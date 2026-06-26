@@ -24,6 +24,7 @@ export class OnboardFormComponent implements OnInit {
   @Input() applicationStatus:any= 'status';
   @Input() applicationData:any= [];
   @Input() disbleApproveBtn:any;
+  routeParam:any={};
   disableApproveBtn:any;
   hideCostCenterInput:boolean = environment?.hidecostCenterInput;
   applicationStatusForBtn = 'PENDING'
@@ -228,6 +229,9 @@ export class OnboardFormComponent implements OnInit {
   values: any;
 
   ngOnInit(): void {
+    /** setting route param */
+    this.routeParam.mobile = this.active.snapshot.paramMap.get("mobile");
+    this.routeParam.company = this.active.snapshot.paramMap.get("company");
     console.log('form:',this.form.value)
     console.log('DATA FROM APPLICATION', this.applicationNumber);
     console.log('APPLICATION STATUS:',this.applicationStatus)
@@ -693,6 +697,16 @@ export class OnboardFormComponent implements OnInit {
         next: (response: any) => {
         //  console.log(response);
           if (response) {
+            /** send approved mail */
+             this.service.approved_mail({plant_code: sessionStorage.getItem("plant_code"),mobile: this.routeParam?.mobile,company: this.routeParam.company,})
+             .subscribe({next: (response: any) => {
+                console.log('APPROVED MAIL RESPONSE:',response);
+            },
+            error: (err) => {
+              console.error('HR APPROVE MAIL API ERROR:',err);
+              this.messageService.add({severity:'error',summary:'error sending mail'})
+            }
+          });
              this.messageService.add({severity:'info',summary:response})
             if (this.setting == 1) {
               this.form.controls["trainee_id"].setValue();

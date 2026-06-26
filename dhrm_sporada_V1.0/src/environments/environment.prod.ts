@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  path: "http://192.168.1.205:8080", // rane.ssipl.org
-  path2: "http://192.168.1.205:8080", // 192.168.1.205:8080
+  path: "http://192.168.1.179:8085", // rane.ssipl.org
+  path2: "http://192.168.1.179:8085", // 192.168.1.205:8080
   payroll:"https://rane.ssipl.org:8888",
   prodLink: "rhrm", 
   /** Side Nav Menu  */
@@ -21,6 +21,7 @@ export const environment = {
   hideLopReport:false,
   hideMachineReport:true,
   hideCanteenReport:true,
+  /** test */
   hideHrmsNewTab:true,
   /** attedance calander */
   shiftFullWidth:true,
@@ -74,6 +75,7 @@ export const environment = {
   hidePayrollHrAppr:false,
   /** pagination row limit */
   paginationRowLimit:60,
+  paginationRowsPerPage: [25,50,75,100],
   /** AD */
   enableADLogin:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',

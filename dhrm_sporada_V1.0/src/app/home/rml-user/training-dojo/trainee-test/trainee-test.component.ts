@@ -86,7 +86,7 @@ export class TraineeTestComponent implements OnInit {
 
   ngOnInit(): void {
     var a: any = sessionStorage.getItem("token");
-    // conveting token into js object
+    /** converting js object into js object */
     var x = atob(a.split(".")[1]);
     this.x = JSON.parse(x);
     console.log(this.x);
@@ -108,7 +108,7 @@ export class TraineeTestComponent implements OnInit {
         this.modules = response;
       },
       error: (error) => {
-        console.log(error);
+        console.log('GET TRAINEE TEST MODULES API ERROR:',error);
         this.messageService.add({ severity: "error", summary: "error.messa" });
       },
     });
@@ -272,11 +272,8 @@ export class TraineeTestComponent implements OnInit {
             }
           },
           error: (error) => {
-            console.log(error);
-            this.messageService.add({
-              severity: "error",
-              summary: error.message,
-            });
+            console.log('TRAINE POST TEST API ERROR:',error);
+            this.messageService.add({severity: "error",summary: error?.message});
           },
         });
       }
@@ -289,6 +286,13 @@ export class TraineeTestComponent implements OnInit {
       });
   }
 
+  /** 
+   * it will load correct answers of the questions and user selected answers. based on the question slno
+   * @param event
+   * @param i
+   * @param qslno
+   * @param correct_answer
+   */
   load_answers(event: any, i: any, qslno: any, correct_answer: any) {
     this.count.add(i);
     console.log(event.value, ":", correct_answer);

@@ -1503,7 +1503,7 @@ export class ContractorEmployeeComponent implements OnInit {
     this.contractorEmployee.village_name =
       this.contractEmpOtherDetails.value.village;
 
-    // console.log(this.contractorEmployee)
+    console.log('UPDATE CONT EMPLOYEE API DATA:',this.contractorEmployee)
     this.api.edit_Cl_Emp_ByCon(
         this.contractorEmployee,
         this.contractorEmployee.apln_slno,
@@ -2134,7 +2134,7 @@ export class ContractorEmployeeComponent implements OnInit {
                 console.error("FILE UPLOAD API ERROR:", error);
                 this.messageService.add({
                   severity: "error",
-                  summary: error.message,
+                  summary: error?.error?.message,
                 });
               },
             });
@@ -2146,10 +2146,10 @@ export class ContractorEmployeeComponent implements OnInit {
         error: (error) => {
           if (error.status === 400) {
             console.error('HR UPDATE API ERROR:',error);
-            this.messageService.add({severity:'error',summary:error?.message})
+            this.messageService.add({severity:'error',summary:error?.error?.message})
           } else {
             console.error('HR UPDATE API ERROR:',error);
-            this.messageService.add({severity:'error',summary:error?.message})
+            this.messageService.add({severity:'error',summary:error?.error?.message})
           }
         },
       });

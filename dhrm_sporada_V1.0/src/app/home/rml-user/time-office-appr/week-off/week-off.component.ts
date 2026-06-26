@@ -241,12 +241,10 @@ export class WeekOffComponent implements OnInit {
    * @param number
    *  */
   getdatebyno(number:any){
-    console.log('get date by number fun param:',number)
     let date = this.weekDates.filter((element:any)=>{
        return element.day == +number
     })
     // console.log(date[0].date);
-    console.log('get date by number fn return data:',date)
     return date[0].date;
   }
 
@@ -410,7 +408,7 @@ export class WeekOffComponent implements OnInit {
    * bulk update week off
    * @method getdatebyno()
    */
-  updateData(){
+  updateData(){ 
     this.loading=true
     let changeData = this.data.filter((element:any)=>{
       return element.week_off_day != '7' && element.already_applied != 7

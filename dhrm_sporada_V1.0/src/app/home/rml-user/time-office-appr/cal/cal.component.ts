@@ -43,7 +43,7 @@ export class CalComponent implements OnInit {
   /** route parama gen id */
   routeGenID:any;
   evnt: CalendarEvent[] = [];
-  _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff"];
+  _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff","Comp Off"];
   events: any[] = [
     {
       title: "title",

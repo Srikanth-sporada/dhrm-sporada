@@ -35,6 +35,7 @@
             optionLabel="plant_name"
             optionValue="plant_code"
             styleClass="w-full" 
+            [disabled]="isPlantDisabled()"
             (onChange)="getPayrollAreaByPlant(false)"
             placeholder="Select Plant">
             <ng-template let-plant pTemplate="item">
@@ -50,6 +51,7 @@
           <p-dropdown 
             [options]="payrollAreaData"
             formControlName="payrollArea"
+            (onChange)="getLastBillLockDate()"
             optionLabel="PayrollArea"
             optionValue="PayrollArea"
             styleClass="w-full" 
@@ -72,20 +74,25 @@
       <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
         <!-- from date -->
         <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
+        <label for="fromdate" class="font-semibold text-gray-400 mb-1 mt-3">From Date</label> <br>
         <p-calendar 
             formControlName="fromDate"
+            id="fromdate"
             styleClass="w-full !font-poppins"
+            (onSelect)="getMinDate()"
+            [minDate]="lastBillLokedDate"
             dateFormat="yy-mm-dd"
             [showIcon]="true" >
         </p-calendar>
         </div>
         <!-- to date -->
         <div class="w-full">
-        <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
+        <label for="todate" class="font-semibold text-gray-400 mb-1 mt-3">To Date</label> <br>
         <p-calendar 
             formControlName="toDate"
-            [minDate]="getMinDate()"
+            id="todate"
+            [minDate]="toMinDate"
+            [maxDate]="toMaxDate"
             dateFormat="yy-mm-dd"
             styleClass="w-full !font-poppins"
             [showIcon]="true" >
@@ -105,7 +112,7 @@
      </div>
      <!-- search btn -->
       <p-button 
-        icon="pi pi-search"
+        icon="pi pi-replay"
         styleClass="rounded-[1.5rem] mt-10"
         (onClick)="reprocessAttendance()"
         [disabled]="!attendanceReprocessForm.valid"

@@ -33,8 +33,9 @@ export class ExcesshrApproveComponent implements OnInit {
   bulkApproveData:any = [];
   setActualEH:boolean =  environment?.setActualEH;
   startCount:number = 0; // init page number
-  endCount:number = environment?.paginationRowLimit // init end count
-  paginationRowLimit:number = environment?.paginationRowLimit
+  paginationRowLimit:number = environment?.paginationRowLimit;
+  paginationRowsPerPage:any[] = environment?.paginationRowsPerPage;
+  endCount:number = Number(this.paginationRowsPerPage[0])// init end count
   successDataCount:number = 0;
   failedDataCount:number = 0;
   plantCode:any = sessionStorage.getItem("plantcode");
@@ -94,8 +95,8 @@ export class ExcesshrApproveComponent implements OnInit {
    * @property {*} max_hrs allowed ot hours day
    */
   getAllowedOtHours(){
-     this.apiService.getAllowedOtHours().subscribe(
-      (response: any) => {
+     this.apiService.getAllowedOtHours().subscribe({
+      next: (response: any) => {
         if (response.status == "success") {
           console.log('ALLOWED OT HRS:', response.data);
           this.max_hrs = response.data.day;
@@ -106,11 +107,11 @@ export class ExcesshrApproveComponent implements OnInit {
           });
         }
       },
-      (error) => {
-        console.error('ERROR:',error);
+      error: (error) => {
+        console.error('GET ALLOWED OT HOURS API ERROR',error);
         this.messageService.add({ severity: "error", summary: error.message });
       }
-    );
+     });
   }
 
   /**
@@ -153,12 +154,13 @@ export class ExcesshrApproveComponent implements OnInit {
           const constructedData = response.data.map((element: any) => {
             return { ...element, approvedHr: null, reason: "", selected:false };
           });
-          this.data = [...constructedData]
+          // this.data = [...constructedData]
+          this.data = this.cleanCircularReferences(response?.data) // cleaning circular references
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
           console.log('MAPPED EH DATA:',this.data);
           /** change detection */
-          this.cd.detectChanges();
+           this.cd.detectChanges();
         }
       },
       error: (error) => {
@@ -628,4 +630,24 @@ export class ExcesshrApproveComponent implements OnInit {
       this.getData();
     })
   }
+
+  /** convert to number to string */
+  toNumber(string:string|number){
+    return Number(string);
+  }
+
+  /** remove circular references */
+  cleanCircularReferences(data: any[]): any[] {
+  const seen = new WeakSet();
+  const serialized = JSON.stringify(data, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return; // Strips out the circular reference property entirely
+      }
+      seen.add(value);
+    }
+    return value;
+  });
+  return JSON.parse(serialized);
+}
 }

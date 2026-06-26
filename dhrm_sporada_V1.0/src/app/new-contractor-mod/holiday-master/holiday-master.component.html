@@ -78,7 +78,7 @@
               <p-checkbox 
               formControlName="holidayType"
               value="F" 
-              [disabled]="!showAdd ? true : false"
+              [disabled]="!showAdd ? true : holidayForm.value.holidayType == 'N' ? true : false"
               inputId="admin" ></p-checkbox>
               <label for="admin" class="mb-0 text-blue-600">Festival</label>
             </div>
@@ -86,7 +86,7 @@
             <div class="flex items-center gap-2 ml-2 mb-2">
               <p-checkbox 
               formControlName="holidayType"
-              [disabled]="!showAdd ? true : false"
+              [disabled]="!showAdd ? true : holidayForm.value.holidayType == 'F' ? true : false"
               value="N" 
               inputId="national" ></p-checkbox>
               <label for="national" class="mb-0 text-blue-600">National</label>

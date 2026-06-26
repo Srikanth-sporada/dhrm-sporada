@@ -9,6 +9,7 @@ import { ConfirmationComponent } from 'src/app/confirmation/confirmation.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
 
+
 @Component({
   selector: 'app-attendance-reprocess-new',
   templateUrl: './attendance-reprocess-new.component.html',
@@ -18,16 +19,22 @@ import { LoaderserviceService } from 'src/app/loaderservice.service';
 export class AttendanceReprocessNewComponent implements OnInit {
 
   attendanceReprocessForm:FormGroup;
-      all:any;
-      userDetails:any;
-      plantData:any = [];
-      payrollAreaData:any = [];
-      cummulativeReportData:any = [];
-      isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');  
-      reprocessTable:any = [
-        {label:'Attendance Table',value:'Y'},
-        {label:'Punch Table',value:'N'}
-      ]
+  all:any;
+  userDetails:any;
+  plantData:any = [];
+  payrollAreaData:any = [];
+  cummulativeReportData:any = [];
+  isAdmin:any = JSON.parse(sessionStorage.getItem('isadmin') || '');
+  isHr:boolean;
+  isHrApprover:any;
+  lastBillLokedDate:Date;  
+  userPlantCode:any = sessionStorage.getItem('plantcode');
+  toMinDate:Date;
+  toMaxDate:Date;
+  reprocessTable:any = [
+    {label:'Attendance Table',value:'Y'},
+    {label:'Punch Table',value:'N'}
+  ]
   constructor(
     private clamApiService:ClamAPIService,
     private apiService:ApiService,
@@ -37,20 +44,40 @@ export class AttendanceReprocessNewComponent implements OnInit {
     private modalService:NgbModal,
     protected loader:LoaderserviceService,
   ) { 
-    /** cummulative report filter form */
+    /** attendance filter form */
           this.attendanceReprocessForm = this.fb.group({
-            plantCode: new UntypedFormControl(''),
+            plantCode: new UntypedFormControl(this.userPlantCode),
             payrollArea: new UntypedFormControl('', Validators.required),
-            fromDate: new UntypedFormControl(),
-            toDate: new UntypedFormControl(),
-            genId: [null,Validators.pattern(/\S+/)],
+            fromDate: new UntypedFormControl('', Validators.required),
+            toDate: new UntypedFormControl('', Validators.required),
+            genId: new UntypedFormControl(null,[Validators.pattern(/\S+/)]),
             attendanceReprocess:['Y',Validators.required]
           });
   }
 
   ngOnInit(): void {
+    /** logged in user details */
+    let details = sessionStorage.getItem("all");
+      if (details != null) {
+        this.all = JSON.parse(details);
+        this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      }
+      /** setting required restrictions */
+      this.userPlantCode = this.all.plant_code;
+      this.isHr = this.all.Is_HR;
+      this.isHrApprover =  this.all.Is_HRAppr;
     /** get plants */
     this.getPlants();
+    /** get payroll area */
+    this.getPayrollAreaByPlant(this.userPlantCode);
+
+    /** gen id validation based on the user role */
+    if (this.isAdmin) {
+      this.attendanceReprocessForm.get('genId')?.removeValidators(Validators.required);
+    } else if(this.isHr || this.isHrApprover) {
+      this.attendanceReprocessForm.get('genId')?.addValidators(Validators.required);
+    }
+    this.attendanceReprocessForm.get('genId')?.updateValueAndValidity();
   }
 
   /** get plant API */
@@ -70,14 +97,19 @@ export class AttendanceReprocessNewComponent implements OnInit {
        /** get payroll area by plant code
        * @property {UntypedForm} form.plantCode
        * @param {boolean} onComponentInit to get report data with default payrollArea
+       * @method getLastBillLockDate 
        */
       getPayrollAreaByPlant(onComponentInit:boolean){
         const plantCode:any = this.attendanceReprocessForm.value.plantCode;
         // console.log(plantCode)
         this.apiService.getPayrollAreaByPlantcode(plantCode).subscribe({
-          next: (response) => {
+          next: (response:any) => {
             this.payrollAreaData = response;
             console.log('PAYROLL AREA:',this.payrollAreaData);
+            /** set first occurance payroll area */
+            this.attendanceReprocessForm.controls['payrollArea'].setValue(response[0].PayrollArea);
+            /** get Last locked date */
+            this.getLastBillLockDate();
           },
           error: (error:any) => {
             console.error('ERROR:',error);
@@ -124,16 +156,31 @@ export class AttendanceReprocessNewComponent implements OnInit {
         this.clamApiService.reprocessAttendance(formData).subscribe({
           next: (response:any) => {
             console.log('response:',response);
-            if(response.success && response?.data.length){
+            if(response.success && response?.data.length !== 0){
               this.openStatusModal(response)
-              this.attendanceReprocessForm.reset();
+              /** user based form reset */
+              if(this.isAdmin){
+                this.attendanceReprocessForm.reset();
+              }
+              else if(this.isHr || this.isHrApprover){
+                this.attendanceReprocessForm.reset({
+                  plantCode:this.userPlantCode,
+                  payrollArea: this.payrollAreaData[0]?.PayrollArea,
+                  fromDate: new Date(),
+                  toDate: new Date(),
+                  genId: '',
+                  attendanceReprocess:'Y'
+                })
+              }
+            } else if(response?.success && response?.data.length == 0){
+              this.messageService.add({severity:'warn',summary:'No data to reprocess!'})
             }
             else{
-              this.messageService.add({severity:'warn',summary:response?.message});
+              this.messageService.add({severity:'info',summary:response?.message});
             }
           },
           error: (error:any) => {
-            console.error('ERROR:',error);
+            console.error('REPROCESS API ERROR:',error);
             this.messageService.add({severity:'error',summary:error?.error?.message});
           }
         })
@@ -141,10 +188,18 @@ export class AttendanceReprocessNewComponent implements OnInit {
 
       /** 
        * get min date based on the selected from date
-      * @returns {date}
+       * date control for HR and HR approver
        */
-      getMinDate():Date{
-        return new Date(this.attendanceReprocessForm.value.fromDate)
+      getMinDate(){
+        if(this.isAdmin){
+          this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMaxDate = moment(this.attendanceReprocessForm.value.fromDate).endOf('month').toDate();
+          this.attendanceReprocessForm.controls['toDate'].setValue('')
+        }else if(this.isHr || this.isHrApprover){
+          this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMaxDate = new Date(this.attendanceReprocessForm.value.fromDate);
+          this.attendanceReprocessForm.controls['toDate'].setValue('')
+        }
       }
 
       /**
@@ -166,5 +221,35 @@ export class AttendanceReprocessNewComponent implements OnInit {
     /** modal text */
     confirmModalRef.componentInstance.confirmText = `${apiResponse?.message}. Click Yes to download data.`
     console.log('modal opened...');
+  }
+
+  isPlantDisabled():boolean{
+    let isDisabled:boolean = false;
+    if(this.isAdmin){
+      isDisabled = false;
+    }
+    else if(this.isHr || this.isHrApprover){
+      isDisabled = true;
+    } 
+    return isDisabled;
+  }
+
+  /** 
+   * get last bill lock date and calculate min date
+   * @property {*} apiService
+   *  */
+  getLastBillLockDate(){
+    console.log('FORM ',this.attendanceReprocessForm.value.payrollArea)
+    this.apiService.getLastProcesedBill(this.userPlantCode , 'T', '', this.attendanceReprocessForm.value.payrollArea).subscribe({
+      next: (response:any) => {
+        console.log('Last Bill Lock Date:',response);
+        this.lastBillLokedDate = moment(response.date).toDate();
+        this.toMinDate = this.lastBillLokedDate;
+      },
+      error:(error:any) => {
+        console.error('GET LAST LOCKED DATE API ERROR:',error);
+        this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
+      }
+    })
   }
 }

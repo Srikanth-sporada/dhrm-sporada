@@ -47,7 +47,7 @@ export class CalenderComponent implements OnInit {
   backdate: any;
   /** shift & present full width */
   shiftFullWidth:boolean = environment.shiftFullWidth;
-   _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff"];
+   _exceptLC_EG_values = ['Holiday',"Factory Holiday","Comp_Off_Holiday","weekoff",'Comp Off'];
   evnt: CalendarEvent[] = [];
 
   events: MyEvent[] = [

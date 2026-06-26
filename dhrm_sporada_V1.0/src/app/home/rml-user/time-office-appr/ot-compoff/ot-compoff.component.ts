@@ -22,6 +22,7 @@ export class OtCompoffComponent implements OnInit {
   downlodData:any;
   all:any;
   userDetails:any;
+  genId:any;
   constructor(
     private apiService: ApiService,
     private matdailog:MatDialog,
@@ -49,7 +50,7 @@ export class OtCompoffComponent implements OnInit {
           this.messageService.add({severity:'error',summary:'Error Occured!'})
          }
         this.lines = response;
-        this.lines.unshift({Line_Name:'All'});
+        this.lines.unshift({Line_code:'',Line_Name:'All'});
         /** line code need Line name */
         // this.selectedLine = this.all.line_code.toString();
         // console.log(this.selectedLine);
@@ -59,26 +60,23 @@ export class OtCompoffComponent implements OnInit {
     });
   }
 
-  /** */
+  /** get coff data */
   getData() {
-    this.apiService.getApprovedExcessHours().subscribe((response: any) => {
+    this.apiService.getApprovedExcessHours().subscribe({
+    next:(response: any) => {
       if (response.status == "failed") {
-        // alert(response.message);
         this.messageService.add({severity:'info',summary:response.message})
       } else {
         console.log(response.data);
-        this.downlodData = response.data
-        this.data = response.data.map((element: any) => {
-          return { ...element, approvedHr: null, reason: "" };
-        }).filter((element:any) => {
-          return element.bal != 0;
-        });
-
-        console.log(this.data);
+        this.data = response.data.filter((element:any) => {return element.bal != 0;});
+        this.downlodData = response.data;
+        console.log('filtered coff data:',this.data);
       }
-    },(error) => {
-      console.error('ERROR:',error);
+    },
+    error:(error) => {
+      console.error('GET COFF API ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
+    }
     });
   }
 
@@ -112,5 +110,28 @@ export class OtCompoffComponent implements OnInit {
     this.matdailog.open(ExcessHoursDetailsComponent,{
       data:data
     })
+  }
+
+  /** filter data by genid 
+   * @property {*} genId
+   * @property {*} downloadData
+   * @property {*} data
+  */
+  filterByGenId(){
+    if(this.genId){
+      const filteredData = this.data.filter((coff:any) => {
+        if(coff.gen_id.trim().includes(this.genId.trim())){
+          return coff;
+        }
+      })
+      console.log('genid filter',filteredData)
+      if(filteredData.length !== 0){
+        this.data = filteredData;
+      }else{
+        this.data = this.downlodData;
+      }
+    }else{
+      this.data = this.downlodData;
+    }
   }
 }
