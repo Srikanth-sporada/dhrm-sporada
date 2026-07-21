@@ -275,7 +275,6 @@ export class QuestionBankComponent implements OnInit {
             summary: "Question Updated Successfully.",
           });
           // alert("The questions have been updated.");
-          location.reload();
         }
       },
       error: (err) => {

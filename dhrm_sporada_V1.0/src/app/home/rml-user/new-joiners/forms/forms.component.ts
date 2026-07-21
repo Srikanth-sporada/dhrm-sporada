@@ -512,6 +512,30 @@ export class FormsComponent implements OnInit, OnDestroy {
         icon: "pi pi-exclamation-triangle",
         accept: () => {
           /** window back to load previous query params */
+           /** mail API */
+      this.service
+        .submitted_mail({
+          plant_code: sessionStorage.getItem("plantcode"),
+          mobile: this.uniqueId.mobile,
+          company: this.uniqueId.company,
+        })
+        .subscribe({
+          next: (response: any) => {
+            console.log('SUBMITTED MAIL API RES:',response);
+            if(response.success){
+              window.history.back();
+            }else{
+              console.log('oops! something went wrong while sending mail')
+            }
+          },
+          error: (error) => {
+            console.log('SUBMITED API MAIl ERROR:',error);
+            this.messageService.add({
+              severity: "error",
+              summary: error.message,
+            });
+          },
+        });
           window.history.back();
           // this.router.navigate(["/"]);
         },
