@@ -62,6 +62,7 @@ export class FormsComponent implements OnInit, OnDestroy {
   // show onboard form
   showOnboard: Boolean = true;
   showCategory: Boolean = false;
+  traineePlantCode:string;
   constructor(
     private formservice: FormService,
     private service: ApiService,
@@ -105,6 +106,7 @@ export class FormsComponent implements OnInit, OnDestroy {
         this.details = data;
         /** initial apln_slno */
         this.apln_no = this.details[0]?.apln_slno;
+        this.traineePlantCode = this.details[0]?.plant_code
         console.log("NUMBER:", this.apln_no);
         this.Load = true;
 
@@ -454,7 +456,7 @@ export class FormsComponent implements OnInit, OnDestroy {
     this.uniqueId.company = this.details[0]?.company_code;
     console.log(this.uniqueId);
     console.log('SUBMITTED MAIL API DATA:', {
-          plant_code: sessionStorage.getItem("plantcode"),
+          plant_code: this.traineePlantCode,
           mobile: this.uniqueId.mobile,
           company: this.uniqueId.company,
         })
@@ -462,7 +464,7 @@ export class FormsComponent implements OnInit, OnDestroy {
       /** mail API */
       this.service
         .submitted_mail({
-          plant_code: sessionStorage.getItem("plantcode"),
+          plant_code: this.traineePlantCode,
           mobile: this.uniqueId.mobile,
           company: this.uniqueId.company,
         })
@@ -515,7 +517,7 @@ export class FormsComponent implements OnInit, OnDestroy {
            /** mail API */
       this.service
         .submitted_mail({
-          plant_code: sessionStorage.getItem("plantcode"),
+          plant_code: this.traineePlantCode,
           mobile: this.uniqueId.mobile,
           company: this.uniqueId.company,
         })
@@ -523,9 +525,9 @@ export class FormsComponent implements OnInit, OnDestroy {
           next: (response: any) => {
             console.log('SUBMITTED MAIL API RES:',response);
             if(response.success){
-              window.history.back();
+               window.history.back();
             }else{
-              console.log('oops! something went wrong while sending mail')
+              console.log('oops! something went wrong while sending mail');
             }
           },
           error: (error) => {

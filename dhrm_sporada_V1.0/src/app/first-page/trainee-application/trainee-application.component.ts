@@ -154,11 +154,18 @@ export class TraineeApplicationComponent implements OnInit {
                     this.isHrappr[0]?.Is_HRAppr
                   );
                   sessionStorage.setItem("user", "emp2");
+                  /** find selected plant code */
+                  const plantCodeForRouteParam = this.plantcode.find((plant:any) => {
+                    if(plant.plant_name == this.traineeApplicationForms.value.plant){
+                      return plant.plant_code
+                    }
+                  });
                    /** navigating to trainee application form */
                   this.router.navigate([
                     "/forms",
                     this.mobilenum,
                     this.traineeApplicationForms.value.company,
+                    plantCodeForRouteParam.plant_code// added for trainee submit mail send
                   ]);
                 },
               });

@@ -12,6 +12,7 @@ import { Location } from "@angular/common";
 import { FormService } from "../form.service";
 import { RejectComponent } from "../hr-view-data/reject/reject.component";
 import { MatDialog } from "@angular/material/dialog";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-onboard-form",
@@ -27,7 +28,7 @@ export class OnboardFormComponent implements OnInit {
   routeParam:any={};
   disableApproveBtn:any;
   hideCostCenterInput:boolean = environment?.hidecostCenterInput;
-  applicationStatusForBtn = 'PENDING'
+  applicationStatusForBtn = 'PENDING';
   lockDate:any;
   form:any;
   ifsc_code: any;
@@ -113,6 +114,7 @@ export class OnboardFormComponent implements OnInit {
   NewPayScaleFormGroup: FormGroup;
   traineePayscale:any;
   plant_Code: any = sessionStorage.getItem('plantcode');
+  loggedInUserComponayCode = JSON.parse(sessionStorage.getItem('companyCode') || '');
   constructor(
     private fb: UntypedFormBuilder,
     private formservice: FormService,
@@ -149,7 +151,7 @@ export class OnboardFormComponent implements OnInit {
       legacyNumberOne: [''],
       legacyNumberTwo: [''],
       // dojo training
-      dojoTraining: [''],
+      dojoTraining: ['', Validators.required],
       plantcode: [sessionStorage.getItem("plantcode")],
       apln_slno: [""],
       category: ["",Validators.required],
@@ -315,9 +317,19 @@ export class OnboardFormComponent implements OnInit {
             this.form.controls["reportingto"].setValue(this.basic[0]?.reporting_to);
             // payroll area
             this.form.controls["payrollArea"].setValue(this.basic[0]?.payrollArea);
-            // dojo training new extra fields
-            this.form.controls['dojoTraining']
-            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); // setting server response opposite value
+            /**
+             * dojo training new extra fields
+             * setting server response opposite value
+             * based on the user company code and env dojo mandatory array dojo form value set
+             */
+            if(!this.basic[0]?.skip_training){
+              const isDojoMandatory = environment.dojoMandatoryCompany.includes(this.loggedInUserComponayCode || '');
+              this.form.controls['dojoTraining'].setValue(isDojoMandatory ? 'YES' : null);
+            }
+            else{
+              this.form.controls['dojoTraining']
+            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES');
+            }
             this.form.controls['costCenter'].setValue(this.basic[0]?.cost_center);
             this.form.controls['legacyNumberOne'].setValue(this.basic[0]?.legacy_no1);
             this.form.controls['legacyNumberTwo'].setValue(this.basic[0]?.legacy_no2);
@@ -395,9 +407,13 @@ export class OnboardFormComponent implements OnInit {
             this.form.controls["reportingto"].setValue(this.basic[0]?.reporting_to);
               // payroll area
             this.form.controls["payrollArea"].setValue(this.basic[0]?.payrollArea);
-            // dojo training new extra fields
+            /**
+             * dojo training new extra fields
+             * setting server response opposite value
+             * appointed trainee's
+             */
             this.form.controls['dojoTraining']
-            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); // setting server response opposite value
+            .setValue(this.basic[0]?.skip_training == "YES" ? 'NO' : 'YES'); 
             this.form.controls['costCenter'].setValue(this.basic[0]?.cost_center);
             this.form.controls['legacyNumberOne'].setValue(this.basic[0]?.legacy_no1);
             this.form.controls['legacyNumberTwo'].setValue(this.basic[0]?.legacy_no2);
@@ -598,7 +614,7 @@ export class OnboardFormComponent implements OnInit {
       /** DOJ format */
       this.form.controls["doj"].setValue(moment(this.form.value.doj).format('YYYY-MM-DD'));
       /**  setting dojo training value to actual value */
-      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
+      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'NO');
       this.form.controls['active_status'].setValue('ACTIVE');
       console.log('ONBOARD DATA',this.form.getRawValue());
 
@@ -686,29 +702,21 @@ export class OnboardFormComponent implements OnInit {
       /** DOJ format */
       this.form.controls["doj"].setValue(moment(this.form.value.doj).format('YYYY-MM-DD'));
       /**  setting dojo training value to actual value */
-      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'no');
+      this.form.controls['dojoTraining'].setValue(this.form.value.dojoTraining == "YES" ? 'YES' : 'NO');
       this.form.controls['active_status'].setValue('ACTIVE');
       console.log('ONBOARD DATA',this.form.getRawValue());
-      /**
-       * trainee final approval by hr
-       * sent with second approver ID
-      */
-      this.service.traineeFinalApprover({...this.form.getRawValue(),secondApproverId:this.employeeID}).subscribe({
-        next: (response: any) => {
-        //  console.log(response);
-          if (response) {
-            /** send approved mail */
-             this.service.approved_mail({plant_code: sessionStorage.getItem("plant_code"),mobile: this.routeParam?.mobile,company: this.routeParam.company,})
-             .subscribe({next: (response: any) => {
-                console.log('APPROVED MAIL RESPONSE:',response);
-            },
-            error: (err) => {
-              console.error('HR APPROVE MAIL API ERROR:',err);
-              this.messageService.add({severity:'error',summary:'error sending mail'})
-            }
-          });
-             this.messageService.add({severity:'info',summary:response})
-            if (this.setting == 1) {
+      /** RXJS FORK JOIN BASED OBSERVABLE */
+      forkJoin({
+        traineeFinalApprovalApi: this.service.traineeFinalApprover({...this.form.getRawValue(),secondApproverId:this.employeeID}),
+        mailApi:this.service.approved_mail({plant_code: sessionStorage.getItem("plantcode"),mobile: this.routeParam?.mobile,company: this.routeParam.company})
+      }).subscribe({
+        next: (response:any) => {
+          if(response?.traineeFinalApprovalApi && response?.mailApi.success){
+            this.router.navigate(["/rhrm/new_joiners/onboard"]);
+          }else{
+            this.messageService.add({severity:'warn',summary:'Oops! something went wrong'})
+          }
+           if (this.setting == 1) {
               this.form.controls["trainee_id"].setValue();
               this.service
                 .getfiledrop({
@@ -725,15 +733,68 @@ export class OnboardFormComponent implements OnInit {
                   }
                 });
             }
-            /** navigate to onboard form */
-              this.router.navigate(["/rhrm/new_joiners/onboard"]);
-          }
         },
-        error: (err) => {
-          console.error('TRAINEE FINAL APPROVE API ERROR:',err)
-          this.messageService.add({severity:'error',summary:err.message})
-        },
-      });
+        error: (error) => {
+          console.log('TRAINEE FINAL APPROVE API ERROR',error);
+          this.messageService.add({severity:'error',summary:'Oops! something went wrong!'});
+        }
+      })
+      /**
+       * trainee final approval by HR
+       * sent with second approver ID
+      */
+      //  this.service.traineeFinalApprover({...this.form.getRawValue(),secondApproverId:this.employeeID}).subscribe({
+      //   next: (response: any) => {
+      //   //  console.log(response);
+      //   let isMailSent:boolean = false;
+      //     if (response) {
+      //       /** send approved mail */
+      //        this.service.approved_mail({plant_code: sessionStorage.getItem("plantcode"),mobile: this.routeParam?.mobile,company: this.routeParam.company}).subscribe({
+      //         next: (response:any) => {
+      //           if(response?.success){
+      //             console.log('TRAINEE FINAL APPROVAL MAIL SENT SUCCESS');
+      //             isMailSent = true;
+      //           }else{
+      //             console.log('TRAINEE FINAL APPROVAL MAIL SENT FAILED');
+      //             isMailSent = false;
+      //             this.messageService.add({severity:'warn',summary:'Opps something went wrong!'})
+      //           }
+      //         },
+      //         error: (error) => {
+      //           console.log('TRAINEE FINAL APPROVE MAI SENT API ERROR',error);
+      //           isMailSent = false;
+      //           this.messageService.add({severity:'warn',summary:'Opps something went wrong!'})
+      //         }
+      //        })
+      //        this.messageService.add({severity:'info',summary:response})
+      //       if (this.setting == 1) {
+      //         this.form.controls["trainee_id"].setValue();
+      //         this.service
+      //           .getfiledrop({
+      //             apln_slno: this.active.snapshot.paramMap.get("id"),
+      //           })
+      //           .subscribe({
+      //             next: (response) => {
+      //               this.down = response;
+      //               this.exportexcel();
+      //             },
+      //             error:(err) => {
+      //               console.log('GET FILE DROP API ERROR:',err)
+      //               this.messageService.add({severity:'error',summary:err.message});
+      //             }
+      //           });
+      //       }
+      //      if(isMailSent){
+      //        /** navigate to onboard form */
+      //         this.router.navigate(["/rhrm/new_joiners/onboard"]);
+      //      }
+      //     }
+      //   },
+      //   error: (err) => {
+      //     console.error('TRAINEE FINAL APPROVE API ERROR:',err)
+      //     this.messageService.add({severity:'error',summary:err.message})
+      //   },
+      // }); 
       /** trainee releive api call */
     } else if (this.readonly == true) {
       /** DOL format */

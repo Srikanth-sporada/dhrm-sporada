@@ -76,6 +76,7 @@ export const environment = {
   /** pagination row limit */
   paginationRowLimit:60,
   paginationRowsPerPage: [25,50,75,100],
+  dojoMandatoryCompany:['1000','8000'],
   /** AD */
   enableADLogin:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',
