@@ -647,22 +647,22 @@
                 </div>
                  <!-- second row -->
                 <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- DOJ -->
-                  <div class="w-full mt-3 mx-2">
-                  <label class="text-blue-600 flex items-center justify-start gap-1 mb-2" for="name">
-                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
-                      Date Of Join
-                    </label>
-                    <!--  [minDate]="DOJminDate"
-                    [maxDate]="DOJmaxDate" -->
-                  <p-calendar 
-                    formControlName="DOJ"
-                    [minDate]="DOJminDate"
-                    [maxDate]="DOJmaxDate"
-                    dateFormat="yy-mm-dd"
-                    [disabled]="isDOJReadOnly"
-                    [showIcon]="true" >
-                  </p-calendar>
+                   <!-- payroll area -->
+                  <div class="w-full mx-2">
+                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
+                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
+                   Payroll Area
+                  </label><br />
+                  <!-- [disabled]="isDOJReadOnly" -->
+                  <p-dropdown 
+                    [options]="payrollArea"
+                    (onChange)="calculateDOJMinDateByPayrollArea()"
+                    optionLabel="PayrollArea"
+                    optionValue="PayrollArea"
+                    styleClass="w-full"
+                    formControlName="payrollArea"
+                    placeholder="Select PayrollArea">
+                  </p-dropdown>
                   </div>
                   <!-- department line-->
                   <div class="w-full mx-2">
@@ -700,21 +700,22 @@
                 </div>
                  <!-- third row -->
                 <div class="flex items-center justify-start flex-col sm:flex-row w-full gap-4 p-fluid !font-poppins mt-3">
-                   <!-- payroll area -->
-                  <div class="w-full mx-2">
-                    <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2">
-                    <mat-icon class="text-2xl text-blue-600 h-0 w-0">crop</mat-icon>
-                   Payroll Area
-                  </label><br />
-                  <!-- [disabled]="isDOJReadOnly" -->
-                  <p-dropdown 
-                    [options]="payrollArea"
-                    optionLabel="PayrollArea"
-                    optionValue="PayrollArea"
-                    styleClass="w-full"
-                    formControlName="payrollArea"
-                    placeholder="Select PayrollArea">
-                  </p-dropdown>
+                   <!-- DOJ -->
+                  <div class="w-full mt-3 mx-2">
+                  <label class="text-blue-600 flex items-center justify-start gap-1 mb-2" for="name">
+                      <mat-icon class="text-2xl text-blue-600 h-0 w-0">calendar_today</mat-icon>
+                      Date Of Join
+                    </label>
+                    <!--  [minDate]="DOJminDate"
+                    [maxDate]="DOJmaxDate" -->
+                  <p-calendar 
+                    formControlName="DOJ"
+                    [minDate]="DOJminDate"
+                    [maxDate]="DOJmaxDate"
+                    dateFormat="yy-mm-dd"
+                    [disabled]="isDOJReadOnly"
+                    [showIcon]="true" >
+                  </p-calendar>
                   </div>
                    <!-- work contract-->
                   <div class="w-full mx-2">

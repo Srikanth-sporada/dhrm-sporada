@@ -73,6 +73,8 @@ export class VanDelayRegularizationComponent implements OnInit {
     }
     this.getroute();
     this.getdetails();
+    /** get last processed payroll date */
+    this.setDateRange();
   }
 
   setDateRange() {
@@ -196,8 +198,12 @@ export class VanDelayRegularizationComponent implements OnInit {
   isverifyValid(): boolean {
     return !!this.route && !!this.date && !!this.Category;
   }
+  /** 
+   * disable sumit button if user doesnot enter the data and if no trainee regularization data is not availble
+   * because if no @property {*} userList is available it crashed server.
+   */
   issubmitValid(): boolean {
-    return !!this.transporter && !!this.driver && !!this.lc_min;
+    return !!this.transporter && !!this.driver && !!this.lc_min && this.userList.length !== 0;
   }
 
   verify() {
@@ -223,21 +229,21 @@ export class VanDelayRegularizationComponent implements OnInit {
       this.plant,
       this.route,
       this.Category
-    ).subscribe(
-      (res: any) => {
+    ).subscribe({
+      next: (res: any) => {
         this.userList = res;
-
         if(res[0].Van_Eligible == true){
-          this.openAlertDialog("Already Van Facility Mapped",'error')
+          // this.openAlertDialog("Already Van Facility Mapped",'error');
+          this.messageService.add({severity:'warn',summary:'Already Van Facility Mapped for the trainee'})
         }else{
           this.userList = res;
         }
       },
-      (error) => {
-        console.error('ERROR:',error);
+      error: (error:any) => {
+        console.error('GET USER LIST API ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       }
-    );
+    });
   }
 
   /** submit van delay regularization */
@@ -280,8 +286,8 @@ export class VanDelayRegularizationComponent implements OnInit {
         this.date = null;
       },
       error: (error) => {
-        console.error('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.error });
+        console.error('REGULARIZE VAN DELAY API ERROR:',error);
+        this.messageService.add({ severity: "error", summary: error.error?.message });
       }
     });
   }

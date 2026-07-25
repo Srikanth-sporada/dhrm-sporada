@@ -1017,6 +1017,16 @@ export class ApiService {
     return this.http.get(this.url + `/ars/getlockdateByCategory?plant=${plantCode}&cat=${category}&gen_id=${gen_id}&payrollArea=${payrollArea}`)
   }
 
+  /** 
+ * get last processed bill date by payroll area and category
+ * @param plantCode
+ * @param category
+ * @param payrollArea
+ *  */
+  getLastProcesedBillByPayrollArea(category:any,payrollArea:any,plantCode?:any,){
+    return this.http.get(this.url + `/ars/getlockdateByCategory?plant=${sessionStorage.getItem("plantcode")}&cat=${category}&payrollArea=${payrollArea}`)
+  }
+
   
   checkCoffDate(date: any, apln_slno: any) {
     return this.http.get(

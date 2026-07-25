@@ -720,20 +720,38 @@ export class ContractorEmployeeComponent implements OnInit {
       if(this.DOJLimit){
        console.log('DOJ LIMIT:',this.DOJLimit);
        console.log('LOCK DATE:',this.lockDate);
-       this.DOJminDate = moment(this.lockDate).subtract(this.DOJLimit, 'days').toDate();
+       this.DOJminDate = moment().subtract(this.DOJLimit - 1, 'days').toDate();
        this.DOJmaxDate = moment().toDate(); // current date
        console.log('DOJ MIN,MAX DATE:',this.DOJminDate,this.DOJmaxDate)
       }
     });
-
-    const currentDate = new Date();
-    // this.DoEminDate = new Date(currentDate.setDate(currentDate.getDate() - 60));
     this.DoEmaxDate = new Date();
-    // console.log(currentDate);
-
-    //  this.DoEmaxDate = new Date(currentDate.setDate(currentDate.getDate() ))
   }
 
+   /** calculate DOL min date and DOJmin date based on last lock date 
+   * @param dateDoj
+  */
+  calculateDOJMinDateByPayrollArea() {
+    const selectedPayrollArea = this.contractEmpDetails.value.payrollArea;
+    this.service.getLastProcesedBillByPayrollArea('T',selectedPayrollArea).subscribe({
+      next: (response: any) => {
+      console.log("lock date", new Date(response.date));
+      /** calculate DOJ MIN & MAX DATE */
+      if(this.DOJLimit){
+       console.log('DOJ LIMIT:',this.DOJLimit);
+       console.log('LOCK DATE:',this.lockDate);
+       this.DOJminDate = moment().subtract(this.DOJLimit - 1, 'days').toDate();
+       this.DOJmaxDate = moment().toDate(); // current date
+       console.log('DOJ MIN,MAX DATE:',this.DOJminDate,this.DOJmaxDate)
+      }
+    },
+    error: (error:any) => {
+      console.log('GET LOCK DATE BY PAYROLLAREA API ERROR',error);
+      this.messageService.add({severity:'error',summary:'Oops! something went wrong.'})
+    }
+    });
+  }
+  
   /** get back date DOJ */
   getDOJBackDate(){
     this.apiService.getbackdate().subscribe({
