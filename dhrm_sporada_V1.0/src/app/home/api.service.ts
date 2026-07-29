@@ -1,12 +1,7 @@
-import { HttpClient, HttpParams,HttpHeaders } from "@angular/common/http";
+import { HttpClient,HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { TestBed } from "@angular/core/testing";
-import { appendFile } from "fs";
-import { relativeTimeThreshold } from "moment";
-import { report } from "process";
-import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
-import { PayrollArea } from "./rml-user/masters/types/payrollArea.type";
+
 
 
 @Injectable({
@@ -21,7 +16,10 @@ export class ApiService {
   ars_login(form: any) {
     return this.http.post(this.url + "/login/ars-login", form);
   }
-
+  /** 
+   * Executive login API based on the configuration AD login and without ad login
+   * its used to production and dev environment.
+   */
   login(User_Name: string, Password: string) {
     if(environment?.enableADLogin){
       return this.http.post(this.url + "/login/emp/ad", { User_Name, Password, });

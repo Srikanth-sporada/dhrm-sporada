@@ -12,6 +12,7 @@ import moment from 'moment'
   templateUrl: "./perm-idcard.component.html",
   styleUrls: ["./perm-idcard.component.css"],
 })
+
 export class PermIdcardComponent implements OnInit {
   uniqueId: any = { mobile: "" };
   status: any = { status: "" };
@@ -56,7 +57,9 @@ export class PermIdcardComponent implements OnInit {
       }, 1000);
     }
   }
-
+ hideImage(file:any){
+   this.formvalues[0][file] = null;
+ }
   /** ID card print function
    * while print hiding prin btn using print events
    */

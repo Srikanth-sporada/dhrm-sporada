@@ -16,7 +16,15 @@
           <img 
            class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain !border-2 !border-gray-400 rounded-md" 
            [src]="apiPath + '/uploads/' + i?.other_files6"
-           alt="Avatar" />
+           alt="Avatar" 
+           *ngIf="i.other_files6 !== null"
+           (error)="hideImage('other_files6')" />
+           <!-- fallback div -->
+           <div 
+           class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain rounded-md border-none" 
+           *ngIf="i.other_files6 == null"
+            >
+            </div>
        </div>
      
       <!-- trainee details -->
@@ -38,16 +46,37 @@
         </p>
        </div>
        <!-- signature -->
-        <div class="flex item-center justify-between mt-4">
+        <div class="flex item-center justify-between mt-4 bottom-0">
           <div class="text-center w-1/2 flex items items-center justify-center flex-col">
             <div class="flex item-center justify-center h-[40px] w-full">
-              <img [src]="apiPath + '/uploads/' + i?.other_files7" alt="trainee_sign" class="object-contain">
+              <img 
+                [src]="apiPath + '/uploads/' + i?.other_files7" 
+                 alt="trainee_sign" 
+                 class="object-contain" 
+                 (error)="hideImage('other_files7')"
+                 *ngIf="i?.other_files7  !== null">
+                  <!-- fallback div -->
+                <div 
+                  class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain rounded-md border-none" 
+                  *ngIf="i.other_files7 == null"
+                  >
+                  </div>
             </div>
             <p class="text-lg">Holder's Signature</p>
           </div>
           <div class="text-center w-1/2 flex items items-center justify-center flex-col">
             <div class="flex items-center justify-center h-[40px] w-full">
-              <img [src]="apiPath + '/plant/' + i?.plant_sign" alt="plant_sign" class="object-contain">
+              <img 
+                [src]="apiPath + '/plant/' + i?.plant_sign" 
+                alt="plant_sign" class="object-contain" 
+                (error)="hideImage('plant_sign')"
+                *ngIf="i?.plant_sign !== null">
+                 <!-- fallback div -->
+                <div 
+                  class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain rounded-md border-none" 
+                  *ngIf="i.plant_sign == null"
+                  >
+                  </div>
             </div>
             <p class="text-lg">Issuing Authority</p>
           </div>
@@ -103,6 +132,10 @@
               <tr>
                 <td div class="aligncommand1 text-xl"><b>Employee Nature</b></td>
                 <td div class="aligncommand1 text-xl">: Trainee</td>
+                <!-- new field -->
+                <tr>
+                <td div class="aligncommand1 text-xl"><b>Category</b></td>
+                <td div class="aligncommand1 text-xl">: {{i?.apprentice_type}}</td>
               <tr>
                 <td div class="aligncommand1 text-xl"><b>Department</b></td>
                 <td div class="aligncommand1 text-xl">: {{i?.dept_name}}</td>

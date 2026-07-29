@@ -12,7 +12,7 @@ import { ApiService } from "src/app/home/api.service";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { MatVerticalStepper } from "@angular/material/stepper";
 import * as XLSX from "xlsx";
-import moment from "moment";
+import moment, { localeData } from "moment";
 import { ContractorEmployee } from "./contractor-employee.model";
 import { LoaderserviceService } from "../../loaderservice.service";
 import { ToastComponent } from "../toast/toast.component";
@@ -21,6 +21,7 @@ import { DelPopupComponent } from "../del-popup/del-popup.component";
 import { environment } from "src/environments/environment.prod";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { MessageService, MenuItem } from "primeng/api";
+import { HttpResponse } from "@angular/common/http";
 @Component({
   selector: "app-contractor-employee",
   templateUrl: "./contractor-employee.component.html",
@@ -714,8 +715,8 @@ export class ContractorEmployeeComponent implements OnInit {
       console.log("DOJ", dateDoj);
 
       this.lockDate = new Date(response.date);
-      this.DoEminDate = this.lockDate > dateDoj ? this.lockDate : new Date(dateDoj);
-      console.log(this.DoEminDate);
+      // this.DoEminDate = this.lockDate > dateDoj ? this.lockDate : new Date(dateDoj);
+      // console.log(this.DoEminDate);
       /** calculate DOJ MIN & MAX DATE */
       if(this.DOJLimit){
        console.log('DOJ LIMIT:',this.DOJLimit);
@@ -725,7 +726,7 @@ export class ContractorEmployeeComponent implements OnInit {
        console.log('DOJ MIN,MAX DATE:',this.DOJminDate,this.DOJmaxDate)
       }
     });
-    this.DoEmaxDate = new Date();
+    // this.DoEmaxDate = new Date();
   }
 
    /** calculate DOL min date and DOJmin date based on last lock date 
@@ -735,12 +736,13 @@ export class ContractorEmployeeComponent implements OnInit {
     const selectedPayrollArea = this.contractEmpDetails.value.payrollArea;
     this.service.getLastProcesedBillByPayrollArea('T',selectedPayrollArea).subscribe({
       next: (response: any) => {
+      const lockDate = new Date(response?.date);
       console.log("lock date", new Date(response.date));
       /** calculate DOJ MIN & MAX DATE */
       if(this.DOJLimit){
        console.log('DOJ LIMIT:',this.DOJLimit);
        console.log('LOCK DATE:',this.lockDate);
-       this.DOJminDate = moment().subtract(this.DOJLimit - 1, 'days').toDate();
+       this.DOJminDate = moment(lockDate).subtract(this.DOJLimit - 1, 'days').toDate();
        this.DOJmaxDate = moment().toDate(); // current date
        console.log('DOJ MIN,MAX DATE:',this.DOJminDate,this.DOJmaxDate)
       }
@@ -752,6 +754,39 @@ export class ContractorEmployeeComponent implements OnInit {
     });
   }
   
+  /** 
+   * calaulate Date of Exit min and max date
+   * @param traineeDOJ 
+   * @param payrollArea
+   */
+  calculateDOEMinAndMaxDate(traineeDoj:any,payrollArea:any){
+    /** get last locked bill date based on trainee payroll area */
+    let lockDate:Date| string = '';
+    this.DoEminDate = '';
+    this.DoEmaxDate = '';
+    const formattedTraineeDoj = moment(traineeDoj).format('YYYY-MM-DD');
+    const currrentFormattedDate = moment().format('YYYY-MM-DD');
+    this.service.getLastProcesedBillByPayrollArea('T',payrollArea).subscribe({
+      next: (response:any) => {
+        lockDate = moment(response?.date).format('YYYY-MM-DD'); 
+        const isDojBwtCurrentPayrollPeriod = moment(formattedTraineeDoj).isBetween(lockDate,currrentFormattedDate,null,'[]');
+        if(isDojBwtCurrentPayrollPeriod){
+          this.DoEminDate = new Date(traineeDoj);
+          this.DoEmaxDate = new Date();
+        }else{
+          this.DoEminDate = new Date(response?.date);
+          this.DoEmaxDate = new Date();
+        }
+        console.log('isDojBwtCurrentPayrollPeriod:',isDojBwtCurrentPayrollPeriod);
+        console.log(this.DoEmaxDate, this.DoEminDate);
+      },
+      error: (error:HttpResponse<any>) => {
+        console.log('GET PROCESSED BILL END DATE API ERROR:',error);
+        this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
+      }
+    });
+    
+  }
   /** get back date DOJ */
   getDOJBackDate(){
     this.apiService.getbackdate().subscribe({
@@ -1678,10 +1713,14 @@ export class ContractorEmployeeComponent implements OnInit {
     ) {
       this.showeditButton(!showButton);
     }
-
+    /**
+     *  for appointed employee show seperation tab
+     *  calaulate DOE min and max date based on trainee payroll area
+     */
     if (data.apln_status == "APPOINTED") {
       this.isDOJReadOnly = true;
       this.showRel(showButton);
+      this.calculateDOEMinAndMaxDate(data?.doj, data?.payrollArea)
     } else {
       this.isDOJReadOnly = false;
       this.showRel(!showButton);
