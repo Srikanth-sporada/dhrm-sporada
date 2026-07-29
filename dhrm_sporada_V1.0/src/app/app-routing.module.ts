@@ -39,7 +39,7 @@ const routes: Routes = [
     component: TraineeApplicationComponent
   },
   {
-    path: 'forms/:mobile_no1/:company/:plantCode',
+    path: 'forms/:mobile_no1/:company',
     component: FormsComponent, canActivate: [AuthGuard]
   },
   {

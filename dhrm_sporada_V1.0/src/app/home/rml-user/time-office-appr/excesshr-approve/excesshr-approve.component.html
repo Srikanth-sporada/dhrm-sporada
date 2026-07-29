@@ -303,6 +303,9 @@
           Gen ID
            <p-sortIcon field="gen_id"></p-sortIcon>
         </th>
+         <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          PayrollArea
+        </th>
         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
          Biometric ID
         </th>
@@ -388,6 +391,7 @@
             {{ rowIndex + 1 }}
         </td>
         <td>{{ row.gen_id }}</td>
+        <td class="text-center">{{ row?.payrollArea || '-' }}</td>
         <td>{{ row.biometric_no }}</td>
         <td>{{ row.fullname }}</td>
         <td>{{ row.Line_Name}}</td>
