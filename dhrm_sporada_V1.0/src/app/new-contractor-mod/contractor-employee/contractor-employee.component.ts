@@ -880,9 +880,9 @@ export class ContractorEmployeeComponent implements OnInit {
     }
   }
 
-  adhaarNumber(event: Event, controlName: string): void {
+  adhaarNumber(event: any, controlName: string): void {
     const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value;
+    const value = inputElement?.value || event?.value;
     if (value.length > 12) {
       inputElement.value = value.slice(0, 12);
       this.contractEmpBasicDetails.patchValue({
@@ -2164,25 +2164,15 @@ export class ContractorEmployeeComponent implements OnInit {
     }
     // console.log(this.contractorEmployee)
 
-    this.api
-      .edit_cl_Emp_ByHR(
-        this.contractorEmployee,
-        this.contractorEmployee.apln_slno,
-      )
-      .subscribe({
+    this.api.edit_cl_Emp_ByHR(this.contractorEmployee,this.contractorEmployee.apln_slno,).subscribe({
         next:(res: any) => {
           const formData = new FormData();
           formData.append(
             "photo",
             this.contractEmpBasicDetails.value.Photo_File,
           );
-          // photo upload api call
-          this.api
-            .photo_upload(
-              formData,
-              this.contractEmpBasicDetails.value.apln_slno,
-            )
-            .subscribe({
+        /** photo update API call */
+          this.api.photo_upload(formData,this.contractEmpBasicDetails.value.apln_slno,).subscribe({
               next: (res) => {
                 console.log("file Uploaded", res);
                 this.messageService.add({ severity: "info", summary: res?.message });
@@ -2203,10 +2193,10 @@ export class ContractorEmployeeComponent implements OnInit {
         error: (error) => {
           if (error.status === 400) {
             console.error('HR UPDATE API ERROR:',error);
-            this.messageService.add({severity:'error',summary:error?.error?.message})
+            this.messageService.add({severity:'error',summary:error?.error})
           } else {
             console.error('HR UPDATE API ERROR:',error);
-            this.messageService.add({severity:'error',summary:error?.error?.message})
+            this.messageService.add({severity:'error',summary:error?.error})
           }
         },
       });

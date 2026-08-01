@@ -17,6 +17,7 @@ import { MessageService,ConfirmationService,MenuItem } from 'primeng/api';
   styleUrls: ['./indirect-head-count-master.component.css']
 })
 export class IndirectHeadCountMasterComponent implements OnInit {
+  /** IN-Direct Head Count Master */
   HC_Form:any
   selectedPlant: string = '';
   updt_HeadCount: string = '';
@@ -57,7 +58,13 @@ export class IndirectHeadCountMasterComponent implements OnInit {
                 }
               }
     ];
-  constructor(private fb: FormBuilder,private api : ClamAPIService,private modalService: NgbModal,private dialog: MatDialog,private service : ApiService,public loader: LoaderserviceService,private messageService:MessageService,private confirmationService:ConfirmationService) {
+  constructor(
+    private fb: FormBuilder,
+    private api : ClamAPIService,
+    private modalService: NgbModal,
+    private dialog: MatDialog,private service : ApiService,
+    public loader: LoaderserviceService,private messageService:MessageService,
+    private confirmationService:ConfirmationService) {
       this.HC_Form = this.fb.group({
         plant: ['', Validators.required],
         dept_id: ['', Validators.required],
@@ -156,6 +163,7 @@ onDeptChange(event: any) {
   this.selectedDept = event.value;
   this.rolesFormArray.clear();
   this.getRoleData();
+  this.get_Indirect_HC();
 }
 
 /** get role data api call */ 
@@ -168,7 +176,10 @@ getRoleData() {
       this.populateRoles(); 
       //.filter((data: any) => data.dept_slno === this.selectedDept);
     },
-    error: (error) => console.log(error)
+    error: (error) => {
+      console.log('GET INDIRECT ROLE API ERROR:',error);
+      this.messageService.add({severity:'error',summary:'Oops! something went wrong.'})
+    }
   });
 }
 
@@ -178,11 +189,14 @@ get_Indirect_HC() {
     next: (response: any) => {
       console.log(response);
       
-      this.hc_data = response
+      this.hc_data = response?.filter((headcount:any) => headcount?.Role_Id !== null  && headcount?.Role_Name !== null  )
       // this.populateRoles(); 
       //.filter((data: any) => data.dept_slno === this.selectedDept);
     },
-    error: (error) => console.log(error)
+    error: (error) => {
+      console.log('GET INDIRECT ROLE API ERROR:',error);
+      this.messageService.add({severity:'error',summary:'Oops! something went wrong.'})
+    }
   });
 }
 

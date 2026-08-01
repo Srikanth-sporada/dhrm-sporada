@@ -919,8 +919,8 @@ export class ClamAPIService {
     return this.http.get(`${this.url}/CLAM/get_indirect?plant=${plant}&dept=${dept}`)
 
   }
-  get_indirect_headCount(plant: any, admin: any) {
-    return this.http.get(`${this.url}/CLAM/get_indirect_headCount?plant=${plant}&admin=${admin}`)
+  get_indirect_headCount(plant: any, admin: any, dept?:any) {
+    return this.http.get(`${this.url}/CLAM/get_indirect_headCount?plant=${plant}&admin=${admin}&dept=${dept}`)
 
   }
   update_Ind_HC(data: any, emp: any) {
