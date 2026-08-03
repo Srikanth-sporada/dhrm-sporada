@@ -486,6 +486,7 @@ export class OnboardFormComponent implements OnInit {
 
   /** 
    * on category select based on the category disable costcenter
+   * if selected categoty is in contractor set @property {boolean} payscaleform true else false
    */
   onCategorySelect(category:any){
     console.log('category:',category);
@@ -494,9 +495,11 @@ export class OnboardFormComponent implements OnInit {
     if(isSelectedCategory){
       this.form.get('costCenter')?.disable();
      this.form.get('costCenter')?.setValue(null);
+     this.payscaleForm = true;
     }else{
       this.form.get('costCenter')?.enable();
-    this.form.get('costCenter')?.setValue('');
+      this.form.get('costCenter')?.setValue('');
+      this.payscaleForm = false;
     }
   }
 

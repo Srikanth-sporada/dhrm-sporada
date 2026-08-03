@@ -483,7 +483,7 @@
        
 
         <!-- NEW DESIGNED PAYSCALE FORM -->
-         <div *ngIf="payscaleForm" class="mb-3">
+         <div *ngIf="payscaleForm && showContractor()" class="mb-3">
       <form [formGroup]="NewPayScaleFormGroup" class="mx-2 !font-poppins overflow-hidden">
         <!-- payscale details header -->
         <div id="ndLine" class="border"> 
