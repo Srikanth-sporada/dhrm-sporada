@@ -2092,10 +2092,10 @@ export class ContractorEmployeeComponent implements OnInit {
           error: (error) => {
             if (error.status === 400) {
               console.error('SUBMIT CL TRAINEE API ERROR:',error);
-              this.messageService.add({severity:'error',summary:error?.message})
+              this.messageService.add({severity:'error',summary:error?.error?.message})
             } else {
-              console.error('SUBMIT CL TRAINE API ERROR:',error)
-              this.messageService.add({severity:'error',summary:error?.message})
+              console.error('SUBMIT CL TRAINEE API ERROR:',error);
+              this.messageService.add({severity:'error',summary:error?.error?.message});
             }
           },
         });

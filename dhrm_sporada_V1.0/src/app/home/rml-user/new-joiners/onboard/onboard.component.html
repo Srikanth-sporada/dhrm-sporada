@@ -134,7 +134,7 @@
                   <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPOINTED'">
                     {{ i.doj?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
-                  <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'APPROVED'">
+                  <td class="!px-2 !py-4 !rounded-s-md text-center" *ngIf="i.apln_status == 'SUBMITTED'">
                     {{ i.created_dt?.split("T")[0] | date : "dd-MM-yyyy" }}
                   </td>
                   <td class="!px-2 !py-4 !rounded-s-md text-blue-600 font-semibold">{{ i.gen_id == null ? "-" : i.gen_id }}</td>
@@ -146,7 +146,7 @@
                   <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ i.trainee_idno || '-' }}</td>
                   <!-- <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.aadhar_no }}</td> -->
                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.apln_status || '-' }}</td>
-                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.test_status == 'in_training' ? 'IN TRAINING' : i.test_status}}</td>
+                   <td class="!px-2 !py-4 !rounded-s-md text-center">{{ i.test_status == 'in_training' ? 'IN TRAINING' : i.test_status | uppercase}}</td>
                   <td class="!px-2 !py-4 !rounded-e-md flex items-center justify-center">
                     <div>
                       <button
