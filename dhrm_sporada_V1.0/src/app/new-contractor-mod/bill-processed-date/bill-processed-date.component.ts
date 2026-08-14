@@ -444,7 +444,7 @@ export class BillProcessedDateComponent implements OnInit {
               // this.openAlertDialog('Error in connection','error');
               this.messageService.add({
                 severity: "error",
-                summary: "Error In Connection",
+                summary: error?.error,
               });
             }
           },

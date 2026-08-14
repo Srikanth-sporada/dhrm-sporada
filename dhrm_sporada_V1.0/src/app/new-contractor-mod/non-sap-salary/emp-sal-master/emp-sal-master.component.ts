@@ -98,7 +98,7 @@ export class EmpSalMasterComponent implements OnInit {
     console.log(data);
 
     const groupedData = data.reduce((acc: any, obj: any) => {
-      const conId = obj.Con_Id;
+      const conId = obj.Con_Id || 'unknown';
       if (!acc[conId]) {
         acc[conId] = [];
       }
@@ -112,9 +112,7 @@ export class EmpSalMasterComponent implements OnInit {
       const records = groupedData[conId];
 
       // Safely get the company name
-      const companyName =
-        records[0]?.Cont_company_name?.trim()?.substring(0, 30) ||
-        "Unknown Company";
+      const companyName = `${records[0]?.Cont_company_name?.trim()?.substring(0, 30) || 'unknown Contractor'}_${conId}`.slice(0,30) ;
       console.log(companyName);
 
       // Exclude the specified keys
