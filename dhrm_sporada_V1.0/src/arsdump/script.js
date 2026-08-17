@@ -46,17 +46,17 @@ async function loadPlants() {
         const plants = await res.json();
         const select = document.getElementById("plant");
         console.dir(select)
-        if(isHr || isHrApprover){
-          select.innerHTML = `<option value="${plantCode}">${plantCode}</option>`;
-          select.disabled = true;
+        if(isAdmin){
+            select.innerHTML = '<option value="">-- Select Plant --</option>';
+            plants.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.PlantCode;
+                opt.textContent = p.PlantCode;
+                select.appendChild(opt);
+            });
         }else{
-        select.innerHTML = '<option value="">-- Select Plant --</option>';
-        plants.forEach(p => {
-            const opt = document.createElement("option");
-            opt.value = p.PlantCode;
-            opt.textContent = p.PlantCode;
-            select.appendChild(opt);
-        });
+            select.innerHTML = `<option value="${plantCode}">${plantCode}</option>`;
+            select.disabled = true;
         }
         
     } catch (err) { 
@@ -91,8 +91,9 @@ async function loadPlants() {
         endDate.value = "";
         }
         /** set start date as end date */
-        if(isHr || isHrApprover){
+        if(((isHr || isHrApprover) && !isAdmin)){
           endDate.value = startDate.value;
+          endDate.disabled = true;
         }
         });
     });
@@ -106,7 +107,7 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
         return;
     }
     /** check genid has value */
-    if((isHr || isHrApprover) && !document.getElementById("genid").value){
+    if(((isHr || isHrApprover) && !isAdmin) && !document.getElementById("genid").value){
      alert('Enter Gen ID');
      return;
     }
@@ -171,7 +172,7 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
                 { data: "Punch_Time" },         // 4
                 { 
                   data: "Punch_Date_Time", 
-                  render: (data) => formatDateTime(data) 
+                  render: (data) => splitDateAndTime(data)
                 },                              // 5
                 { data: "Punch_Direction" },    // 6
                 { data: "PlantCode" },          // 7
@@ -234,4 +235,11 @@ function formatDateTime(value) {
     const d = new Date(value);
     const pad = (num) => String(num).padStart(2, "0");
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+/** Helper: split Punch_Date_Time  */
+function splitDateAndTime(date){
+    if(!date) return "";
+    const parts = date.split(/[TZ]/);
+    return `${parts[0]} ${parts[1]}`
 }

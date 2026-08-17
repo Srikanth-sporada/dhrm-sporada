@@ -99,6 +99,35 @@ export class Admin implements CanActivate {
     return true;
   }
 }
+/** 
+ * punch dump guard
+ */
+@Injectable({
+  providedIn: "root",
+})
+export class PunchDumpGuard implements CanActivate {
+  constructor(
+    private router: Router,
+    private location: Location,
+    private messageService:MessageService,
+  ) {}
+
+  canActivate(): boolean {
+    const isHrAppr = sessionStorage.getItem("ishrappr") === "true";
+    const isHr = sessionStorage.getItem("ishr") === "true";
+    const isAdmin = sessionStorage.getItem("isadmin") === "true";
+    if (!(isHrAppr || isHr || isAdmin)) {
+      // alert("Not accessible");
+      this.messageService.add({severity:'warn',summary:'Access Denied!'});
+      console.log('FROM PUNCH GUARD FALSE', this.messageService);
+      console.log('ROLES', [isAdmin,isHr,isHrAppr])
+      return false;
+    }
+    console.log('GETTING DATA FROM THE ROUTE GUARD');
+    console.log('FROM PUNCH GUARD TRUE', this.messageService)
+    return true;
+  }
+}
 @Injectable({
   providedIn: "root",
 })

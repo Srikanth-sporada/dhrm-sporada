@@ -20,7 +20,7 @@ import {CorpHRDashboardComponent} from './dashboard/corp-hr-dashboard/corp-hr-da
 import { CompanyComponent } from "./masters/company/company.component";
 import { HrmsReportsComponent } from "./reports/hrms-reports/hrms-reports.component";
 import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.component";
-import { Admin } from "src/app/new-contractor-mod/routes.gaurd/Role.guard";
+import { Admin, PunchDumpGuard } from "src/app/new-contractor-mod/routes.gaurd/Role.guard";
 
 const routes: Routes = [
   {
@@ -167,7 +167,7 @@ const routes: Routes = [
    {
     path: "ars-dump",
     component: AdminArsDumbComponent,
-    canActivate:[Admin]
+    canActivate:[PunchDumpGuard]
   },
   
 ];
