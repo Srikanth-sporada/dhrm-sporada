@@ -40,6 +40,7 @@ export class ExcesshrApproveComponent implements OnInit {
   failedDataCount:number = 0;
   plantCode:any = sessionStorage.getItem("plantcode");
   userName:any = sessionStorage.getItem("user_name");
+  isApiCalled:boolean = false;
   /** primeng data table ref */
   @ViewChildren('rowRef') rows!: QueryList<ElementRef>;
 
@@ -512,6 +513,8 @@ export class ExcesshrApproveComponent implements OnInit {
   /** bulk approve EH  */
   bulkApproveEH(){
     console.log('BULK APPROVE EH DATA:',this.bulkApproveData);
+    /** set isAPIcalled true */
+    this.isApiCalled = true;
     /** mapp selected bulk data for API */
     const mappedData:any = [];
     this.bulkApproveData.forEach((bulkData:any) => {
@@ -538,14 +541,16 @@ export class ExcesshrApproveComponent implements OnInit {
         if(response?.status == 'completed'){
             this.findBulkApprovedFailedData(response?.results || []);
             this.findBulkApprovedSuccessData(response?.results || []);
+            /** this opens and sets apicall button state false */
             this.openBulkStatusModal(response?.results || [])
         }
        },
        error: (error:any) => {
+        this.isApiCalled = false;
         console.log('ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.error?.message});
        }
-    });    
+    });
     console.log('API FORMATTED DATA:',mappedData);
   }
 
@@ -614,8 +619,11 @@ export class ExcesshrApproveComponent implements OnInit {
   /** 
    * open modal
    * @param apiResponse
+   * @property {boolean} isApiCalled
    */
   openBulkStatusModal(apiResponse:any){
+    /** set api call false */
+    this.isApiCalled = false;
     const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
     confirmModalRef.componentInstance.confirmFunction = () => this.downloadFailedData(apiResponse);
     /** modal text */

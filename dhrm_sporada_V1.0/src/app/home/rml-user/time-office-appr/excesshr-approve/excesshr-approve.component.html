@@ -156,9 +156,10 @@
               (ngModelChange)="handelSelectAll()"
               >Select All</mat-checkbox> -->
                 <p-button
-                  (click)="bulkApproveEH()"
+                  (onClick)="bulkApproveEH()"
                   label="Approve"
-                  [disabled]="bulkApproveData.length == 0 || (loader.isLoding | async) ? true : false"
+                  [disabled]="bulkApproveData.length == 0 || isApiCalled"
+                  [loading]="isApiCalled"
                   ariaLabel="bulk approve"
                 >
                 </p-button>

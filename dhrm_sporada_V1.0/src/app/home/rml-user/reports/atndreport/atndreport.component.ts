@@ -129,14 +129,41 @@ export class AtndreportComponent implements OnInit {
     this.noOfDays = moment(this.date, "yyyy-MM").daysInMonth();
     this.getData();
   }
+  
+  /**
+   * transform attendance array
+   */
+
+ transformArray(dataArray:any) {
+  return dataArray.map((record:any) => {
+    const transformed:any = {
+      'Apln slno': record.cemp_id,
+      'Fullname': record.fullname,
+      'Gen ID': record.gen_id,
+      'Department': record.dept_name,
+      'Line': record.Line_Name,
+      'Category': record.apprentice_type
+    };
+
+    // Append day-wise values (1–31) after metadata
+    for (let i = 1; i <= moment(this.date).daysInMonth(); i++) {
+      transformed[`Day_${i}`] = record[i] ?? "";
+    }
+
+    return transformed;
+  });
+}
+
 
   exportexcel() {
-    const x = document.querySelector("#atnddata")
-    const ws = XLSX.utils.table_to_sheet(x);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Table');
-    XLSX.writeFile(wb, `attendance_data_${this.plant}.xlsx`);
-    this.messageService.add({severity:'info',summary:'Data Exported.'});
+    // const x = document.querySelector("#atnddata")
+    // const ws = XLSX.utils.table_to_sheet(x);
+    // const wb = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'Table');
+    // XLSX.writeFile(wb, `attendance_data_${this.plant}.xlsx`);
+    // this.messageService.add({severity:'info',summary:'Data Exported.'});
+    const transformedArrayData = this.transformArray(this.atndData)
+    this.utils.jsonToExcellExport(transformedArrayData, this.plant, `attendance_for_${moment(this.date).month()}`)
   } 
 
   /** 

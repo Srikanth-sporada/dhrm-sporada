@@ -97,7 +97,7 @@ this.getContra()
     this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
-        this.plantlist.unshift({ plant_name: "All", plant_code: "" });
+        // this.plantlist.unshift({ plant_name: "All", plant_code: "" });
       },
       error: (error) => {
         console.error("ERROR:", error);
@@ -150,15 +150,13 @@ getData() {
     }else{
       selectedMonth += 1;
     }
-
-    // ✅ Corrected condition: check if plant is one of [8005, 8010, 8000]
-    if (this.plant == 8005 || this.plant == 8010 || this.plant == 8000 || this.plant == 7025) {
-      this.from = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`;
-      const lastDay = new Date(selectedYear, Number(selectedMonth), 0).getDate();
-      this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`;    } 
-      else {
+    if (this.plant == 4005 || this.plant == 4010 || this.plant == 4025 || this.plant == 4015 || this.plant == 4020) {
       this.from = `${prevMonthYear}-${prevMonth.toString().padStart(2, '0')}-26`;
       this.to   = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-25`;
+    } else {
+      this.from = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-01`;
+      const lastDay = new Date(selectedYear, Number(selectedMonth), 0).getDate();
+      this.to = `${selectedYear}-${selectedMonth.toString().padStart(2, '0')}-${lastDay}`;
     }
 
     console.log('Updated date range:', this.from, 'to', this.to);
