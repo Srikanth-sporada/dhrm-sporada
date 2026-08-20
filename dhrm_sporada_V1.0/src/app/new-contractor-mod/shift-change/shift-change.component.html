@@ -94,12 +94,14 @@
         optionLabel="MinVartime"
         placeholder="Select In Time"
         styleClass="w-full !font-poppins">
-        </p-dropdown>
         <ng-template let-inData pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <span>{{ inData.MinVartime}}</span>
+            <!-- | date:'dd-MM-yyyy HH:mm:ss':'UTC'  -->
+            <span>{{ inData.Punch_Date  + ' | ' + inData.MinVartime}}</span>
           </div>
        </ng-template>
+        </p-dropdown>
+        
 
       </div>
         <!-- Out time -->
@@ -115,7 +117,7 @@
          <ng-template let-maxData pTemplate="item">
           <div class="flex align-items-center gap-2">
             <!-- | date:'dd-MM-yyyy HH:mm:ss':'UTC'  -->
-            <span>{{ maxData.MaxOuttime }}</span>
+             <span>{{ maxData.Punch_Date + ' | ' + maxData.MaxOuttime}}</span>
           </div>
        </ng-template>
         </p-dropdown>
@@ -126,7 +128,6 @@
         <p-dropdown
         [(ngModel)]="shift_Id"
         [options]="shift_data"
-        optionValue="shift_id"
         optionLabel="shift_desc"
         placeholder="Select Shift"
         styleClass="w-full !font-poppins">

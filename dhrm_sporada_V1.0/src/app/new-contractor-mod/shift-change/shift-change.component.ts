@@ -35,7 +35,7 @@ export class ShiftChangeComponent implements OnInit {
   gen_id:String;
   /** default yesterday date */
   Attn_Date:any = moment().subtract(1,'days').toDate();
-  shift_Id:number
+  shift_Id:number | any
   shift_data:any
   attn_data:any
   in_data:any
@@ -182,11 +182,15 @@ export class ShiftChangeComponent implements OnInit {
         plantcode:plantcode,
         min_time:this.min_time,
         max_time:this.max_time,
-        shift_Id:this.shift_Id,
+        /** changed by sporada 424 */
+        shift_Id:this.shift_Id?.shift_id,
+        isSecurity: this.shift_Id?.security_shift,
+        shiftGroup: this.shift_Id?.shift_group,
         Applied_by:this.username
       }
       console.log('CHANGE DATA:',data);
-      this.api.shiftChangeProcess(data).subscribe((res:any) => {
+      this.api.shiftChangeProcess(data).subscribe({
+        next: (res:any) => {
       console.log(res);
       this.button=false
       this.loading = false;
@@ -206,15 +210,13 @@ export class ShiftChangeComponent implements OnInit {
       this.maxDate=null
       this.minDate=null
       this.Plant_id=''
-      this.Attn_Date=''
-
-
-      
+      this.Attn_Date=''      
     } else {
       // Handle other messages or errors
-      this.openAlertDialog(res.message, 'error');
+      this.messageService.add({severity:'warn',summary:res?.message})
     }
-      },(error:any) => {
+    },
+      error:(error:any) => {
         if (error.status === 400) {
           console.error('ERROR:',error)
           this.openAlertDialog(`${error.error}`,'error');
@@ -227,6 +229,7 @@ export class ShiftChangeComponent implements OnInit {
           this.loading = false;
           console.log('ERROR:',error)
         }
+      }
       })
     }
     else {
