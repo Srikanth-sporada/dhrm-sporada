@@ -70,7 +70,8 @@
                 [src]="apiPath + '/plant/' + i?.plant_sign" 
                 alt="plant_sign" class="object-contain" 
                 (error)="hideImage('plant_sign')"
-                *ngIf="i?.plant_sign !== null">
+                *ngIf="i?.plant_sign !== null"
+                style="width:100px; padding-bottom:35px;">
                  <!-- fallback div -->
                 <div 
                   class="w-[var(--trainee-img-width)] h-[var(--trainee-img-height)] object-contain rounded-md border-none" 
@@ -147,7 +148,9 @@
                <tr class="my-2">
                 <td div class="aligncommand1 text-xl"><b>Res. Address </b> :</td>
                </tr>
-               <p class="text-xl">{{i?.present_address}}</p>
+               <p [ngClass]="i?.present_address?.length > 55 ? 'text-md' : 'text-lg'">
+                {{i?.present_address}}
+              </p>
               <tr class="my-2">
                 <td div class="aligncommand1 text-xl"><b>Contact No</b></td>
                 <td div class="aligncommand1 text-xl">: +91 {{i.mobile_no1}}</td>

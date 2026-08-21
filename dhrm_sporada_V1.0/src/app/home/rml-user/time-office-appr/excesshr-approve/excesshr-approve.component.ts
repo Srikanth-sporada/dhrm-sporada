@@ -622,6 +622,10 @@ export class ExcesshrApproveComponent implements OnInit {
    * @property {boolean} isApiCalled
    */
   openBulkStatusModal(apiResponse:any){
+    /** handle ot limit exceed  */
+    if(apiResponse[0]?.status === 'failed'){
+       this.messageService.add({severity:'warn',summary:apiResponse[0]?.message})
+    }
     /** set api call false */
     this.isApiCalled = false;
     const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});

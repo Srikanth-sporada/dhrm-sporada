@@ -209,7 +209,7 @@ export class ShiftChangeComponent implements OnInit {
       this.gen_id=''
       this.maxDate=null
       this.minDate=null
-      this.Plant_id=''
+      // this.Plant_id=''
       this.Attn_Date=''      
     } else {
       // Handle other messages or errors
@@ -219,7 +219,8 @@ export class ShiftChangeComponent implements OnInit {
       error:(error:any) => {
         if (error.status === 400) {
           console.error('ERROR:',error)
-          this.openAlertDialog(`${error.error}`,'error');
+          // this.openAlertDialog(`${error.error}`,'error');
+          this.messageService.add({severity:'error',summary:error?.error});
           this.button=false
           this.loading = false;
         }
