@@ -249,7 +249,6 @@ export class OnboardFormComponent implements OnInit {
 
         /** get payroll area by plant code */
          this.getPayrollArea(response[0][0]?.plant_code);
-
         /** get cost center by plant code */
          this.getCostcenterByPlantCode(response[0][0]?.plant_code);
 
@@ -279,6 +278,10 @@ export class OnboardFormComponent implements OnInit {
              this.form.controls["payscale"].setValue(this.traineePayscale.PayScale_ID);
              console.log('trainee payscale:',this.form.value.payscale);
              this.getPayScales(this.traineePayscale.cont_id);
+              /** get already mapped payscale */
+              if(response[0][1]?.PayScale_ID || response[0][1]?.PayScale_ID != ''){
+                this.get_Payscale(response[0][1]?.PayScale_ID,response[0][1]?.cont_id);
+              }
            }
           // api call for geting roles data for 2nd approver
           /** #NEW FROM RML */
@@ -632,7 +635,7 @@ export class OnboardFormComponent implements OnInit {
             /** submitted API call */
             // this.formservice.submitted()
             if(isFirstApprover){
-              this.messageService.add({severity:'info',summary:'Application Send For Approval'});
+              this.messageService.add({severity:'info',summary:response});
             }else{
              this.messageService.add({severity:'info',summary:response});
             }
@@ -650,7 +653,7 @@ export class OnboardFormComponent implements OnInit {
                   },
                   error:(err) => {
                     console.log('GET FILE DROP API ERROR:',err)
-                    this.messageService.add({severity:'error',summary:err.message});
+                    this.messageService.add({severity:'error',summary:err.error});
                   }
                 });
             }
@@ -715,6 +718,7 @@ export class OnboardFormComponent implements OnInit {
       }).subscribe({
         next: (response:any) => {
           if(response?.traineeFinalApprovalApi && response?.mailApi.success){
+            this.messageService.add({severity:'info',summary:response?.traineeFinalApprovalApi})
             this.router.navigate(["/rhrm/new_joiners/onboard"]);
           }else{
             this.messageService.add({severity:'warn',summary:'Oops! something went wrong'})
@@ -1013,12 +1017,13 @@ export class OnboardFormComponent implements OnInit {
     }).subscribe({
       next: (response:any) => {
        console.log('category submitted',response);
-      /** HR APPROVAL API CALL  SUBMITTED */ 
+      /** HR APPROVAL API CALL SUBMITTED & DOJO*/ 
        this.formservice.submitted(submitData);
       /** 
        * onboard form api call first approver
+       * if no errors happend while sumbit then call the onboard proc
        *  */
-      this.submit(true);
+        this.submit(true);
       },
       error: (error) => {
         console.error('ERROR:',error);
@@ -1118,10 +1123,10 @@ export class OnboardFormComponent implements OnInit {
   }
 
   /** 🔹 Get single payscale details #new */
-  get_Payscale(payId: any) {
+  get_Payscale(payId: any,contID?:any) {
     const data = {
       plant_Code: this.plant_Code,
-      con_id: this.form.getRawValue()?.cont_id, // get contr ID fomr user
+      con_id: this.form.getRawValue()?.cont_id || contID, // get contr ID fomr user
       PayScale_ID: payId,
     };
     /** need FE and API */

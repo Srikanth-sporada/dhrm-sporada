@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FormService {
+  isSubmitError:boolean = false;
   bank: any;
   basic : any;
   edu : any;
@@ -241,9 +242,10 @@ fileupload(file:any,uniqueId:any,company:any, id_no :any, fileno:any){
 }
 
 /** 
- * genreate trainee id
+ * DOJO and SUBMITTED based
+ * get call back function from onboard-form component
  */
-submitted(uniqueId: any){
+submitted(uniqueId: any, cb?:any , status?:boolean){
   console.log("SUBMITTED API DATA:", uniqueId)
   this.http.put(this.url+'/hrOperation/submitted',uniqueId)
   .subscribe({
@@ -251,11 +253,13 @@ submitted(uniqueId: any){
       console.log("HR SUBMITTED",response);
       if(response?.message == 'failure'){
         this.messageService.add({severity:'error',summary:'Error Occured!'});
+        this.isSubmitError = true;
       }
     },
     error: (error) => {
       console.error('SUBMITTED API ERROR:',error);
-      this.messageService.add({severity:'error',summary:error?.message})
+      this.messageService.add({severity:'error',summary:error?.error});
+      this.isSubmitError = false;
     }
   })
 }
