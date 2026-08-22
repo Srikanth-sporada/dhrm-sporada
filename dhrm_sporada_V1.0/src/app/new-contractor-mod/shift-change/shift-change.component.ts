@@ -127,30 +127,36 @@ export class ShiftChangeComponent implements OnInit {
       // console.log('Date:', this.Attn_Date.format('yyyy-MM-DD'));
 
     this.button=true
-    this.api.shiftChangedetails(data).subscribe( (res:any) =>{
-    this.attn_data = res[0]
-    this.in_data = res[1]
-    this.out_data = res[2]
-    this.shift_data=res[3]
-    this.verifyBtn=true
-    this.button=false
-    this.loading = false;
-} ,(error:any) => {
-  if (error.status === 400) {
-    console.error('ERROR:',error)
-    // this.openAlertDialog(`${error.error}`,'error');
-    this.messageService.add({severity:'warn', summary:`${error.error}`})
-    this.button=false
-    this.loading = false;
-  }
-   else {
-    // this.openAlertDialog('Error in connection','error');
-    this.messageService.add({severity:'error',summary:'Error In Connection'})
-    this.button=false
-    this.loading = false;
-    console.log('ERROR:',error);
-  }
-   })
+    this.api.shiftChangedetails(data).subscribe({
+      next: (res:any) =>{
+        this.attn_data = res[0]
+        this.in_data = res[1]
+        this.out_data = res[2]
+        this.shift_data=res[3]
+        this.verifyBtn=true
+        this.button=false
+        this.loading = false;
+        if(this.attn_data.length == 0) {
+          this.messageService.add({severity:'warn',summary:'Gen Id belongs to different plant'})
+        }
+    } ,
+    error: (error:any) => {
+      if (error.status === 400) {
+        console.error('ERROR:',error)
+        // this.openAlertDialog(`${error.error}`,'error');
+        this.messageService.add({severity:'warn', summary:`${error.error}`})
+        this.button=false
+        this.loading = false;
+      }
+      else {
+        // this.openAlertDialog('Error in connection','error');
+        this.messageService.add({severity:'error',summary:'Error In Connection'})
+        this.button=false
+        this.loading = false;
+        console.log('ERROR:',error);
+      }
+   }
+    })
     } else {
       //  this.openAlertDialog(`Please fill in all required fields`,'error');
        this.messageService.add({severity:'warn',summary:'Please fill in all required fields'}!);
@@ -189,32 +195,33 @@ export class ShiftChangeComponent implements OnInit {
         Applied_by:this.username
       }
       console.log('CHANGE DATA:',data);
+      /** REPORCESS API  */
       this.api.shiftChangeProcess(data).subscribe({
         next: (res:any) => {
-      console.log(res);
-      this.button=false
-      this.loading = false;
-    if (res.message === 'Attendance Re Processed successfully') {
-      // Open the dialog with the response data
-      this.dialog.open(AttendanceReprocessResultDialogComponent, {
-        data: res.data
-      });
-      this.verifyBtn=false
-      this.max_time=''
-      this.min_time=''
-      this.out_data=''
-      this.in_data=''
-      this.attn_data= []; // default state
-      this.shift_data=''
-      this.gen_id=''
-      this.maxDate=null
-      this.minDate=null
-      // this.Plant_id=''
-      this.Attn_Date=''      
-    } else {
-      // Handle other messages or errors
-      this.messageService.add({severity:'warn',summary:res?.message})
-    }
+          console.log(res);
+          this.button=false
+          this.loading = false;
+        if (res.message === 'Attendance Re Processed successfully') {
+          // Open the dialog with the response data
+          this.dialog.open(AttendanceReprocessResultDialogComponent, {
+            data: res.data
+          });
+          this.verifyBtn=false
+          this.max_time=''
+          this.min_time=''
+          this.out_data=''
+          this.in_data=''
+          this.attn_data= []; // default state
+          this.shift_data=''
+          this.gen_id=''
+          this.maxDate=null
+          this.minDate=null
+          // this.Plant_id=''
+          this.Attn_Date=''      
+        } else {
+          // Handle other messages or errors
+          this.messageService.add({severity:'warn',summary:res?.message})
+        }
     },
       error:(error:any) => {
         if (error.status === 400) {

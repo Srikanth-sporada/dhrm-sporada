@@ -3,9 +3,9 @@
   <div class="!flex !items-center gap-2 py-2 !justify-between !shadow-md !my-4 mx-2 !rounded-md !px-4 !font-poppins border border-gray-400 h-auto flex-col md:flex-row">
     <div class="flex items-start justify-start flex-col">
       <h1 class="!text-[1.5rem] !font-semibold flex items-center justify-center gap-2 text-blue-600">
-      <mat-icon> change_history</mat-icon> Attedance Re Process<hr/>
+      <mat-icon> change_history</mat-icon> Attendance Re Process<hr/>
     </h1>
-    <p class="mt-1 text-gray-400">View and Manage Attedance Re-Process</p>
+    <p class="mt-1 text-gray-400">View and Manage Attendance Re-Process</p>
     </div>
     <!-- user details -->
          <h1 class="!text-[1.25rem] !font-semibold flex items-center justify-center gap-2 text-blue-600 float-right">
@@ -83,7 +83,7 @@
         </div>
      </div>
      <!-- second row *ngIf="verifyBtn==true" -->
-     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2" *ngIf="verifyBtn==true">
+     <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2" *ngIf="verifyBtn==true && attn_data.length > 0">
         <!-- In time -->
       <div class="w-full">
         <label for="date" class="!font-semibold text-gray-400 mb-1 mt-3">In Time</label> <br>
@@ -94,12 +94,11 @@
         optionLabel="MinVartime"
         placeholder="Select In Time"
         styleClass="w-full !font-poppins">
-        <ng-template let-inData pTemplate="item">
+        <!-- <ng-template let-inData pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <!-- | date:'dd-MM-yyyy HH:mm:ss':'UTC'  -->
             <span>{{ inData.Punch_Date  + ' | ' + inData.MinVartime}}</span>
           </div>
-       </ng-template>
+        </ng-template> -->
         </p-dropdown>
         
 
@@ -114,12 +113,11 @@
         optionLabel="MaxOuttime"
         placeholder="Select Out Time"
         styleClass="w-full !font-poppins">
-         <ng-template let-maxData pTemplate="item">
+         <!-- <ng-template let-maxData pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <!-- | date:'dd-MM-yyyy HH:mm:ss':'UTC'  -->
              <span>{{ maxData.Punch_Date + ' | ' + maxData.MaxOuttime}}</span>
           </div>
-       </ng-template>
+        </ng-template> -->
         </p-dropdown>
       </div>
         <!-- shift -->
@@ -140,7 +138,8 @@
             iconPos="right"
             styleClass="rounded-[1.5rem] mt-2"
             (onClick)="process_attn()"
-            label="Process"  
+            label="Process" 
+            [disabled]="attn_data.length == 0" 
           >
         </p-button> 
         </div>
