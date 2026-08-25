@@ -49,6 +49,8 @@ export class OnboardFormComponent implements OnInit {
   Role: any;
   b_id: any;
   process_trained: any;
+  testStatus:string;
+  testStatusRegex = /^(in_training|completed|Completed|COMPLETED)$/;
   rfr: any = [];
   b_num: any;
   reporting_to: any;
@@ -118,7 +120,7 @@ export class OnboardFormComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private formservice: FormService,
-    private router: Router,
+    public router: Router,
     private active: ActivatedRoute,
     private service: ApiService,
     private messageService:MessageService,
@@ -261,6 +263,8 @@ export class OnboardFormComponent implements OnInit {
           this.getbackDate_Doj(response[0][0].created_dt);
        //   console.log('4');
           this.basic = this?.obj[0] || [];
+          /** assign trainee test status for ID card */
+          this.testStatus = response[0][0]?.test_status; 
           this.traineePayscale = this.obj[0][1];
           this.designation = this?.obj[1] || [];
           this.department = this?.obj[2] || [];
@@ -956,16 +960,16 @@ export class OnboardFormComponent implements OnInit {
   
     // Extract the selected Role_Id and ensure it's a number
     const selectedRoleId = Number(event.value);
-  // console.log('this.Role',this.Role);
-  
+    console.log('this.Role',this.Role);
     // Find the selected role from the Role array
     const selectedRole = this.Role.find((role: any) => role.Role_Id == selectedRoleId);
   
-    // console.log('Selected Role:', selectedRole); // Log to confirm the role found
+    console.log('Selected Role:', selectedRole);
   
     // Update w_contract and reset the form field
     if (selectedRole) {
       this.w_contract = [selectedRole.Category_Name];
+      console.log('W_CONTRACT',this.w_contract)
       this.form.patchValue({ wcontract: selectedRole.Category_Name });
       this.isWContractDisabled = true; 
     } else {

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { FormService } from '../../form.service';
 import { MessageService } from 'primeng/api';
+import { Utility } from 'src/app/utils/utils';
 
 @Component({
     selector: 'app-banks',
@@ -47,14 +48,23 @@ flagger : any = false
     form: UntypedFormGroup;
     sno: any;
     state: boolean;
-    constructor(private fb: UntypedFormBuilder, private http: HttpClient, private cookie : CookieService, public formservice: FormService, private active : ActivatedRoute,private messageService:MessageService) {
+    constructor(
+        private fb: UntypedFormBuilder, 
+        private http: HttpClient, 
+        private cookie : CookieService, 
+        public formservice: FormService, 
+        private active : ActivatedRoute,
+        private messageService:MessageService,
+        public utils:Utility,
+    ) {
+
         this.form = fb.group({
             sno: new UntypedFormControl(' '),
-            account:['', Validators.required],
+            account:['', [Validators.required,this.utils.numberOnlyValidator()]],
             ifsc:['', Validators.required],
             bankName:['', Validators.required],
-            mobilenumber: new UntypedFormControl(this.active.snapshot.paramMap.get('mobile_no1')),
-            company : [this.active.snapshot.paramMap.get('company')]
+            mobilenumber: new UntypedFormControl(this.active.snapshot.paramMap.get('mobile_no1')), // get mobile number from router param
+            company : [this.active.snapshot.paramMap.get('company')] // get company from router param
         })
     }
 

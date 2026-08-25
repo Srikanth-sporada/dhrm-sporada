@@ -189,7 +189,7 @@ export class Utility {
    */
  numberOnlyValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
+    const value =control.value;
     /** Allow empty values */
     if (value === null || value === undefined || value === '') {
       return null;

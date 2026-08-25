@@ -470,7 +470,7 @@
             <p-button 
                 icon="pi pi-print"
                 iconPos="right"
-                *ngIf="this.status == 'APPOINTED'"
+                *ngIf="this.status == 'APPOINTED' || (testStatusRegex.test(testStatus) && !this.router.url.includes('/rhrm/new_joiners/hr-view'))"
                 styleClass="rounded-[1.5rem] mt-2 ml-4 bg-purple-500 outline-none border-none"
                 (onClick)="printid()"
                 label="Print ID"  

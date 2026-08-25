@@ -178,7 +178,7 @@ export class ExcesshrApproveComponent implements OnInit {
    *  */ 
   getMaxHours(type: any) {
     if (type === "W" || type === "N" || type === "F") {
-      return type.expect_othr; // 12 default value
+      return 12; // 12 default value
     } else if (type === "R") {
       return this.max_hrs;
     } else {
@@ -396,7 +396,8 @@ export class ExcesshrApproveComponent implements OnInit {
           approvedEH = ehData.expect_othr
         }else{
           /** check max_hrs  */
-           approvedEH = ehData.expect_othr > this.max_hrs  ? this.max_hrs : ehData.expect_othr;
+           // approvedEH = ehData.expect_othr > this.max_hrs  ? this.max_hrs : ehData.expect_othr;
+            approvedEH = ehData.expect_othr > this.getMaxHours(ehData?.type)  ? this.getMaxHours(ehData?.type) : ehData.expect_othr;
         }
         /** set approved Hour and reason */
         ehData.approvedHr = approvedEH;
@@ -435,8 +436,10 @@ export class ExcesshrApproveComponent implements OnInit {
           if(this.setActualEH){
             approvedEH = data.expect_othr
           }else{
-            approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+            // approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+            approvedEH = data.expect_othr > this.getMaxHours(data?.type)  ? this.getMaxHours(data?.type) : data.expect_othr;
           }
+          alert(approvedEH)
           /** set approved hour and reason */
           data.approvedHr = approvedEH;
           data.reason = `BULK EH APPROVED:${data.gen_id}`;
@@ -475,7 +478,8 @@ export class ExcesshrApproveComponent implements OnInit {
         if(this.setActualEH){
           approvedEH = data.expect_othr
         }else{
-           approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+           // approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
+           approvedEH =  data.expect_othr > this.getMaxHours(data?.type)  ? this.getMaxHours(data?.type) : data.expect_othr;
         }
         /** set approved hour and reason */
         data.approvedHr = approvedEH;

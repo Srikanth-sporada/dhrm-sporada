@@ -415,7 +415,7 @@
                 [id]="row.gen_id"
               />
             <p *ngIf="row.approvedHr > row.expect_othr " class="text-red-500" >Invalid worked Hours</p>
-            <p *ngIf=" row.approvedHr > getMaxHours(row)" class="text-red-500" >OT  Cannot be Greater Than {{max_hrs}} Hours</p>
+            <p *ngIf=" row.approvedHr > getMaxHours(row.type)" class="text-red-500" >OT  Cannot be Greater Than {{max_hrs}} Hours</p>
         </td>
         <td>
            <input 

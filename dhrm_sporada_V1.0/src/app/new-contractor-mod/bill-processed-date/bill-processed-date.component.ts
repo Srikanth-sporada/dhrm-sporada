@@ -274,6 +274,8 @@ export class BillProcessedDateComponent implements OnInit {
   onPayrollAreaChange(payrollArea: any) {
     console.log(payrollArea);
     this.selecetedPayrollArea = payrollArea;
+    /** re calculate bill start and end date based on selected payroll area */
+    this.updateSelectedDate();
   }
   showForm() {
     this.showHolidayForm = true;

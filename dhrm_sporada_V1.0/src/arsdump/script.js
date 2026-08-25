@@ -106,11 +106,14 @@ document.getElementById("punchForm").addEventListener("submit", async (e) => {
         alert("API URL not detected.");
         return;
     }
-    /** check genid has value */
-    if(((isHr || isHrApprover) && !isAdmin) && !document.getElementById("genid").value){
-     alert('Enter Gen ID');
-     return;
-    }
+    /** 
+     * check genid has value
+     * mandatory only for HR user
+     *  */
+    // if(((isHr) && (!isAdmin || !isHrApprover)) && !document.getElementById("genid").value){
+    //  alert('Enter Gen ID');
+    //  return;
+    // }
 
     toggleLoader(true);
     const submitBtn = e.target.querySelector('button[type="submit"]');
