@@ -108,13 +108,49 @@
                 </div>
                 </form>
              </div>
+             <!-- search gen id data table -->
+              <div *ngIf="data.length > 0" class="shadow-md rounded-md border border-gray-400 overflow-y-scroll mt-2">
+                <table id="table" class="table-auto !w-full">
+                                        <thead class="sticky top-0">
+                                            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                                                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">
+                                                    Emp Id</th>
+                                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                                    Name</th>
+                                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                                    Category</th>
+                                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                                    DOJ</th>
+                                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                                    DOL</th>
+                                                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">
+                                                    Service Years</th>
+                                                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">
+                                                    Aadhar Number</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let item of data; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.gen_id }}</td>
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.fullname }}</td>
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.apprentice_type }}</td>
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.doj | date:'dd-MM-yyyy' }}</td>
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.dol | date:'dd-MM-yyyy' }}</td>
+                                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.ServiceYears }}</td>
+                                                <td class="!px-2 !py-4 !rounded-e-md text-center">{{ item.aadhar_no }}</td>
+                                            </tr>
+                                        </tbody>
+                </table>
+              </div>
+              
             <!-- rejoin request table -->
-                    <div class="h-[90svh] lg:h-[75vh] xl:h-[70vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mt-2">
+                    <div class="h-[90svh] lg:h-[75vh] xl:h-[70vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mt-2" *ngIf="tableData.length > 0">
                         <table id="table" class="table-auto !w-full">
                             <!-- table head -->
                             <thead class="sticky top-0">
                                 <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">S.No</th>
+                                    <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">SNo</th>
                                     <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen Id
                                     </th>
                                     <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
