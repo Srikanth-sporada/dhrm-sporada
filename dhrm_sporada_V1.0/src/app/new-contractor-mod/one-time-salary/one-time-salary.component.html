@@ -13,32 +13,31 @@
          </h1>
       </div>
        <!-- one time earnings and deductions upload -->
-  <div class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 w-full" *ngIf="isadmin =='true' || (ishrappr == 'false' && ishr =='true') ">
+  <div 
+    class="!shadow-md !my-4 !rounded-md  h-full pb-3 !px-4 !font-poppins sm:h-min border border-gray-400 mx-2 w-full" 
+    *ngIf="isadmin =='true' || (ishrappr == 'false' && ishr =='true') ">
     <!-- filter header -->
-      <div class="relative">
+      <div class="flex justify-between items-center">
         <h1 class="!text-[1.3rem] !font-semibold gap-1 text-blue-600 flex items-center justify-start mt-2">
-          Filters <mat-icon>filter_alt</mat-icon>
+          Actions <mat-icon>filter_alt</mat-icon>
         </h1>
-       <!-- download btn-->
-        <a [href]="url + 'sop/One_Time_Earning_Deduction.xlsx'" class="absolute right-0 top-0 mr-2 rounded-[1.5rem]">
-          <p-button
-          label="Download Template"
-          icon="pi pi-download" 
-         ></p-button>
-        </a>
+        <div class="text-lg mt-2">
+            <strong>Current Payroll: {{bill_processed_st}} - {{bill_prossed_enddt}}</strong>
+        </div>
       </div>
    <div>
      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2">
        <!-- upload excel file -->
-          <div class="lg:w-[25%] w-full mx-2 mt-3 flex gap-4 items-center justify-center">
+          <div class="lg:w-[50%] w-full mx-2 mt-3 flex gap-4 items-center justify-center">
             <div class="w-full">
-              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="plantname">
+              <label class="text-blue-600 flex items-center justify-start gap-1 -mb-4" for="plantname">
             <mat-icon class="text-2xl text-blue-600 h-0 w-0">upload</mat-icon>
             Excel File
           </label><br />
          <p-fileUpload 
             mode="basic"
-            name="file" 
+            name="file"
+            #fileUploader  
             chooseLabel="Choose" 
             chooseIcon="pi pi-upload"
             accept=".xlsx, .xls .csv"
@@ -53,13 +52,19 @@
             pButton  
             icon="pi pi-times" 
             styleClass="mt-4 rounded-[1.5rem]"
-            (click)="clearAll()"
+            (click)="clearAll();fileUploader.clear()"
          ></button>
           </div>
           </div>
-          <div class="mt-8 text-xl">
-            <strong>Current Payroll Date: {{bill_processed_st}} - {{bill_prossed_enddt}}</strong>
-          </div>
+          <!-- download btn-->
+           <div class="mt-8">          
+            <a [href]="url + 'sop/One_Time_Earning_Deduction.xlsx'">
+              <p-button
+              label="Template"
+              icon="pi pi-download" 
+            ></p-button>
+            </a>
+         </div>
      </div>
     </div>
   </div>
@@ -87,59 +92,254 @@
      
 
       </div> -->
-
-<div  *ngIf="viewtable==false">
-<div *ngFor="let item of consolidatedData">
-  <div class="upload">
-    <div>
-      <strong> Request No.</strong>
-      <p>{{item.Request_Id}}</p>
-    </div>
-    <div>
-      <strong> Requested By</strong>
-      <p>{{item.Requested_By}}</p>
-    </div>
-    <div>
-      <strong>Requested On</strong>
-      <p>{{item.Requested_On | date:'dd-MM-yyyy'}}</p>
-    </div>
-    <div>
-      <strong> Total Earnings</strong>
-      <p>Rs. {{item.TotalEarning}}</p>
-    </div>
-    <div>
-      <strong> Total Deductions</strong>
-      <p>Rs. {{item.TotalDeduction}}</p>
-    </div>
-    <div>
-      <strong>Status</strong>
-      <p [ngClass]="{'pending': item.Status === 'PENDING', 'approved': item.Status === 'APPROVED', 'rejected': item.Status === 'REJECTED'}">
-        {{item.Status}}
-      </p>
-    </div>    <div>
-      <button mat-raised-button style="background-color: rgb(235, 228, 35);"  (click)="handleView(item)" >View</button>
-    </div>
-    <div *ngIf="(isadmin =='true' || ishrappr == 'true') && (item.Status =='PENDING') "  > 
-      <button mat-raised-button style="background-color: rgb(42, 173, 42);color: white;"  (click)="handleApprove(item)">Approve</button>
-    </div>
-    <div *ngIf="(isadmin =='true' || ishrappr == 'true') && ( item.Status =='PENDING') " >
-      <button mat-raised-button style="background-color: rgb(233, 19, 19);color: white;"  (click)="handleReject(item)">Reject</button>
-    </div>
-  </div>
-
-</div> 
+<!-- OTED APPROVEL TABLE -->
+<div *ngIf="viewtable === false" class="request-table-wrapper">
+  <div class="overflow-y-scroll pb-1">
+            <!-- invalid data -->
+          <table id="table" class="table-auto !w-full">
+            <!-- table head -->
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">Request No.</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Requested By</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Requested On</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Total Earnings</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Total Deductions</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Status</th>
+                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Actions</th>
+              </tr>
+            </thead>
+            <!-- table body -->
+            <tbody>
+              <tr 
+               *ngFor="let item of consolidatedData; let i = index"
+               class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                 <td class="text-center">{{ item.Request_Id }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Requested_By }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.Requested_On | date:'dd-MM-yyyy' }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">&#x20B9; {{ item.TotalEarning }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">&#x20B9; {{ item.TotalDeduction }}</td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">
+          <span class="status-badge" [ngClass]="{
+            'pending': item.Status === 'PENDING',
+            'approved': item.Status === 'APPROVED',
+            'rejected': item.Status === 'REJECTED'
+          }">{{ item.Status }}</span>
+        </td>
+        <td class="!px-2 !py-4 !rounded-s-md text-center">
+          <div class="flex items-center justify-evenly">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-eye"
+              severity="info"
+              (click)="handleView(item)">
+            </button>
+            <button
+              *ngIf="(isadmin === 'true' || ishrappr === 'true') && item.Status === 'PENDING'"
+              pButton
+              type="button"
+              icon="pi pi-check"
+              severity="success"
+              (click)="handleApprove(item)">
+            </button>
+            <button
+              *ngIf="(isadmin === 'true' || ishrappr === 'true') && item.Status === 'PENDING'"
+              pButton
+              type="button"
+              icon="pi pi-times"
+              severity="danger"
+              class="!bg-red-500 !border-red-500 hover:!bg-red-600 hover:!border-red-600"
+              (click)="handleReject(item)">
+            </button>
+          </div>
+        </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  <!-- <p-table
+    [value]="consolidatedData"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 25]"
+    [responsiveLayout]="'scroll'"
+    [tableStyle]="{'min-width': '70rem'}"
+    styleClass="p-datatable-striped p-datatable-gridlines request-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Request No.</th>
+        <th>Requested By</th>
+        <th>Requested On</th>
+        <th class="amount-column">Total Earnings</th>
+        <th class="amount-column">Total Deductions</th>
+        <th>Status</th>
+        <th class="actions-column">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.Request_Id }}</td>
+        <td>{{ item.Requested_By }}</td>
+        <td>{{ item.Requested_On | date:'dd-MM-yyyy' }}</td>
+        <td class="amount-column">&#x20B9; {{ item.TotalEarning }}</td>
+        <td class="amount-column">&#x20B9; {{ item.TotalDeduction }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="{
+            'pending': item.Status === 'PENDING',
+            'approved': item.Status === 'APPROVED',
+            'rejected': item.Status === 'REJECTED'
+          }">{{ item.Status }}</span>
+        </td>
+        <td class="actions-column">
+          <div class="request-actions">
+            <button
+              pButton
+              type="button"
+              label="View"
+              icon="pi pi-eye"
+              severity="info"
+              (click)="handleView(item)">
+            </button>
+            <button
+              *ngIf="(isadmin === 'true' || ishrappr === 'true') && item.Status === 'PENDING'"
+              pButton
+              type="button"
+              label="Approve"
+              icon="pi pi-check"
+              severity="success"
+              (click)="handleApprove(item)">
+            </button>
+            <button
+              *ngIf="(isadmin === 'true' || ishrappr === 'true') && item.Status === 'PENDING'"
+              pButton
+              type="button"
+              label="Reject"
+              icon="pi pi-times"
+              severity="danger"
+              styleClass="!bg-red-500 !border-red-500 hover:!bg-red-600 hover:!border-red-600"
+              (click)="handleReject(item)">
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="empty-table-message">No salary requests found.</td>
+      </tr>
+    </ng-template>
+  </p-table> -->
 </div>
 
-<div *ngIf="loading" style="top: 50%; right:50%">
+<div *ngIf=" loader.isLoding | async" style="top: 50%; right:50%">
   <app-loader></app-loader>
 </div>
 
-<!--  -->
-<div *ngIf="viewtable==true">
-<!--  -->
-<div *ngIf="(invalidEntries && invalidEntries.length > 0)">
-<!-- download invalid data -->
-      <div class="flex justify-end items-end mb-2"> 
+
+
+  <!-- prime ng tab view -->
+   <p-tabView>
+     <!-- earnings tab -->
+      <p-tabPanel *ngIf="(Ear_Valid && Ear_Valid.length >= 1 )">
+         <!-- header -->
+      <ng-template pTemplate="header">
+                <div class="flex items-center justify-center gap-1">
+                  <mat-icon class="icon-pad text-[1.5rem]">swipe_up</mat-icon>
+                  Earnings
+                </div>
+      </ng-template>
+      <!-- content -->
+      <ng-template pTemplate="content">
+       <!-- submit approval btn -->
+        <div class="flex justify-end items-center mb-2 mx-2"> 
+              <p-button 
+              label="Submit For HR Approval"
+              icon="pi pi-check"
+              (onClick)="SubmitVerifiedData()"
+              >
+              </p-button>
+        </div>
+        <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+          <table id="table" class="table-auto !w-full">
+            <thead class="sticky top-0">
+              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                <th class="!text-white !px-2 !py-2 !rounded-s-lg !border-none !border-0 text-center">Slno</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
+                <th class="!text-white !px-2 !py-2 !rounded-e-lg !border-none !border-0 text-center">Amount in Rs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+              *ngFor="let row of Ear_Valid; let i = index"
+              class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy'}}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.gen_id }}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.fullname }}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Earning_Description }}</td>
+                <td class="!px-2 !py-4 !rounded-s-md text-center">&#x20B9; {{row.Earning_Amount }}</td>
+              </tr>
+            </tbody>
+        </table>
+        </div>
+      </ng-template>
+      </p-tabPanel>
+      <!-- deductions tab -->
+      <p-tabPanel *ngIf="(Ded_Valid && Ded_Valid.length >= 1 )">
+         <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">swipe_up</mat-icon>
+                    Deductions
+                  </div>
+        </ng-template>
+        <!-- content -->
+        <ng-template pTemplate="content">
+          <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+            <table id="table" class="table-auto !w-full">
+          <thead style="height:0.01rem">
+            <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+              <th class="!text-white !px-2 !py-2 !rounded-s-lg !border-none !border-0 text-center">slno</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+              <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
+              <th class="!text-white !px-2 !py-2 !rounded-e-lg !border-none !border-0 text-center">Amount in Rs</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr 
+            *ngFor="let row of Ded_Valid; let i = index"
+            class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy' }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.gen_id }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.fullname }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Deduction_Description }}</td>
+              <td class="!px-2 !py-4 !rounded-s-md text-center">&#x20B9; {{row.Deduction_Amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+       <!-- invalid tab -->
+      <p-tabPanel *ngIf="(invalidEntries && invalidEntries.length > 0)">
+         <!-- header -->
+        <ng-template pTemplate="header">
+                  <div class="flex items-center justify-center gap-1">
+                    <mat-icon class="icon-pad text-[1.5rem]">swipe_up</mat-icon>
+                    Invalid
+                  </div>
+        </ng-template>
+        <!-- content -->
+        <ng-template pTemplate="content">
+           <div class="flex justify-end items-end mb-2"> 
             <p-button 
             label="Download Invalid Data"
             icon="pi pi-download"
@@ -147,122 +347,40 @@
             (onClick)="exportexcel()"
             >
             </p-button>
-      </div>
-        <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
-            <!-- invalid data -->
-          <table id="table" class="table-auto !w-full">
-            <!-- table head -->
-            <thead class="sticky top-0">
-              <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-                <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">slno</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Type</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
-                <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Amount</th>
-                <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
-              </tr>
-            </thead>
-            <!-- table body -->
-            <tbody>
-              <tr 
-               *ngFor="let row of invalidEntries; let i = index"
-               class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy' }}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Gen_id }}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Name }}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center" style="font-weight: 650;">{{row.Type }}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Description }}</td>
-                <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Amount }}</td>
-                <td style="font-weight: 650; color: red;">{{row.Reason }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-</div>
-
-<!-- valid data earnigns and decutions -->
- <!--  -->
-<div *ngIf="((Ear_Valid && Ear_Valid.length >= 1  )|| (Ded_Valid && Ded_Valid.length>=1))">
-  <!-- submit approval btn -->
-       <div class="flex justify-end items-end"> 
-            <p-button 
-            label="Submit For HR Approval"
-            icon="pi pi-download"
-            styleClass="mr-3 mt-3"
-            (onClick)="SubmitVerifiedData()"
-            >
-            </p-button>
-      </div>
-<!-- earnings -->
-<div *ngIf="(Ear_Valid && Ear_Valid.length >= 1 )">
-  <h2 class="font-semibold ml-2 text-2xl mb-3 text-green-600">Earnings</h2>
-  <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
-    <table id="table" class="table-auto !w-full">
-      <thead class="sticky top-0">
-        <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-          <th class="!text-white !px-2 !py-2 !rounded-s-lg !border-none !border-0 text-center">Slno</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-          <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
-          <th class="!text-white !px-2 !py-2 !rounded-e-lg !border-none !border-0 text-center">Amount in Rs</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr 
-         *ngFor="let row of Ear_Valid; let i = index"
-         class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy'}}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.gen_id }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.fullname }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Earning_Description }}</td>
-          <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Earning_Amount }}</td>
-        </tr>
-      </tbody>
-   </table>
-  </div>
-</div>
-
-<!-- deductions -->
-<div *ngIf="(Ded_Valid && Ded_Valid.length >= 1 )">
-<h2 class="font-semibold ml-2 text-2xl mb-3 mt-3 text-red-500">Deductions</h2>
-  <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
-    <table id="table" class="table-auto !w-full">
-  <thead style="height:0.01rem">
-    <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
-      <th class="!text-white !px-2 !py-2 !rounded-s-lg !border-none !border-0 text-center">slno</th>
-      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
-      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
-      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
-      <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
-      <th class="!text-white !px-2 !py-2 !rounded-e-lg !border-none !border-0 text-center">Amount in Rs</th>
-
-    </tr>
-  </thead>
-  <tbody>
-    <tr 
-     *ngFor="let row of Ded_Valid; let i = index"
-     class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
-      <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
-       <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy' }}</td>
-       <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.gen_id }}</td>
-       <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.fullname }}</td>
-       <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Deduction_Description }}</td>
-       <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Deduction_Amount }}</td>
-    </tr>
-  </tbody>
-</table>
-  </div>
-</div>
-
-
-
-</div>
-      <div *ngIf="Ded_InValid.length === 0 && Ear_InValid.length === 0 && Ear_Valid.length === 0 && Ded_Valid.length === 0">
-        <p class="nodata">No data in Uploaded Excel</p>
-      </div>
-</div>
+          </div>
+          <div class="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[60vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll">
+              <!-- invalid data -->
+            <table id="table" class="table-auto !w-full">
+              <!-- table head -->
+              <thead class="sticky top-0">
+                <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                  <th class="!text-white !rounded-s-lg !px-2 !py-2 !border-none !border-0 text-center">slno</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Date</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Gen ID</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Name</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Type</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Description</th>
+                  <th class="!text-white !px-2 !py-2 !border-none !border-0 text-center">Amount</th>
+                  <th class="!text-white !rounded-e-lg !px-2 !py-2 !border-none !border-0 text-center">Reason</th>
+                </tr>
+              </thead>
+              <!-- table body -->
+              <tbody>
+                <tr 
+                *ngFor="let row of invalidEntries; let i = index"
+                class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{i+1}}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Date |date:'dd-MM-yyyy' }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Gen_id }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Name }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center" style="font-weight: 650;">{{row.Type }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Description }}</td>
+                  <td class="!px-2 !py-4 !rounded-s-md text-center">{{row.Amount }}</td>
+                  <td style="font-weight: 650; color: red;">{{row.Reason }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+   </p-tabView>

@@ -91,6 +91,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { PrEmployeeComponent } from './pr-employee/pr-employee.component';
 import { PrMachinePunchComponent } from './pr-machine-punch/pr-machine-punch.component';
 import { PrPresentAbsentComponent } from './pr-present-absent/pr-present-absent.component';
+import { TabViewModule } from 'primeng/tabview';
 // import { RequestDetailsDialogComponentComponent } from './request-details-dialog-component/request-details-dialog-component.component'
 @NgModule({
   declarations: [
@@ -178,6 +179,7 @@ import { PrPresentAbsentComponent } from './pr-present-absent/pr-present-absent.
     RadioButtonModule,
     InputTextareaModule,
     ButtonModule,
+    TabViewModule,
     SpeedDialModule,
     InputNumberModule,
     FileUploadModule,

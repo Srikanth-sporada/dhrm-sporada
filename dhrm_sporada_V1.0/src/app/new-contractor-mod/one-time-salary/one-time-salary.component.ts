@@ -8,6 +8,7 @@ import * as XLSX from "xlsx";
 import moment from "moment";
 import { RequestDetailsDialogComponent } from "../request-details-dialog/request-details-dialog.component";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
 import { error } from "console";
 interface RequestData {
   Request_Id: number;
@@ -71,6 +72,7 @@ export class OneTimeSalaryComponent implements OnInit {
     private api: ClamAPIService,
     private dialog: MatDialog,
     private messageService: MessageService,
+    public loader:LoaderserviceService,
   ) {
     const currentDate = new Date();
     this.currentMonth = currentDate.getMonth();
@@ -268,6 +270,7 @@ export class OneTimeSalaryComponent implements OnInit {
         Reject: "Reject",
       });
     });
+    console.log('OCNSOLIDATED:',this.consolidatedData)
   }
 
   findRequester(
@@ -295,6 +298,7 @@ export class OneTimeSalaryComponent implements OnInit {
     if (inputElement) {
       this.uploadedFile = inputElement;
       // this.parseExcelData();
+      console.log('UPLOAD FILE:',this.uploadedFile)
       this.verifyData(this.uploadedFile);
     }
   }
@@ -356,7 +360,7 @@ export class OneTimeSalaryComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        this.messageService.add({ severity: "error", summary: error.message });
+        this.messageService.add({ severity: "error", summary: error.error?.error });
       },
     );
   }
