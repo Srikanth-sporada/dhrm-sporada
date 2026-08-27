@@ -20,7 +20,7 @@ export const environment = {
   hideCumulativeReport:false,
   hideLopReport:false,
   hideMachineReport:true,
-  hideCanteenReport:true,
+  hideCanteenReport:false,
   /** test */
   hideHrmsNewTab:true,
   /** attedance calander */

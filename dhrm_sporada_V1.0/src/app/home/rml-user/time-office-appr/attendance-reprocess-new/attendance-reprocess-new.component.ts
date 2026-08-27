@@ -192,12 +192,17 @@ export class AttendanceReprocessNewComponent implements OnInit {
        */
       getMinDate(){
         if(this.isAdmin){
-          this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMinDate =  moment(this.attendanceReprocessForm.value.fromDate).toDate();
           this.toMaxDate = moment(this.attendanceReprocessForm.value.fromDate).endOf('month').toDate();
+          /** check if the selected date is EOM */
+          if(moment(this.toMaxDate).format('YYYY-MM-DD') == moment(this.toMinDate).format('YYYY-MM-DD')){
+            this.toMaxDate = moment(this.attendanceReprocessForm.value.fromDate).endOf('month').add(1,'days').toDate();
+          }
+           console.log('todate ADMIN',this.toMaxDate, this.toMinDate)
           this.attendanceReprocessForm.controls['toDate'].setValue('')
         }else if(this.isHr || this.isHrApprover){
           this.toMinDate =  new Date(this.attendanceReprocessForm.value.fromDate);
-          this.toMaxDate = new Date(this.attendanceReprocessForm.value.fromDate);
+          this.toMaxDate = moment(this.attendanceReprocessForm.value.fromDate).add(1,'day').toDate();
           this.attendanceReprocessForm.controls['toDate'].setValue('')
         }
       }
