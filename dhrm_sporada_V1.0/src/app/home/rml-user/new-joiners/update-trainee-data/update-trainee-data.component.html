@@ -106,6 +106,7 @@
          scrollHeight="flex">
         <ng-template pTemplate="header" let-columns>
             <tr>
+                <th>Apln No</th>
                 <th>Gen ID</th>
                 <th>Bank Name</th>
                 <th>Bank Account Number</th>
@@ -124,10 +125,21 @@
                 <th>Legacy No1</th>
                 <th>Legacy No2</th>
                 <th>Trainee Type</th>
+                <th>Apprentice Type</th>
+                <th>Apprentice Group</th>
+                <th>Biometric</th>
+                <th>Department</th>
+                <th>Line</th>
+                <th>Reporting Auth</th>
+                <th>Payroll Area</th>
+                <th>Test Status</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-product let-columns="columns">
             <tr>
+                <td>
+                    {{product.apln_slno || '-'}}
+                </td>
                 <td>
                     {{product.gen_id || '-'}}
                 </td>
@@ -181,6 +193,30 @@
                 </td>
                  <td>
                     {{product.trainee_type || '-'}}
+                </td>
+                <td>
+                    {{product.apprentice_type || '-'}}
+                </td>
+                <td>
+                    {{product.apprentice_grp || '-'}}
+                </td>
+                <td>
+                    {{product.biometric_no || '-'}}
+                </td>
+                <td>
+                    {{product.dept_slno || '-'}}
+                </td>
+                <td>
+                    {{product.line_code || '-'}}
+                </td>
+                <td>
+                    {{product.reportingto || '-'}}
+                </td>
+                <td>
+                    {{product.payrollArea || '-'}}
+                </td>
+                <td>
+                    {{product.test_status || '-'}}
                 </td>
             </tr>
         </ng-template>

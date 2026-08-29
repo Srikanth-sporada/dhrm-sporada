@@ -98,7 +98,7 @@ export class UpdateTraineeDataComponent implements OnInit,AfterViewInit {
       /** check sheet has gen id */
       this.checkSheetHasGenID();
       if(!this.hasGenID){
-        this.messageService.add({severity:'warn',summary:'Please Fill Gen ID'})
+        this.messageService.add({severity:'warn',summary:'Please Fill Gen ID (or) Application Number'})
         this.traineeUpdateDataBulk = [];
         this.file = null;
         this.hasGenID = false;
@@ -108,11 +108,11 @@ export class UpdateTraineeDataComponent implements OnInit,AfterViewInit {
   }
 
   /** 
-   * check gen col has value to update data
+   * check gen or apln_slno col has value to update data
    */
   checkSheetHasGenID() {
     /** check sheet data has gen id prop */
-    this.hasGenID = this.traineeUpdateDataBulk.every((traineeData:any) => traineeData.hasOwnProperty('gen_id'))
+    this.hasGenID = this.traineeUpdateDataBulk.every((traineeData:any) => traineeData.hasOwnProperty('gen_id') || traineeData.hasOwnProperty('apln_slno'))
     console.log('HAS GEN ID:',this.hasGenID);
    }
 
