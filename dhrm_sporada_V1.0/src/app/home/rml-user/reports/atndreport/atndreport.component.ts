@@ -142,7 +142,8 @@ export class AtndreportComponent implements OnInit {
       'Gen ID': record.gen_id,
       'Department': record.dept_name,
       'Line': record.Line_Name,
-      'Category': record.apprentice_type
+      'Category': record.apprentice_type,
+      'Contractor':record.Contractor
     };
 
     // Append day-wise values (1–31) after metadata

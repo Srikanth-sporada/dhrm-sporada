@@ -160,7 +160,7 @@ export class WeekOffComponent implements OnInit {
   getWeekOffData(){
     console.log('LINE', this.slectedLine);
     this.apiService
-    .getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine,this.endOfWeek)
+    .getWeekoffData(moment(this.date).format('YYYY-MM-DD'),this.slectedLine,this.endOfWeek,this.selectedPayrollArea)
     .subscribe({
       next:(response:any) => {
       let data;
@@ -224,9 +224,11 @@ export class WeekOffComponent implements OnInit {
       this.today = new Date(moment(this.lockDate,'yyyy-MM-DD').add(1,'month').format('yyyy-MM-DD'))
       console.log(moment(this.lockDate,'yyyy-MM-DD').add(5,'weeks').format('yyyy-MM-DD'));
       console.log('Today:', this.today)
+      /** set payroll area based last lock date to @property {Date} date */
+      this.date = this.lockDate;
       /** check current date is correct  & get week off data */
-      this.date > this.lockDate  ? this.getData() : this.messageService.add({severity:'warn',summary:'Incorrect Date!'});
-      console.log('DATE:',this.date > this.lockDate)
+      this.date >= this.lockDate  ? this.getData() : this.messageService.add({severity:'warn',summary:'Incorrect Date!'});
+      console.log('DATE:',this.date >= this.lockDate)
       }
     }, 
     error: (error) => {
