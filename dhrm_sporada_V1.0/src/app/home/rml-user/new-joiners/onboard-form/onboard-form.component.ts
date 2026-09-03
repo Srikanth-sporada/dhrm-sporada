@@ -309,6 +309,8 @@ export class OnboardFormComponent implements OnInit {
           this.trainee_id = this.basic[0]?.trainee_idno;
           //  this.form.controls["grade"].setValue(this.basic[0]?.emp_grade);
             this.form.controls["department"].setValue(this.basic[0]?.dept_slno);
+            /** GET ROLE FOR DEPARTMENT TO MAP THE WORK CONTRACT */
+            this.getRoleMaster({value:this.basic[0]?.dept_slno});
             this.form.controls["cont_id"].setValue(this.basic[0]?.cont_id);
             // if (this.readonly == true) {
             //   this.getLineName(this.form.get("department").value);
@@ -345,7 +347,18 @@ export class OnboardFormComponent implements OnInit {
                return operation.oprn_desc
              }));
             // 
+           /** set work contract based on ROLE ID */
             this.form.controls["wcontract"].setValue("DIRECT");
+             if (this.basic[0]?.Role_Id) {
+              const selectedRole = this.Role.find(
+                (r: any) => r.Role_Id == this.basic[0].Role_Id
+              );
+              if (selectedRole) {
+                this.w_contract = [selectedRole.Category_Name];
+                this.form.patchValue({ wcontract: selectedRole.Category_Name });
+                this.isWContractDisabled = true;
+              }
+            }
             this.form.controls["doj"].setValue(this.basic[0]?.doj);
             /** 
              * set DOL , status , reason when application status relived
@@ -424,8 +437,18 @@ export class OnboardFormComponent implements OnInit {
             this.form.controls['costCenter'].setValue(this.basic[0]?.cost_center);
             this.form.controls['legacyNumberOne'].setValue(this.basic[0]?.legacy_no1);
             this.form.controls['legacyNumberTwo'].setValue(this.basic[0]?.legacy_no2);
-
+            /** set work contract based on ROLE ID */
             this.form.controls["wcontract"].setValue("DIRECT");
+             if (this.basic[0]?.Role_Id) {
+              const selectedRole = this.Role.find(
+                (r: any) => r.Role_Id == this.basic[0].Role_Id
+              );
+              if (selectedRole) {
+                this.w_contract = [selectedRole.Category_Name];
+                this.form.patchValue({ wcontract: selectedRole.Category_Name });
+                this.isWContractDisabled = true;
+              }
+            }
             this.form.controls["doj"].setValue(this.basic[0]?.doj);
             /** active status */
             // this.form.controls['active_status'].setValue(this.basic[0]?.activestat)
