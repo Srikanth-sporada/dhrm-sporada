@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit,AfterViewInit,AfterViewChecked } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
@@ -27,7 +27,7 @@ import { Utility } from "src/app/utils/utils";
   styleUrls: ["./navbar.component.css"],
 })
 
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit,AfterViewInit,AfterViewChecked {
   url = environment.path + "/";
   news:any = [];
   /** Menu Hide variables */
@@ -123,7 +123,7 @@ export class NavbarComponent implements OnInit {
   /** logged in user company code & plant code */
   companyCode:any;
   plantCode:any;
-
+  showWeekOff:boolean;
   constructor(
     private fb: FormBuilder,
     private breakpointObserver: BreakpointObserver,
@@ -162,8 +162,19 @@ export class NavbarComponent implements OnInit {
     }
     // console.log('NEW BG:',this.appEnvironment,this.uatBg,this.devBg,this.prodBg)
     // console.log(this.payrollNavLink);
+    /** find plant has week off or not */
+   
   }
-
+  ngAfterViewInit(): void {
+     const noWeekOffPlant = environment?.noWeekOffPlantList.find((plant:any) => plant === this.plantCode);
+     noWeekOffPlant ? this.showWeekOff = false : this.showWeekOff = true;
+     console.log('week test',{noWeekOffPlant,wk:this.showWeekOff});
+  }
+  ngAfterViewChecked():void {
+     const noWeekOffPlant = environment?.noWeekOffPlantList.find((plant:any) => plant === this.plantCode);
+     noWeekOffPlant ? this.showWeekOff = false : this.showWeekOff = true;
+     console.log('week test',{noWeekOffPlant,wk:this.showWeekOff})
+  }
   /** 
    * @description navigate to payroll function
    * @var baseUrl base payroll url from env

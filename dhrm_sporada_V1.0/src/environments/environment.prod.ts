@@ -78,6 +78,7 @@ export const environment = {
   paginationRowLimit:60,
   paginationRowsPerPage: [25,50,75,100],
   dojoMandatoryCompany:['1000','8000'],
+  noWeekOffPlantList: ['8000','8005','8010'],
   /** AD */
   enableADLogin:false,
   Corp_HR_Link : 'https://app.powerbi.com/view?r=eyJrIjoiYjVmMTRjNWItYTQzMi00MjY4LWEyZDYtYzZjOWJiZTgwNWNjIiwidCI6IjQwYTBmOGU1LWZkMDUtNDNmMC05MzkwLThkOTRkZmVmOTgyNSJ9',

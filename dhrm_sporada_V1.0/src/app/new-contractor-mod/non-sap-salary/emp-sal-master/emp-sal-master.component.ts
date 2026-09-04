@@ -113,6 +113,8 @@ export class EmpSalMasterComponent implements OnInit {
 
       // Safely get the company name
       const companyName = `${records[0]?.Cont_company_name?.trim()?.substring(0, 30) || 'unknown Contractor'}_${conId}`.slice(0,30) ;
+      /** format proper excell sheet name uring regex */
+      const formatedSheetName = companyName.replace(/["\\/?*[\]\s]/g, "");
       console.log(companyName);
 
       // Exclude the specified keys
@@ -160,7 +162,7 @@ export class EmpSalMasterComponent implements OnInit {
       }
 
       // Add the worksheet to the workbook with the sheet name as Cont_company_name
-      XLSX.utils.book_append_sheet(wb, ws, companyName);
+      XLSX.utils.book_append_sheet(wb, ws, formatedSheetName);
     });
 
     XLSX.writeFile(wb, "Employee Payscale Master.xlsx");

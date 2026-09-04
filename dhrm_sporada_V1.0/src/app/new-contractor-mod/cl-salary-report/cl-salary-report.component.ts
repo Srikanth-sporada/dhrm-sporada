@@ -864,7 +864,8 @@ export class CLSalaryReportComponent implements OnInit {
         workbook,
         `${contractorName}- ${selectedMonthInWords}-${selectedYear} Payroll Report.xlsx`,
       );
-    } else if (type.code === "OTMSAL") {
+    } 
+    else if (type.code === "OTMSAL") {
       const type1 =
         this.reportType.find(
           (element: any) => element.code === this.selectedReportType,

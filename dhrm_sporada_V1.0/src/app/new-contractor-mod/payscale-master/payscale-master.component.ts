@@ -1348,8 +1348,8 @@ export class PayscaleMasterComponent implements OnInit {
       hostelCheck: data.Hostel_allowance > 0 ? "Yes" : "No",
       Food: data.Food_allowance || "",
       Food_Check: data.Food_allowance > 0 ? "Yes" : "No",
-      Workallowance: data.Workallowance || "",
-      Work_Check: data.Workallowance > 0 ? "Yes" : "No",
+      Workallowance: data.Work_allowance || "",
+      Work_Check: data.Work_allowance > 0 ? "Yes" : "No",
     });
   // new
     const otherAllowances = [
