@@ -439,7 +439,6 @@ export class ExcesshrApproveComponent implements OnInit {
             // approvedEH = data.expect_othr > this.max_hrs  ? this.max_hrs : data.expect_othr;
             approvedEH = data.expect_othr > this.getMaxHours(data?.type)  ? this.getMaxHours(data?.type) : data.expect_othr;
           }
-          alert(approvedEH)
           /** set approved hour and reason */
           data.approvedHr = approvedEH;
           data.reason = `BULK EH APPROVED:${data.gen_id}`;
