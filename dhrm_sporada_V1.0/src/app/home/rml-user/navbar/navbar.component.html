@@ -33,7 +33,7 @@
             [(expanded)]="isDashboardExpanded"
           >
             <mat-expansion-panel-header 
-              *ngIf="isRA" 
+              *ngIf="isRA || Is_CFIN" 
               [ngClass]="isDashboardExpanded ? 'text-gray-600 font-semibold border-2  border-blue-600 bg-[var(--transparent)]' : 'text-gray-600 font-semibold'"
             >
               <mat-icon class="icon-pad" [ngClass]="isDashboardExpanded ? 'text-blue-600' : 'text-gray-600'"> dashboard </mat-icon>
@@ -74,7 +74,8 @@
                   isPlantHead == 'true' ||
                   ishrappr == 'true' ||
                   isadmin == 'true' ||
-                  ishr == 'true'
+                  ishr == 'true' ||
+                  Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon>HR Summary
@@ -91,7 +92,8 @@
                   isPlantHead == 'true' ||
                   ishrappr == 'true' ||
                   isadmin == 'true' ||
-                  ishr == 'true'
+                  ishr == 'true' ||
+                 Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon>HR Dashboard
@@ -109,7 +111,8 @@
                   isadmin == 'true' ||
                   isRA ||
                   isPlantHead ||
-                  isFh
+                  isFh ||
+                  Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon> Present Vs
@@ -126,7 +129,8 @@
                   ishrappr == 'true' ||
                   isadmin == 'true' ||
                   isPlantHead ||
-                  isFh
+                  isFh ||
+                  Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon> Plan Vs
@@ -144,7 +148,8 @@
                   isadmin == 'true' ||
                   isPlantHead ||
                   isFh ||
-                  isOtAppr === 'true'
+                  isOtAppr === 'true' ||
+                  Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
               >
                 <mat-icon class="icon-pad">dashboard</mat-icon>OCM MIS</a
@@ -454,7 +459,7 @@
       </div>
         <!-- Salary Master -->
        <div *ngIf="!hideSalaryMaster">
-         <div *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin">
+         <div *ngIf="ishr == 'true' || ishrappr == 'true' || isadmin == 'true' || isFin || Is_CFIN === 'true' || Is_CHR === 'true'">
           <mat-expansion-panel
             [class.mat-elevation-z0]="true"
             dense
@@ -546,7 +551,9 @@
                   ishr == 'true' ||
                   ishrappr == 'true' ||
                   isadmin == 'true' ||
-                  isFin
+                  isFin || 
+                  Is_CFIN === 'true' ||  
+                  Is_CHR === 'true'
                 "
                 routerLink="/rhrm/contra/Emp_Sal_Master"
                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
@@ -561,7 +568,7 @@
                   ishr == 'true' ||
                   ishrappr == 'true' ||
                   isadmin == 'true' ||
-                  isFin
+                  isFin || Is_CFIN === 'true' ||  Is_CHR === 'true'
                 "
                 routerLink="/rhrm/contra/CL_Sal_Master"
                 routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
@@ -1218,7 +1225,7 @@
         </div>
 
         <!-- Skill Development -->
-        <div *ngIf="istrainee == 'false'">
+        <div *ngIf="istrainee == 'false' && Is_CFIN === 'false'">
           <mat-expansion-panel
             [class.mat-elevation-z0]="true"
             dense
@@ -1445,7 +1452,7 @@
               isadmin == 'true' ||
               ishrappr == 'true' ||
               isFin == true ||
-              isCmed
+              isCmed || Is_CHR === 'true' || Is_CFIN === 'true'
             "
           >
             <mat-expansion-panel
@@ -1466,7 +1473,7 @@
                   ishr == 'true' ||
                   isadmin == 'true' ||
                   ishrappr == 'true' ||
-                  isFin == true
+                  isFin == true || Is_CHR === 'true' || Is_CFIN === 'true'
                 "
                 class="!mx-1 text-gray-600"
               >
@@ -1500,6 +1507,7 @@
               <span *ngIf="!hideMachinePunchReport">
                   <a
                   mat-list-item
+                  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
                   routerLink="/rhrm/reports/rawpunch"
                   routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
@@ -1509,6 +1517,7 @@
                   </a>
               </span>
                 <a
+                 *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true || Is_CHR === 'true' || Is_CFIN === 'true'"
                   mat-list-item
                   routerLink="/rhrm/reports/arsreports"
                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
@@ -1518,6 +1527,7 @@
                 >
                 <a
                   mat-list-item
+                  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
                   routerLink="/rhrm/reports/atndReport"
                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
@@ -1527,6 +1537,7 @@
                 >
                 <a
                   mat-list-item
+                  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
                   routerLink="/rhrm/reports/trainee-apln-report"
                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"
@@ -1537,6 +1548,7 @@
 
                 <a
                   mat-list-item
+                  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
                   routerLink="/rhrm/contra/emp_rec2"
                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                   class="rounded-sm"

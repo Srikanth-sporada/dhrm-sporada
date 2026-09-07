@@ -312,6 +312,7 @@ export class EmployeeComponent implements OnInit {
       this.employee[a].is_plant_head,
     );
     this.form.controls["is_chr"].setValue(this.employee[a].Is_CHR);
+    this.form.controls["is_cfin"].setValue(this.employee[a].Is_CFIN);
   }
   // add new employee
   save() {
