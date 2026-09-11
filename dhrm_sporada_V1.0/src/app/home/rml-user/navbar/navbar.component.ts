@@ -168,12 +168,10 @@ export class NavbarComponent implements OnInit,AfterViewInit,AfterViewChecked {
   ngAfterViewInit(): void {
      const noWeekOffPlant = environment?.noWeekOffPlantList.find((plant:any) => plant === this.plantCode);
      noWeekOffPlant ? this.showWeekOff = false : this.showWeekOff = true;
-     console.log('week test',{noWeekOffPlant,wk:this.showWeekOff});
   }
   ngAfterViewChecked():void {
      const noWeekOffPlant = environment?.noWeekOffPlantList.find((plant:any) => plant === this.plantCode);
      noWeekOffPlant ? this.showWeekOff = false : this.showWeekOff = true;
-     console.log('week test',{noWeekOffPlant,wk:this.showWeekOff})
   }
   /** 
    * @description navigate to payroll function

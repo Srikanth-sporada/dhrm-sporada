@@ -132,6 +132,7 @@ employeeTypeOptions = [
     this.api.getplantcode(plantCode).subscribe({
       next: (response: any) => {
         this.plantlist = response;
+        this.plantlist.unshift({plant_code:'',plant_name:'All'})
       },
       error: (error) => {
         console.log(error);
@@ -212,14 +213,20 @@ employeeTypeOptions = [
 
   getData() {
     this.loading = true;
-    console.log('from date:',this.from)
+    console.log('from date:',this.from);
+    const isAdmin = this.all.is_admin;
+    const isChr = this.all.Is_CHR || this.all.Is_CFIN
+    const companyCode = this.all.company_code
     /** report format */
     let data = {
       from: this.monthReport.includes(this.selectedReportType) ? moment(this.from).format('YYYY-MM-DD') : moment(this.from).format('YYYY-MM-DD'),
       to: moment(this.to).format('YYYY-MM-DD'),
       type: this.selectedReportType,
       plant: this.plant,
-      cat: this.employeeType
+      cat: this.employeeType,
+      isAdmin,
+      isChr,
+      companyCode
     };
     console.log('ARS REPORT GET PARAMS:',data)
     this.api.arsReports(data).subscribe({
@@ -339,9 +346,11 @@ employeeTypeOptions = [
        // new
       const financeColumns = [
         'Work Type', 'FIN GROUP',
-        '1000', '1150', '1200', '1250', '1300', '1500', '8005', '8010', 'Total'
+        '1000', '1020', '1025', '1500', '1010', '1015', '8005', '8010', 'Total'
       ];
-
+     let financeCols = Object.keys(data[6][0]).filter(key => /^\d+$/.test(key.trim()));
+     financeCols.unshift('Work Type','FIN GROUP');
+     console.log('FINANCE COLS',financeCols);
         sheets = [
 	      // { sheetName: 'Head Count Details', dataArray: data[0] },
         //{ sheetName: 'In-Direct Summary', dataArray: data[1] },
@@ -357,7 +366,7 @@ employeeTypeOptions = [
           dataArray: data[6].map((row:any) =>
             Object.fromEntries(financeColumns.map(col => [col, row[col]]))
           ),
-          header: financeColumns   // 👈 Add this line
+          header: financeCols   // 👈 Add this line
         }
       ];
       }

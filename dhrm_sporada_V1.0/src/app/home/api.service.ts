@@ -1064,7 +1064,7 @@ export class ApiService {
     return this.http.get(this.url + `/report/cumulativereport?plant=${formData.plantCode}&pArea=${formData.payrollArea}&lockMonth=${formData.year + '-' + formData.month + '-' + '01'}&company_code=${formData.companyCode}&genid=${formData.genId}`)
   }
   arsReports(data: any) {
-    return this.http.get(this.url + `/report/arsreports?type=${data.type}&plant=${data.plant}&from=${data.from}&to=${data.to}&cat=${data.cat}`
+    return this.http.get(this.url + `/report/arsreports?type=${data.type}&plant=${data.plant}&from=${data.from}&to=${data.to}&cat=${data.cat}&isAdmin=${data.isAdmin}&isChr=${data.isChr}&companyCode=${data.companyCode}`
     );
   }
 
