@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import{Location} from '@angular/common'
+import { Location } from "@angular/common";
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter,
@@ -12,17 +12,15 @@ import {
 import { MatSidenav } from "@angular/material/sidenav";
 import { MatTableModule } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
-import * as XLSX from "xlsx"; 
+import * as XLSX from "xlsx";
 import { FormControl } from "@angular/forms";
 import { ApiService } from "src/app/home/api.service";
 
 const material = [MatSidenav, MatTableModule];
 
 import { MatDatepicker } from "@angular/material/datepicker";
-import * as _moment from "moment";
-import { Moment } from "moment";
+import moment from "moment";
 import { MessageService } from "primeng/api";
-const moment = _moment;
 
 export const MY_FORMATS = {
   parse: {
@@ -51,58 +49,74 @@ export const MY_FORMATS = {
   ],
 })
 export class MonthlyPlanningComponent implements OnInit {
-  date = new FormControl(moment());
+  date = new FormControl();
   month: any;
   year: any;
-  data:any;
-  all:any;
-  userDetails:any;
+  data: any;
+  all: any;
+  userDetails: any;
 
-  constructor(private route:ActivatedRoute,private router:Router,private location: Location,private apiService:ApiService, private messageService:MessageService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private apiService: ApiService,
+    private messageService: MessageService,
+  ) {}
 
   ngOnInit(): void {
-     let details = sessionStorage.getItem("all");
+    let details = sessionStorage.getItem("all");
     if (details != null) {
       this.all = JSON.parse(details);
-      this.userDetails = this.all.Emp_Name.toUpperCase()+`(${this.all.User_Name})`+'-'+ this.all.dept_name+'-'+this.all.plant_name
+      this.userDetails =
+        this.all.Emp_Name.toUpperCase() +
+        `(${this.all.User_Name})` +
+        "-" +
+        this.all.dept_name +
+        "-" +
+        this.all.plant_name;
     }
-    this.month=this.date.value?.month()
-    this.month=this.month+1
-    this.year=this.date.getRawValue()?.year()
-    this.getData()
+    this.date.setValue(moment().toDate())
+    this.month = moment(this.date.value).month() + 1;
+    this.year = moment(this.date.value).year();
+    this.getData();
   }
   setMonthAndYear() {
     console.log(this.date.value);
-    this.month = moment(this.date.value).format('MM');
-    this.year = moment(this.date.value).format('YYYY');
+    this.month = moment(this.date.value).format("MM");
+    this.year = moment(this.date.value).format("YYYY");
 
-    console.log(this.month,this.year)
+    console.log(this.month, this.year);
   }
 
   naviagToUpload() {
-    this.router.navigate(['/rhrm','people-planning','upload'])
+    this.router.navigate(["/rhrm", "people-planning", "upload"]);
   }
 
-  getData(){
-    let data={
-      plantcode:sessionStorage.getItem('plantcode'),
-      month:this.month,
-      year:this.year
-    }
-    this.apiService.people_planning(data).subscribe((response:any)=>{
-      if(response.status='success'){
-        this.data=response.data
-      }else{
-        // alert(response.message)
-        this.messageService.add({severity:'warn',summary:response.message});
-      }
-    }, (error) => {
-      console.log(error);
-      this.messageService.add({severity:'error',summary:error.message})
-    })
+  getData() {
+    let data = {
+      plantcode: sessionStorage.getItem("plantcode"),
+      month: this.month,
+      year: this.year,
+    };
+    this.apiService.people_planning(data).subscribe(
+      (response: any) => {
+        if ((response.status = "success")) {
+          this.data = response.data;
+        } else {
+          // alert(response.message)
+          this.messageService.add({
+            severity: "warn",
+            summary: response.message,
+          });
+        }
+      },
+      (error) => {
+        console.log(error);
+        this.messageService.add({ severity: "error", summary: error.message });
+      },
+    );
   }
-
-  
 
   // gen(event:any, i:any)
   // {
