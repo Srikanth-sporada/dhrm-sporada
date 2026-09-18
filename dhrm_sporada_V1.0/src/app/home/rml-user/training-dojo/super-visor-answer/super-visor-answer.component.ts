@@ -73,18 +73,23 @@ export class SuperVisorAnswerComponent implements OnInit {
         this.filterinfo = response;
       },
       error: (error:any) => {
-        console.error('ERROR:',error);
+        console.error('GER SUPERVISOR ABSERVANT API ERROR:',error);
         this.messageService.add({severity:'error',summary:error?.message});
       }
     });
   }
 
   exportexcel() {
-    const x = document.querySelector("#table");
+    try{
+      const x = document.querySelector("#table");
     const ws = XLSX.utils.table_to_sheet(x);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Table");
     XLSX.writeFile(wb, "Supervisor Abservation.xlsx");
     this.messageService.add({ severity: "info", summary: "Data Downloaded!" });
+    }catch(error:any){
+      console.log('EXPORT TO EXCEL ERROR:',error);
+      this.messageService.add({severity:'warn',summary:'Oops! something went wrong.'})
+    }
   }
 }

@@ -99,8 +99,8 @@ export class MonthlyPlanningComponent implements OnInit {
       month: this.month,
       year: this.year,
     };
-    this.apiService.people_planning(data).subscribe(
-      (response: any) => {
+    this.apiService.people_planning(data).subscribe({
+      next:(response: any) => {
         if ((response.status = "success")) {
           this.data = response.data;
         } else {
@@ -111,11 +111,11 @@ export class MonthlyPlanningComponent implements OnInit {
           });
         }
       },
-      (error) => {
-        console.log(error);
+      error: (error:any) => {
+        console.log('GET PP API ERROR:',error);
         this.messageService.add({ severity: "error", summary: error.message });
       },
-    );
+    });
   }
 
   // gen(event:any, i:any)
