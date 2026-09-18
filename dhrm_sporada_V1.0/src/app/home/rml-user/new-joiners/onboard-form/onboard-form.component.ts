@@ -46,7 +46,7 @@ export class OnboardFormComponent implements OnInit {
   ];
   bank_name: any;
   line: any;
-  Role: any;
+  Role: any = [];
   b_id: any;
   process_trained: any;
   testStatus:string;
@@ -242,6 +242,7 @@ export class OnboardFormComponent implements OnInit {
     console.log('APPLICATION STATUS FR BTN:',this.applicationStatusForBtn)
     this.form.get("bnum").setValue(this.active.snapshot.paramMap.get("id"));
     this.form.controls["bio_id"].setValue(false);
+    /** get trainee onborad data */
     this.service.getonboard({apln_slno: this.active.snapshot.paramMap.get("id") || this.applicationNumber,readonly: this.readonly,})
       .subscribe(
         (response: any) => {
@@ -297,21 +298,19 @@ export class OnboardFormComponent implements OnInit {
            */
           this.onCategorySelect(this.basic[0]?.apprentice_type)
         /** get contractors */ 
-        this.getContractors(this?.basic[0]?.mobile_no1)
-          this.created_dt= response[0][0]?.created_dt
-          this.form.controls["ifsc_code"].setValue(this.basic[0]?.ifsc_code=='null'?'':this.basic[0]?.ifsc_code);
-          this.form.controls["account_number"].setValue(
-            this.basic[0]?.bank_account_number=='null'?'':this.basic[0]?.bank_account_number
-          );
-          this.form.controls["bank_name"].setValue(this.basic[0]?.bank_name=='null'?'':this.basic[0]?.bank_name);
-          this.form.controls["apln_slno"].setValue(this.basic[0]?.apln_slno);
-          this.fullname = this.basic[0]?.fullname;
-          this.trainee_id = this.basic[0]?.trainee_idno;
-          //  this.form.controls["grade"].setValue(this.basic[0]?.emp_grade);
-            this.form.controls["department"].setValue(this.basic[0]?.dept_slno);
-            /** GET ROLE FOR DEPARTMENT TO MAP THE WORK CONTRACT */
-            this.getRoleMaster({value:this.basic[0]?.dept_slno});
-            this.form.controls["cont_id"].setValue(this.basic[0]?.cont_id);
+        this.getContractors(this?.basic[0]?.mobile_no1);
+
+        this.created_dt= response[0][0]?.created_dt
+        this.form.controls["ifsc_code"].setValue(this.basic[0]?.ifsc_code=='null'?'':this.basic[0]?.ifsc_code);
+        this.form.controls["account_number"].setValue(this.basic[0]?.bank_account_number=='null'?'':this.basic[0]?.bank_account_number);
+        this.form.controls["bank_name"].setValue(this.basic[0]?.bank_name=='null'?'':this.basic[0]?.bank_name);
+        this.form.controls["apln_slno"].setValue(this.basic[0]?.apln_slno);
+        this.fullname = this.basic[0]?.fullname;
+        this.trainee_id = this.basic[0]?.trainee_idno;
+        this.form.controls["department"].setValue(this.basic[0]?.dept_slno);
+        /** GET ROLE FOR DEPARTMENT TO MAP THE WORK CONTRACT */
+        this.getRoleMaster({value:this.basic[0]?.dept_slno});
+        this.form.controls["cont_id"].setValue(this.basic[0]?.cont_id);
             // if (this.readonly == true) {
             //   this.getLineName(this.form.get("department").value);
             //   this.getline_Role(this.form.get("department").value);
@@ -350,7 +349,7 @@ export class OnboardFormComponent implements OnInit {
            /** set work contract based on ROLE ID */
             this.form.controls["wcontract"].setValue("DIRECT");
              if (this.basic[0]?.Role_Id) {
-              const selectedRole = this.Role.find(
+              const selectedRole = this.Role?.find(
                 (r: any) => r.Role_Id == this.basic[0].Role_Id
               );
               if (selectedRole) {
