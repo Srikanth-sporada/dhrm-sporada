@@ -172,7 +172,11 @@
                     <mat-icon class="text-2xl text-blue-600 h-0 w-0">file_copy</mat-icon>
                     Training File
                 </label><br />
-                <input type="file" #fileInput (change)="onFileSelected($event)" class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400" />
+                <input 
+                type="file"
+                #fileInput 
+                (change)="onFileSelected($event)" 
+                class="block w-full text-sm text-gray-500 file:me-4 file:py-2 file:px-4 file:!rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:disabled:opacity-50 file:disabled:pointer-events-none dark:text-neutral-500 dark:file:bg-blue-500 dark:hover:file:bg-blue-400" />
                        <p *ngIf="selectedFileName">
                             File:
                             <a [href]="selectedFileName" target="_blank" rel="noopener noreferrer">
@@ -238,6 +242,7 @@
           <p-dropdown 
             [options]="plantData"
             [(ngModel)]="selectedPlant"
+            [disabled]="is_admin == 'false'"
             (onChange)="filterPlant()"
             optionLabel="plant_name"
             optionValue="plant_code"

@@ -100,11 +100,18 @@ export class OperationsComponent implements OnInit {
     }
     /** user plant code */
     this.plant = sessionStorage.getItem('plantcode');
+    /** set user plant for default plant filter */
+    this.selectedPlant = this.plant;
     /** get company plant code */
     this.getplantcode();
 
     if (this.is_admin === 'false') {
       this.form.get('plant_name')?.disable();
+      this.form.get('plant_name').setValue(this.plant);
+      /** set user plant for default plant filter */
+     this.selectedPlant = this.plant;
+    }else{
+      this.selectedPlant = '';
     }
 
     if (this.plant) {
@@ -128,12 +135,12 @@ export class OperationsComponent implements OnInit {
           this.selectedPlantCode = response.PlName.plant_code;
           this.selectedPlantName = response.PlName.plant_name;
           /** mapping plant name = RML SLD-HO-Chennai for all plant */
-        this.dummy = this.dummy.map((plant:any) => {
-          return {...plant,plant_name:'RML SLD-HO-Chennai'}
-        })
+        // this.dummy = this.dummy.map((plant:any) => {
+        //   return {...plant,plant_name:'RML SLD-HO-Chennai'}
+        // })
         },
         error: (error) => {
-          console.error('ERROR:',error);
+          console.error('GET PLANT OPERATION API ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
       });
@@ -157,7 +164,7 @@ export class OperationsComponent implements OnInit {
         }
       },
      error: (error) => {
-          console.error('ERROR:',error);
+          console.error('GET PLANT CODE OPERATION API ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
@@ -210,7 +217,7 @@ export class OperationsComponent implements OnInit {
           this.departments = response;
         },
          error: (error) => {
-          console.error('ERROR:',error);
+          console.error('GET OPERATION DEPT API ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
       });
@@ -263,7 +270,7 @@ export class OperationsComponent implements OnInit {
         this.Lines = response;
       },
       error: (error) => {
-          console.error('ERROR:',error);
+          console.error('GET OPRATION DEPT LINE API ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
@@ -284,13 +291,13 @@ export class OperationsComponent implements OnInit {
     // const selectedPlant = this.dummy[a].plant_name;
     const selectedDepartment = this.dummy[a].Department;
 
-    this.onPlantSelect(this.selectedPlantName);
+    this.onPlantSelect(this.dummy[a].plant_name);
 
     setTimeout(() => {
       this.get_dep_no({value:selectedDepartment});
     }, 200);
 
-    this.form.controls['plant_name'].setValue(this.selectedPlantCode);
+    this.form.controls['plant_name'].setValue(this.dummy[a].plant_code);
     this.form.controls['oprn_slno'].setValue(slno);
     this.form.controls['oprn_desc'].setValue(this.dummy[a].oprn_desc);
     this.form.controls['skill_level'].setValue(this.dummy[a].skill_level);
@@ -352,7 +359,7 @@ export class OperationsComponent implements OnInit {
     // }
 
     const formData = {
-      ...this.form.value,
+      ...this.form.getRawValue(),
       file_name: this.selectedFileName || ''
     };
     /** add operation API */
@@ -422,11 +429,15 @@ export class OperationsComponent implements OnInit {
         next: (response: any) => {
           if (response.message === 'updated') {
             // alert('Operation Updated Successfully');
-            this.messageService.add({severity:'warn',summary:'Operation Updated Successfully'});
+            this.messageService.add({severity:'info',summary:'Operation Updated Successfully'});
             this.refreshData();
             modal.close('Close click');
             // location.reload();
           }
+        },
+        error: (error:any) => {
+          console.log('UPDATE OPERATION API ERROR:',error);
+          this.messageService.add({severity:'error',summary:'Oops! something went wrong'})
         }
       });
     };
@@ -437,13 +448,13 @@ export class OperationsComponent implements OnInit {
       formData.append('file', this.selectedFile);
 
       this.service.addoperationWithFile(formData).subscribe({
-        next: (res) => {
+        next: (res:any) => {
           const uploadedFileName = this.selectedFile?.name || '';
           this.selectedFileName = uploadedFileName;
           afterUpload(uploadedFileName);  // Proceed after upload
         },
-        error: (err) => {
-          console.error('Upload error:', err);
+        error: (err:any) => {
+          console.error('OPERATION FILE TEST FILE RE UPLOAD API ERROR:', err);
           // alert('File upload failed.');
           this.messageService.add({severity:'error',summary:err.message})
         }
@@ -496,39 +507,12 @@ export class OperationsComponent implements OnInit {
         }
       },
       error: (error) => {
-          console.error('error:',error);
+          console.error('DELETE OPERATION API ERROR:',error);
           this.messageService.add({severity:'error',summary:error.message})
         }
     });
   }
-  // exportexcel(): void {
-  //   const newKeys: any = {
-
-  //     plant_name: 'Plant Name',
-  //     oprn_slno: 'Oprn ID',
-  //     oprn_desc: 'Descriptions',
-  //     skill_level: 'Skill Level',
-  //     critical_oprn: 'Critical Operation',
-  //     Line_Name: 'Line',
-  //     dept_name: 'Department'
-  //   };
-
-  //   const allowedKeys = Object.keys(newKeys);
-
-  //   const transformedArray: any = this.dummy.map((obj: any) => {
-  //     const transformedObj: any = {};
-  //     allowedKeys.forEach((key) => {
-  //       transformedObj[newKeys[key]] = obj[key];
-  //     });
-  //     return transformedObj;
-  //   });
-
-  //   const ws = XLSX.utils.json_to_sheet(transformedArray);
-  //   const wb = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  //   XLSX.writeFile(wb, 'operations.xlsx');
-  // }
-
+ 
   exportexcel(): void {
     const newKeys: any = {
       plant_name: 'Plant Name',
@@ -558,8 +542,6 @@ export class OperationsComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'operations.xlsx');
   }
-
-
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -605,10 +587,10 @@ export class OperationsComponent implements OnInit {
     }
   }
 }
-
+/** allowed skill level form validator function for operation */
 export function allowedSkillLevels(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const allowedValues = [1, 2, 3, 4];
+    const allowedValues = [1, 2, 3, 4]
     return allowedValues.includes(+control.value) ? null : { invalidSkillLevel: true };
   };
 }
