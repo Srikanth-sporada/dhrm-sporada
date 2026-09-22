@@ -5,7 +5,7 @@ import { ApiService } from "../home/api.service";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment.prod";
 import { Router } from "@angular/router";
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 @Injectable({
   providedIn: "root", // Makes the service available globally
@@ -15,7 +15,7 @@ export class Utility {
   constructor(
     private messageService: MessageService,
     private apiService: ApiService,
-    private router:Router,
+    private router: Router,
   ) {}
 
   /** Export HTML data to excel sheet
@@ -27,18 +27,18 @@ export class Utility {
     const x = document.querySelector(`#${tableId}`);
     const ws = XLSX.utils.table_to_sheet(x);
     // console.log('SHEET DATA:',ws)
-    /** Post-process: reformat date-like strings */ 
-    Object.keys(ws).forEach(cell => {
+    /** Post-process: reformat date-like strings */
+    Object.keys(ws).forEach((cell) => {
       /** skip sheet meta data */
-      if (cell[0] === '!') return; 
+      if (cell[0] === "!") return;
       const value = ws[cell].v;
 
-      /** Check if it's a valid date string */ 
-      if (typeof value === 'string') {
+      /** Check if it's a valid date string */
+      if (typeof value === "string") {
         const parsed = new Date(value);
         if (!isNaN(parsed.getTime())) {
-          const day = String(parsed.getDate()).padStart(2, '0');
-          const month = String(parsed.getMonth() + 1).padStart(2, '0');
+          const day = String(parsed.getDate()).padStart(2, "0");
+          const month = String(parsed.getMonth() + 1).padStart(2, "0");
           const year = parsed.getFullYear();
           /** final formated date */
           ws[cell].v = `${day}-${month}-${year}`;
@@ -146,62 +146,102 @@ export class Utility {
 
   /**
    * remove duplicate object
-   * @param array 
+   * @param array
    * @returns {[]}
    */
-  removeDuplicateObjects(array: any):any {
+  removeDuplicateObjects(array: any): any {
     const uniqueArray = Array.from(
-      new Set(array.map((item:any) => JSON.stringify(item)))
-    ).map((item:any) => JSON.parse(item));
-     return uniqueArray;
+      new Set(array.map((item: any) => JSON.stringify(item))),
+    ).map((item: any) => JSON.parse(item));
+    return uniqueArray;
   }
 
-   /**
+  /**
    * remove duplicate object
-   * @param array 
+   * @param array
    * @returns {[]}
    */
-  removeDuplicateObjectsInArray(array: any):any {
-    const uniqueArray = Array.from(
-      new Set(array.map((item:any) => item))
-    ).map((item:any) => item);
-     return uniqueArray;
+  removeDuplicateObjectsInArray(array: any): any {
+    const uniqueArray = Array.from(new Set(array.map((item: any) => item))).map(
+      (item: any) => item,
+    );
+    return uniqueArray;
   }
 
   /** logout user based o user config */
-  logOutUser(){
-    setTimeout(() => {
-     sessionStorage.clear();
-     window.location.reload();
-     this.messageService.add({severity:'warn',summary:'Session Timoeut.'})
-    }, environment.hour * 60 * 60 * 1000)
+  logOutUser() {
+    setTimeout(
+      () => {
+        sessionStorage.clear();
+        window.location.reload();
+        this.messageService.add({
+          severity: "warn",
+          summary: "Session Timoeut.",
+        });
+      },
+      environment.hour * 60 * 60 * 1000,
+    );
   }
- 
+
   /** check has data */
-  checkHasData(dataToCheck:any,message:any){
-    if(dataToCheck.length == 0 || !dataToCheck || dataToCheck == null || dataToCheck == undefined){
-      this.messageService.add({severity:'warn',summary:message})
+  checkHasData(dataToCheck: any, message: any) {
+    if (
+      dataToCheck.length == 0 ||
+      !dataToCheck ||
+      dataToCheck == null ||
+      dataToCheck == undefined
+    ) {
+      this.messageService.add({ severity: "warn", summary: message });
     }
   }
 
-  /** 
+  /**
    * custom number only validator
    */
- numberOnlyValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value =control.value;
-    /** Allow empty values */
-    if (value === null || value === undefined || value === '') {
-      return null;
-    }
-    /** Regex: matches digits only */
-    const isValid = /^[0-9]+$/.test(value);
-    return isValid ? null : { numberOnly: true };
-  };
-}
+  numberOnlyValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      /** Allow empty values */
+      if (value === null || value === undefined || value === "") {
+        return null;
+      }
+      /** Regex: matches digits only */
+      const isValid = /^[0-9]+$/.test(value);
+      return isValid ? null : { numberOnly: true };
+    };
+  }
 
-handleApiErrors(error:any,logMessage:any,toastType:any,errorStack:any){
-  console.error(logMessage,error);
-  this.messageService.add({severity:toastType,summary:errorStack})
-}
+  handleApiErrors(
+    error: any,
+    logMessage: any,
+    toastType: any,
+    errorStack: any,
+  ) {
+    console.error(logMessage, error);
+    this.messageService.add({ severity: toastType, summary: errorStack });
+  }
+
+  /**
+   * reads the excel file as array buffer data and using XLSX reade buffer data and convert to json data
+   * @param event 
+   * @returns {any[]} jsonData
+   */
+  convertSheetToJson(event: any) {
+    const selectedFile = event.target.files[0];
+    const fileReader = new FileReader();
+    let jsonData:any[] = [];
+    fileReader.readAsArrayBuffer(selectedFile);
+    fileReader.onload = (event: any) => {
+      let binaryData = event.target.result;
+      let workbook = XLSX.read(binaryData, { type: "binary" });
+      let sheetname = workbook.SheetNames[0];
+      jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetname]);
+    } 
+    fileReader.onerror = (event:any) => {
+      console.log('FILE READER ERROR:', event);
+      this.messageService.add({severity:'error',summary:'something wen wrong while reading file...'})
+    }
+
+    return jsonData;
+  }
 }
