@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
     let details = sessionStorage.getItem("all");
     if (details != null) {
       this.empDetails = JSON.parse(details);
+      console.log('EMPLOYEE DETAILS:',this.empDetails);
     }
     this.selectedPlant = plantCode;
     this.apiService.getplantcode(plantCode).subscribe({

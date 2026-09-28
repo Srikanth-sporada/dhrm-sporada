@@ -857,7 +857,7 @@ export class CLSalaryReportComponent implements OnInit {
       const selectedMonth = moment(this.from).month();
       const selectedYear = moment(this.from).year();
 
-      const selectedMonthInWords = moment().month(selectedMonth - 1).format("MMMM"); // selected month -2 added rml migration on 25-08-2026
+      const selectedMonthInWords = moment().month(selectedMonth).format("MMMM"); // selected month -2 added rml migration on 25-08-2026
 
       // Write the Excel file
       XLSX.writeFile(

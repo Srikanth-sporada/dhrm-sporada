@@ -11,7 +11,7 @@ export class AppComponent implements AfterViewInit,OnInit{
    }
 
    ngAfterViewInit(): void {
-    this.renderer.setStyle(this.document.body,'zoom','80%')
+      this.renderer.setStyle(this.document.body,'zoom','80%')
    }
 
    ngOnInit(): void {
