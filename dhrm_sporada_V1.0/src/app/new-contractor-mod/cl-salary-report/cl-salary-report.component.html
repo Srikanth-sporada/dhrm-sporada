@@ -59,10 +59,16 @@
                 <p-dropdown 
                   [options]="Con_list"
                   [(ngModel)]="selectedContractor"
-                  optionLabel="Cont_company_name"
-                  optionValue="Con_Id"
+                  optionLabel="contractorName"
+                  optionValue="ID"
                   styleClass="w-full" 
-                  placeholder="Select Contractor"></p-dropdown>
+                  placeholder="Select Contractor">
+                  <ng-template let-contractors pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <span>{{ contractors?.ID + '-' + contractors.contractorName }}</span>
+                    </div>
+                  </ng-template>
+                  </p-dropdown>
             </div>
             <!-- Plant-->
             <div class="font-poppins w-full">
@@ -70,7 +76,8 @@
                 <p-dropdown 
                   [options]="plantlist"
                   [(ngModel)]="plant"
-                  [disabled]="!isadmin && !Is_CFIN && !Is_CHR" 
+                  [disabled]="!isadmin && !Is_CFIN && !Is_CHR"
+                  (onChange)="getContractorsByPlantCode()"
                   optionLabel="plant_name"
                   optionValue="plant_code"
                   styleClass="w-full" 
@@ -107,7 +114,7 @@
               [showIcon]="true" >
           </p-calendar>
           </div>
-            <!-- download btn-->
+            <!-- download btn -->
               <p-button 
               icon="pi pi-download"
               label="Download" 

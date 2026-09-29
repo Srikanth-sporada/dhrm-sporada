@@ -35,6 +35,14 @@ export class ClamAPIService {
   getContractor() {
     return this.http.get<any>(this.url + '/clam/getcon')
   }
+  /**
+   * 
+   * @param plantCode 
+   * @returns 
+   */
+  getContractorsByPlantCode(plantCode:any){
+    return this.http.get<any>(`${this.url}/report/salary/contractors?plantCode=${plantCode}`);
+  }
   getContractor_combine(userEmpcode: any) {
     const queryParams = new URLSearchParams({ userEmpcode }).toString();
     return this.http.get(`${this.url}/clam/getcon_combine?${queryParams}`, {});

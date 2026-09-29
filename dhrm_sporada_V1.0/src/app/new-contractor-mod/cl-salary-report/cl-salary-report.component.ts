@@ -88,7 +88,10 @@ export class CLSalaryReportComponent implements OnInit {
     this.Is_CFIN = sessionStorage.getItem("Is_CFIN") === "true"; // there is no col in employee
     this.Is_CHR = sessionStorage.getItem("Is_CHR") === "true";
 
-    this.getContra();
+    // this.getContra(); code cmt by sporad 424
+
+    /** get contractors by plant code */
+    this.getContractorsByPlantCode(this.plant);
 
     if (this.isadmin == "false") {
       this.plant = plantCode;
@@ -129,6 +132,23 @@ export class CLSalaryReportComponent implements OnInit {
       },
     );
   }
+
+  getContractorsByPlantCode(plantCode?:any){
+   this.clApi.getContractorsByPlantCode(plantCode ? plantCode : this.plant).subscribe({
+    next: (response:any) => {
+      if(!response.success){
+        this.messageService.add({severity:'error',summary:response?.message || 'Oops! something went wrong'})
+      }else{
+        this.Con_list = response?.data || []
+      }
+    },
+    error: (error:any) => {
+      console.log('SALARY REPORT GET CONTRACTORS API ERROR', error.error);
+      this.messageService.add({severity:'error',summary:error?.error?.message})
+    }
+   })
+  }
+
 
   getData() {
     this.loading = true;
