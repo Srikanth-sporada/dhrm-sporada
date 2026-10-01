@@ -120,7 +120,7 @@
               label="Download" 
               styleClass="ml-3 rounded-md mt-10"
               (onClick)="getData()"
-              [disabled]="loading" 
+              [disabled]="loading || isBtnDisabled()" 
               >
             </p-button>
         </div>

@@ -132,7 +132,10 @@ export class CLSalaryReportComponent implements OnInit {
       },
     );
   }
-
+  /**
+   * get contractors by plant code for CHR & ADMIN roles
+   * @param plantCode 
+   */
   getContractorsByPlantCode(plantCode?:any){
    this.clApi.getContractorsByPlantCode(plantCode ? plantCode : this.plant).subscribe({
     next: (response:any) => {
@@ -247,10 +250,6 @@ export class CLSalaryReportComponent implements OnInit {
           console.log(resp);
           this.from = "";
           this.to = "";
-          this.selectedReportType = "";
-          this.selectedContractor = "";
-          this.plant = sessionStorage.getItem("plantcode");
-          this.getContra();
           this.loading = false;
         }
       } else {
@@ -277,10 +276,8 @@ export class CLSalaryReportComponent implements OnInit {
 
       // Add the labels for Plant, Contractor, Payroll Period
       const plantCode = this.plant || "All";
-      const contractorName =
-        this.Con_list.find(
-          (element: any) => element.Con_Id === this.selectedContractor,
-        )?.Cont_company_name || "All";
+      const contractorName =this.Con_list.find((element: any) => element.ID === this.selectedContractor)?.contractorName || "All";
+      console.log('CONTRACTOR NAME:',contractorName)
       const dateRange = `${this.from} - ${this.to}`;
 
       // Add labels and values to cells A2, A3, A4
@@ -928,5 +925,11 @@ export class CLSalaryReportComponent implements OnInit {
       this.messageService.add({ severity: "info", summary: "Data Exported!" });
     }
   }
+
   datechnage() {}
+
+  /** check is button disabled */
+  isBtnDisabled(){
+   return (this.selectedContractor == '' || this.from == '' || this.to == '' || this.plant == '')
+  }
 }
