@@ -143,6 +143,7 @@ export class CLSalaryReportComponent implements OnInit {
         this.messageService.add({severity:'error',summary:response?.message || 'Oops! something went wrong'})
       }else{
         this.Con_list = response?.data || []
+        // this.Con_list.unshift({ID:'',contractorName:'All'})
       }
     },
     error: (error:any) => {
