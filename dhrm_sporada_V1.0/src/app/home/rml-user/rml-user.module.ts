@@ -75,6 +75,7 @@ import { TraineePlantWiseHeadCountComponent } from "./dashboard/hr-dashboard/tra
 import { AdminArsDumbComponent } from "src/app/admin-ars-dumb/admin-ars-dumb.component";
 import { AttendanceReprocessNewComponent } from "./time-office-appr/attendance-reprocess-new/attendance-reprocess-new.component";
 import { ExcessHourChartLargerComponent } from "./ocm/excess-hour-chart-larger/excess-hour-chart-larger.component";
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   declarations: [
     CompanyComponent,
@@ -159,6 +160,7 @@ import { ExcessHourChartLargerComponent } from "./ocm/excess-hour-chart-larger/e
     ChartModule,
     CardModule,
     TableModule,
+    MultiSelectModule
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

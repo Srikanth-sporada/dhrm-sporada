@@ -95,6 +95,7 @@ export class EmployeeComponent implements OnInit {
       Mobile_No: ["", Validators.required],
       User_Name: ["", Validators.required],
       Password: ["", Validators.required],
+      userPlants:["1000"],
       Is_HR: [""],
       is_admin: [""],
       Is_HRAppr: [""],
@@ -287,9 +288,13 @@ export class EmployeeComponent implements OnInit {
     this.form.controls["Mobile_No"].setValue(this.employee[a].Mobile_No);
     this.form.controls["User_Name"].setValue(this.employee[a].User_Name);
     this.form.controls["Password"].setValue(this.employee[a].Password);
-    this.form.controls["payroll_plant"].setValue(
-      this.employee[a].Payroll_Plant,
-    );
+    if(this.employee[a].user_plants){
+      this.form.controls['userPlants'].setValue(String(this.employee[a].user_plants).split(','));
+    }else{
+      this.form.controls['userPlants'].setValue([this.employee[a].plant_code]);
+    }
+ 
+    this.form.controls["payroll_plant"].setValue(this.employee[a].Payroll_Plant);
 
     this.form.controls["Is_HR"].setValue(this.employee[a].Is_HR);
     this.form.controls["Is_HRAppr"].setValue(this.employee[a].Is_HRAppr);

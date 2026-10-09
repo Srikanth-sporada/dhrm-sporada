@@ -34,6 +34,7 @@
                     optionValue="Con_Id"
                     styleClass="w-full"
                     [disabled]="isDOJReadOnly"
+                    (onChange)="getPayScales($event.value)"
                     [readonly]="(status === 'SUBMITTED' || status === 'APPOINTED') ? true : false"
                     placeholder="Select Contractor">
                   </p-dropdown>

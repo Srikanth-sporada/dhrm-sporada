@@ -68,6 +68,7 @@ import { ExecutiveLoginComponent } from "./first-page/executive-login/executive-
 import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filter.pipe";
 import { ClOnboardNewComponent } from './first-page/cl-onboard-new/cl-onboard-new.component';
 import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-form/cl-onboard-form.component";
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -138,6 +139,7 @@ import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-f
     FileUploadModule,
     InputTextareaModule,
     InputNumberModule,
+    MultiSelectModule
   ],
   providers: [
     AuthGuard,

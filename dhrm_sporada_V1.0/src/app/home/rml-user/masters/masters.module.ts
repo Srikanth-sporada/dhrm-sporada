@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { LoadModule } from 'src/app/loader/loader.module';
 import { MenuModule } from 'primeng/menu';
 import { MatMenuModule } from '@angular/material/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { MatMenuModule } from '@angular/material/menu';
     LoadModule,
     MenuModule,
     MatMenuModule,
+    MultiSelectModule,
   ],
   providers:[CookieService],
   schemas:[

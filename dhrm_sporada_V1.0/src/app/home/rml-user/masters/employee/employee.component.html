@@ -14,7 +14,7 @@
     </div>
     <br>
     <!-- employee form -->
-    <form [formGroup]="form">
+    <form [formGroup]="form" class="w-full">
        <!--first row  -->
       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid">
           <!--plant name -->
@@ -50,7 +50,7 @@
             optionLabel="desig_name"
             optionValue="slno"
             styleClass="w-full"
-            placeholder="Select Plant">
+            placeholder="Select Designation">
             <ng-template let-designation pTemplate="item">
               <div class="flex align-items-center gap-2">
                 <span>{{ designation?.slno + '-' + designation.desig_name }}</span>
@@ -212,6 +212,22 @@
             formControlName="payroll_plant"
           />
           </div>
+          <!-- user access plants -->
+          <div class="w-full mx-2">
+            <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="name">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">key</mat-icon>
+             Plant Access
+          </label><br />
+           <p-multiSelect 
+              [options]="plantCopy"
+              formControlName="userPlants"
+              optionLabel="plant_code"
+              optionValue="plant_code"
+              [virtualScroll]="true"
+              [virtualScrollItemSize]="50"
+              [style]="{ width: '100%', 'max-width': '320px' }"
+              placeholder="Select Plants" ></p-multiSelect>
+          </div>
       </div>
       <!-- row seven -->
       <div class="row mt-3">
@@ -349,7 +365,7 @@
           </div>
       </div>
     </form>
-</div> 
+  </div> 
  <br>
   <!-- modal footer -->
     <div class="modal-footer bg-gray-100">

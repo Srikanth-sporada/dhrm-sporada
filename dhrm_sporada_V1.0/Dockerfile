@@ -6,7 +6,7 @@ COPY . /usr/src/app
 
 # RUN npm install -g @angular/cli
 
-RUN npm install
+# RUN npm install
 
 EXPOSE 4201
 

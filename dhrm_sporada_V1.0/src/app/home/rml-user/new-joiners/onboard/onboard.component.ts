@@ -110,7 +110,9 @@ export class OnboardComponent implements OnInit {
   }
 
   filter() {
-    this.service.onboard(this.form.value).subscribe({
+    const userPlants:string = this.all.user_plants;
+    let constructedUserPlants:string = !userPlants ? this.all.plant_code : userPlants;
+    this.service.onboard({...this.form.value,userPlants:constructedUserPlants}).subscribe({
       next: (response: any) => {
         if (response.length) {
           console.log(response);

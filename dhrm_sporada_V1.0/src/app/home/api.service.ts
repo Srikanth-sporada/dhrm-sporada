@@ -367,7 +367,7 @@ export class ApiService {
     return this.http.put(this.url + "/master/deleteemployee", form);
   }
   updateemployee(form: any) {
-    return this.http.put(this.url + "/master/updateemployee", form);
+    return this.http.put(this.url + "/master/employee/update", form);
   }
   addemployee(form: any) {
     return this.http.post(this.url + "/master/addemployee", form);
@@ -576,7 +576,7 @@ export class ApiService {
     );
   }
   onboard(form: any) {
-    return this.http.get(this.url + "/hrOperation/onboard?plantcode=" + form.plantcode + "&select=" + form.select);
+    return this.http.get(this.url + `/hrOperation/onboard?plantcode=${form.plantcode}&select=${form.select}&userPlants=${form.userPlants}`);
   }
   relieve(form: any) {
     return this.http.put(this.url + "/hrOperation/relieve", form);
