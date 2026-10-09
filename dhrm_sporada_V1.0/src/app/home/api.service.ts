@@ -370,7 +370,7 @@ export class ApiService {
     return this.http.put(this.url + "/master/employee/update", form);
   }
   addemployee(form: any) {
-    return this.http.post(this.url + "/master/addemployee", form);
+    return this.http.post(this.url + "/master/employee/add", form);
   }
 
   getshift() {
