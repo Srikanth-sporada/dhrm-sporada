@@ -77,6 +77,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SpeedDialModule } from "primeng/speeddial";
 import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component";
 import { CheckboxModule } from 'primeng/checkbox';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TableBody, TableModule } from 'primeng/table';
 /** time office loader component */
 import { TimeOfficeApprovalLoaderComponent } from "./time-office-approval-loader/time-office-approval-loader.component";
@@ -173,6 +174,7 @@ import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-
     BadgeModule,
     CheckboxModule,
     SpeedDialModule,
+    ToggleButtonModule,
     RadioButtonModule,
     TableModule,
   ],

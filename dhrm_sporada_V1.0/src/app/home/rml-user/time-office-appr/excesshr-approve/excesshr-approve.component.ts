@@ -3,7 +3,7 @@ import { ApiService } from "src/app/home/api.service";
 import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
-import moment from "moment";
+import moment, { months } from "moment";
 import { environment } from "src/environments/environment.prod";
 import { Utility } from "src/app/utils/utils";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,6 +23,8 @@ export class ExcesshrApproveComponent implements OnInit {
   toDate:Date = moment().toDate();
   lines: any;
   selectedLine: any = "All";
+  bulkSelectReservationFlag:boolean = false;
+  coffExpiry:number = 1;
   userEnteredGenID: any;
   loading: any = false;
   max_hrs: any;
@@ -30,6 +32,7 @@ export class ExcesshrApproveComponent implements OnInit {
   userDetails: any;
   excessHourData: any;
   selectAll:boolean=  false;
+  reservationFlags:any = [{lable:'COFF',flag:'RFC'},{lable:'OT',flag:'RFO'}]
   bulkApproveData:any = [];
   setActualEH:boolean =  environment?.setActualEH;
   startCount:number = 0; // init page number
@@ -143,30 +146,24 @@ export class ExcesshrApproveComponent implements OnInit {
 
     this.apiService.getExcessHours(fromDate,toDate,'','').subscribe({
       next: (response: any) => {
-        if (response.status == "failed") {
-          // alert(response.message);
-          this.messageService.add({
-            severity: "warn",
-            summary: response.message,
-          });
-        } else {
           console.log('EH DATA:',response.data);
           /** map with approvedHr, reason, selected props */
-          const constructedData = response.data.map((element: any) => {
-            return { ...element, approvedHr: null, reason: "", selected:false };
+          const constructedData = response.data[0].map((element: any) => {
+            return { ...element, approvedHr: null, reason: "", selected:false, flag:null };
           });
+          /** set coff expiry */
+          this.coffExpiry = response.data[1][0]?.compoff_expiry || 1;
           // this.data = [...constructedData]
-          this.data = this.cleanCircularReferences(response?.data) // cleaning circular references
+          this.data = this.cleanCircularReferences(response?.data[0]) // cleaning circular references
           /** excess hour data copy for filters */
           this.excessHourData = this.data;
           console.log('MAPPED EH DATA:',this.data);
           /** change detection */
            this.cd.detectChanges();
-        }
       },
       error: (error) => {
         console.error('ERROR:',error);
-        this.messageService.add({ severity: "error", summary: error.message });
+        this.messageService.add({ severity: "error", summary: error?.error.message });
       }
     });
   }
@@ -200,11 +197,15 @@ export class ExcesshrApproveComponent implements OnInit {
       emp_id: item.cemp_id,
       date: item.att_date,
       hours: item.approvedHr,
-      flag: "I", // default flag COFF || OT flag O
+      flag:item.flag,
       approved_by: this.userName,
       reason: item.reason,
       shift_id: item.shift,
       type: item.type,
+      currentPayrollDate:item.currentPayrollDate,
+      validFrom: item.currentPayrollDate,
+      validTo: moment(item.currentPayrollDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+      isTrainee:false,
     };
 
     console.log('APPROVE DATA:',data);
@@ -217,7 +218,7 @@ export class ExcesshrApproveComponent implements OnInit {
           this.getData();
           this.loading = false;
         }else{
-          this.messageService.add({severity:'error',summary:'Oops! Something wen wrong.'})
+          this.messageService.add({severity:'error',summary:'Oops! Something went wrong.'})
         }
       },
       (error) => {
@@ -403,12 +404,8 @@ export class ExcesshrApproveComponent implements OnInit {
         ehData.approvedHr = approvedEH;
         ehData.reason = `BULK EH APPROVED:${ehData.gen_id}`;
         ehData.selected = true;
+        ehData.flag = this.bulkSelectReservationFlag ? 'RFO' : 'RFC';
         return ehData;
-      // return {
-      //   ...ehData,
-      //   approvedHr:approvedEH, 
-      //   reason:`BULK EH APPROVED:${ehData.gen_id}`,
-      //   selected:true}
       });
        console.log('BULK DATA:',this.bulkApproveData);
       }
@@ -442,6 +439,7 @@ export class ExcesshrApproveComponent implements OnInit {
           /** set approved hour and reason */
           data.approvedHr = approvedEH;
           data.reason = `BULK EH APPROVED:${data.gen_id}`;
+          data.flag = this.bulkSelectReservationFlag ? 'RFO' : 'RFC';
           const mappedData = {...data,approvedHr:approvedEH,reason:`BULK EH APPROVED:${data.gen_id}`}
           console.log('SELECTED DATA:',data);
           /** remove selected data from @property {*} bulkApproveData */
@@ -458,6 +456,7 @@ export class ExcesshrApproveComponent implements OnInit {
           /** set approved hour and reason to default if user unchecked */
           data.approvedHr = null;
           data.reason = "";
+          data.flag = null;
           /** find selected element index */
           const indexOfElemToRemove = this.bulkApproveData.findIndex((item:any) => item.gen_id == data.gen_id && item.att_date == data.att_date);
           console.log('INDEX',indexOfElemToRemove)
@@ -483,6 +482,7 @@ export class ExcesshrApproveComponent implements OnInit {
         /** set approved hour and reason */
         data.approvedHr = approvedEH;
         data.reason = `BULK EH APPROVED:${data.gen_id}`;
+        data.flag = this.bulkSelectReservationFlag ? 'RFO' : 'RFC';
       const mappedData = {...data,approvedHr:approvedEH,reason:`BULK EH APPROVED:${data.gen_id}`}
       console.log('MAPPED DATA SINGLE:',data);
       /** find selected data from @property {*} data */
@@ -502,6 +502,7 @@ export class ExcesshrApproveComponent implements OnInit {
         /** set approved hour and reason to default if user unchecked */
         data.approvedHr = null;
         data.reason = "";
+        data.flag = null;
         /** remove unselected array */
         const indexOfElemToRemove = this.bulkApproveData.findIndex((item:any) => item.gen_id == data.gen_id && item.att_date == data.att_date)
         /** splice element */
@@ -528,11 +529,15 @@ export class ExcesshrApproveComponent implements OnInit {
             emp_id: bulkData.cemp_id,
             date: bulkData.att_date,
             hours: bulkData.approvedHr,
-            flag: "I", // default flag COFF || OT flag O
+            flag: bulkData.flag, // default flag RFC || RFO 
             approved_by: this.userName,
             reason: bulkData.reason,
             shift_id: bulkData.shift,
             type: bulkData.type,
+            currentPayrollDate:bulkData.currentPayrollDate,
+            validFrom: bulkData.currentPayrollDate,
+            validTo: moment(bulkData.currentPayrollDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+            isTrainee:false,
           }
       /** push formatted data */
       mappedData.push(apiDataFormat);

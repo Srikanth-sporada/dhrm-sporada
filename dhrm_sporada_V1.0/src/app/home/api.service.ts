@@ -1094,9 +1094,10 @@ export class ApiService {
 
   getExcessHours(fromDate:string,toDate:string, page?:string | number  , limit?:string | number) {
     if((page && limit) || (page !== '' && limit !== '' )){
-      return this.http.get(this.url + `/ars/getExcessHours?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}&page=${page}&limit=${limit}`);
+      // PREV ENDPOINT /ars/getExcessHours
+      return this.http.get(this.url + `/api/v1/approvals/eh/manager?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}&page=${page}&limit=${limit}`);
     }else{
-     return this.http.get(this.url + `/ars/getExcessHours?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}`);
+     return this.http.get(this.url + `/api/v1/approvals/eh/manager?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}`);
     }
   }
   

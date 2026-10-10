@@ -113,17 +113,6 @@
             id="line" 
             placeholder="Select Line" ></p-dropdown>
        </div>
-       <!-- gen id -->
-       <!-- <div class="font-poppins w-full p-fluid">
-          <label for="gen id" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Gen ID</label> <br>
-          <input 
-            pInputText
-            id="gen id"
-            [(ngModel)]="userEnteredGenID"
-            styleClass="w-full" 
-            (input)="filterExcessHourByGenID(); handleUserActionIfSelectedAllSelected();"
-            placeholder="Enter Gen ID"/>
-       </div> -->
         <!-- clear btn -->
         <div>
            <button
@@ -135,7 +124,8 @@
            </button>
         </div>
          <!-- row two -->
-      <div class="flex items-center justify-between w-full flex-col sm:flex-row sm:gap-2 mt-10">
+      <div class="flex items-center w-full flex-col sm:flex-row sm:gap-8 mt-10 sm:justify-start">
+        <!-- select ALL -->
         <div>
            <p-checkbox 
             [(ngModel)]="selectAll"
@@ -146,23 +136,50 @@
             class="font-poppins"
             (ngModelChange)="handelSelectAll(true)"> 
           </p-checkbox>
-          <label for="ny" class="mb-0 ml-2 font-semibold">Select All</label>
+          <label for="ny" class="mb-0 ml-2 font-semibold">All</label>
           <p-badge [value]="convertToString(bulkApproveData.length)" styleClass="ml-2"></p-badge>
         </div>
-            <!-- <mat-checkbox
-              [(ngModel)]="selectAll"
-              color="primary"
-              class="font-poppins"
-              (ngModelChange)="handelSelectAll()"
-              >Select All</mat-checkbox> -->
-                <p-button
-                  (onClick)="bulkApproveEH()"
-                  label="Approve"
-                  [disabled]="bulkApproveData.length == 0 || isApiCalled"
-                  [loading]="isApiCalled"
-                  ariaLabel="bulk approve"
-                >
-                </p-button>
+        <!-- OT / COFF toggle button -->
+        <p-toggleButton 
+        [(ngModel)]="bulkSelectReservationFlag" 
+        onLabel="OT" 
+        [disabled]="this.selectAll"
+        offLabel="COFF">
+        </p-toggleButton>
+
+        <!-- OT -->
+        <div hidden>
+           <p-checkbox 
+            [(ngModel)]="bulkSelectReservationFlag"
+            color="primary"
+            [binary]="true"
+            inputId="ot"
+            id="ot"
+            class="font-poppins"> 
+          </p-checkbox>
+          <label for="ot" class="mb-0 ml-2 font-semibold">OT</label>
+        </div>
+        <!-- COFF -->
+         <!-- OT -->
+        <div hidden>
+           <p-checkbox 
+            [(ngModel)]="selectAll"
+            color="primary"
+            [binary]="true"
+            inputId="COFF"
+            id="COFF"
+            class="font-poppins"> 
+          </p-checkbox>
+          <label for="COFF" class="mb-0 ml-2 font-semibold">COFF</label>
+        </div>
+        <p-button
+          (onClick)="bulkApproveEH()"
+          label="Approve"
+          [disabled]="bulkApproveData.length == 0 || isApiCalled"
+          [loading]="isApiCalled"
+          ariaLabel="bulk approve"
+          >
+        </p-button>
       </div>
      </div>
        
@@ -366,7 +383,10 @@
           OUT
         </th>
         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
-         Excess Work Hrs
+         Excess Worked Hrs
+        </th>
+        <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+          Reservation
         </th>
         <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
           Actual Worked Hrs
@@ -407,6 +427,18 @@
         <td>{{ row.out_time}}</td>
         <td>{{ row.expect_othr }}</td>
         <td>
+          <p-dropdown 
+            [options]="reservationFlags"
+            optionLabel="lable"
+            [(ngModel)]="row.flag"
+            [disabled]="row.selected || this.selectAll"
+            optionValue="flag"
+            styleClass="w-full"
+            appendTo="body"
+            id="line" 
+            placeholder="Select Type" ></p-dropdown>
+        </td>
+        <td>
            <input
                 class="text-center w-[100px] h-[40px]"
                 type="number"
@@ -439,6 +471,7 @@
                 || loading
                 || row.approvedHr < 0 
                 || row.selected
+                || !row.flag
               "
               (click)="approve(row)"
               aria-label="approve button"
