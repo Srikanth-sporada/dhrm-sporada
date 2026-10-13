@@ -953,12 +953,14 @@ export class ApiService {
     return this.http.post(this.url + `/ars/requestOT`, data);
   }
 
-  getFhOt() {
-    return this.http.get(this.url + `/ars/getFhOt?empId=${sessionStorage.getItem("emp_id")}`);
+  getFhOt(data:any) {
+    // old API /ars/getFhOt
+    return this.http.get(this.url + `/api/v1/approvals/ot/fh?empId=${data.empId}&department=${data.department}&category=${data.category}&plant=${data.plant}`);
   }
 
   approveFhOt(data: any) {
-    return this.http.post(this.url + `/ars/approveOT`, data);
+    // old api /ars/approveOT
+    return this.http.post(this.url + `/api/v1/approvals/ot/fh/approve`, data);
   }
 
   getPhOt() {
@@ -1106,7 +1108,8 @@ export class ApiService {
   }
 
   approveExcessHr(data: any) {
-    return this.http.post(this.url + `/ars/approveExcessHr`, {data:data});
+    // old api /ars/approveExcessHr
+    return this.http.post(this.url + `/api/v1/approvals/eh/manager/approve`, {data:data});
   }
 
   getApprovedExcessHours() {

@@ -17,7 +17,7 @@ export class OtapproveComponent implements OnInit {
   data:any = []
   date: any;
   categories: any[];
-  cat: any = "";
+  cat: any = "All";
   departmentList: any;
   selectedDept: any = "";
   loading: any = false;
@@ -25,6 +25,9 @@ export class OtapproveComponent implements OnInit {
   overTimeDataCopy:any = [];
   showNoData:boolean = false;
   noDataImgPath:any = environment.noDataImgPath;
+  paginationRowsPerPage:any[] = environment?.paginationRowsPerPage;
+  startCount:number = 0; // init page number
+  endCount:number = Number(this.paginationRowsPerPage[0])// init end count
   constructor(
     private apiService: ApiService, 
     private matdailog: MatDialog, 
@@ -50,7 +53,36 @@ export class OtapproveComponent implements OnInit {
     /** get department */
     this.getDepartment();
   }
+/** convert to number to string */
+  toNumber(string:string|number){
+    return Number(string);
+  }
 
+   /** 
+   * convert number to string
+   * @param number
+   *  */
+  convertToString(number:any){
+    if(!number){
+      return '0'
+    }else{
+    return String(number);
+    }
+  }
+
+  /** log page event @param event */
+   logPageEvent(event:any){
+    console.clear();
+    console.log('PAGINATION',event);
+     const page = event.first / event.rows + 1; // current page (1-based)
+     const limit = event.rows;
+     this.startCount = event.first;
+     this.endCount = page * limit;
+     console.log('start count',this.startCount);
+     console.log('end count:', this.endCount);
+     console.log('PAGE:',page);
+     console.log('LIMIT:',limit);
+  }
   /** 
    * get categories
    * @property {*} categories
@@ -59,7 +91,7 @@ export class OtapproveComponent implements OnInit {
      this.apiService.getCategories().subscribe({
       next: (data: any) => {
         this.categories = data;
-        // this.categories.unshift({categorynm:"All"})
+        this.categories.unshift({categorynm:"All"})
       },
       error: (error:any) => {
         console.error('ERROR:',error);
@@ -76,7 +108,7 @@ export class OtapproveComponent implements OnInit {
       next: (data: any) => {
         this.departmentList = data;
         /* adding all for filter */
-        // this.departmentList.unshift({dept_slno:'',dept_name:'All'})
+        this.departmentList.unshift({dept_slno:'',dept_name:'All'})
       },
       error: (error:any) => {
         console.log('ERROR:',error);
@@ -89,18 +121,19 @@ export class OtapproveComponent implements OnInit {
    * @property {*} data
    */
   getData() {
-    this.apiService.getFhOt().subscribe({
+    const data = {
+      empId:this.all.empl_slno,
+      department:this.selectedDept,
+      category:this.cat == 'All' ? '' : this.cat,
+      plant: `${this.all.plant_code}`
+    }
+    this.apiService.getFhOt(data).subscribe({
       next: (response: any) => {
       if ((response.status = "success")) {
         console.log(response.data);
         this.data = response.data
-          .map((element: any) => {
-            return { ...element, selected: false };
-          })
-          .filter((element: any) => {
-            /** balance filter */
-            return element.bal > 0;
-          });
+        .map((element: any) => {return { ...element, selected: false };})
+        .filter((element: any) => {return element.approved_hours > 0});
         console.log('OT DATA:',response.data);
         /** copy data */
         this.overTimeDataCopy = this.data;
@@ -111,7 +144,7 @@ export class OtapproveComponent implements OnInit {
     },
     error: (error) => {
       console.error('ERROR:',error);
-      this.messageService.add({severity:'error',summary:error.message})
+      this.messageService.add({severity:'error',summary:error.error.message})
     }
     });
   }
@@ -342,6 +375,8 @@ export class OtapproveComponent implements OnInit {
       return { ...element, selected: false };
     });
     this.selectAll = false;
+    /** get fhr ot data on dropdown change event */
+    this.getData();
   }
 
 // export to excel function

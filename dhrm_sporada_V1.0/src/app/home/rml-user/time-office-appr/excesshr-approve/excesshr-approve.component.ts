@@ -21,6 +21,7 @@ export class ExcesshrApproveComponent implements OnInit {
   filterDate: any = "";
   fromDate:Date = moment().subtract(120,'days').toDate();
   toDate:Date = moment().toDate();
+  toMaxDate:Date = moment().toDate();
   lines: any;
   selectedLine: any = "All";
   bulkSelectReservationFlag:boolean = false;
@@ -202,30 +203,37 @@ export class ExcesshrApproveComponent implements OnInit {
       reason: item.reason,
       shift_id: item.shift,
       type: item.type,
-      currentPayrollDate:item.currentPayrollDate,
+      // new props
+      currentPayrollEndDate:moment(item.lastBillDate).add(1,'month').format('YYYY-MM-DD'),
       validFrom: item.currentPayrollDate,
-      validTo: moment(item.currentPayrollDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+      validTo: moment(item.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
       isTrainee:false,
     };
 
     console.log('APPROVE DATA:',data);
     /** EH approval API */
-    this.apiService.approveExcessHr([data]).subscribe(
-      (response: any) => {
+    this.apiService.approveExcessHr([data]).subscribe({
+      next: (response: any) => {
         if(response?.status == 'completed'){
-          this.messageService.add({severity:'info',summary:'Excess Hours Successfully Approved.'})
-          /** get EH data refresh */
-          this.getData();
+          this.findBulkApprovedFailedData(response?.results || []);
+          this.findBulkApprovedSuccessData(response?.results || []);
+           /** this opens and sets apicall button state false */
+          this.openBulkStatusModal(response?.results || []);
           this.loading = false;
+          this.isApiCalled = false;
         }else{
-          this.messageService.add({severity:'error',summary:'Oops! Something went wrong.'})
+          this.isApiCalled = false;
+          this.messageService.add({severity:'error',summary:'Oops! Something went wrong.'});
+          this.loading = false;
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('ERROR:',error);
         this.messageService.add({ severity: "error", summary: error?.error?.message });
+        this.loading = false;
+        this.isApiCalled = false;
       }
-    );
+    });
   }
 
   /** 
@@ -325,6 +333,7 @@ export class ExcesshrApproveComponent implements OnInit {
   /** 
    * clear selected filter and selected data
    * set all filter date to default
+   * user deselects bull the autofiled values
    */
   clear(){
      this.filterDate = '';
@@ -335,6 +344,7 @@ export class ExcesshrApproveComponent implements OnInit {
       ehData.selected = false;
       ehData.reason = '';
       ehData.approvedHr = null;
+      ehData.flag = null;
      });
      this.selectAll = false;
      this.data = this.excessHourData;
@@ -534,9 +544,10 @@ export class ExcesshrApproveComponent implements OnInit {
             reason: bulkData.reason,
             shift_id: bulkData.shift,
             type: bulkData.type,
-            currentPayrollDate:bulkData.currentPayrollDate,
+            // new props
+            currentPayrollEndDate:moment(bulkData.lastBillDate).add(1,'month').format('YYYY-MM-DD'),
             validFrom: bulkData.currentPayrollDate,
-            validTo: moment(bulkData.currentPayrollDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+            validTo: moment(bulkData.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
             isTrainee:false,
           }
       /** push formatted data */
@@ -550,7 +561,7 @@ export class ExcesshrApproveComponent implements OnInit {
             this.findBulkApprovedFailedData(response?.results || []);
             this.findBulkApprovedSuccessData(response?.results || []);
             /** this opens and sets apicall button state false */
-            this.openBulkStatusModal(response?.results || [])
+            this.openBulkStatusModal(response?.results || []);
         }
        },
        error: (error:any) => {
@@ -647,6 +658,7 @@ export class ExcesshrApproveComponent implements OnInit {
       this.failedDataCount = 0;
       /** clear data & get excess hour data */
       this.clear();
+      /** get data after modal closed */
       this.getData();
     })
   }

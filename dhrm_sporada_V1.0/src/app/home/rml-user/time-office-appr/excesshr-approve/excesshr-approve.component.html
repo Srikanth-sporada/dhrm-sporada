@@ -55,6 +55,7 @@
            [(ngModel)]="toDate"
             dateFormat="yy-mm-dd" 
             id="date"
+            [maxDate]="toMaxDate"
             ariaLabel="calender"
             iconAriaLabel="calendar icon"
             styleClass="w-full !font-poppins"
@@ -144,10 +145,11 @@
         [(ngModel)]="bulkSelectReservationFlag" 
         onLabel="OT" 
         [disabled]="this.selectAll"
-        offLabel="COFF">
+        offLabel="COFF"
+        styleClass="!bg-blue-600 !text-white">
         </p-toggleButton>
 
-        <!-- OT -->
+        <!-- OT checkbox -->
         <div hidden>
            <p-checkbox 
             [(ngModel)]="bulkSelectReservationFlag"
@@ -159,8 +161,7 @@
           </p-checkbox>
           <label for="ot" class="mb-0 ml-2 font-semibold">OT</label>
         </div>
-        <!-- COFF -->
-         <!-- OT -->
+        <!-- COFF checkbox -->
         <div hidden>
            <p-checkbox 
             [(ngModel)]="selectAll"
@@ -172,6 +173,7 @@
           </p-checkbox>
           <label for="COFF" class="mb-0 ml-2 font-semibold">COFF</label>
         </div>
+        <!-- approve btn -->
         <p-button
           (onClick)="bulkApproveEH()"
           label="Approve"
@@ -431,7 +433,7 @@
             [options]="reservationFlags"
             optionLabel="lable"
             [(ngModel)]="row.flag"
-            [disabled]="row.selected || this.selectAll"
+            [disabled]="this.selectAll"
             optionValue="flag"
             styleClass="w-full"
             appendTo="body"

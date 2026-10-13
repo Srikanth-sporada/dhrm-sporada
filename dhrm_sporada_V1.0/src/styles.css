@@ -269,6 +269,21 @@ a{
   padding:0 !important
 }
 
+/* custom prime ng button toggle style */
+/* Target the unselected/default state to match the selected blue style */
+
+/* ::ng-deep .custom-blue-toggle .p-toggle button:not(.p-highlight) {
+    background: #007ad9;          
+    border-color: #007ad9;
+    color: #ffffff;
+} */
+
+/* Hover effect for unselected state */
+/* ::ng-deep .custom-blue-toggle .p-toggle button:not(.p-highlight):hover {
+    background: #005b9f;          
+    border-color: #005b9f;
+    color: #ffffff;
+} */
 
 .p-tabview-selected{
   background-color: var(--transparent) !important;
