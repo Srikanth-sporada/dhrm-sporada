@@ -8,11 +8,15 @@ import * as XLSX from "xlsx-js-style";
 import { MessageService } from "primeng/api";
 import { LoaderserviceService } from "src/app/loaderservice.service";
 import { environment } from "src/environments/environment.prod";
+import { Utility } from "src/app/utils/utils";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
 @Component({
   selector: "app-otapprove",
   templateUrl: "./otapprovefh.component.html",
   styleUrls: ["./otapprovefh.component.css"],
 })
+
 export class OtapproveComponent implements OnInit {
   data:any = []
   date: any;
@@ -21,6 +25,9 @@ export class OtapproveComponent implements OnInit {
   departmentList: any;
   selectedDept: any = "";
   loading: any = false;
+  successDataCount:any = 0;
+  failedDataCount:any = 0;
+  bulkOtApproveData:any[] = [];
   userEnteredGenID:any;
   overTimeDataCopy:any = [];
   showNoData:boolean = false;
@@ -28,16 +35,17 @@ export class OtapproveComponent implements OnInit {
   paginationRowsPerPage:any[] = environment?.paginationRowsPerPage;
   startCount:number = 0; // init page number
   endCount:number = Number(this.paginationRowsPerPage[0])// init end count
+  selectAll: any = false;
+  all:any;
+  userDetails:any;
   constructor(
     private apiService: ApiService, 
     private matdailog: MatDialog, 
     private messageService:MessageService,
-    public loader:LoaderserviceService) {
-    }
+    public loader:LoaderserviceService,
+    public utils:Utility,
+  private modalService:NgbModal,) {}
 
-  selectAll: any = false;
-  all:any;
-  userDetails:any;
 
   ngOnInit() {
     /** logged in user data */
@@ -53,6 +61,7 @@ export class OtapproveComponent implements OnInit {
     /** get department */
     this.getDepartment();
   }
+
 /** convert to number to string */
   toNumber(string:string|number){
     return Number(string);
@@ -70,7 +79,11 @@ export class OtapproveComponent implements OnInit {
     }
   }
 
-  /** log page event @param event */
+  /** log page event 
+   * calcualte @property {*} startCount 
+   * @property {*} endCount
+   * @param event
+   *  */
    logPageEvent(event:any){
     console.clear();
     console.log('PAGINATION',event);
@@ -82,7 +95,15 @@ export class OtapproveComponent implements OnInit {
      console.log('end count:', this.endCount);
      console.log('PAGE:',page);
      console.log('LIMIT:',limit);
+    /** reset selected after user navigated page , when selected */
+    this.selectAll = false;
+    this.data.forEach((otData:any) => {
+     otData.selected = false
+    });
+    /** reset bulkApprove data if page navigated */
+    this.bulkOtApproveData = [];
   }
+
   /** 
    * get categories
    * @property {*} categories
@@ -99,6 +120,7 @@ export class OtapproveComponent implements OnInit {
       }
      });
   }
+
   /** 
    * get department
    * @property {*} departmentList
@@ -116,6 +138,7 @@ export class OtapproveComponent implements OnInit {
       }
     });
   }
+
   /**
    * get OT data
    * @property {*} data
@@ -155,7 +178,7 @@ export class OtapproveComponent implements OnInit {
    * */
   approve(item: any) {
     this.loading = true;
-    console.log("trigger");
+    /** construct data for API */
     let data = {
       data: [item],
       sup_id: sessionStorage.getItem("user_name"),
@@ -163,9 +186,11 @@ export class OtapproveComponent implements OnInit {
     /** approve API */
     this.apiService.approveFhOt(data).subscribe({
       next: (res: any) => {
-      if (res.status == "success") {
+      if (res.status == "success" || res.status == 'completed') {
+        const regex = /!/;
+        const severity = regex.test(res.message) ? 'warn' : 'info'
         this.getData();
-        this.messageService.add({severity:'info',summary:res.message});
+        this.messageService.add({severity:severity,summary:res.message});
         this.loading = false;
         /** reset filter */
         this.resetFilterValue();
@@ -176,8 +201,8 @@ export class OtapproveComponent implements OnInit {
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
-      this.messageService.add({severity:'error',summary:error.message})
+      console.error('SINGLE OT APPROVE ERROR:',error);
+      this.messageService.add({severity:'error',summary:error.error.message})
     }
     });
   }
@@ -187,43 +212,105 @@ export class OtapproveComponent implements OnInit {
    * @var filtered_data selected OT data
    * @var data
    */
-  submit() {
-    this.loading = true;
-    /** filter selected OT Data */
-    let filtered_data = this.data.filter((element: any) => {
-      return element.selected == true;
-    });
-
-    if (filtered_data.length == 0) {
-      this.loading = false;
-      // alert("Please select At least one OT request");
-      this.messageService.add({severity:'warn',summary:'Please select At least one OT request'});
-      return 
-    }
-
+  approveBulkOtData() {
+    this.loading = true
+    const filteredData = this.bulkOtApproveData.filter((otData:any) => otData.selected == true)
     let data = {
-      data: filtered_data,
+      data: filteredData,
       sup_id: sessionStorage.getItem("user_name"),
     };
     /** approve OT API */
     this.apiService.approveFhOt(data).subscribe({
       next: (response: any) => {
-      if(response.status == 'success'){
-        this.messageService.add({severity:'info',summary:response.message})
-        this.getData();
-        this.selectAll = false;
-        this.loading = false;
-        /** reset filter */
-        this.resetFilterValue();
+      if(response.status == 'success' || response.status == 'completed'){
+        /** filter data based on result and open popup modal */
+         this.findBulkApprovedFailedData(response?.results || []);
+         this.findBulkApprovedSuccessData(response?.results || []);
+        /** this opens and sets apicall button state false */
+        this.openBulkStatusModal(response?.results || []);
       } else{
         this.messageService.add({severity:'error',summary:'Oops! error occured.'})
       }
     },
     error: (error) => {
-      console.error('ERROR:',error);
+      console.error('BULK OT APPROVE ERROR:',error);
       this.messageService.add({severity:'error',summary:error.message})
     }
     });
+  }
+
+  /**
+   * count success data count based on status
+   * @property {*} succesuccessDataCount
+   * @param apiResponse
+   */
+  findBulkApprovedSuccessData(apiResponse:any){
+    apiResponse.forEach((data:any) => {
+      if(data?.status == 'success'){
+        this.successDataCount += 1;
+      }
+    })
+  }
+
+   /**
+   * count success data count based on status
+   *  @property {*} failedDataCount
+   * @param apiResponse
+   */
+  findBulkApprovedFailedData(apiResponse:any){
+    apiResponse.forEach((data:any) => {
+      if(data?.status == 'failed'){
+        this.failedDataCount += 1;
+      }
+    })
+  }
+
+   /** 
+     * open modal
+     * @param apiResponse
+     * @property {boolean} isApiCalled
+     */
+    openBulkStatusModal(apiResponse:any){
+      /** handle ot limit exceed  */
+      if(apiResponse[0]?.status === 'failed'){
+         this.messageService.add({severity:'warn',summary:'oops! something went wrong'})
+      }
+      /** set api call false */
+      this.loading = false;
+      const confirmModalRef = this.modalService.open(ConfirmationComponent, {centered:true});
+      confirmModalRef.componentInstance.confirmFunction = () => this.downloadFailedData(apiResponse);
+      /** modal text */
+      confirmModalRef.componentInstance.confirmText = `${this.successDataCount} of ${this.bulkOtApproveData.length} SUCCESS and ${this.failedDataCount} of ${this.bulkOtApproveData.length} FAILED. Click YES to download failed data.`
+      console.log('modal opened...');
+      /** set success and failed count to default */
+      confirmModalRef.closed.subscribe(() => {
+        this.successDataCount = 0;
+        this.failedDataCount = 0;
+        this.selectAll = false;
+        this.loading = false;
+        /** reset filter */
+        this.resetFilterValue();
+        /** get data after modal closed */
+        this.getData();
+      })
+    }
+
+    /**
+   * download failed data as excell sheet
+   */
+  downloadFailedData(apiResponse:any){
+    if(this.failedDataCount == 0){
+      this.messageService.add({severity:'warn',summary:'There no failed Data to download!'})
+     return
+    }
+    /** filter failed data */
+    const failedData = apiResponse.filter((data:any) => {
+      if(data?.status == 'failed'){
+        return data;
+      }
+    });
+    /** download failed data */
+    this.utils.jsonToExcellExport(failedData,this.all.plant_code,'OT_FAILED_DATA')
   }
 
   /**
@@ -234,18 +321,21 @@ export class OtapproveComponent implements OnInit {
    */
   checkItems(item:any) {
     console.log('SELECTED DATA:',item);
-    let count = 0;
-    for (let element of this.data) {
-      if (element.selected == true) {
-        count++;
-      }
-    }
-    if (count == this.data.length) {
-      this.selectAll = true;
-    }
-    if (count < this.data.length) {
-      this.selectAll = false;
-    }
+    /** set @property {any[]} bulkOtApproveData selected data */
+    this.bulkOtApproveData = this.data.filter((otData:any) => otData.selected == true);
+    console.log('BULK APPROVE DATA LIST',this.bulkOtApproveData);
+    // let count = 0;
+    // for (let element of this.data) {
+    //   if (element.selected == true) {
+    //     count++;
+    //   }
+    // }
+    // if (count == this.data.length) {
+    //   this.selectAll = true;
+    // }
+    // if (count < this.data.length) {
+    //   this.selectAll = false;
+    // }
   }
 
   /**
@@ -253,87 +343,24 @@ export class OtapproveComponent implements OnInit {
    * @property {boolean} selectAll
    */
   handelSelectAll() {
-    if (this.selectAll) {
-      /** select only selected cat */
-      if (this.cat != "" && this.selectedDept == "") {
-        console.log(`cat filter`);
-        this.data = this.data.map((element: any) => {
-          if (element.apprentice_type == this.cat && element.bal != 0) {
-            return { ...element, selected: true };
-          } else {
-            return { ...element, selected: false };
-          }
-        });
-        console.log(
-          this.data.filter((element: any) => {
-            return element.selected;
-          })
-        );
-        return;
-      }
-      /** select only selected dept */
-      if (this.selectedDept != "" && this.cat == "") {
-        console.log(`dept filter`);
-        this.data = this.data.map((element: any) => {
-          if (element.dept_name == this.selectedDept && element.bal != 0) {
-            return { ...element, selected: true };
-          } else {
-            return { ...element, selected: false };
-          }
-        });
-        console.log(
-          this.data.filter((element: any) => {
-            return element.selected;
-          })
-        );
-        return;
-      }
-      /** select only selected dep & cat */
-      if (this.selectedDept != "" && this.cat != "") {
-        console.log(`cat dept filter`);
-        this.data = this.data.map((element: any) => {
-          if (
-            element.apprentice_type == this.cat &&
-            element.dept_name == this.selectedDept &&
-            element.bal != 0
-          ) {
-            return { ...element, selected: true };
-          } else {
-            return { ...element, selected: false };
-          }
-        });
-        console.log(
-          this.data.filter((element: any) => {
-            return element.selected;
-          })
-        );
-        return;
-
-      }
-      /** select all OT */
-      this.data = this.data.map((element: any) => {
-        if(element.bal != 0){
-           return { ...element, selected: true };
-        }else {
-          return { ...element, selected: false };
-        }
-        
-      });
-      console.log(
-        this.data.filter((element: any) => {
-          return element.selected;
-        })
-      );
-    } else {
-      this.data = this.data.map((element: any) => {
-        return { ...element, selected: false };
-      });
-      console.log(
-        this.data.filter((element: any) => {
-          return element.selected;
-        })
-      );
+    /** find the curent page record */
+    /** slice array based on the rendered table row for bulk select */
+   const pagedLimitData = [...this.data].slice(this.startCount, this.endCount);
+   console.log('PAGED LIMIT:', pagedLimitData);
+    /** select all for the current page rows */
+    if(this.selectAll){
+      pagedLimitData.forEach((otData:any) => {
+        otData.selected = true
+      })
     }
+    /** un select All for current page rows */
+    else{
+      pagedLimitData.forEach((otData:any) => {
+        otData.selected = false
+      });
+    };
+    this.bulkOtApproveData = this.data.filter((otData:any) => otData.selected == true);
+    console.log('BULK APPROVE DATA LIST',this.bulkOtApproveData);
   }
 
   /** open C-Off details component */
@@ -379,7 +406,10 @@ export class OtapproveComponent implements OnInit {
     this.getData();
   }
 
-// export to excel function
+  /** 
+   * export OT data 
+   * data GET from API
+   */
   exportexcel() {
     this.apiService.getExcessHours_Report().subscribe((response: any) => {
       if (response.status == "failed") {
@@ -432,7 +462,7 @@ export class OtapproveComponent implements OnInit {
         });
   
         // Write file and trigger download
-        XLSX.writeFile(wb, "Excess_Hours_Report.xlsx");
+        XLSX.writeFile(wb, `Excess_Hours_Report_${this.all.plant_code}.xlsx`);
         this.messageService.add({severity:'info',summary:'Data Exported!'})
       }
     });
@@ -468,6 +498,7 @@ export class OtapproveComponent implements OnInit {
   resetFilterValue(){
     this.userEnteredGenID = null;
     this.selectedDept = "";
-    this.cat = ''
+    this.cat = 'All'
+    this.bulkOtApproveData = [];
   }
 }
