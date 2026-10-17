@@ -69,6 +69,7 @@ import { SalaryApprovalDeptFilterPipe } from "./pipes/salary-approval-dept-filte
 import { ClOnboardNewComponent } from './first-page/cl-onboard-new/cl-onboard-new.component';
 import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-form/cl-onboard-form.component";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +87,7 @@ import { ClOnboardFormComponent } from "./home/rml-user/new-joiners/cl-onboard-f
     WorkmenLoginComponent,
     ExecutiveLoginComponent,
     ClOnboardNewComponent, //#NEW
-    ClOnboardFormComponent, 
+    ClOnboardFormComponent,
   ],
   imports: [
     BrowserModule,

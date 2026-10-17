@@ -2223,7 +2223,7 @@ export class ContractorEmployeeComponent implements OnInit {
     // set employee form value from gen id
     this.contractorEmployee.gen_id = genId;
     this.contractorEmployee.biometric_no =
-      this.contractEmpBasicDetails.value.apln_slno;
+      this.contractEmpBasicDetails.value.apln_slno || '';
     this.contractorEmployee.marital_status =
       this.contractEmpBasicDetails.value.maritalStatus;
     this.contractorEmployee.mobile_no1 =

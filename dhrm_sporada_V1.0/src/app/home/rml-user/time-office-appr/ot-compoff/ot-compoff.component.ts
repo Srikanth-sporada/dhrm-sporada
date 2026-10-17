@@ -7,7 +7,7 @@ import { CoffDetailsComponent } from "../coff-details/coff-details.component";
 import { ExcessHoursDetailsComponent } from '../excess-hours-details/excess-hours-details.component';
 import { MessageService,ConfirmationService } from 'primeng/api';
 import { LoaderserviceService } from 'src/app/loaderservice.service';
-
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-ot-compoff',
   templateUrl: './ot-compoff.component.html',
@@ -18,11 +18,12 @@ export class OtCompoffComponent implements OnInit {
   data: any;
   lines: any;
   /** sesstion storage login details get getting line code */
-  selectedLine:any;
+  selectedLine:any = '';
   downlodData:any;
   all:any;
   userDetails:any;
   genId:any;
+  paginationRowsPerPage:any[] = environment?.paginationRowsPerPage;
   constructor(
     private apiService: ApiService,
     private matdailog:MatDialog,
@@ -39,6 +40,23 @@ export class OtCompoffComponent implements OnInit {
     }
     this.getData();
     this.getLineByDept();
+  }
+
+/** convert to number to string */
+  toNumber(string:string|number){
+    return Number(string);
+  }
+
+   /** 
+   * convert number to string
+   * @param number
+   *  */
+  convertToString(number:any){
+    if(!number){
+      return '0'
+    }else{
+    return String(number);
+    }
   }
 
   /**
@@ -62,20 +80,23 @@ export class OtCompoffComponent implements OnInit {
 
   /** get coff data */
   getData() {
-    this.apiService.getApprovedExcessHours().subscribe({
+    const data = {
+      emp_slno: this.all.empl_slno,
+      line_code:this.selectedLine,
+    }
+    this.apiService.getApprovedExcessHours(data).subscribe({
     next:(response: any) => {
       if (response.status == "failed") {
         this.messageService.add({severity:'info',summary:response.message})
       } else {
-        console.log(response.data);
-        this.data = response.data.filter((element:any) => {return element.bal != 0;});
+        this.data = response.data //.filter((element:any) => {return element.bal != 0;});
         this.downlodData = response.data;
         console.log('filtered coff data:',this.data);
       }
     },
     error:(error) => {
       console.error('GET COFF API ERROR:',error);
-      this.messageService.add({severity:'error',summary:error.message})
+      this.messageService.add({severity:'error',summary:error?.error.message})
     }
     });
   }

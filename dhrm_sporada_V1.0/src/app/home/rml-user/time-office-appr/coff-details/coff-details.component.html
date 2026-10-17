@@ -17,8 +17,10 @@
     <div><b class="mx-2 text-blue-600 font-semibold">Department:</b>{{ data.dept_name }}</div>
     <div><b class="mx-2 text-blue-600 font-semibold">Line:</b>{{ data.Line_Name }}</div>
   </div>
-  <div class="shadow-md rounded-md border border-gray-400 mx-2 !h-3/4 overflow-y-scroll">
-    <table id="table" class="table-auto !w-full">
+
+  <div class="mx-2 !h-3/4 overflow-y-scroll">
+    <!-- table -->
+    <table id="table" class="table-auto !w-full" *ngIf="false">
       <!-- table head -->
         <thead class="sticky top-0 !z-10">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
@@ -40,11 +42,57 @@
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.Emp_Name}}</td>
           </tr>
         </tbody>
-      </table>
+    </table>
+  <!-- accordion component -->
+      <p-accordion styleClass="w-full" expandIcon="pi pi-angle-down" collapseIcon="pi pi-angle-up" (onOpen)="getUtlizedDates($event)">
+        <p-accordionTab *ngFor="let item of coffData">
+            <ng-template pTemplate="header">
+                <span class="flex align-items-center gap-2 w-full font-poppins">
+                    <span class="white-space-nowrap">
+                       <span class="text-blue-600">Coff Date</span>: {{ item.date|date:'dd-MM-yyyy' }} 
+                    </span>
+                    <span class="white-space-nowrap">
+                      <span class="text-blue-600"> Hours</span>: {{ item.hours }} 
+                    </span>
+                    <span class="white-space-nowrap">
+                       <span class="text-blue-600">Day</span>: {{item.day}}
+                    </span>
+                    <span class="white-space-nowrap">
+                       <span class="text-blue-600">Approved By</span>: {{item.Emp_Name}}
+                    </span>
+                  <p-badge [value]="toString(item.utlized_dates)" class="ml-auto mr-2"></p-badge>
+                </span>
+            </ng-template>
+            <ng-template pTemplate="content" styleClass="!p-1">
+                <table id="table" class="table-auto !w-full">
+                  <!-- table head -->
+                    <thead class="sticky top-0 !z-10">
+                      <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins text-center xl:!text-left">
+                        <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
+                        <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Date</th>
+                        <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Hours Utilised</th>
+                        <th class="!text-white rounded-e-lg !px-2 !py-4 !border-none !border-0 text-center">Approved By</th>
+                    </thead>
+                    <!-- table body -->
+                    <tbody>
+                      <tr *ngFor="let item of expandedRecordData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">
+                        {{i+1}}
+                        </td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.utilizedDate | date:'yyyy-mm-dd'}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.utlizedHour}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.approvedBy}}</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+        </p-accordionTab>
+        </p-accordion>
   </div>
+
 </div>
 <div style="display: flex;justify-content: flex-end;" class="bg-gray-100 py-2 mt-3">
-  <button class="btn btn-light btn-lg rounded-[1.25rem] px-3 shadow-md" (click)="close()">close</button>
+  <button class="btn btn-light btn-lg rounded-xl px-3 shadow-md" (click)="close()">close</button>
 </div>
   
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->

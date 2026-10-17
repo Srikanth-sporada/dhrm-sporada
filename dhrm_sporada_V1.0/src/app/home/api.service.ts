@@ -1112,14 +1112,16 @@ export class ApiService {
     return this.http.post(this.url + `/api/v1/approvals/eh/manager/approve`, {data:data});
   }
 
-  getApprovedExcessHours() {
-    return this.http.get(
-      this.url +
-      `/ars/getApprovedExcessHours?empl_slno=${sessionStorage.getItem(
-        "emp_id"
-      )}`
+  getApprovedExcessHours(data:any) {
+    // old API /ars/getApprovedExcessHours
+    return this.http.get( this.url +`/api/v1/approvals/coff/manager?empl_slno=${data.emp_slno}&line_code=${data.line_code}`
     );
   }
+
+  getReservedCoffHoursByTrainee(aplnSlno:string | number){
+    return this.http.get(this.url + `/api/v1/approvals/coff/manager/trainee/reserved?aplnSlno=${aplnSlno}`)
+  }
+
   getApprovedExcessHoursOptr(plant: any, emp: any) {
     return this.http.get(
       this.url +
@@ -1177,6 +1179,10 @@ export class ApiService {
     return this.http.get(
       this.url + `/ars/getApprovedCoffDetails?apln_slno=${apln_slno}`
     );
+  }
+
+  getUtilizedDatesByTraineeCoffDate(data:any){
+    return this.http.get(this.url + `/api/v1/approvals/coff/manager/dates?aplnSlno=${data.aplnSlno}&coffDate=${data.coffDate}`)
   }
   getApprovedCoffDetails_Optr(apln_slno: any) {
     return this.http.get(

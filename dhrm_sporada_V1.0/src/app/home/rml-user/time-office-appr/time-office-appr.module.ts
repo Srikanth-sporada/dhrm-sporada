@@ -79,12 +79,14 @@ import { FullMonthLopComponent } from "./full-month-lop/full-month-lop.component
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TableBody, TableModule } from 'primeng/table';
+import { AccordionModule } from 'primeng/accordion';
 /** time office loader component */
 import { TimeOfficeApprovalLoaderComponent } from "./time-office-approval-loader/time-office-approval-loader.component";
 import { HrAppliedLeaveRecordComponent } from "./hr-applied-leave-record/hr-applied-leave-record.component";
 import { HrLeaveApplyComponent } from "./hr-leave-apply/hr-leave-apply.component";
 import { HrLopApplyComponent } from "./hr-lop-apply/hr-lop-apply.component";
 import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-lop-record.component";
+import { CoffReservedHoursComponent } from "./coff-reserved-hours/coff-reserved-hours.component";
 @NgModule({
   declarations: [
     CompOffApprComponent,
@@ -134,6 +136,7 @@ import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-
     HrAppliedLeaveRecordComponent,
     /** loader */
     TimeOfficeApprovalLoaderComponent,
+    CoffReservedHoursComponent, // #new
   ],
   imports: [
     MatNativeDateModule,
@@ -177,6 +180,7 @@ import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-
     ToggleButtonModule,
     RadioButtonModule,
     TableModule,
+    AccordionModule,
   ],
 })
 export class TimeOfficeApprModule {}

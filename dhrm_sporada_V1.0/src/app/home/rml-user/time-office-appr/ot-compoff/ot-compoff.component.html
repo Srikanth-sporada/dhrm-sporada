@@ -34,8 +34,9 @@
           <p-dropdown 
             [options]="lines"
            [(ngModel)]="selectedLine"
+           (onChange)="this.getData()"
             optionLabel="Line_Name"
-            optionValue="Line_Name"
+            optionValue="Line_code"
             styleClass="w-full" 
             placeholder="Select Line">
             <ng-template let-line pTemplate="item">
@@ -71,10 +72,10 @@
   </div>
    </div>
 
-<div class="select_menu">
+
   <!-- ot comp off table -->
-  <div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative">
-    <table id="table" class="table-auto !w-full">
+  <div class="h-[90svh] lg:h-[80vh] xl:h-[75vh] sm:h-[58vh] shadow-md rounded-md border border-gray-400 overflow-y-scroll mx-2 relative" *ngIf="false">
+    <table id="table" class="table-auto !w-full" >
         <!-- table head -->
         <thead class="sticky top-0 z-10">
           <tr class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left">
@@ -95,11 +96,9 @@
         </thead>
         <!-- table body -->
         <tbody>
+          <!-- | lineFilter : selectedLine -->
           <tr
-            *ngFor="
-              let item of data | lineFilter : selectedLine;
-              let i = index
-            "
+            *ngFor="let item of data; let i = index"
             class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer"
           >
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ i + 1}}</td>
@@ -113,12 +112,101 @@
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.coff }}<button mat-icon-button (click)="openCoffDeatils(item)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ item.bal }}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">
-              <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(item)">Apply Coff</button>
+              <!-- <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(item)">Apply Coff</button> -->
+                <mat-icon 
+                  class="text-[20px] text-blue-600"
+                 [routerLink]="['/rhrm/time-office-appr/coff/reserved', item.emp_id]">visibility</mat-icon>
             </td>
           </tr>
         </tbody>
     </table>
     <!-- loader -->
-     <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>
+    
   </div>
-</div>
+
+  <!-- PRIME NG TABLE WITH PAGINATION -->
+     <p-table 
+      *ngIf="true"
+        #dt
+        [value]="data"
+        responsiveLayout="scroll"
+        [globalFilterFields]="['coff','gen_id','bal']" 
+        [resizableColumns]="true"
+        [paginator]="true"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="paginationRowsPerPage"
+        [rows]="toNumber(paginationRowsPerPage[0])"
+        [tableStyle]="{'min-width': '50rem'}"
+        tableStyleClass="h-[90svh] lg:h-[75vh] xl:h-[75vh] sm:h-[55vh] shadow-md"
+        [scrollable]="true"
+        scrollHeight="85vh"
+        styleClass="shadow-md rounded-lg mx-3 p-datatable-striped">
+        <!-- table head -->
+        <ng-template pTemplate="header">
+          <tr class="!sticky !top-0 !z-10 !border-none !border-0">
+            <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white rounded-s-lg">
+            Sno
+            </th>
+            <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white"
+                pSortableColumn="gen_id">
+              Gen ID
+              <p-sortIcon field="gen_id" class="!text-white"></p-sortIcon>
+            </th>
+            <th class="!shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+              Name
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+            Department
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" >
+            Line
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white">
+              Category
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="approved_hours">
+              Reserved Hours
+              <p-sortIcon field="worked_date" class="!text-white"></p-sortIcon>
+            </th>
+            <!-- <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="approved_hours" *ngIf="false">
+              OT
+              <p-sortIcon field="approved_hours" class="!text-white"></p-sortIcon>
+            </th> -->
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="approved_hours">
+              Utilized For COFF
+              <p-sortIcon field="coff" class="!text-white"></p-sortIcon>
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white" pSortableColumn="approved_hours">
+             Balance Hours
+              <p-sortIcon field="bal" class="!text-white"></p-sortIcon>
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-left !text-white rounded-e-lg">
+              Action
+            </th>
+          </tr>
+        </ng-template>
+    <!-- table body -->
+        <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+          <tr class="!font-poppins !border-none !border-0" #rowRef>
+              <td class="!px-2 !py-2 !rounded-s-md text-center">{{ rowIndex + 1}}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ row.gen_id }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ row.fullname }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ row.dept_name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md">{{ row.Line_Name }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-purple-600 font-semibold">{{ row.apprentice_type }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center hover:cursor-pointer">{{ row.excess_hr }}<button mat-icon-button (click)="openExcessHourDetais(row)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <!-- <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.ot }}</td> -->
+            <td class="!px-2 !py-2 !rounded-s-md text-center hover:cursor-pointer">{{ row.coff }}<button mat-icon-button (click)="openCoffDeatils(row)"><mat-icon class="text-blue-600 text-[20px]">visibility</mat-icon></button></td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.bal }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center hover:cursor-pointer">
+              <!-- <button class="bg-blue-600 px-2 py-1 rounded-2xl !text-white" (click)="openDailog(row)">Apply Coff</button> -->
+                <mat-icon 
+                  class="text-[20px] text-blue-600"
+                 [routerLink]="['/rhrm/time-office-appr/coff/reserved', row.emp_id, row.fullname, row.gen_id,row.dept_name, row.Line_Name, row.apprentice_type]">visibility</mat-icon>
+            </td>
+          </tr>
+        </ng-template>
+        
+      </p-table>
+
+       <app-time-office-approval-loader *ngIf="loader.isLoding | async"></app-time-office-approval-loader>

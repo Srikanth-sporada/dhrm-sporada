@@ -26,6 +26,7 @@ import { VanDelayRegularizationComponent } from './van-delay-regularization/van-
 import { RouteMasterComponent } from './route-master/route-master.component';
 import { RejoinApprovalComponent } from "./rejoin-approval/rejoin-approval.component";
 import { AttendanceReprocessNewComponent } from "./attendance-reprocess-new/attendance-reprocess-new.component";
+import { CoffReservedHoursComponent } from "./coff-reserved-hours/coff-reserved-hours.component";
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
     path: "ot-compoff",
     component: OtCompoffComponent,
     // canActivate: [AdminGuard],
+  },
+  {
+    path:'coff/reserved/:aplnSlno/:name/:genId/:department/:line/:category',
+    component:CoffReservedHoursComponent,
   },
   {
     path: "night-coff",

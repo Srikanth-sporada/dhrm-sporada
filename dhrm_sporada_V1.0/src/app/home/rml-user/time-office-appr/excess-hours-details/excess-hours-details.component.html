@@ -31,9 +31,12 @@
         <tbody>
           <tr *ngFor="let item of excessHrData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
             <td class="!px-2 !py-4 !rounded-s-md text-center">
-             {{i+1}}
+             {{i+1}} 
             </td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.date|date:'dd-MM-yyyy' }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center">
+              {{ item.date|date:'dd-MM-yyyy' }} 
+              <p-badge [value]="item.is_raised_by_trainee ? 'T' : 'M'" [severity]="item.is_raised_by_trainee ? 'warning' : 'info'"></p-badge>
+            </td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.act_hrs }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.appr_hrs }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.appr }}</td>
