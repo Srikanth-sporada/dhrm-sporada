@@ -36,7 +36,9 @@
             <!-- OT / COFF toggle button -->
             <p-toggleButton 
             onLabel="HalfDay" 
+            (onChange)="halfOrFullDayCheck()"
             [(ngModel)]="isHalfSelected"
+            [disabled]="isMergeDateSelected"
             offLabel="FullDay"
             styleClass="!bg-blue-600 !text-white">
             </p-toggleButton>
@@ -44,12 +46,12 @@
             <p-button
             label="Apply"
             (onClick)="openAbsentDaysDialogModal()"
+            [disabled]="isApplyBtnDisabled()"
             ariaLabel="apply coff"
             icon="pi pi-verified"
             >
             </p-button>
             <!-- back btn -->
-              <!-- approve btn -->
             <p-button
             (onClick)="navBack()"
             ariaLabel="back"
@@ -74,7 +76,7 @@
         [tableStyle]="{'min-width': '50rem'}"
         tableStyleClass="h-[90svh] lg:h-[85vh] xl:h-[85vh] sm:h-[55vh] shadow-md"
         [scrollable]="true"
-        scrollHeight="95vh"
+        scrollHeight="93vh"
         styleClass="shadow-md rounded-lg mx-3 p-datatable-striped">
         <!-- table head -->
         <ng-template pTemplate="header">
@@ -105,8 +107,11 @@
             <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-center !text-white">
              Raised By
             </th>
-            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-center !text-white rounded-e-lg">
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-center !text-white">
               Continued NS
+            </th>
+            <th class="!border-none !border-0 !shadow !my-4 !bg-blue-600 !font-poppins xl:!text-center !text-white rounded-e-lg">
+              Action
             </th>
           </tr>
         </ng-template>
@@ -117,17 +122,32 @@
                 <p-checkbox 
                 [(ngModel)]="row.selected" 
                 [binary]="true"
-                [inputId]="row.emp_id"></p-checkbox>
+                [disabled]="!isMergeDateSelected || row.isDisabled"
+                (onChange)="singleRowSelect($event, row)"
+                [inputId]="row.id"></p-checkbox>
                 {{ rowIndex + 1}}
             </td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">{{ row.workedDate }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">
+              {{ row.workedDate }}
+              <p-badge [value]="row.ot_type" [severity]="row.ot_type == 'W' ? 'info' : 'warning'"></p-badge>
+            </td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.hours }}</td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.approvedBy }}</td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.validFrom }}</td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.validTo }}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.payrollEndDate }}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.is_raised_by_trainee ? 'Yes' : 'No' }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.is_raised_by_trainee ? 'Trainee' : 'Manager' }}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.is_night_shift ? 'Yes' : 'No' }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+              <!-- back btn -->
+            <p-button
+            ariaLabel="approve-coff"
+            icon="pi pi-check-square"
+            (onClick)="singleCoffApply(row)"
+            [disabled]="isMergeDateSelected"
+            >
+            </p-button>
+            </td>
           </tr>
         </ng-template>
         

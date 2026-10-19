@@ -1122,6 +1122,10 @@ export class ApiService {
     return this.http.get(this.url + `/api/v1/approvals/coff/manager/trainee/reserved?aplnSlno=${aplnSlno}`)
   }
 
+  getRequiredCoffHoursByPlant(plantCode:string){
+    return this.http.get(this.url + `/api/v1/approvals/coff/required/hours?plantCode=${plantCode}`)
+  }
+
   getApprovedExcessHoursOptr(plant: any, emp: any) {
     return this.http.get(
       this.url +
