@@ -1132,15 +1132,19 @@ export class ApiService {
       `/ars/getApprovedExcessHours_optr?empl_slno=${emp}&plant=${plant}`);
   }
 
-  getAbsentDays(apln_slno: any) {
+  getAbsentDays(apln_slno: any, isHalfDay:boolean) {
     return this.http.get(
-      this.url + `/ars/getAbsentDays?apln_slno=${apln_slno}`
+      this.url + `/ars/getAbsentDays?apln_slno=${apln_slno}&isHalfDay=${isHalfDay}`
     );
   }
   getAbsentDays_Optr(apln_slno: any) {
     return this.http.get(
       this.url + `/ars/getAbsentDays_Optr?apln_slno=${apln_slno}`
     );
+  }
+  /** apply coff by manager */
+  applyCoffByManager(data:any){
+    return this.http.put(this.url + '/api/v1/approvals/coff/manager/apply', data);
   }
 
   getFullDayAbsentDays(apln_slno: any) {

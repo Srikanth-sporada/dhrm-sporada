@@ -8,16 +8,18 @@ import {
 import { ApiService } from "src/app/home/api.service";
 import { ToastComponent } from "src/app/new-contractor-mod/toast/toast.component";
 import { MessageService } from "primeng/api";
+import { LoaderserviceService } from "src/app/loaderservice.service";
+
 @Component({
   selector: "app-coffpopup",
   templateUrl: "./coffpopup.component.html",
   styleUrls: ["./coffpopup.component.css"],
 })
 export class CoffotpopupComponent implements OnInit {
-  absentData: any;
+  absentData: any = [];
   selectAll: any = false;
   sum: any = 0;
-  loading: any = false;
+  loading: any = true;
   gen_id: any = sessionStorage.getItem("gen_id");
   user: any = sessionStorage.getItem("user");
   plant: any = sessionStorage.getItem("plantcode");
@@ -30,6 +32,7 @@ export class CoffotpopupComponent implements OnInit {
     private apiService: ApiService,
     private dialog: MatDialog,
     private messageService: MessageService,
+    public loader:LoaderserviceService,
   ) {}
   ngOnInit() {
      console.log(this.data)
@@ -37,10 +40,15 @@ export class CoffotpopupComponent implements OnInit {
     // console.log(this.data.apprentice_type ==="OPERATOR" && this.user ==="ars")
 
     this.showbutton();
-
+    /** get absent days */
+    this.getAbsentDays();
+  }
+  
+  getAbsentDays(){
     if (this.data.apprentice_type === "OPERATOR" && this.user === "ars") {
-      this.apiService.getAbsentDays_Optr(this.data.emp_id || this.data.aplnSlno).subscribe(
-        (response: any) => {
+      this.apiService.getAbsentDays_Optr(this.data.emp_id || this.data.aplnSlno).subscribe({
+        next: (response: any) => {
+          this.loading = true;
           if (response.status == "failed") {
             this.messageService.add({
               severity: "warn",
@@ -51,41 +59,46 @@ export class CoffotpopupComponent implements OnInit {
             this.absentData = response.data.map((element: any) => {
               return { ...element, selected: false };
             });
+            this.loading = false;
             console.log(this.absentData);
           }
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
+          this.loading = false;
           this.messageService.add({
             severity: "error",
             summary: error.message,
           });
         },
-      );
+      });
     } else {
-      this.apiService.getAbsentDays(this.data.emp_id || this.data.aplnSlno).subscribe(
-        (response: any) => {
+      this.apiService.getAbsentDays(this.data.emp_id || this.data.aplnSlno, this.data.isHalfDay).subscribe({
+        next: (response: any) => {
+          this.loading = true;
           if (response.status == "failed") {
             // alert(response.message)
-            this.messageService.add({
-              severity: "warn",
-              summary: response.message,
-            });
+            this.messageService.add({severity: "warn",summary: response.message,});
+            this.loading = false;
           } else {
-            this.absentData = response.data.map((element: any) => {
-              return { ...element, selected: false };
-            });
-            console.log(this.absentData);
+            if(response.data.length == 0){
+              this.messageService.add({severity:'warn',summary:`${this.data.isHalfDay ? 'Half Day' : 'Full day'} absent days not found`})
+            }else{
+              this.absentData = response.data.map((element: any) => {return { ...element, selected: false, isDisabled:null }});
+              console.log(this.absentData);
+              this.loading = false;
+            }
           }
         },
-        (error) => {
-          console.log(error);
+        error: (error) => {
+          console.log('GET ABSENT DAYS API ERROR:',error);
           this.messageService.add({
             severity: "error",
             summary: error.message,
           });
+          this.loading = false;
         },
-      );
+      });
     }
   }
 
@@ -110,6 +123,67 @@ export class CoffotpopupComponent implements OnInit {
 
       return acc + element.hrs_req;
     }, 0);
+  }
+  
+  /**
+   * enable or disable non selected absent days row
+   * based on the event property
+   * @param {*} event
+   * @param {*} data
+   * @memberof CoffotpopupComponent
+   */
+  onAbsentDaySelect(event:any, data:any){
+    console.log(event,data);
+
+   this.absentData.map((data:any) => {
+    if(!data.selected){
+      data.isDisabled = event.checked;
+    }
+    return data;
+   });
+
+  };
+  
+  /** check wether any one absent data is selected */
+  isApproveDisabled(){
+    if(this.absentData.length == 0 ){
+      return true;
+    }else{
+      return this.absentData.some((data:any) => data.selected == true)
+    }
+  }
+  
+  /**
+   *
+   * @property {*} data
+   * @memberof CoffotpopupComponent
+   */
+  applyCoffForTrainee(){
+
+    const selectedCoffData = this.absentData.filter((data:any) => data.selected == true);
+    const apiData = {...this.data, coffData: selectedCoffData[0]};
+    console.log('COFF APPLY API DATA', apiData);
+    this.loading = true;
+
+    this.apiService.applyCoffByManager(apiData).subscribe({
+      next: (response:any) => {
+        if(response.status == 'success'){
+          this.messageService.add({severity:'info',summary:response.mesage});
+          this.loading = false;
+          this.dailogRef.close();
+        }else{
+          this.messageService.add({severity:'error',summary:response.message});
+          this.loading = false;
+          this.dailogRef.close();
+        }
+      },
+      error: (error:any) => {
+        console.log('APPLY COFF MANAGER API ERROR:',error);
+        this.messageService.add({severity:'error', summary:error.error.message});
+        this.loading = false;
+        this.dailogRef.close();
+      }
+    })
   }
 
   handelSelectAll() {
@@ -187,6 +261,7 @@ export class CoffotpopupComponent implements OnInit {
       },
     });
   }
+
   apply_Operator_Coff() {
     let selectedItems = this.absentData.filter((element: any) => {
       return element.selected;
@@ -235,4 +310,5 @@ export class CoffotpopupComponent implements OnInit {
   close() {
     this.dailogRef.close();
   }
+
 }

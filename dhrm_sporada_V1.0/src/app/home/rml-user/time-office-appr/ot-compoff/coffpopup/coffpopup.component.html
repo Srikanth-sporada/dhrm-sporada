@@ -33,8 +33,8 @@
     > -->
     <div class="details my-2 mx-3">
       <button 
-       (click)="approve()" 
-       [disabled]="loading" 
+       (click)="applyCoffForTrainee()" 
+       [disabled]="!isApproveDisabled() || loading" 
        [hidden]="applyshow" 
        pButton
        label="Approve"
@@ -52,8 +52,8 @@
       <!-- [hidden]="!applyshow" -->
     <button 
      (click)="apply_Operator_Coff()" 
-     [disabled]="loading"
-     [hidden]="!applyshow" 
+     [disabled]="loading || isApproveDisabled()"
+     [hidden]="!applyshow || true" 
      pButton
      label="Apply C-Off"
      icon="pi pi-verified">
@@ -69,7 +69,7 @@
             <th class="!text-white !rounded-s-lg !px-2 !py-4 !border-none !border-0 text-center">Sno</th>
             <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Absent Date</th>
             <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Present Day</th>
-            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center">Coff Required</th>
+            <th class="!text-white !px-2 !py-4 !border-none !border-0 text-center" hidden>Coff Required</th>
             <th class="!text-white rounded-e-lg !px-2 !py-4 !border-none !border-0 text-center">Required Hours</th>
           </tr>
         </thead>
@@ -77,10 +77,11 @@
         <tbody>
           <tr *ngFor="let item of absentData; let i = index" class="!border-none !border-0 !hover:bg-blue-200 !font-poppins cursor-pointer">
             <td class="!px-2 !py-4 !rounded-s-md text-center">
+              <!--   [disabled]="(sum + item.hrs_req) > data.bal && !item.selected" -->
               <p-checkbox 
                 [(ngModel)]="item.selected" 
-                [disabled]="(sum + item.hrs_req) > data.bal && !item.selected"
-                (onChange)="checkItems(i)"
+                [disabled]="item.isDisabled"
+                (onChange)="onAbsentDaySelect($event, item)"
                 [binary]="true"
                 [inputId]="item.date"></p-checkbox>
                 {{ i + 1 }}
@@ -93,7 +94,7 @@
             </td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.absent_days|date:'dd-MM-yyyy' }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.present_type }}</td>
-            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.absent_day }}</td>
+            <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold" hidden>{{ item.absent_day }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center">{{ item.hrs_req }}</td>
           </tr>
         </tbody>

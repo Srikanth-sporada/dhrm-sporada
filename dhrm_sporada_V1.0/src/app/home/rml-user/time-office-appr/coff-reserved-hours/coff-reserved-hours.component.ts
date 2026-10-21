@@ -150,6 +150,7 @@ export class CoffReservedHoursComponent implements OnInit {
       const newRowHours = this.sumOfSelectedDatesHour - this.requiredHours;
       /** find last selected date row data */
       const lastSelectedDate:any = this.selectedRowData[this.selectedRowData.length - 1];
+      console.log('last selected date', lastSelectedDate)
       /** construct new data row insert data */
       const newRowData = {
         plantCode: this.all.plant_code,
@@ -157,8 +158,8 @@ export class CoffReservedHoursComponent implements OnInit {
         hours: newRowHours,
         workedDate: lastSelectedDate.workedDate,
         flag: 'RFC',
-        reason:'COFF BALANCE ROW INSERTED BY SYSTEM',
         appliedBy: this.all.gen_id,
+        reason:'COFF BALANCE ROW INSERTED BY SYSTEM',
         validFrom: lastSelectedDate.validFrom,
         validTo: lastSelectedDate.validTo,
         payrollEndDate: lastSelectedDate.payrollEndDate,
@@ -170,17 +171,23 @@ export class CoffReservedHoursComponent implements OnInit {
       const data = {
         aplnSlno: this.aplnSlno,
         requiredHours: this.requiredHours,
+        isHalfDay: this.isHalfSelected,
         selectedReservedCoffDates:this.selectedRowData,
         genId:this.routerParamMap.genId,
         coffFlag:'COFF',
         isInsertNewRow:isNewRowInsert,
+        appliedBy: this.all.gen_id,
         newRowInsertData: isNewRowInsert ? newRowData : null,
       };
 
-      this.matdailog.open(CoffotpopupComponent,{
-        data:data
-      }).afterClosed().subscribe((data:any)=>{
+      this.matdailog.open(CoffotpopupComponent,{data:data })
+      .afterClosed()
+      .subscribe((data:any) => { 
+
         this.getReservedHours();
+        this.sumOfSelectedDatesHour = 0;
+        this.selectedRowData = []; 
+
         console.log('coff absent pop up closed',data)
       });
 
@@ -240,12 +247,17 @@ export class CoffReservedHoursComponent implements OnInit {
     
     /**
      * opens @property {*} openAbsentDaysDialogModal
-     * set the selectedrow selected prop to true,
+     * set the selected row selected prop to true,reset sum of hours and set sum of hour = selected row hours
      * @param {*} selectedRow
+     * @property {*} selectedRowData
+     * @property {*} sumOfSelectedDatesHour
      * @memberof CoffReservedHoursComponent
      */
     singleCoffApply(selectedRow:any){
       selectedRow.selected = true;
+      this.sumOfSelectedDatesHour = 0;
+      this.selectedRowData = this.reservedCoffData.filter((coffData:any) => coffData.selected === true);
+      this.sumOfSelectedDatesHour = selectedRow.hours;
       this.openAbsentDaysDialogModal();
     }
     

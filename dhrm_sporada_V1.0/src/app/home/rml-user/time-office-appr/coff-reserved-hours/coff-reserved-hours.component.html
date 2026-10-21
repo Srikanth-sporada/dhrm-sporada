@@ -42,11 +42,11 @@
             offLabel="FullDay"
             styleClass="!bg-blue-600 !text-white">
             </p-toggleButton>
-            <!-- approve btn -->
+            <!-- apply btn -->
             <p-button
             label="Apply"
             (onClick)="openAbsentDaysDialogModal()"
-            [disabled]="isApplyBtnDisabled()"
+            [disabled]="isApplyBtnDisabled() || !this.isMergeDateSelected"
             ariaLabel="apply coff"
             icon="pi pi-verified"
             >
@@ -144,7 +144,7 @@
             ariaLabel="approve-coff"
             icon="pi pi-check-square"
             (onClick)="singleCoffApply(row)"
-            [disabled]="isMergeDateSelected"
+            [disabled]="isMergeDateSelected || row.hours < this.requiredHours"
             >
             </p-button>
             </td>
