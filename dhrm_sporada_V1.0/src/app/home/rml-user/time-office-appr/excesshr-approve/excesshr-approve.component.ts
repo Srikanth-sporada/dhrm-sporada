@@ -35,6 +35,7 @@ export class ExcesshrApproveComponent implements OnInit {
   selectAll:boolean=  false;
   reservationFlags:any = [{lable:'COFF',flag:'RFC'},{lable:'OT',flag:'RFO'}]
   bulkApproveData:any = [];
+  coffLimits:any = [];
   setActualEH:boolean =  environment?.setActualEH;
   startCount:number = 0; // init page number
   paginationRowLimit:number = environment?.paginationRowLimit;
@@ -79,6 +80,7 @@ export class ExcesshrApproveComponent implements OnInit {
     this.getLineByDepartment();
     /** get EH data */
     this.getData();
+    this.getWorkedDateLimits()
     console.log('curent page number',this.startCount)
    
   }
@@ -119,6 +121,29 @@ export class ExcesshrApproveComponent implements OnInit {
      });
   }
 
+  /**
+   * coff limits for valid from and to calculations
+   * @memberof ExcesshrApproveComponent
+   */
+  getWorkedDateLimits(){
+    this.apiService.getCoffLimits(this.all.plant_code).subscribe({
+      next: (response:any) => {
+        if(response.status == 'success'){
+          if(response.data.length == 0){
+            this.messageService.add({severity:'warn',summary:`COFF limits not found for: ${this.plantCode}`})
+          }else{
+            this.coffLimits = response.data[0];
+          }
+        }else{
+          this.messageService.add({severity:'error', summary:response?.message || 'Oops! something went wrong'})
+        }
+      },
+      error:(error:any) => {
+        console.log('GET COFF LIMIT API ERROR:',error);
+        this.messageService.add({severity:'error',summary:error.error.message})
+      }
+    })
+  }
   /**
    * get line by department
    * @property {*} lines 
@@ -205,8 +230,10 @@ export class ExcesshrApproveComponent implements OnInit {
       type: item.type,
       // new props
       currentPayrollEndDate:moment(item.lastBillDate).add(1,'month').format('YYYY-MM-DD'),
-      validFrom: item.currentPayrollDate,
-      validTo: moment(item.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+      //validFrom: item.currentPayrollDate,
+      //validTo: moment(item.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+      validFrom: moment(item.att_date).subtract(this.coffLimits.startLimit,'day').format('YYYY-MM-DD'),
+      validTo: moment(item.att_date).add(this.coffLimits.endLimit,'day').format('YYYY-MM-DD'),
       isTrainee:false,
     };
 
@@ -546,8 +573,10 @@ export class ExcesshrApproveComponent implements OnInit {
             type: bulkData.type,
             // new props
             currentPayrollEndDate:moment(bulkData.lastBillDate).add(1,'month').format('YYYY-MM-DD'),
-            validFrom: bulkData.currentPayrollDate,
-            validTo: moment(bulkData.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+            //validFrom: bulkData.currentPayrollDate,
+            //validTo: moment(bulkData.lastBillDate).add(this.coffExpiry,'month').format('YYYY-MM-DD'),
+            validFrom: moment(bulkData.att_date).subtract(this.coffLimits.startLimit,'day').format('YYYY-MM-DD'),
+            validTo: moment(bulkData.att_date).add(this.coffLimits.endLimit,'day').format('YYYY-MM-DD'),
             isTrainee:false,
           }
       /** push formatted data */

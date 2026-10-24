@@ -1103,6 +1103,10 @@ export class ApiService {
     }
   }
   
+  getCoffLimits(plantCode:any){
+    return this.http.get(this.url + `/api/v1/approvals/coff/limit?plantCode=${plantCode}`);
+  }
+
   getExcessHours_Report() {
     return this.http.get(this.url + `/ars/getExcessHours_Report?empl_slno=${sessionStorage.getItem("emp_id")}`);
   }

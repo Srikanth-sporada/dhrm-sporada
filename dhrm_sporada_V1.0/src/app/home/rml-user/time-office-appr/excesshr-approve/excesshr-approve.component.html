@@ -177,7 +177,7 @@
         <p-button
           (onClick)="bulkApproveEH()"
           label="Approve"
-          [disabled]="bulkApproveData.length == 0 || isApiCalled"
+          [disabled]="bulkApproveData.length == 0 || isApiCalled || this.coffLimits.length == 0"
           [loading]="isApiCalled"
           ariaLabel="bulk approve"
           >
@@ -474,6 +474,7 @@
                 || row.approvedHr < 0 
                 || row.selected
                 || !row.flag
+                || this.coffLimits.length == 0
               "
               (click)="approve(row)"
               aria-label="approve button"
