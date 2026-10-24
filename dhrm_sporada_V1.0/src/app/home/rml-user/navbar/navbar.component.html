@@ -1473,7 +1473,7 @@
                   ishr == 'true' ||
                   isadmin == 'true' ||
                   ishrappr == 'true' ||
-                  isFin == true || Is_CHR === 'true' || Is_CFIN === 'true'
+                  isCmed || isFin == true || Is_CHR === 'true' || Is_CFIN === 'true'
                 "
                 class="!mx-1 text-gray-600"
               >
@@ -1481,7 +1481,7 @@
               <!-- new reports -->
 
                <!-- cummulative report -->
-                <span *ngIf="!hideCumulativeReport">
+                <span *ngIf="!isCmed && !hideCumulativeReport ">
                   <a
                   mat-list-item
                   routerLink="/rhrm/reports/cummulativereport"
@@ -1493,7 +1493,7 @@
                 </a>
                 </span>
                 <!-- LOP report -->
-                 <span *ngIf="!hideLopReport">
+                 <span *ngIf="!isCmed && !hideLopReport">
                   <a
                   mat-list-item
                   routerLink="/rhrm/reports/lopreport"
@@ -1504,20 +1504,20 @@
                   </a>
                  </span>
                  <!-- machine punch report -->
-              <span *ngIf="!hideMachinePunchReport">
-                  <a
-                  mat-list-item
-                  *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
-                  routerLink="/rhrm/reports/rawpunch"
-                  routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
-                  class="rounded-sm"
-                >
-                  <mat-icon class="icon-pad">access_time</mat-icon>Machine Punch
-                  Report
-                  </a>
-              </span>
+                <span *ngIf="!hideMachinePunchReport">
+                    <a
+                    mat-list-item
+                    *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true"
+                    routerLink="/rhrm/reports/rawpunch"
+                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                    class="rounded-sm"
+                  >
+                    <mat-icon class="icon-pad">access_time</mat-icon>Machine Punch
+                    Report
+                    </a>
+                </span>
                 <a
-                 *ngIf="ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true || Is_CHR === 'true' || Is_CFIN === 'true'"
+                 *ngIf="isCmed || ishr == 'true' || isadmin == 'true' || ishrappr == 'true' || isFin== true || Is_CHR === 'true' || Is_CFIN === 'true'"
                   mat-list-item
                   routerLink="/rhrm/reports/arsreports"
                    routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"

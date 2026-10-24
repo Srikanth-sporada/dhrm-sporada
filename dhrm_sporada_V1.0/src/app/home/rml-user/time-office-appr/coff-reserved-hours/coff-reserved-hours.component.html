@@ -136,8 +136,16 @@
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.validFrom }}</td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.validTo }}</td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.payrollEndDate }}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.is_raised_by_trainee ? 'Trainee' : 'Manager' }}</td>
-            <td class="!px-2 !py-2 !rounded-s-md text-center">{{ row.is_night_shift ? 'Yes' : 'No' }}</td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+              <span class="px-2 py-1 rounded-md" [ngClass]="row.is_raised_by_trainee ? 'bg-orange-200 text-orange-600' : 'bg-blue-200 text-blue-600'">
+                {{ row.is_raised_by_trainee ? 'Trainee' : 'Manager' }}
+              </span>
+            </td>
+            <td class="!px-2 !py-2 !rounded-s-md text-center">
+              <span class="px-2 py-1 rounded-md" [ngClass]="row.is_night_shift ? 'bg-green-200 text-green-600' : 'bg-gray-200 text-gray-600'">
+                {{ row.is_night_shift ? 'Yes' : 'No' }}
+              </span>
+            </td>
             <td class="!px-2 !py-2 !rounded-s-md text-center">
               <!-- back btn -->
             <p-button

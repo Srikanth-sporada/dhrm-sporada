@@ -288,7 +288,7 @@ export class NavbarComponent implements OnInit,AfterViewInit,AfterViewChecked {
     this.isFin = this.all["is_fin"];
     // console.log(this.all['is_fin']);
     this.plant = sessionStorage.getItem("plantcode");
-    this.isCmed = this.all.is_cmed;
+    this.isCmed = this.all.is_cmed; 
     this.isPlantHead = this.all.is_plant_head;
     this.isFh = this.all.ot_appr;
     // this.Is_CHR=this.all.Is_CHR

@@ -23,6 +23,7 @@ export class ArsReportsComponent implements OnInit {
   Is_CFIN: any;
   Is_CHR: any;
   isHrappr: any;
+  isCmed:any;
   selectedReportType: any;
   employeeType: any = "T";
   monthReport: any[] = ["coff"];
@@ -257,6 +258,8 @@ export class ArsReportsComponent implements OnInit {
     this.isHrappr = sessionStorage.getItem("ishrappr") === "true";
     this.Is_CHR = sessionStorage.getItem("Is_CHR") === "true"; // new
 
+    this.isCmed = this.all.is_cmed; //new added by sporada 424
+    
     if (!this.isadmin) {
       this.plant = plantCode;
       this.getPlantsForNonAdmins(plantCode);
