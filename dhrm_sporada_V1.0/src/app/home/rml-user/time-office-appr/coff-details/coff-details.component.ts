@@ -73,7 +73,7 @@ export class CoffDetailsComponent implements OnInit {
 
     const data = {
       aplnSlno: expandedRecord.emp_id,
-      coffDate: moment(expandedRecord.data).format('YYYY-MM-DD')
+      coffDate: moment(expandedRecord.date).format('YYYY-MM-DD')
     };
 
     this.apiService.getUtilizedDatesByTraineeCoffDate(data).subscribe({

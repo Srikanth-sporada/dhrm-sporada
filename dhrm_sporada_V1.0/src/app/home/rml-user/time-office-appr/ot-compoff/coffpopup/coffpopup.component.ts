@@ -168,7 +168,7 @@ export class CoffotpopupComponent implements OnInit {
     this.apiService.applyCoffByManager(apiData).subscribe({
       next: (response:any) => {
         if(response.status == 'success'){
-          this.messageService.add({severity:'info',summary:response.mesage});
+          this.messageService.add({severity:'info',summary:response.message});
           this.loading = false;
           this.dailogRef.close();
         }else{

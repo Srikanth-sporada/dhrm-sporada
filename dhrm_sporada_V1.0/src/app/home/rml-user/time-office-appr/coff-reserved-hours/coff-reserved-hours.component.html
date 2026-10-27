@@ -13,14 +13,14 @@
   </div>
 
   <!-- ot comp-off actions -->
-     <div class="flex items-center justify-evenly flex-col sm:flex-row sm:gap-8 !shadow-md !my-4 !rounded-md  h-full p-3 !font-poppins sm:h-min border border-gray-400 mx-2 overflow-hidden">
+     <div class="flex items-center justify-evenly flex-col sm:flex-row sm:gap-8 !shadow-md !my-4 !rounded-md  h-full p-3 !font-poppins sm:h-min border border-gray-400 mx-2 oveflow-hidden">
         <div>
            <span class="font-semibold text-blue-600 text-nowrap text-lg">
              {{this.routerParamMap.genId || ''}} | {{this.routerParamMap.name || ''}} | {{this.routerParamMap.department || ''}}
            </span>
         </div>
        <!-- other actions -->
-         <div class="flex items-center w-full flex-col sm:flex-row sm:gap-8 sm:justify-start">
+         <div class="flex items-center w-full flex-col sm:flex-row sm:gap-8 sm:justify-start flex-auto">
             <!-- select ALL -->
             <div class="flex items-center justify-center">
             <p-checkbox 
@@ -58,6 +58,8 @@
             icon="pi pi-arrow-left"
             >
             </p-button>
+            <!-- total record count -->
+            <p-badge [value]="toString(reservedCoffData.length)" size="large"></p-badge>
          </div>
      </div>
 
@@ -130,6 +132,7 @@
             <td class="!px-2 !py-2 !rounded-s-md text-center text-blue-600 font-semibold">
               {{ row.workedDate }}
               <p-badge [value]="row.ot_type" [severity]="row.ot_type == 'W' ? 'info' : 'warning'"></p-badge>
+              <p-badge [value]="'BAL'" [severity]="'success'" *ngIf="row.is_sys_inserted" class="ml-1"></p-badge>
             </td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.hours }}</td>
             <td class="!px-2 !py-2 !rounded-s-md">{{ row.approvedBy }}</td>

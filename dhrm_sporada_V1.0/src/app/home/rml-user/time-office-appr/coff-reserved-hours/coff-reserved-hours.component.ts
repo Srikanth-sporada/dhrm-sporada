@@ -285,12 +285,21 @@ export class CoffReservedHoursComponent implements OnInit {
       return !this.isMergeDateSelected
      }
     }
-
-    isApplyBtnDisabled(){
+    
+    /**
+     * boolean state of apply button enable/disable
+     * @return {*} 
+     * @memberof CoffReservedHoursComponent
+     */
+    isApplyBtnDisabled():boolean{
       if(this.sumOfSelectedDatesHour >= this.requiredHours){
         return false;
       }else{
         return true
       }
+    }
+
+    toString(number:any){
+      return String(number);
     }
 }

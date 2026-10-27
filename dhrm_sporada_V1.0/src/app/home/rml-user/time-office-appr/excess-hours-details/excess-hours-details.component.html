@@ -36,6 +36,7 @@
             <td class="!px-2 !py-4 !rounded-s-md text-center">
               {{ item.date|date:'dd-MM-yyyy' }} 
               <p-badge [value]="item.is_raised_by_trainee ? 'T' : 'M'" [severity]="item.is_raised_by_trainee ? 'warning' : 'info'"></p-badge>
+              <p-badge [value]="'BAL'" [severity]="'success'" *ngIf="item.is_sys_inserted" class="ml-1"></p-badge>
             </td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{ item.act_hrs }}</td>
             <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{ item.appr_hrs }}</td>
