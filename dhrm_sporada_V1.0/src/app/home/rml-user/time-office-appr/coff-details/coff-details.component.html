@@ -79,7 +79,10 @@
                         <td class="!px-2 !py-4 !rounded-s-md text-center">
                         {{i+1}}
                         </td>
-                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{item.utilizedDate}}</td>
+                        <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">
+                          {{item.utilizedDate}}
+                          <p-badge [value]="'BAL'" *ngIf="item.isSysInserted" [severity]="'success'"></p-badge>
+                        </td>
                         <td class="!px-2 !py-4 !rounded-s-md text-center text-purple-600 font-semibold">{{item.utlizedHour}}</td>
                         <td class="!px-2 !py-4 !rounded-s-md text-center">{{item.approvedBy}}</td>
                       </tr>
