@@ -8,7 +8,7 @@ import { environment } from "src/environments/environment.prod";
 import { Utility } from "src/app/utils/utils";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationComponent } from 'src/app/confirmation/confirmation.component';
-import { Table } from "primeng/table";
+
 @Component({
   selector: "app-excesshr-approve",
   templateUrl: "./excesshr-approve.component.html",
@@ -96,6 +96,8 @@ export class ExcesshrApproveComponent implements OnInit {
      console.log('end count:', this.endCount);
      console.log('PAGE:',page);
      console.log('LIMIT:',limit);
+
+     this.clear();
   }
   /**
    * get Allowed OT hours
@@ -374,7 +376,6 @@ export class ExcesshrApproveComponent implements OnInit {
       ehData.flag = null;
      });
      this.selectAll = false;
-     this.data = this.excessHourData;
   }
 
   /** 

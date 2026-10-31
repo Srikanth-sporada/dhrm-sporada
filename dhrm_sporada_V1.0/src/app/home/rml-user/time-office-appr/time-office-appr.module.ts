@@ -87,6 +87,7 @@ import { HrLeaveApplyComponent } from "./hr-leave-apply/hr-leave-apply.component
 import { HrLopApplyComponent } from "./hr-lop-apply/hr-lop-apply.component";
 import { HrAppliedLopRecordComponent } from "./hr-applied-lop-record/hr-applied-lop-record.component";
 import { CoffReservedHoursComponent } from "./coff-reserved-hours/coff-reserved-hours.component";
+import { ChangeReservedEhComponent } from "./change-reserved-eh/change-reserved-eh.component";
 @NgModule({
   declarations: [
     CompOffApprComponent,
@@ -137,6 +138,7 @@ import { CoffReservedHoursComponent } from "./coff-reserved-hours/coff-reserved-
     /** loader */
     TimeOfficeApprovalLoaderComponent,
     CoffReservedHoursComponent, // #new
+    ChangeReservedEhComponent, // #new
   ],
   imports: [
     MatNativeDateModule,

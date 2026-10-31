@@ -1102,6 +1102,15 @@ export class ApiService {
      return this.http.get(this.url + `/api/v1/approvals/eh/manager?empl_slno=${sessionStorage.getItem("emp_id")}&from=${fromDate}&to=${toDate}`);
     }
   }
+  /**
+   * get data for reserved exess hour change reserved flags
+   * @param {*} data
+   * @return {*} 
+   * @memberof ApiService
+   */
+  getReservedHoursForFlagChange(data:any):any{
+   return this.http.get(this.url + `/api/v1/approvals/eh/reserved/change?flag=${data.flag}&lineCode=${data.lineCode}&genId=${data.genId}&plantCode=${data.plantCode}&empSlno=${data.empSlno}`)
+  }
   
   getCoffLimits(plantCode:any){
     return this.http.get(this.url + `/api/v1/approvals/coff/limit?plantCode=${plantCode}`);
@@ -1114,6 +1123,15 @@ export class ApiService {
   approveExcessHr(data: any) {
     // old api /ars/approveExcessHr
     return this.http.post(this.url + `/api/v1/approvals/eh/manager/approve`, {data:data});
+  }
+  /**
+   * change reserved excess hours
+   * @param {*} data
+   * @return {*} 
+   * @memberof ApiService
+   */
+  changeReservedHours(data:any,changedBy:any):any{
+    return this.http.post(this.url + '/api/v1/approvals/eh/reserved/change', {data:data, changedBy});
   }
 
   getApprovedExcessHours(data:any) {

@@ -27,6 +27,7 @@ import { RouteMasterComponent } from './route-master/route-master.component';
 import { RejoinApprovalComponent } from "./rejoin-approval/rejoin-approval.component";
 import { AttendanceReprocessNewComponent } from "./attendance-reprocess-new/attendance-reprocess-new.component";
 import { CoffReservedHoursComponent } from "./coff-reserved-hours/coff-reserved-hours.component";
+import { ChangeReservedEhComponent } from "./change-reserved-eh/change-reserved-eh.component";
 
 const routes: Routes = [
   {
@@ -74,6 +75,10 @@ const routes: Routes = [
   {
     path:'coff/reserved/:aplnSlno/:name/:genId/:department/:line/:category',
     component:CoffReservedHoursComponent,
+  },
+  {
+    path:'eh/reserved/change',
+    component: ChangeReservedEhComponent,
   },
   {
     path: "night-coff",

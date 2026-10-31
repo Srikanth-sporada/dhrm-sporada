@@ -909,8 +909,20 @@
                routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
                 class="rounded-sm"
               >
-                <mat-icon class="icon-pad">more_time</mat-icon>Comp-Off</a
+                <mat-icon class="icon-pad">more_time</mat-icon>
+                Comp-Off
+              </a>
+              <!-- compensatory off -->
+              <a
+                *ngIf="isRA"
+                mat-list-item
+                routerLink="/rhrm/time-office-appr/eh/reserved/change"
+               routerLinkActive="!text-blue-600 !font-semibold bg-gray-100 mt-2 border-l-4 border-blue-600"
+                class="rounded-sm"
               >
+                <mat-icon class="icon-pad">undo</mat-icon>
+                Changed Reserved EH
+              </a>
               <!-- night shift comp off -->
               <!-- <a
                 *ngIf="isRA"
