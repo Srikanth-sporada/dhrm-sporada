@@ -108,6 +108,10 @@
             <tr>
                 <th>Apln No</th>
                 <th>Gen ID</th>
+                <th>Company Code</th>
+                <th>Plant Code</th>
+                <th>Contractor</th>
+                <th>PF Trust ID</th>
                 <th>Bank Name</th>
                 <th>Bank Account Number</th>
                 <th>IFSC Code</th>
@@ -142,6 +146,18 @@
                 </td>
                 <td>
                     {{product.gen_id || '-'}}
+                </td>
+                <td>
+                    {{product.company_code || '-'}}
+                </td>
+                <td>
+                    {{product.plant_code || '-'}}
+                </td>
+                <td>
+                    {{product.cont_id || '-'}}
+                </td>
+                <td>
+                    {{product.pf_trust_id || '-'}}
                 </td>
                 <td>
                     {{product.bank_name || '-'}}
