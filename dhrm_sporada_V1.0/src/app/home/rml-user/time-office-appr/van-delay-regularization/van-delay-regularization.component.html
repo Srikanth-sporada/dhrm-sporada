@@ -165,9 +165,9 @@
                                 <td class="!px-2 !py-4 !rounded-s-md text-center text-blue-600 font-semibold">{{data.gen_id}}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md">{{data.fullname}}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md">{{data.shift_desc }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.in_time |date :'dd-MM-yyyy' }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md  text-center text-green-600 font-semibold">{{data.in_time | date :'HH:mm:ss' }}</td>
-                                <td class="!px-2 !py-4 !rounded-s-md text-center  text-red-500 font-semibold">{{data.out_time | date :'HH:mm:ss' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.att_date |date :'dd-MM-yyyy' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md  text-center text-green-600 font-semibold">{{data.in_time | date :'HH:mm:ss':'UTC' }}</td>
+                                <td class="!px-2 !py-4 !rounded-s-md text-center  text-red-500 font-semibold">{{data.out_time | date :'HH:mm:ss':'UTC' }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.present_type }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.late_comeing }}</td>
                                 <td class="!px-2 !py-4 !rounded-s-md text-center">{{data.Worked_Hrs }} / {{data.Shift_Duration}}</td>         

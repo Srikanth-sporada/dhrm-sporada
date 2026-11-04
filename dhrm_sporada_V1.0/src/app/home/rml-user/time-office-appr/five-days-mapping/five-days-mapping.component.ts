@@ -70,7 +70,7 @@ export class FiveDaysMappingComponent implements OnInit {
   saveEdit() {
     console.log('Saving edit:', this.selectedEmployee);
     // Implement save logic here
-   this.apiService.Update5Days(this.selectedEmployee,this.userEmpcode).subscribe({
+   this.apiService.Update5Days({...this.selectedEmployee, plantCode:this.plantCode},this.userEmpcode).subscribe({
     next: (res:any) => {
     console.log(res);
     if(!res){
