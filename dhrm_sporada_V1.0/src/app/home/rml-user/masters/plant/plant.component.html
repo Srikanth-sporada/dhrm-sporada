@@ -163,6 +163,25 @@
             ></p-inputNumber>
        </div>   
       </div>
+      <!-- five row -->
+       <div class="flex items-center justify-between flex-col sm:flex-row w-full gap-4 p-fluid mt-3">
+            <!-- Eh multiply factor -->
+        <div class="w-full mx-2">
+          <label for="withoutgrouping" class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="payroll-area">
+            <mat-icon class="text-2xl text-blue-600 h-0 w-0">filter_1</mat-icon>
+           EH Woff Factor
+          </label> <br>
+        <p-inputNumber 
+              mode="decimal"
+              inputId="withoutgrouping"
+              formControlName="ehWoffMultiplyFactor"
+              [minFractionDigits]="0" 
+              [maxFractionDigits]="2"
+              styleClass="w-full" 
+              [useGrouping]="false" 
+              ></p-inputNumber>
+        </div>   
+      </div>
       <!-- address -->
        <div class="w-full mx-2 mt-3">
             <label class="text-blue-600 flex items-center justify-start gap-1 -mb-2" for="personal-area">

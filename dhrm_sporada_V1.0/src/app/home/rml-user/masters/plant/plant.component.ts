@@ -89,6 +89,7 @@ export class PlantComponent implements OnInit {
       personal_area: ["", Validators.required],
       payroll_area: ["", Validators.required],
       company_code: ["", Validators.required],
+      ehWoffMultiplyFactor:[null,Validators.required]
     });
   }
 
@@ -218,6 +219,7 @@ export class PlantComponent implements OnInit {
     this.form.controls["locatn"].setValue(this.dummy[a].locatn);
     this.form.controls["personal_area"].setValue(this.dummy[a].personal_area);
     this.form.controls["payroll_area"].setValue(this.dummy[a].payroll_area);
+    this.form.controls['ehWoffMultiplyFactor'].setValue(this.dummy[a]?.eh_woff_mul_factor)
     console.log(this.form.value);
     this.sign = this.dummy[a].plant_sign;
     console.log(this.sign);
@@ -242,8 +244,10 @@ export class PlantComponent implements OnInit {
           this.getPlantData();
           this.messageService.add({
             severity: "info",
-            summary: "Plant Updated.",
+            summary: "Plant updated successfully",
           });
+        }else if(response.message == 'failure'){
+          this.messageService.add({severity:'error', summary:'oops! something went wrong'})
         }
       },
       error: (err) =>
