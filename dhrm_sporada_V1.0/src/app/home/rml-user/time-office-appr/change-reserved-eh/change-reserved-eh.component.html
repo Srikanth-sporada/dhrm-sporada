@@ -34,7 +34,7 @@
       </div>
      <div>
       <!-- filter row one -->
-     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+     <div class="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-5 gap-2">
       <!-- from date -->
         <div class="w-full" *ngIf="false">
           <label for="date" class="font-semibold text-gray-400 mb-1 mt-3">From</label> <br>
@@ -87,6 +87,19 @@
             styleClass="w-full"
             id="line" 
             placeholder="Select Line" ></p-dropdown>
+       </div>
+       <!-- trainee filter -->
+       <div class="font-poppins w-full">
+          <label for="trainee-filter" class="text-gray-400 font-poppins mt-3 mb-1 font-semibold">Type</label> <br>
+          <p-dropdown 
+            [options]="type"
+            [(ngModel)]="isManager"
+            (onChange)="this.getData()"
+            optionLabel="lable"
+            optionValue="value"
+            styleClass="w-full"
+            id="trainee-filter" 
+            placeholder="Select Type" ></p-dropdown>
        </div>
        <!-- gen id -->
        <div class="font-poppins w-full p-fluid">

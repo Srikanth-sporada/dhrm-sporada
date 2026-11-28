@@ -29,6 +29,8 @@ export class ChangeReservedEhComponent implements OnInit {
   toDate: Date = moment().toDate();
   toMaxDate: Date = moment().toDate();
   lines: any;
+  type:any = [{lable:'Manager',value:false},{lable:'Trainee',value:true}]
+  isManager:boolean = false;
   filterFlag: any = null; // default selects all
   selectedLine:any = null;
   bulkSelectReservationFlag: boolean = false;
@@ -54,7 +56,7 @@ export class ChangeReservedEhComponent implements OnInit {
   successDataCount: number = 0;
   failedDataCount: number = 0;
   plantCode: any = sessionStorage.getItem("plantcode");
-  userName: any = sessionStorage.getItem("user_name");
+  userName: any = sessionStorage.getItem("emp_id");
   isApiCalled: boolean = false;
   /** primeng data table ref */
   @ViewChildren("rowRef") rows!: QueryList<ElementRef>;
@@ -133,6 +135,7 @@ export class ChangeReservedEhComponent implements OnInit {
       genId:this.userEnteredGenID,
       plantCode:this.plantCode,
       empSlno:this.userName,
+      isTrainee:this.isManager
     };
 
     this.data =[];

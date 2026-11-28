@@ -1109,7 +1109,7 @@ export class ApiService {
    * @memberof ApiService
    */
   getReservedHoursForFlagChange(data:any):any{
-   return this.http.get(this.url + `/api/v1/approvals/eh/reserved/change?flag=${data.flag}&lineCode=${data.lineCode}&genId=${data.genId}&plantCode=${data.plantCode}&empSlno=${data.empSlno}`)
+   return this.http.get(this.url + `/api/v1/approvals/eh/reserved/change?flag=${data.flag}&lineCode=${data.lineCode}&genId=${data.genId}&plantCode=${data.plantCode}&empSlno=${data.empSlno}&isTrainee=${data.isTrainee}`)
   }
   
   getCoffLimits(plantCode:any){
